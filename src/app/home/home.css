@@ -1,0 +1,24 @@
+.menuItem{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 20px;
+    width: 100%;
+}
+.menuValue{
+    margin-top: 30px;
+    width: 90%;
+    height: 7rem;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+@media only screen and (max-width: 600px) {
+    .menuItem{
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+    } 
+}

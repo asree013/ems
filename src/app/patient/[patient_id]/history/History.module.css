@@ -1,0 +1,46 @@
+.homePage{
+    margin-top: 60px;
+}
+.buttonCreate{
+    position: fixed;
+    top: 85%;
+    right: 5%;
+}
+.item{
+    padding: 20px;
+}
+.history_item{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+}
+.history_card_success{
+    background: rgb(205, 239, 205);
+}
+.history_card_draft{
+    background: #d9eeff;
+}
+.card{
+    width: 100%;
+}
+
+@media only screen and (max-width: 1024px) {
+    .history_item{
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 30px;
+    }
+    .buttonCreate{
+        top: 90%;
+    }
+    
+}
+@media only screen and (max-width: 450px) {
+    .history_item{
+        grid-template-columns: repeat(1, 1fr);
+        grid-gap: 15px;
+    }
+    .buttonCreate{
+        right: 3%;
+    }
+    
+}

@@ -1,0 +1,85 @@
+.patient_id_flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.patient_id_home {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    width: 45%;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.patient_toggle {
+    padding: 10px;
+}
+
+.card_item {
+    cursor: pointer;
+    width: 600px;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.patientImage {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    grid-column: 1/-1;
+}
+
+.imageDetail {
+    width: 49%;
+}
+
+.imageItemDetail {
+    width: 220px;
+}
+
+@media only screen and (max-width: 450px) {
+    .patient_id_home {
+        width: 90%;
+        margin-top: 30px;
+        padding: 20px 3px;
+        border-radius: 10px;
+    }
+    .patient_toggle {
+        padding: 0;
+        margin-top: 10px;
+    }
+
+    .patient_id_flex{
+        width: 100%;
+    }
+
+    .card_item {
+        width: 90%;
+    }
+
+    .patientImage{
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media only screen and (max-width: 1250px) {
+    .patient_id_home {
+        width: 90%;
+        margin-top: 30px;
+    }
+
+    .card_item {
+        width: 88%;
+    }
+
+    .patient_toggle {
+        width: 90%;
+    }
+}

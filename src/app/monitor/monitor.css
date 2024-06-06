@@ -1,0 +1,288 @@
+.bodyHomeChart {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    margin-top: 70px;
+}
+
+.monitorChart {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    height: 100%;
+    padding: 20px;
+    margin-top: 10px;
+    background: rgb(61, 61, 110);
+}
+
+.monitorItems {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    width: 22rem;
+    height: 23rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: rgb(12, 12, 52);
+    margin: 2px;
+}
+
+.monitorItems .create_monitor {
+    font-size: 6rem;
+}
+
+.hearder_monitor {
+    color: aliceblue;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.modal_create_monitor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.modal_item_open {
+    width: 30rem;
+    height: 40rem;
+    background: whitesmoke;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.body_monitor {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 100%;
+}
+
+.bm_1 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.hr {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0 8px;
+}
+
+.ecg {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0 8px;
+}
+
+.trindal {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0 8px;
+}
+
+.body_monitor2 {
+    color: whitesmoke;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 2rem;
+}
+
+.nibp {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0 8px;
+}
+
+.spo2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    padding: 5px;
+}
+
+.chart_option {
+    width: 22rem;
+    height: 10rem;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    color: whitesmoke;
+    padding: 10px;
+}
+
+.canvas {
+    margin-left: 10px;
+    width: 500px;
+    height: 140px;
+}
+
+.mini {
+    width: 100%;
+    height: 170px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+/* .check_box_monitor{
+
+} */
+
+
+
+
+.checkbox-wrapper-7 .tgl {
+    display: none;
+}
+
+.checkbox-wrapper-7 .tgl,
+.checkbox-wrapper-7 .tgl:after,
+.checkbox-wrapper-7 .tgl:before,
+.checkbox-wrapper-7 .tgl *,
+.checkbox-wrapper-7 .tgl *:after,
+.checkbox-wrapper-7 .tgl *:before,
+.checkbox-wrapper-7 .tgl+.tgl-btn {
+    box-sizing: border-box;
+}
+
+.checkbox-wrapper-7 .tgl::-moz-selection,
+.checkbox-wrapper-7 .tgl:after::-moz-selection,
+.checkbox-wrapper-7 .tgl:before::-moz-selection,
+.checkbox-wrapper-7 .tgl *::-moz-selection,
+.checkbox-wrapper-7 .tgl *:after::-moz-selection,
+.checkbox-wrapper-7 .tgl *:before::-moz-selection,
+.checkbox-wrapper-7 .tgl+.tgl-btn::-moz-selection,
+.checkbox-wrapper-7 .tgl::selection,
+.checkbox-wrapper-7 .tgl:after::selection,
+.checkbox-wrapper-7 .tgl:before::selection,
+.checkbox-wrapper-7 .tgl *::selection,
+.checkbox-wrapper-7 .tgl *:after::selection,
+.checkbox-wrapper-7 .tgl *:before::selection,
+.checkbox-wrapper-7 .tgl+.tgl-btn::selection {
+    background: none;
+}
+
+.checkbox-wrapper-7 .tgl+.tgl-btn {
+    outline: 0;
+    display: block;
+    width: 3em;
+    height: 1.5em;
+    position: relative;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.checkbox-wrapper-7 .tgl+.tgl-btn:after,
+.checkbox-wrapper-7 .tgl+.tgl-btn:before {
+    position: relative;
+    display: block;
+    content: "";
+    width: 50%;
+    height: 100%;
+}
+
+.checkbox-wrapper-7 .tgl+.tgl-btn:after {
+    left: 0;
+}
+
+.checkbox-wrapper-7 .tgl+.tgl-btn:before {
+    display: none;
+}
+
+.checkbox-wrapper-7 .tgl:checked+.tgl-btn:after {
+    left: 50%;
+}
+
+.checkbox-wrapper-7 .tgl-ios+.tgl-btn {
+    background: #fbfbfb;
+    border-radius: 2em;
+    padding: 2px;
+    transition: all 0.4s ease;
+    border: 1px solid #e8eae9;
+}
+
+.checkbox-wrapper-7 .tgl-ios+.tgl-btn:after {
+    border-radius: 2em;
+    background: #fbfbfb;
+    transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), padding 0.3s ease, margin 0.3s ease;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 4px 0 rgba(0, 0, 0, 0.08);
+}
+
+.checkbox-wrapper-7 .tgl-ios+.tgl-btn:hover:after {
+    will-change: padding;
+}
+
+.checkbox-wrapper-7 .tgl-ios+.tgl-btn:active {
+    box-shadow: inset 0 0 0 2em #e8eae9;
+}
+
+.checkbox-wrapper-7 .tgl-ios+.tgl-btn:active:after {
+    padding-right: 0.8em;
+}
+
+.checkbox-wrapper-7 .tgl-ios:checked+.tgl-btn {
+    background: #86d993;
+}
+
+.checkbox-wrapper-7 .tgl-ios:checked+.tgl-btn:active {
+    box-shadow: none;
+}
+
+.checkbox-wrapper-7 .tgl-ios:checked+.tgl-btn:active:after {
+    margin-left: -0.8em;
+}
+
+@media only screen and (min-width: 1370px) {
+    .monitorChart {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        height: 100%;
+        padding: 10px;
+        background: rgb(61, 61, 110);
+    }
+}
+
+@media only screen and (max-width: 450px) {
+    .monitorChart {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        height: 100%;
+        padding: 10px;
+        background: rgb(61, 61, 110);
+    } 
+    .bodyHomeChart{
+        margin-top: 45px;
+    }
+    .modal_item_open{
+        width: 80%;
+        height: 80%;
+    }
+}

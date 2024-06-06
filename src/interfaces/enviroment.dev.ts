@@ -1,0 +1,12 @@
+export const enviromentDev = {
+    baseUrl: 'http://localhost:3333/v1',
+    patient: '/patient',
+    login: '/login',
+    device: '/device',
+    orderTranfer: '/order',
+    auth: '/auth'
+}
+
+export const enviromentPath = {
+    noImage: 'https://banffventureforum.com/wp-content/uploads/2019/08/no-photo-icon-22.png'
+}

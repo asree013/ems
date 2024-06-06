@@ -1,0 +1,9 @@
+.logo {
+    opacity: 0;
+}
+
+@media only screen and (max-width: 450px) {
+    .logo{
+        opacity: 1;
+    }
+}

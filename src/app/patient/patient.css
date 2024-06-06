@@ -1,0 +1,18 @@
+.patient_list{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+    padding: 20px;
+}
+
+@media only screen and (max-width: 1050px) {
+    .patient_list{
+        grid-template-columns: repeat(2, 1fr); 
+    }
+}
+
+@media only screen and (max-width: 450px) {
+    .patient_list{
+        grid-template-columns: repeat(1, 1fr); 
+    }
+}

@@ -1,0 +1,24 @@
+import { Logins } from "@/models/authen.model";
+import { endpoint } from "./endpoint.service";
+import { enviromentDev } from "@/interfaces/enviroment.dev";
+import { AxiosError } from "axios";
+import { Users } from "@/models/users.model";
+
+export function logins(value: Logins) {
+  try {
+    return endpoint.post(`${enviromentDev.auth}/sign-in`, {
+      username: value.username,
+      password: value.password,
+    });
+  } catch (error) {
+    throw error
+  }
+}
+
+export function logout() {
+  return endpoint.get(`${enviromentDev.auth}/sign-out`)
+}
+
+export function FindUserMe() {
+  return endpoint.get(`${enviromentDev.auth}/me`)
+}

@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Anuphan:wght@500&display=swap');
+
+.home {
+    font-family: "Anuphan", sans-serif;
+    /* font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: rgb(198, 197, 197);
+    width: 100%;
+    height: 50rem;
+}
+
+.cardHome {
+    background-color: rgb(224, 224, 224);
+    width: 60%;
+    height: 70%;
+    padding: 5%
+}
+
+.cardHome p {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.line {
+    height: 4px;
+    border: 4px solid #2c387e;
+    border-radius: 10px;
+    width: 40px;
+}
+
+.gridButton {
+    padding: 40px 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 20px;
+}
+
+.cardButton {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    background: whitesmoke;
+    color: #2c387e;
+    width: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 40px 0;
+    border-radius: 20px;
+}
+
+.cardButton:hover {
+    background: #2c387e;
+    color: white;
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: 0.4s;
+}
+
+.fontP {
+    font-size: 1.2rem;
+}
+
+@media only screen and (max-width: 1370px) {
+    .home {
+        height: 86rem;
+    }
+
+    .cardHome {
+        width: 80%;
+    }
+
+    .gridButton {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cardButton {
+        width: 95%;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .home {
+        height: 75rem;
+    }
+
+    .cardHome {
+        width: 80%;
+    }
+
+    .gridButton {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 10px;
+    }
+
+    .cardButton {
+        width: 95%;
+    }
+}
+
+@media only screen and (max-width: 450px) {
+    .home {
+        height: 42rem;
+        padding: 0;
+    }
+
+    .cardHome {
+        width: 90%;
+        height: 36rem;
+    }
+
+    .gridButton {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .cardButton {
+        width: 95%;
+        height: 5rem;
+    }
+    
+}
