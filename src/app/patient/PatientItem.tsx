@@ -12,7 +12,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import PatientList from './PatientList';
 import { Patients } from '@/models/patient';
-import './patient.css'
+import patientCss from './patient.module.css'
 import { findPatientAll } from '@/services/paitent.service';
 import { Card, Fab } from '@mui/material';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
@@ -40,75 +40,74 @@ export default function PatientItem({ order_tranfer_id }: Props) {
     const [patient, setPatient] = React.useState<Patients[]>({} as Patients[])
     const [isload, setIsload] = React.useState(false)
 
+    const feedPateint = React.useCallback(async () => {
+        setIsload(true)
+        try {
+            const result = await findPatientAll()
+            // const data = await result.json<Patients[]>()
+            setPatient(result.data)
+        } catch (error) {
+            console.log(error);
+
+        } finally {
+            setIsload(false)
+        }
+    }, [setPatient])
 
     React.useEffect(() => {
-        async function feedPateint() {
-            setIsload(true)
-            try {
-                const result = await findPatientAll()
-                setPatient(result.data)
-            } catch (error) {
-                console.log(error);
-
-            } finally {
-                setIsload(false)
-            }
-        }
-
         feedPateint()
-
-
-    }, [])
+    }, [feedPateint])
 
     return (
         <>
+            <React.Fragment>
+                <CssBaseline />
+                <div className={patientCss.patient_list}>
+                    {
+                        patient.length > 0 ?
+                            patient.map(r =>
+                                <PatientList order_tranfer_id={order_tranfer_id} patient={r} key={r.id} />
+                            ) :
+                            <div onClick={() => router.push('/patient/' + NIL)}>
+                                <Card variant="outlined" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', padding: '10px', cursor: 'pointer' }}>
+                                    <Typography variant="body1" color="initial">
+                                        No Patient Click to add Patient
+                                    </Typography>
+                                    <Typography variant="h1" color="initial">
+                                        +
+                                    </Typography>
+                                </Card>
+                            </div>
+                    }
+                </div>
+                <AppBar position="fixed" sx={{ top: 'auto', bottom: 0, background: '#2c387e' }}>
+                    <Toolbar>
+                        {
+                            pathname ?
+                                <Typography variant='h5'>
+                                    Patient List
+                                </Typography> :
+                                <Typography variant='h5'>
+                                    Add Patient in Monitor
+                                </Typography>
+                        }
+                        <StyledFab style={{ background: '#f50057', color: 'whiteSmoke' }} aria-label="add" onClick={() => router.push('/patient/' + NIL)}>
+                            <AddIcon />
+                        </StyledFab>
+                        <Box sx={{ flexGrow: 1 }} />
+                        <IconButton color="inherit">
+                            <SearchIcon />
+                        </IconButton>
+                        <IconButton color="inherit">
+                            <MoreIcon />
+                        </IconButton>
+                    </Toolbar>
+                </AppBar>
+            </React.Fragment>
             {
-                isload === true ?
+                isload ?
                     <Loadding /> :
-                    <React.Fragment>
-                        <CssBaseline />
-                        <div className="patient_list">
-                            {
-                                patient.length > 0 ?
-                                    patient.map(r =>
-                                        <PatientList order_tranfer_id={order_tranfer_id} patient={r} />
-                                    ) :
-                                    <div onClick={() => router.push('/patient/'+ NIL)}>
-                                        <Card variant="outlined" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', padding: '10px', cursor: 'pointer' }}>
-                                            <Typography variant="body1" color="initial">
-                                                No Patient Click to add Patient
-                                            </Typography>
-                                            <Typography variant="h1" color="initial">
-                                                +
-                                            </Typography>
-                                        </Card>
-                                    </div>
-                            }
-                        </div>
-                        <AppBar position="fixed" sx={{ top: 'auto', bottom: 0, background: '#2c387e' }}>
-                            <Toolbar>
-                                {
-                                    pathname ?
-                                        <Typography variant='h5'>
-                                            Patient List
-                                        </Typography> :
-                                        <Typography variant='h5'>
-                                            Add Patient in Monitor
-                                        </Typography>
-                                }
-                                <StyledFab style={{ background: '#f50057', color: 'whiteSmoke' }} aria-label="add" onClick={() => router.push('/patient/' + NIL)}>
-                                    <AddIcon />
-                                </StyledFab>
-                                <Box sx={{ flexGrow: 1 }} />
-                                <IconButton color="inherit">
-                                    <SearchIcon />
-                                </IconButton>
-                                <IconButton color="inherit">
-                                    <MoreIcon />
-                                </IconButton>
-                            </Toolbar>
-                        </AppBar>
-                    </React.Fragment>
+                    null
             }
         </>
     );

@@ -52,11 +52,26 @@ export default function Nav(props: Props) {
       <List>
         {navItems.map((item) => (
           <ListItem key={item} disablePadding>
-            <ListItemButton href={'/' + item.toLocaleLowerCase()} sx={{ textAlign: 'center' }}>
+            <ListItemButton onClick={() => setIsLoad(true)} href={'/' + item.toLocaleLowerCase()} sx={{ textAlign: 'center' }}>
               <ListItemText primary={item} />
             </ListItemButton>
           </ListItem>
         ))}
+        <ListItemButton onClick={async () => {
+          try {
+            setIsLoad(true)
+            await logout()
+            router.push('/login')
+
+          } catch (error) {
+            alert(JSON.stringify(error))
+          }
+        }} sx={{ textAlign: 'center' }}>
+          <Box sx={{display: 'flex', alignItems:'center', justifyContent: 'center'}}>
+            <LogoutIcon />
+            <ListItemText primary={'Logout'} />
+          </Box>
+        </ListItemButton>
       </List>
     </Box>
   );
@@ -93,12 +108,14 @@ export default function Nav(props: Props) {
                 </Button>
               ))}
               <Button onClick={async () => {
-                // try {
-                // const result = await logout()
-                router.push('/login')
-                // } catch (error) {
-                //   alert(JSON.stringify(error))
-                // }
+                try {
+                  setIsLoad(true)
+                  await logout()
+                  router.push('/login')
+
+                } catch (error) {
+                  alert(JSON.stringify(error))
+                }
               }} style={{ color: 'white' }}><LogoutIcon /></Button>
             </Box>
           </Toolbar>
@@ -121,7 +138,7 @@ export default function Nav(props: Props) {
           </Drawer>
         </nav>
       </Box>
-      
+
       {
         isLoad ?
           <Loadding /> :

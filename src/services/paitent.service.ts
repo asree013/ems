@@ -1,35 +1,33 @@
 import { Patients } from "@/models/patient";
 import { endpoint } from "./endpoint.service";
 import { enviromentDev } from "@/interfaces/enviroment.dev";
+import wretch from 'wretch'
+import { AxiosResponse } from "axios";
 
-export function findPatientAll(page?: number, limit?: number) {
-  if (!page) page = 0;
-  if (!limit) limit = 10;
+export async function findPatientAll(page: number = 0, limit: number = 10): Promise<AxiosResponse<Patients[]>> {
   try {
-    return endpoint.get<Patients[]>(
+    const response = await endpoint.get<Patients[]>(
       `${enviromentDev.patient}?page=${page}&limit=${limit}`, {
-        withCredentials: true, 
-    }
+        withCredentials: true
+      }
     );
+    return response;
   } catch (error) {
     throw error;
   }
 }
 
-export function findPatientById(patient_id: string) {
-
+export async function findPatientById(id: string){
   try {
-    return endpoint.get<Patients>(`${enviromentDev.patient}/${patient_id}`, { 
-      withCredentials: true,
-    })
+    return endpoint.get<Patients>(`${enviromentDev.patient}/${id}`);
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 
 export function createPatient(item: Patients) {
   try {
-    return endpoint.post<Patients>(`${enviromentDev.patient}`, item, { 
+    return endpoint.post<Patients>(`${enviromentDev.patient}`, item, {
       withCredentials: true,
     })
   } catch (error) {

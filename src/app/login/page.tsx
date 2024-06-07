@@ -8,7 +8,7 @@ import { Button } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { TextField } from '@mui/material';
 import { Logins } from '@/models/authen.model';
-import { logins } from '@/services/authen.service';
+import { FindUserMe, logins } from '@/services/authen.service';
 import { useRouter } from 'next/navigation';
 import Loadding from '@/components/Loadding';
 import { ToastContainer, toast } from 'react-toastify';
@@ -27,8 +27,8 @@ export default function page() {
     e.preventDefault()
     setIsLoad(true)
     try {
-      const result = await logins(login)
-      console.log(result);
+      await logins(login)
+      // await FindUserMe()
       router.push('/select_mode')
     } catch (error: any) {
       if (error.response.data.status === 400) {

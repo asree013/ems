@@ -1,17 +1,20 @@
 import { Logins } from "@/models/authen.model";
 import { endpoint } from "./endpoint.service";
 import { enviromentDev } from "@/interfaces/enviroment.dev";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import { Users } from "@/models/users.model";
 
 export function logins(value: Logins) {
   try {
-    return endpoint.post(`${enviromentDev.auth}/sign-in`, {
+    return axios.post(`${enviromentDev.baseUrl}${enviromentDev.auth}/sign-in`, {
       username: value.username,
       password: value.password,
-    });
+    }, {
+      withCredentials: true 
+    }
+  );
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 

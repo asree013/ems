@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { BodyComponent,  } from "reactjs-human-body";
 import { useRouter } from 'next/navigation';
-import { BodyHumans } from '@/models/body.human';
+import { BodyHumans } from '@/models/body.human.module';
 
 
 interface ChildProps {

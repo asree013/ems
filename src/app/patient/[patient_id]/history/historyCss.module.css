@@ -20,8 +20,31 @@
 .history_card_draft{
     background: #d9eeff;
 }
+.history_card_close{
+    background: rgb(255, 255, 196);
+}
 .card{
     width: 100%;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.buttonGroup{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    margin: 15px 0;
+}
+.button{
+    width: 48%;
+    font-size: 1.2rem;
+}
+.modalCreate{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.sheet{
+    width: 500px;
 }
 
 @media only screen and (max-width: 1024px) {
@@ -32,6 +55,9 @@
     .buttonCreate{
         top: 90%;
     }
+    .sheet{
+        width: 70%;
+    }
     
 }
 @media only screen and (max-width: 450px) {
@@ -40,7 +66,12 @@
         grid-gap: 15px;
     }
     .buttonCreate{
-        right: 3%;
+        position: fixed;
+        top: 85%;
+        right: 9%;
+    }
+    .sheet{
+        width: 90%;
     }
     
 }

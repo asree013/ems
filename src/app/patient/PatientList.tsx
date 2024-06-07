@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import { Patients } from '@/models/patient';
 import { CardMedia, Fab } from '@mui/material';
 import { enviromentDev, enviromentPath } from '@/interfaces/enviroment.dev';
+import HistoryIcon from '@mui/icons-material/History'
 import { usePathname, useRouter } from 'next/navigation';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import { editOrderTranferByOrderId, findOrderTranferByOrderId } from '@/services/order_tranfer.service';
@@ -44,7 +45,7 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
         } catch (error) {
             console.log(error);
             setIsLoad(false)
-        } 
+        }
     }
     return (
         <>
@@ -78,11 +79,18 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
                             {
                                 pathName ?
                                     <Stack direction="row" spacing={1}>
-                                        <Fab size='small' onClick={() => router.push('/patient/' + patient.id)}>
-                                            <EditCalendarIcon color='secondary'/>
+                                        <Fab size='small' color='warning' onClick={() => {
+                                            router.push('/patient/' + patient.id)
+                                            setIsLoad(true)
+                                        }}>
+                                            <EditCalendarIcon color='inherit' />
                                         </Fab>
-
-                                        <Chip label="Hard" size="medium" />
+                                        <Fab size='small' color='success' onClick={() => {
+                                            router.push('/patient/' + patient.id + '/history')
+                                            setIsLoad(true)
+                                        }}>
+                                            <HistoryIcon color='inherit' />
+                                        </Fab>
                                     </Stack> :
                                     <Stack direction="row" spacing={1}>
                                         <Fab size='small' onClick={onClickAddPatientInOrder}>
