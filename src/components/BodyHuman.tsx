@@ -1,7 +1,10 @@
+'use client'
 import React, { useEffect, useState } from 'react'
 import { BodyComponent,  } from "reactjs-human-body";
 import { useRouter } from 'next/navigation';
 import { BodyHumans } from '@/models/body.human.module';
+import { TypeOpenExanContext, OpenExanImage } from '@/app/patient/[patient_id]/history/[history_id]/page';
+import bodyHumanCss from './styles/BodyHuman.module.css'
 
 
 interface ChildProps {
@@ -12,8 +15,11 @@ interface ChildProps {
 export default function BodyHuman({onChangeData, organ}: ChildProps) {
 
   const router = useRouter()
+
+  const {open, setOpen} = React.useContext<TypeOpenExanContext>(OpenExanImage)
+
   
-  const [organResult, setOrganResult] = useState<BodyHumans>({
+  const organResult = ({
     head: { show: true, selected: Boolean(organ.find(r => r.includes('head')))},
     leftArm: { show: true, selected: Boolean (organ.find(r => r.includes('leftArm')))},
     chest: { show: true, selected: Boolean (organ.find(r => r.includes('chest')))},
@@ -39,12 +45,12 @@ export default function BodyHuman({onChangeData, organ}: ChildProps) {
   }, [])
 
   function showBodyPart(element_id: string) {
-    alert(element_id)
+    router.push('')
     onChangeData(element_id);
-    router.refresh();
+    // router.refresh();
   }
   return (
-        <div className="body_human_com">
+        <div className={bodyHumanCss.body}>
           <BodyComponent 
             partsInput={organResult}
             onClick={(e:string) => showBodyPart(e)}

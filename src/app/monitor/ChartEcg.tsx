@@ -15,8 +15,12 @@ import { socket } from '@/config/socket'
 import { EcgTransfer } from '@/models/ecg.model';
 import StartChart from './StartChart';
 
+const newData = [
+  52,52,51,51,49,49,47,46,44,44,42,41,39,38,36,36,34,34,32,32,31,31,30,30
+]
+
 var x: number[] = [];
-for (let j = 0; j < 250; j++) {
+for (let j = 0; j < 150; j++) {
   x.push(j);
 }
 let p = 0;
@@ -447,7 +451,7 @@ export default function ChartEcg({ el_id, index, onChangeDeleteDeviceID, orderTr
     const intervalId = setInterval(() => {
       updateChartSpo()
       clearInterval(intervalId)
-    }, 2000);
+    }, 1000);
     animationFrameId = requestAnimationFrame(updateChart);
     animationFrameIdSpo = requestAnimationFrame(updateChartSpo);
 

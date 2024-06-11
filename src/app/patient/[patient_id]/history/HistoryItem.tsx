@@ -12,12 +12,14 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import Loadding from '@/components/Loadding';
 type Props = {
   value: Historys
 }
 
 export default function HistoryItem({ value }: Props) {
   const router = useRouter()
+  const [load, setLoad] = React.useState<boolean>(false)
   function pipeTime(time: string) {
     const hour = parseInt(time.split('T')[1].split(':')[0]) + 7
     const minute = time.split('T')[1].split(':')[0]
@@ -25,6 +27,7 @@ export default function HistoryItem({ value }: Props) {
   }
 
   function onRedirect(historyId: string) {
+    setLoad(true)
     router.push('history/'+ historyId)
   }
   return (
@@ -160,6 +163,11 @@ export default function HistoryItem({ value }: Props) {
             </Box>
           </Card> :
           null
+      }
+      {
+        load?
+        <Loadding />:
+        null
       }
     </>
   );

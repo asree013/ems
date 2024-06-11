@@ -11,6 +11,14 @@ export function findHistoryByPatientId(patientId: string) {
     }
 }
 
+export function findHistoryByPatientIdById(patientId: string, history_id: string) {
+    try {
+        return endpoint.get<Historys>(`${enviromentDev.patient}/${patientId}${enviromentDev.history}/${history_id}`)
+    } catch (error) {
+        throw error
+    }
+}
+
 export function createHistory(data: Historys) {
     try {
         return endpoint.post<Historys>(`${enviromentDev.patient}/${data.patient_id}${enviromentDev.history}`, data)

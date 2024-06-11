@@ -1,0 +1,11 @@
+.body{
+    position: fixed;
+    top: 30%;
+}
+
+@media only screen and (max-width: 1025px) {
+    .body{
+        position: fixed;
+        top: 20%;
+    }
+}
