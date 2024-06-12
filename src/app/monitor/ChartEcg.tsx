@@ -20,7 +20,7 @@ const newData = [
 ]
 
 var x: number[] = [];
-for (let j = 0; j < 150; j++) {
+for (let j = 0; j < 120; j++) {
   x.push(j);
 }
 let p = 0;
@@ -52,10 +52,14 @@ export default function ChartEcg({ el_id, index, onChangeDeleteDeviceID, orderTr
   const [patient, setPatient] = useState<Patients>({} as Patients)
   const [order] = useState<OrderTranfer>(orderTranFer.find(r => r.element_seq === Number(el_id)) || {} as OrderTranfer)
 
+  const [hr, setHr] = React.useState<number>(0)
+  const [spo2Press, setSpo2Press] = React.useState<number>(0)
+  const [sys, setSys] = React.useState<number>(0)
+  const [dia, setDia] = React.useState<number>(0)
+
   let [hidden, setHidden] = useState<string[]>([])
   data = useRef<number[]>(dataChart.current.slice(0, 1000));
-  dataSpo2 = useRef<number[]>(dataChartSpo.current.slice(0, 250))
-
+  dataSpo2 = useRef<number[]>(dataChartSpo.current.slice(0, 120))
 
 
   function activeCheckBox(cb: string, el_id: string) {
@@ -235,7 +239,7 @@ export default function ChartEcg({ el_id, index, onChangeDeleteDeviceID, orderTr
             clearInterval(checkData)
             console.log('claer');
           }
-        }, 2000)
+        }, 1250)
 
       }
       }
@@ -278,7 +282,14 @@ export default function ChartEcg({ el_id, index, onChangeDeleteDeviceID, orderTr
 
     socket.on('data-tranfer-press', (message: any) => {
       console.log(message);
-
+      if (JSON.parse(message).order_id !== orderId || !order || !message) {
+        console.log('ไม่ได้ทำงาน');
+        return
+      }
+      setHr(JSON.parse(message).hr)
+      setSpo2Press(JSON.parse(message).spo2)
+      setDia(JSON.parse(message).dia)
+      setSys(JSON.parse(message).sys)
     })
 
     function onDisconnect() {
@@ -363,7 +374,7 @@ export default function ChartEcg({ el_id, index, onChangeDeleteDeviceID, orderTr
             fill: false,
             pointRadius: 1,
             pointStyle: false,
-            borderWidth: 1,
+            borderWidth: 3,
           },
         ],
       },
@@ -390,8 +401,6 @@ export default function ChartEcg({ el_id, index, onChangeDeleteDeviceID, orderTr
           y: {
             beginAtZero: false,
             display: false,
-            innerWidth: 400,
-            innerHeight: 100,
             min: 0,
             max: 100,
           },
@@ -505,7 +514,7 @@ export default function ChartEcg({ el_id, index, onChangeDeleteDeviceID, orderTr
         <div className="body_monitor">
           <div className="hr">
             <p style={{ color: '#21eb56' }}>HR</p>
-            <b style={{ fontSize: '2rem', color: '#21eb56' }}>0</b>
+            <b style={{ fontSize: '2rem', color: '#21eb56' }}>{hr}</b>
           </div>
           <div className="ecg">
             <p style={{ color: '#21eb56' }}>ECG</p>
@@ -519,7 +528,7 @@ export default function ChartEcg({ el_id, index, onChangeDeleteDeviceID, orderTr
         <div className="body_monitor2">
           <div className="nibp">
             <p style={{ color: 'red' }}>NIBP</p>
-            <p style={{ fontSize: '1.8rem', margin: '10px', color: 'red' }}>0/0</p>
+            <p style={{ fontSize: '1.8rem', margin: '10px', color: 'red' }}>{sys}/{dia}</p>
             <p style={{ color: 'red' }}>mmHg</p>
           </div>
           {
@@ -527,7 +536,7 @@ export default function ChartEcg({ el_id, index, onChangeDeleteDeviceID, orderTr
               ? ''
               : <div className="spo2">
                 <p style={{ color: '#5fc9f3' }}>Spo2</p>
-                <p style={{ fontSize: '2rem', color: '#5fc9f3' }}>0</p>
+                <p style={{ fontSize: '2rem', color: '#5fc9f3' }}>{spo2Press}</p>
               </div>
           }
         </div>

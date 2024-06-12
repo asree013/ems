@@ -1,5 +1,5 @@
 export const enviromentDev = {
-    baseUrl: 'http://192.168.1.120:3333/v1',
+    baseUrl: 'https://ems.monitor-test.cloud/v1',
     patient: '/patient',
     login: '/login',
     device: '/device',

@@ -2,7 +2,7 @@
 import BodyHuman from '@/components/BodyHuman'
 import React from 'react'
 import exanCss from './exan.module.css'
-import { OpenExanImage, TypeOpenExanContext } from './page'
+import { ElIdExanImage, OpenExanImage, TypeElIDContext, TypeOpenExanContext } from './page'
 import { useParams, useRouter } from 'next/navigation'
 import { NIL } from 'uuid'
 import { ExanShows, Exans } from '@/models/exan.model'
@@ -21,6 +21,7 @@ export default function ExanElement({ organ, exan }: Props) {
   const [load, setLoad] = React.useState<boolean>(false)
 
   const { open, setOpen } = React.useContext<TypeOpenExanContext>(OpenExanImage)
+  const { el_id, setEl_id } = React.useContext<TypeElIDContext>(ElIdExanImage)
   async function setParamBody(txt: string) {
     if (txt) {
       router.push(`/patient/${patient_id}/history/${history_id}/${NIL}?el_id=${txt}`)
@@ -28,8 +29,9 @@ export default function ExanElement({ organ, exan }: Props) {
     }
   }
 
-  function onOpenImage() {
+  function onOpenImage(el_id: string) {
     setOpen(true)
+    setEl_id(el_id)
   }
   // function renderCountImage(e: ExanShows[], key: string) {
   //   console.log('e: ', e);
@@ -51,12 +53,9 @@ export default function ExanElement({ organ, exan }: Props) {
           organ.includes('head') ?
             <div className={exanCss.head}>
               <div className={exanCss.line}></div>
-              <div className={exanCss.line_value} onClick={onOpenImage}>
+              <div className={exanCss.line_value} onClick={() => onOpenImage('head')}>
                 {
-                  Array.isArray(exan) ? (
-                    exan.find(r => r.element_id.includes('head'))?.element_id
-                  ) :
-                    0
+                  exan.find(r => r.element_id.includes('head'))?._count.ImageExan
                 }
               </div>
             </div> :
@@ -66,12 +65,9 @@ export default function ExanElement({ organ, exan }: Props) {
           organ.includes('rightShoulder') ?
             <div className={exanCss.rightShoulder}>
               <div className={exanCss.line}></div>
-              <div className={exanCss.line_value} onClick={onOpenImage}>
+              <div className={exanCss.line_value} onClick={() => onOpenImage('rightShoulder')}>
                 {
-                  Array.isArray(exan) ? (
-                    exan.find(r => r.element_id.includes('rightShoulder'))?.element_id
-                  ) :
-                    0
+                  exan.find(r => r.element_id.includes('rightShoulder'))?._count.ImageExan
                 }
               </div>
             </div> :
@@ -81,12 +77,9 @@ export default function ExanElement({ organ, exan }: Props) {
           organ.includes('rightArm') ?
             <div className={exanCss.rightArm}>
               <div className={exanCss.line}></div>
-              <div className={exanCss.line_value} onClick={onOpenImage}>
+              <div className={exanCss.line_value} onClick={() => onOpenImage('rightArm')}>
                 {
-                  Array.isArray(exan) ? (
-                    exan.find(r => r.element_id.includes('rightArm'))?.element_id
-                  ) :
-                    0
+                  exan.find(r => r.element_id.includes('rightArm'))?._count.ImageExan
                 }
               </div>
             </div> :
@@ -96,12 +89,9 @@ export default function ExanElement({ organ, exan }: Props) {
           organ.includes('rightHand') ?
             <div className={exanCss.rightHand}>
               <div className={exanCss.line}></div>
-              <div className={exanCss.line_value} onClick={onOpenImage}>
+              <div className={exanCss.line_value} onClick={() => onOpenImage('rightHand')}>
                 {
-                  Array.isArray(exan) ? (
-                    exan.find(r => r.element_id.includes('rightHand'))?.element_id
-                  ) :
-                    0
+                  exan.find(r => r.element_id.includes('rightHand'))?._count.ImageExan
                 }
               </div>
             </div> :
@@ -111,12 +101,9 @@ export default function ExanElement({ organ, exan }: Props) {
           organ.includes('rightLeg') ?
             <div className={exanCss.rightLeg}>
               <div className={exanCss.line}></div>
-              <div className={exanCss.line_value} onClick={onOpenImage}>
+              <div className={exanCss.line_value} onClick={() => onOpenImage('rightLeg')}>
                 {
-                  Array.isArray(exan) ? (
-                    exan.find(r => r.element_id.includes('rightLeg'))?.element_id
-                  ) :
-                    0
+                  exan.find(r => r.element_id.includes('rightLeg'))?._count.ImageExan
                 }
               </div>
             </div> :
@@ -126,12 +113,9 @@ export default function ExanElement({ organ, exan }: Props) {
           organ.includes('rightFoot') ?
             <div className={exanCss.rightFoot}>
               <div className={exanCss.line}></div>
-              <div className={exanCss.line_value} onClick={onOpenImage}>
+              <div className={exanCss.line_value} onClick={() => onOpenImage('rightFoot')}>
                 {
-                  Array.isArray(exan) ? (
-                    exan.find(r => r.element_id.includes('rightFoot'))?.element_id
-                  ) :
-                    0
+                  exan.find(r => r.element_id.includes('rightFoot'))?._count.ImageExan
                 }
               </div>
             </div> :
@@ -140,12 +124,9 @@ export default function ExanElement({ organ, exan }: Props) {
         {
           organ.includes('leftShoulder') ?
             <div className={exanCss.leftShoulder}>
-              <div className={exanCss.line_value} onClick={onOpenImage}>
+              <div className={exanCss.line_value} onClick={() => onOpenImage('leftShoulder')}>
                 {
-                  Array.isArray(exan) ? (
-                    exan.find(r => r.element_id.includes('leftShoulder'))?.element_id
-                  ) :
-                    0
+                  exan.find(r => r.element_id.includes('leftShoulder'))?._count.ImageExan
                 }
               </div>
               <div className={exanCss.line}></div>
@@ -155,12 +136,9 @@ export default function ExanElement({ organ, exan }: Props) {
         {
           organ.includes('leftArm') ?
             <div className={exanCss.leftArm}>
-              <div className={exanCss.line_value} onClick={onOpenImage}>
+              <div className={exanCss.line_value} onClick={() => onOpenImage('leftArm')}>
                 {
-                  Array.isArray(exan) ? (
-                    exan.find(r => r.element_id.includes('leftArm'))?.element_id
-                  ) :
-                    0
+                  exan.find(r => r.element_id.includes('leftArm'))?._count.ImageExan
                 }
               </div>
               <div className={exanCss.line}></div>
@@ -170,12 +148,9 @@ export default function ExanElement({ organ, exan }: Props) {
         {
           organ.includes('leftHand') ?
             <div className={exanCss.leftHand}>
-              <div className={exanCss.line_value} onClick={onOpenImage}>
+              <div className={exanCss.line_value} onClick={() => onOpenImage('leftHand')}>
                 {
-                  Array.isArray(exan) ? (
-                    exan.find(r => r.element_id.includes('leftHand'))?.element_id
-                  ) :
-                    0
+                  exan.find(r => r.element_id.includes('leftHand'))?._count.ImageExan
                 }
               </div>
               <div className={exanCss.line}></div>
@@ -185,12 +160,9 @@ export default function ExanElement({ organ, exan }: Props) {
         {
           organ.includes('leftLeg') ?
             <div className={exanCss.leftLeg}>
-              <div className={exanCss.line_value} onClick={onOpenImage}>
+              <div className={exanCss.line_value} onClick={() => onOpenImage('leftLeg')}>
                 {
-                  Array.isArray(exan) ? (
-                    exan.find(r => r.element_id.includes('leftLeg'))?.element_id
-                  ) :
-                    0
+                  exan.find(r => r.element_id.includes('leftLeg'))?._count.ImageExan
                 }
               </div>
               <div className={exanCss.line}></div>
@@ -200,12 +172,9 @@ export default function ExanElement({ organ, exan }: Props) {
         {
           organ.includes('leftFoot') ?
             <div className={exanCss.leftFoot}>
-              <div className={exanCss.line_value} onClick={onOpenImage}>
+              <div className={exanCss.line_value} onClick={() => onOpenImage('leftFoot')}>
                 {
-                  Array.isArray(exan) ? (
-                    exan.find(r => r.element_id.includes('leftFoot'))?.element_id
-                  ) :
-                    0
+                  exan.find(r => r.element_id.includes('leftFoot'))?._count.ImageExan
                 }
               </div>
               <div className={exanCss.line}></div>
@@ -215,12 +184,9 @@ export default function ExanElement({ organ, exan }: Props) {
         {
           organ.includes('chest') ?
             <div className={exanCss.chest}>
-              <div className={exanCss.line_value} onClick={onOpenImage}>
+              <div className={exanCss.line_value} onClick={() => onOpenImage('chest')}>
                 {
-                  Array.isArray(exan) ? (
-                    exan.find(r => r.element_id.includes('chest'))?.element_id
-                  ) :
-                    0
+                  exan.find(r => r.element_id.includes('chest'))?._count.ImageExan
                 }
               </div>
               <div className={exanCss.line_second}></div>
@@ -231,12 +197,9 @@ export default function ExanElement({ organ, exan }: Props) {
           organ.includes('stomach') ?
             <div className={exanCss.stomach}>
               <div className={exanCss.line_second}></div>
-              <div className={exanCss.line_value} onClick={onOpenImage}>
+              <div className={exanCss.line_value} onClick={() => onOpenImage('stomach')}>
                 {
-                  Array.isArray(exan) ? (
-                    exan.find(r => r.element_id.includes('stomach'))?.element_id
-                  ) :
-                    0
+                  exan.find(r => r.element_id.includes('stomach'))?._count.ImageExan
                 }
               </div>
             </div> :

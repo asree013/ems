@@ -1,3 +1,4 @@
+'use client'
 import * as React from 'react';
 import { Global } from '@emotion/react';
 import { styled } from '@mui/material/styles';
@@ -8,25 +9,20 @@ import Box from '@mui/material/Box';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import { TypeOpenExanContext, OpenExanImage } from './page';
+import { TypeOpenExanContext, OpenExanImage, TypeElIDContext, ElIdExanImage, TypeExanContext, ExanContextBody } from './page';
 import { ExanDetailCard } from './ExanDetailCard';
-import { ExanShows } from '@/models/exan.model';
+import { ExanShows, ImageExan } from '@/models/exan.model';
+import { useParams, useRouter } from 'next/navigation';
 
 const drawerBleeding = 56;
 
-interface Props {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
+type Props = {
   window?: () => Window;
-  exan: ExanShows[]
 }
 
 const Root = styled('div')(({ theme }) => ({
   height: '100%',
-  backgroundColor:
-    theme.palette.mode === 'light' ? grey[100] : theme.palette.background.default,
+  backgroundColor: theme.palette.mode === 'light' ? grey[100] : theme.palette.background.default,
 }));
 
 const StyledBox = styled('div')(({ theme }) => ({
@@ -43,16 +39,56 @@ const Puller = styled('div')(({ theme }) => ({
   left: 'calc(50% - 15px)',
 }));
 
-export default function ExanDetail(props: Props) {
-  const { window } = props;
-  const {open, setOpen} = React.useContext<TypeOpenExanContext>(OpenExanImage)
+export default function ExanDetail({ window }: Props) { // Default value for exan
+  const windows = window;
+  const patient_id = useParams().patient_id
+  const router = useRouter()
+  const { open, setOpen } = React.useContext<TypeOpenExanContext>(OpenExanImage);
+  const { el_id, setEl_id } = React.useContext<TypeElIDContext>(ElIdExanImage);
+  const { exan, setExan } = React.useContext<TypeExanContext>(ExanContextBody)
+  const [exByElId, setExByElId] = React.useState<ExanShows>({} as ExanShows);
+  const [imageExan, setImageExan] = React.useState<ImageExan[]>({} as ImageExan[])
 
   const toggleDrawer = (newOpen: boolean) => () => {
-    setOpen(newOpen)
+    setOpen(newOpen);
   };
 
-  // This is used only for the example
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container = windows !== undefined ? () => windows().document.body : undefined;
+
+  const onChangeEelementId = React.useCallback(async () => {
+    try {
+      // const find = exan.filter(r => r.element_id.includes(el_id))
+      if (open) {
+
+        // console.log('exan; ', exan);
+        const e = Boolean(exan.filter(r => r.element_id.includes(el_id)))
+        if (e === false) {
+          return
+        }
+        else {
+          const e = (exan.find(r => r.element_id.includes(el_id)))
+          if (e) {
+            console.log(e);
+
+            setExByElId(e)
+            setImageExan(e.ImageExan)
+          }
+        }
+
+      }
+
+
+    } catch (error) {
+      console.log(error);
+    }
+  }, [open]);
+
+  React.useEffect(() => {
+    onChangeEelementId();
+    return () => {
+      onChangeEelementId();
+    }
+  }, [onChangeEelementId]);
 
   return (
     <Root>
@@ -65,9 +101,6 @@ export default function ExanDetail(props: Props) {
           },
         }}
       />
-      {/* <Box sx={{ textAlign: 'center', pt: 1 }}>
-        <Button onClick={toggleDrawer(true)}>Open</Button>
-      </Box> */}
       <SwipeableDrawer
         container={container}
         anchor="bottom"
@@ -100,12 +133,19 @@ export default function ExanDetail(props: Props) {
             pb: 2,
             height: '100%',
             overflow: 'scroll',
-            
           }}
         >
-          {/* <Skeleton variant="rectangular" height="100%" /> */}
           {
-          
+            imageExan.length > 0 ?
+              imageExan.map(r =>
+                <div key={r.id}>
+                  <ExanDetailCard data={r} loading={false} />
+
+                </div>
+              ) :
+              <Button variant='contained' color='primary' onClick={() => {
+                router.push(`/patient/${patient_id}/history/${exByElId.History.id}/${exByElId.id}`)
+              }}>add Exan</Button>
           }
         </StyledBox>
       </SwipeableDrawer>

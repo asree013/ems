@@ -26,11 +26,22 @@ export type TypeOpenExanContext = {
   open: boolean
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
+export type TypeElIDContext = {
+  el_id: string
+  setEl_id: React.Dispatch<React.SetStateAction<string>>;
+}
+export type TypeExanContext = {
+  exan: ExanShows[]
+  setExan: React.Dispatch<React.SetStateAction<ExanShows[]>>;
+}
 export const OpenExanImage = React.createContext<TypeOpenExanContext>({} as TypeOpenExanContext)
+export const ElIdExanImage = React.createContext<TypeElIDContext>({} as TypeElIDContext)
+export const ExanContextBody = React.createContext<TypeExanContext>({} as TypeExanContext)
 
 export default function page({ params }: Props) {
 
   const [open, setOpen] = React.useState<boolean>(false)
+  const [el_id, setEl_id] = React.useState<string>('')
 
   const [history, setHistory] = React.useState<Historys>({} as Historys)
 
@@ -38,25 +49,25 @@ export default function page({ params }: Props) {
 
   const [value, setValue] = React.useState<string[]>([])
 
-  const onFeedHistoryByHistoryId = React.useCallback(async() => {
+  const onFeedHistoryByHistoryId = React.useCallback(async () => {
     try {
       const result = await findHistoryByPatientIdById(params.pateint_id, params.history_id)
-      setHistory(result.data)      
+      setHistory(result.data)
     } catch (error) {
       console.log(error);
-      
+
     }
   }, [setHistory])
 
-  const onFeedExanByHistoyrId = React.useCallback(async() => {
+  const onFeedExanByHistoyrId = React.useCallback(async () => {
     try {
       const result = await findExanByHistoryId(params.history_id)
-      console.log(result.data);
       const arr = result.data.map(r => r.element_id)
       setValue(arr)
+      setExan(result.data)
     } catch (error) {
       console.log(error);
-      
+
     }
   }, [setExan, setValue])
 
@@ -67,25 +78,29 @@ export default function page({ params }: Props) {
 
   return (
     <>
-      <OpenExanImage.Provider value={{open, setOpen}} >
-        <div className={exanCss.homeHistoryId}>
-          <FormControl className={exanCss.formControl}>
-            <FormLabel>Symtom_detail</FormLabel>
-            <Textarea
-              placeholder="Try to submit with no text!"
-              variant='soft'
-              value={history.symptom_details}
-              minRows={3}
-              sx={{ mb: 1 }}
-            />
-            <Box className={exanCss.boxButton}>
-              <FormHelperText>This is a helper text.</FormHelperText>
-              <Button variant='contained' color='primary' >Update</Button>
-            </Box>
-          </FormControl>
-          <ExanElement organ={value} exan={exan} />
-          <ExanDetail exan={exan} />
-        </div>
+      <OpenExanImage.Provider value={{ open, setOpen }} >
+        <ElIdExanImage.Provider value={{ el_id, setEl_id }}>
+          <ExanContextBody.Provider value={{exan, setExan}}>
+            <div className={exanCss.homeHistoryId}>
+              <FormControl className={exanCss.formControl}>
+                <FormLabel>Symtom_detail</FormLabel>
+                <Textarea
+                  placeholder="Try to submit with no text!"
+                  variant='soft'
+                  value={history.symptom_details}
+                  minRows={3}
+                  sx={{ mb: 1 }}
+                />
+                <Box className={exanCss.boxButton}>
+                  <FormHelperText>This is a helper text.</FormHelperText>
+                  <Button variant='contained' color='primary' >Update</Button>
+                </Box>
+              </FormControl>
+              <ExanElement organ={value} exan={exan} />
+              <ExanDetail />
+            </div>
+          </ExanContextBody.Provider>
+        </ElIdExanImage.Provider>
       </OpenExanImage.Provider>
     </>
   )
