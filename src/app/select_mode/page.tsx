@@ -9,6 +9,7 @@ import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import { FindUserMe } from '@/services/authen.service';
 import { useRouter } from 'next/navigation';
 import Loadding from '@/components/Loadding';
+import { Button } from '@mui/material';
 
 export default function page() {
     const router = useRouter()
@@ -39,26 +40,26 @@ export default function page() {
                     <p>SELECT MODE</p>
                     <div className={selectModel.line}></div>
                     <div className={selectModel.gridButton}>
-                        <div className={selectModel.cardButton} onClick={() => onRedirectPath('home')}>
+                        <Button className={selectModel.cardButton} onClick={() => onRedirectPath('home')}>
                             <SystemSecurityUpdateIcon fontSize='large'  />
                             <p style={{ fontSize: '1.3rem' }}>EMS</p>
-                        </div>
-                        <div className={selectModel.cardButton}>
+                        </Button>
+                        <Button className={selectModel.cardButton} disabled>
                             <SailingIcon fontSize='large' />
                             <p style={{ fontSize: '1.3rem' }}>Marine EMS</p>
-                        </div>
-                        <div className={selectModel.cardButton}>
+                        </Button>
+                        <Button className={selectModel.cardButton} disabled>
                             <AirplanemodeActiveIcon fontSize='large' />
                             <p style={{ fontSize: '1.3rem' }}>Halicopter EMS</p>
-                        </div>
-                        <div className={selectModel.cardButton}>
+                        </Button>
+                        <Button className={selectModel.cardButton} disabled>
                             <MedicalServicesIcon fontSize='large' />
                             <p style={{ fontSize: '1.3rem' }}>MERT</p>
-                        </div>
-                        <div className={selectModel.cardButton}>
+                        </Button>
+                        <Button className={selectModel.cardButton} disabled>
                             <ReportIcon fontSize='large' />
                             <p style={{ fontSize: '1.3rem' }}>SAR</p>
-                        </div>
+                        </Button>
                     </div>
                 </div>
             </div>

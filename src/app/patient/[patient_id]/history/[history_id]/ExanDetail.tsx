@@ -135,17 +135,19 @@ export default function ExanDetail({ window }: Props) { // Default value for exa
             overflow: 'scroll',
           }}
         >
+          <Button variant='contained' color='primary' onClick={() => {
+            router.push(`/patient/${patient_id}/history/${exByElId.History.id}/${exByElId.id}?el_id=${el_id}`)
+          }}>add Exan</Button>
           {
             imageExan.length > 0 ?
               imageExan.map(r =>
+
                 <div key={r.id}>
                   <ExanDetailCard data={r} loading={false} />
 
                 </div>
               ) :
-              <Button variant='contained' color='primary' onClick={() => {
-                router.push(`/patient/${patient_id}/history/${exByElId.History.id}/${exByElId.id}`)
-              }}>add Exan</Button>
+              null
           }
         </StyledBox>
       </SwipeableDrawer>
