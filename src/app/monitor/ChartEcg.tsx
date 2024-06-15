@@ -16,11 +16,22 @@ import { EcgTransfer } from '@/models/ecg.model';
 import StartChart from './StartChart';
 
 const newData = [
-  52,52,51,51,49,49,47,46,44,44,42,41,39,38,36,36,34,34,32,32,31,31,30,30
+  52,52,51,51,49,49,47,46,44,44,42,41,39,38,36,36,34,34,32,32,31,31,30,30,52,
+  52,51,51,49,49,47,46,44,44,42,41,39,38,36,36,34,34,32,32,31,31,30,30,
+  52,52,51,51,49,49,47,46,44,44,42,41,39,38,36,36,34,34,32,32,31,31,30,30,52,
+  52,51,51,49,49,47,46,44,44,42,41,39,38,36,36,34,34,32,32,31,31,30,30,
+  52,52,51,51,49,49,47,46,44,44,42,41,39,38,36,36,34,34,32,32,31,31,30,30,52,
+  52,51,51,49,49,47,46,44,44,42,41,39,38,36,36,34,34,32,32,31,31,30,30,
+  52,52,51,51,49,49,47,46,44,44,42,41,39,38,36,36,34,34,32,32,31,31,30,30,52,
+  52,51,51,49,49,47,46,44,44,42,41,39,38,36,36,34,34,32,32,31,31,30,30,
+  52,51,51,49,49,47,46,44,44,42,41,39,38,36,36,34,34,32,32,31,31,30,30,
+  52,52,51,51,49,49,47,46,44,44,42,41,39,38,36,36,34,34,32,32,31,31,30,30,52,
+  52,51,51,49,49,47,46,44,44,42,41,39,38,36,36,34,34,32,32,31,31,30,30,
+  52,52,51,51,49,49,47,46,44,44,42,41,39,38,36,36,34,34,32,32,31,31,30,30,52,
 ]
 
 var x: number[] = [];
-for (let j = 0; j < 120; j++) {
+for (let j = 0; j < 288; j++) {
   x.push(j);
 }
 let p = 0;
@@ -41,8 +52,11 @@ interface GrachProps {
 }
 
 export default function ChartEcg({ el_id, index, onChangeDeleteDeviceID, orderTranFer }: GrachProps) {
+
+  console.log(newData.length);
+  
   const dataChart = useRef<number[]>(ecgNull);
-  const dataChartSpo = useRef<number[]>(ecgNull);
+  const dataChartSpo = useRef<number[]>(newData);
   const intervals = useRef<NodeJS.Timeout | null>(null)
   const [arrEcg, setArrEcg] = useState<number[][] | null>([{} as number[]])
   const [ecgData, setEcgData] = useState<number[]>({} as number[])
@@ -59,7 +73,7 @@ export default function ChartEcg({ el_id, index, onChangeDeleteDeviceID, orderTr
 
   let [hidden, setHidden] = useState<string[]>([])
   data = useRef<number[]>(dataChart.current.slice(0, 1000));
-  dataSpo2 = useRef<number[]>(dataChartSpo.current.slice(0, 120))
+  dataSpo2 = useRef<number[]>(dataChartSpo.current.slice(0, 576))
 
 
   function activeCheckBox(cb: string, el_id: string) {
@@ -191,6 +205,8 @@ export default function ChartEcg({ el_id, index, onChangeDeleteDeviceID, orderTr
     // });
 
     socket.on('data-tranfer-pleth', (message: any) => {
+      console.log('log message', message, JSON.parse(message).order_id !== orderId || !order);
+      
       // setEcgData(JSON.parse(message).ecg)
       if (JSON.parse(message).order_id !== orderId || !order) {
         console.log('ไม่ได้ทำงาน');
@@ -280,17 +296,17 @@ export default function ChartEcg({ el_id, index, onChangeDeleteDeviceID, orderTr
       // }
     })
 
-    socket.on('data-tranfer-press', (message: any) => {
-      console.log(message);
-      if (JSON.parse(message).order_id !== orderId || !order || !message) {
-        console.log('ไม่ได้ทำงาน');
-        return
-      }
-      setHr(JSON.parse(message).hr)
-      setSpo2Press(JSON.parse(message).spo2)
-      setDia(JSON.parse(message).dia)
-      setSys(JSON.parse(message).sys)
-    })
+    // socket.on('data-tranfer-press', (message: any) => {
+    //   console.log(message);
+    //   if (JSON.parse(message).order_id !== orderId || !order || !message) {
+    //     console.log('ไม่ได้ทำงาน');
+    //     return
+    //   }
+    //   setHr(JSON.parse(message).hr)
+    //   setSpo2Press(JSON.parse(message).spo2)
+    //   setDia(JSON.parse(message).dia)
+    //   setSys(JSON.parse(message).sys)
+    // })
 
     function onDisconnect() {
       console.log('disconnect');
@@ -457,15 +473,15 @@ export default function ChartEcg({ el_id, index, onChangeDeleteDeviceID, orderTr
       animationFrameIdSpo = requestAnimationFrame(updateChartSpo);
     };
 
-    const intervalId = setInterval(() => {
-      updateChartSpo()
-      clearInterval(intervalId)
-    }, 1000);
+    // const intervalId = setInterval(() => {
+    //   updateChartSpo()
+    //   clearInterval(intervalId)
+    // }, 1000);
     animationFrameId = requestAnimationFrame(updateChart);
     animationFrameIdSpo = requestAnimationFrame(updateChartSpo);
 
     return () => {
-      clearInterval(intervalId)
+      // clearInterval(intervalId)
       cancelAnimationFrame(animationFrameId);
       cancelAnimationFrame(animationFrameIdSpo);
     };
