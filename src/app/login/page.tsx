@@ -8,7 +8,7 @@ import { Button } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { TextField } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import logoImage from '@/assets/icon/user_6543039.png';
 import 'react-toastify/dist/ReactToastify.css';
 import './login.css';
@@ -16,6 +16,7 @@ import Loadding from '../../components/Loadding';
 import { Logins } from '../../models/authen.model';
 import { logins } from '../../services/authen.service';
 import { useState } from 'react';
+import { toast } from '@/services/alert.service'
 
 export default function Page() {
   const [login, setLogin] = useState<Logins>({} as Logins);
@@ -31,8 +32,11 @@ export default function Page() {
       // await FindUserMe()
       window.location.href = '/select_mode'
     } catch (error: any) {
+      console.log(error);
+      toast(JSON.stringify(error.message), 'error')
+      setIsLoad(false)
       if (error.response.data.status === 400) {
-        toast.error(error.response.data.message);
+        toast(error.response.data.message, 'error');
         if (error.response.data.message.includes('not fount username')) {
           setErrUser(true);
           setErrPass(false);
@@ -42,10 +46,8 @@ export default function Page() {
         }
       }
       if (error.response.data.status > 404) {
-        toast.error('เกิดข้อผิดพลายจากภายนอก');
+        toast('เกิดข้อผิดพลายจากภายนอก', 'error');
       }
-
-      setIsLoad(false);
     }
   }
   return (
