@@ -1,4 +1,4 @@
-import { enviromentDev } from '@/interfaces/enviroment.dev';
+import { enviromentDev } from '@/config/enviroment.dev';
 import { endpoint } from './endpoint.service';
 import { Historys } from '@/models/history.model';
 

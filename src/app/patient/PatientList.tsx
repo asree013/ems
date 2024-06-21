@@ -8,7 +8,7 @@ import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import { Patients } from '@/models/patient';
 import { CardMedia, Fab } from '@mui/material';
-import { enviromentDev, enviromentPath } from '@/interfaces/enviroment.dev';
+import { enviromentDev, enviromentPath } from '@/config/enviroment.dev';
 import HistoryIcon from '@mui/icons-material/History';
 import { usePathname, useRouter } from 'next/navigation';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';

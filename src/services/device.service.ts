@@ -1,5 +1,5 @@
 
-import { enviromentDev } from '../interfaces/enviroment.dev';
+import { enviromentDev } from '../config/enviroment.dev';
 import { endpoint } from './endpoint.service';
 
 export async function findDeviceAll() {

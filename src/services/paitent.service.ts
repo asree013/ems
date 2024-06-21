@@ -1,6 +1,6 @@
 import { Patients } from '@/models/patient';
 import { endpoint } from './endpoint.service';
-import { enviromentDev } from '@/interfaces/enviroment.dev';
+import { enviromentDev } from '@/config/enviroment.dev';
 import wretch from 'wretch';
 import { AxiosResponse } from 'axios';
 

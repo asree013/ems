@@ -1,6 +1,6 @@
 import { ExanShows, Exans } from '@/models/exan.model';
 import { endpoint } from './endpoint.service';
-import { enviromentDev } from '@/interfaces/enviroment.dev';
+import { enviromentDev } from '@/config/enviroment.dev';
 
 export function createExanByHistoryId(item: Exans) {
   try {
