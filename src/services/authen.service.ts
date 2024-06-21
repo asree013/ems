@@ -10,9 +10,9 @@ export function logins(value: Logins) {
       username: value.username,
       password: value.password,
     }, {
-      withCredentials: true 
+      withCredentials: true
     }
-  );
+    );
   } catch (error) {
     throw error;
   }
@@ -24,4 +24,7 @@ export function logout() {
 
 export function FindUserMe() {
   return endpoint.get(`${enviromentDev.auth}/me`)
+}
+export function referfToken() {
+  return endpoint.get(`${enviromentDev.auth}/refresh-token`)
 }

@@ -14,68 +14,31 @@ import 'react-toastify/dist/ReactToastify.css';
 import { socket } from '@/config/socket'
 import { EcgTransfer } from '@/models/ecg.model';
 import StartChart from './StartChart';
+import { referfToken } from '@/services/authen.service';
+import { useRouter } from 'next/navigation';
 
-const newData = [
-  52, 52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30, 52,
-  52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30,
-  52, 52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30, 52,
-  52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30,
-  52, 52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30, 52,
-  52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30,
-  52, 52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30, 52,
-  52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30,
-  52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30,
-  52, 52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30, 52,
-  34, 32, 32, 31, 31, 30, 30, 52, 44, 44,
-  52, 52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30, 52,
-  52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30,
-  52, 52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30, 52,
-  52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30,
-  52, 52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30, 52,
-  52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30,
-  52, 52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30, 52,
-  52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30,
-  52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30,
-  52, 52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30, 52,
-  34, 32, 32, 31, 31, 30, 30, 52, 44, 44,
-  52, 52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30, 52,
-  52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30,
-  52, 52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30, 52,
-  52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30,
-  52, 52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30, 52,
-  52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30,
-  52, 52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30, 52,
-  52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30,
-  52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30,
-  52, 52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30, 52,
-  34, 32, 32, 31, 31, 30, 30, 52, 44, 44,
-  52, 52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30, 52,
-  52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30,
-  52, 52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30, 52,
-  52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30,
-  52, 52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30, 52,
-  52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30,
-  52, 52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30, 52,
-  52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30,
-  52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30,
-  52, 52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30, 52,
-  34, 32, 32, 31, 31, 30, 30, 52, 44, 44,
-  52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30,
-  52, 52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30, 52,
-  34, 32, 32, 31, 31, 30, 30, 52, 44, 44,
-  52, 52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30, 52,
-  52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30,
-  52, 52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30, 52,
-  52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30,
-  52, 52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30, 52,
-  52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30,
-  52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30,
-  52, 52, 51, 51, 49, 49, 47, 46, 44, 44, 42, 41, 39, 38, 36, 36, 34, 34, 32, 32, 31, 31, 30, 30, 52,
-
+let newData = [
+  18, 16, 16, 14, 14, 13, 13, 13, 14, 16, 18, 22, 26, 32, 38, 46, 52, 58, 64, 68, 72, 75, 78, 80, 82, 83, 84, 85, 86, 86,
+  86, 85, 85, 84, 84, 83, 83, 81, 80, 78, 77, 75, 74, 72, 71, 69, 68, 66, 65, 63, 62, 61, 61, 59, 59, 58, 58, 57, 57, 56,
+  56, 55, 55, 54, 54, 52, 52, 51, 51, 49, 49, 47, 47, 45, 45, 43, 43, 41, 40, 38, 38, 36, 36, 34, 33, 31, 31, 29, 29, 27,
+  27, 25, 25, 23, 23, 21, 21, 19, 19, 17, 17, 15, 15, 14, 14, 14, 15, 17, 20, 25, 29, 35, 41, 49, 55, 61, 66, 70, 74, 77,
+  80, 81, 83, 84, 85, 18, 16, 16, 14, 14, 13, 13, 13, 14, 16, 18, 22, 26, 32, 38, 46, 52, 58, 64, 68, 72, 75, 78, 80, 82,
+  83, 84, 85, 86, 86, 86, 85, 85, 84, 84, 83, 83, 81, 80, 78, 77, 75, 74, 72, 71, 69, 68, 66, 65, 63, 62, 61, 61, 59, 59,
+  58, 58, 57, 57, 56, 56, 55, 55, 54, 54, 52, 52, 51, 51, 49, 49, 47, 47, 45, 45, 43, 43, 41, 40, 38, 38, 36, 36, 34, 33,
+  31, 31, 29, 29, 27, 27, 25, 25, 23, 23, 21, 21, 19, 19, 17, 17, 15, 15, 14, 14, 14, 15, 17, 20, 25, 29, 35, 41, 49, 55,
+  61, 66, 70, 74, 77, 80, 81, 83, 84, 85, 86, 86, 86, 86, 86, 86, 85, 85, 84, 84, 82, 82, 80, 79, 77, 76, 74, 73, 70, 69,
+  67, 66, 64, 63, 61, 61, 59, 59, 58, 58, 57, 57, 56, 56, 55, 55, 54, 54, 53, 53, 51, 51, 49, 49, 47, 47, 46, 46, 44, 43,
+  41, 41, 39, 39, 37, 37, 35, 34, 32, 32, 30, 30, 28, 28, 26, 26, 24, 24, 22, 22, 20, 20, 19, 19, 17, 17, 17, 17, 18, 19,
+  21, 24, 29, 34, 41, 47, 53, 59, 64, 69, 73, 76, 78, 81, 82, 84, 85, 86, 86, 86, 86, 86, 86, 85, 85, 84, 84, 82, 81, 79,
+  78, 76, 75, 73, 72, 70, 69, 67, 66, 64, 64, 63, 63, 62, 62, 61, 61, 60, 60, 59, 59, 58, 58, 57, 57, 55, 55, 54, 54, 52,
+  52, 50, 50, 48, 48, 46, 46, 44, 44, 42, 42, 40, 40, 38, 37, 35, 35, 33, 33, 32, 32, 30, 30, 28, 28, 26, 26, 24, 24, 23,
+  23, 22, 22, 22, 23, 25, 27, 32, 36, 42, 47, 53, 59, 65, 70, 74, 78, 80, 83, 85, 87, 88, 89, 89, 90, 90, 90, 90, 90, 89,
+  89, 87, 87, 85, 84, 82, 81, 79, 78, 76, 75, 73, 72, 70, 70, 68, 68, 66, 66, 65, 65, 64, 64, 63, 63, 62, 62, 61, 61, 60
 ]
 
+
 var x: number[] = [];
-for (let j = 0; j < 312; j++) {
+for (let j = 0; j < 625; j++) {
   x.push(j);
 }
 let p = 0;
@@ -97,10 +60,10 @@ interface GrachProps {
 
 export default function ChartEcg({ el_id, index, onChangeDeleteDeviceID, orderTranFer }: GrachProps) {
 
-  console.log(newData.length);
+  const router = useRouter()  
 
   const dataChart = useRef<number[]>(ecgNull);
-  const dataChartSpo = useRef<number[]>(newData);
+  const dataChartSpo = useRef<number[]>(ecgNull);
   const intervals = useRef<NodeJS.Timeout | null>(null)
   const [arrEcg, setArrEcg] = useState<number[][] | null>([{} as number[]])
   const [ecgData, setEcgData] = useState<number[]>({} as number[])
@@ -116,9 +79,8 @@ export default function ChartEcg({ el_id, index, onChangeDeleteDeviceID, orderTr
   const [dia, setDia] = React.useState<number>(0)
 
   let [hidden, setHidden] = useState<string[]>([])
-  data = useRef<number[]>(dataChart.current.slice(0, 1000));
-  dataSpo2 = useRef<number[]>(dataChartSpo.current.slice(0, 1250))
-
+  data = useRef<number[]>(dataChart.current);
+  dataSpo2 = useRef<number[]>(dataChartSpo.current)
 
   function activeCheckBox(cb: string, el_id: string) {
     setCheckBox(cb)
@@ -183,10 +145,12 @@ export default function ChartEcg({ el_id, index, onChangeDeleteDeviceID, orderTr
 
   const feedPatientById = useCallback(async () => {
     try {
+      // await referfToken()
       const result = await findPatientById(order.patient_id)
       setPatient(result.data)
     } catch (error) {
-      toast.error(JSON.stringify(error))
+      // router.push('/login')
+      // toast.error(JSON.stringify(error))
     }
   }, [setPatient])
 
@@ -249,7 +213,6 @@ export default function ChartEcg({ el_id, index, onChangeDeleteDeviceID, orderTr
     // });
 
     socket.on('data-tranfer-pleth', (message: any) => {
-      console.log('log message', message, JSON.parse(message).order_id !== orderId || !order);
 
       // setEcgData(JSON.parse(message).ecg)
       if (JSON.parse(message).order_id !== orderId || !order) {
@@ -263,87 +226,30 @@ export default function ChartEcg({ el_id, index, onChangeDeleteDeviceID, orderTr
         console.log('add arr 1', arrSpo);
       }
       else {
-        const set = new Set(arrSpo.map(item => JSON.stringify(item)));
-        const valueStr = JSON.stringify(pleth);
-        if (!set.has(valueStr)) arrSpo.push(pleth)
-        console.log('add arr 3', arrSpo);
-        console.log('add arr 4', arrSpo);
+        arrSpo.push(pleth)
+        console.log('-----> ', arrSpo.flat());
         dataChartSpo.current = []
-
-        const temps = arrSpo.filter((r, i) => {
-          if (i >= 4) {
-            return
-          }
-          else {
-            return r
-          }
-        })
-
-        dataChartSpo.current = temps.flat()
+        const a = Array.from(new Set(arrSpo.flat()))
+        // console.log('arr ----> ',arrSpo.flat().filter(r => r));
+        dataChartSpo.current = arrSpo.flat()
         console.log('data current length : ', dataChartSpo.current.length);
-
-        arrSpo = []
-        // console.log('data current length Spo : ', arrSpo);
-
-        // console.log('arrs null: ', arrs);
-
-        // const checkData = setInterval(() => {
-        //   if (arrSpo.flat().length === 0) {
-        //     dataChartSpo.current = ecgNull
-        //     isNotData = true
-        //     clearInterval(checkData)
-        //     console.log('claer');
-        //   }
-        // }, 1250)
+        arrSpo= []
+        // setInterval(() => {
+        //   dataChartSpo.current.length = 0
+        // },3000)
       }
-      // if (arrSpo.length > 2 && arrSpo.length < 5) {
-      //   const set = new Set(arrSpo.map(item => JSON.stringify(item)));
-      //   const valueStr = JSON.stringify(pleth);
-      //   if (!set.has(valueStr)) arrSpo.push(pleth)
-      //   if (arrSpo.length === 4) {
-      //     console.log('add arr 4', arrSpo);
-      //     dataChartSpo.current = []
-
-      //     const temps = arrSpo.filter((r, i) => {
-      //       if (i >= 4) {
-      //         return
-      //       }
-      //       else {
-      //         return r
-      //       }
-      //     })
-
-      //     dataChartSpo.current = temps.flat()
-      //     console.log('data current length : ', dataChartSpo.current.length);
-
-      //     arrSpo = []
-      //     // console.log('data current length Spo : ', arrSpo);
-
-      //     // console.log('arrs null: ', arrs);
-
-      //     const checkData = setInterval(() => {
-      //       if (arrSpo.length === 0) {
-      //         dataChartSpo.current = ecgNull
-      //         isNotData = true
-      //         clearInterval(checkData)
-      //         console.log('claer');
-      //       }
-      //     }, 4000)
-      //   }
-      // }
     })
 
-    // socket.on('data-tranfer-press', (message: any) => {
-    //   console.log(message);
-    //   if (JSON.parse(message).order_id !== orderId || !order || !message) {
-    //     console.log('ไม่ได้ทำงาน');
-    //     return
-    //   }
-    //   setHr(JSON.parse(message).hr)
-    //   setSpo2Press(JSON.parse(message).spo2)
-    //   setDia(JSON.parse(message).dia)
-    //   setSys(JSON.parse(message).sys)
-    // })
+    socket.on('data-tranfer-press', (message: any) => {
+      if (JSON.parse(message).order_id !== orderId || !order || !message) {
+        console.log('ไม่ได้ทำงาน');
+        return
+      }
+      setHr(JSON.parse(message).hr)
+      setSpo2Press(JSON.parse(message).spo2)
+      setDia(JSON.parse(message).dia)
+      setSys(JSON.parse(message).sys)
+    })
 
     function onDisconnect() {
       console.log('disconnect');
