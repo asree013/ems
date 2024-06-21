@@ -10,7 +10,8 @@ import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import Radio from '@mui/joy/Radio';
 import RadioGroup from '@mui/joy/RadioGroup';
-import { PContext, PatientContext } from './page';
+import { PContext, PatientContext } from '@/context/patient.context';
+import { Fragment, useContext } from 'react';
 
 type Props = {
   openModel: boolean;
@@ -23,9 +24,9 @@ export default function RiskLevelModal({
   returnRiskLevel,
   returnStateOpenRisk,
 }: Props) {
-  const { patient, setPatient } = React.useContext<PContext>(PatientContext);
+  const { patient, setPatient } = useContext<PContext>(PatientContext);
   return (
-    <React.Fragment>
+    <Fragment>
       <Modal
         aria-labelledby="modal-title"
         aria-describedby="modal-desc"
@@ -145,6 +146,6 @@ export default function RiskLevelModal({
           </Box>
         </Sheet>
       </Modal>
-    </React.Fragment>
+    </Fragment>
   );
 }

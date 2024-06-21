@@ -14,6 +14,9 @@ import { Historys } from '@/models/history.model';
 import { findHistoryByPatientIdById } from '@/services/history.service';
 import { findExanByHistoryId } from '@/services/exan.service';
 import { ExanShows, Exans } from '@/models/exan.model';
+import { ExanContextBody } from '@/context/exan.context';
+import { ElIdExanImage } from '@/context/elIdExanImage.context';
+import { OpenExanImage } from '@/context/openExanImage.context';
 
 type Props = {
   params: {
@@ -21,28 +24,6 @@ type Props = {
     pateint_id: string;
   };
 };
-
-export type TypeOpenExanContext = {
-  open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-};
-export type TypeElIDContext = {
-  el_id: string;
-  setEl_id: Dispatch<SetStateAction<string>>;
-};
-export type TypeExanContext = {
-  exan: ExanShows[];
-  setExan: Dispatch<SetStateAction<ExanShows[]>>;
-};
-export const OpenExanImage = createContext<TypeOpenExanContext>(
-  {} as TypeOpenExanContext,
-);
-export const ElIdExanImage = createContext<TypeElIDContext>(
-  {} as TypeElIDContext,
-);
-export const ExanContextBody = createContext<TypeExanContext>(
-  {} as TypeExanContext,
-);
 
 export default function Page({ params }: Props) {
   const [open, setOpen] = useState<boolean>(false);

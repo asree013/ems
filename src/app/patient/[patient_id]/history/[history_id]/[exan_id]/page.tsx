@@ -15,6 +15,8 @@ import {
 import { toast } from '@/services/alert.service';
 import { useSearchParams, useRouter } from 'next/navigation';
 import ModalCreateImageExan from './ModalCreateImageExan';
+import { ModalImageExanContext } from '@/context/modalImageExan.context';
+import { OpenModalCreateImageContext } from '@/context/openModalCreateImage.context';
 
 type Props = {
   params: {
@@ -23,23 +25,6 @@ type Props = {
     history_id: string;
   };
 };
-
-export type TModalImageExan = {
-  previewImage: ImageExan[];
-  setPreviewImage: React.Dispatch<React.SetStateAction<ImageExan[]>>;
-};
-
-export type TModalCreate = {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-export const ModalImageExanContext = React.createContext<TModalImageExan>(
-  {} as TModalImageExan,
-);
-export const OpenModalCreateImageContext = React.createContext<TModalCreate>(
-  {} as TModalCreate,
-);
 
 export default function Page({ params }: Props) {
   const el_id = useSearchParams().get('el_id');

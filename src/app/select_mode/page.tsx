@@ -1,5 +1,5 @@
-'use client';
-import React, { useCallback, useEffect, useState } from 'react';
+'use client'
+import React, { useState } from 'react';
 import selectModel from './selctMode.module.css';
 import SystemSecurityUpdateIcon from '@mui/icons-material/SystemSecurityUpdate';
 import SailingIcon from '@mui/icons-material/Sailing';
@@ -11,22 +11,9 @@ import { useRouter } from 'next/navigation';
 import Loadding from '@/components/Loadding';
 import { Button } from '@mui/material';
 
-export default function page() {
+const Page: React.FC = () => {
   const [isLoad, setIsLoad] = useState<boolean>(false);
-  // const getRoleByUserId = useCallback(async() => {
-  //     try {
-  //         const result = await FindUserMe()
-  //         console.log(result.data);
 
-  //     } catch (error) {
-  //         console.log(error);
-
-  //     }
-  // }, [])
-
-  // useEffect(() => {
-  //     getRoleByUserId()
-  // }, [getRoleByUserId])
   function onRedirectPath(path: string) {
     setIsLoad(true);
     window.location.href = '/' + path
@@ -69,3 +56,5 @@ export default function page() {
     </>
   );
 }
+
+export default Page;

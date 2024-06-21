@@ -14,7 +14,7 @@ import { ImageExan } from '@/models/exan.model';
 import exanCss from './exan_id.module.css';
 import { Fab, TextField } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { TModalImageExan, ModalImageExanContext } from './page';
+import { TModalImageExan, ModalImageExanContext } from '@/context/modalImageExan.context';
 
 type Props = {
   data: ImageExan;

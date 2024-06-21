@@ -7,17 +7,14 @@ import Sheet from '@mui/joy/Sheet';
 import { Alert, Box, CardMedia, Paper, TextField } from '@mui/material';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import exanCss from './exan_id.module.css';
-import {
-  TModalImageExan,
-  ModalImageExanContext,
-  TModalCreate,
-  OpenModalCreateImageContext,
-} from './page';
 import { ImageExan } from '@/models/exan.model';
 import ModalImageDetail from './ModalImageDetail';
 import { toast } from '@/services/alert.service';
 import { createImageExan } from '@/services/image_exan.service';
 import { useParams } from 'next/navigation';
+import { ChangeEvent, useContext, useState } from 'react';
+import { TModalImageExan, ModalImageExanContext } from '@/context/modalImageExan.context';
+import { TModalCreate, OpenModalCreateImageContext } from '@/context/openModalCreateImage.context';
 
 type Props = {
   params: {
@@ -27,17 +24,17 @@ type Props = {
 };
 
 export default function ModalCreateImageExan({ params }: Props) {
-  const { previewImage, setPreviewImage } = React.useContext<TModalImageExan>(
+  const { previewImage, setPreviewImage } = useContext<TModalImageExan>(
     ModalImageExanContext,
   );
-  const [images, setImages] = React.useState<string>('');
-  const [imageExan, setImageExan] = React.useState<ImageExan>({} as ImageExan);
-  const [nameNull, setNameNull] = React.useState<boolean>(false);
-  const { open, setOpen } = React.useContext<TModalCreate>(
+  const [images, setImages] = useState<string>('');
+  const [imageExan, setImageExan] = useState<ImageExan>({} as ImageExan);
+  const [nameNull, setNameNull] = useState<boolean>(false);
+  const { open, setOpen } = useContext<TModalCreate>(
     OpenModalCreateImageContext,
   );
 
-  function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleImageUpload(e: ChangeEvent<HTMLInputElement>) {
     setNameNull(false);
     if (e.target.files) {
       const file = e.target.files[0];

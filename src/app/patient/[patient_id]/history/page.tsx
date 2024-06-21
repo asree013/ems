@@ -26,10 +26,13 @@ import Loadding from '@/components/Loadding';
 import Alert from '@mui/material/Alert';
 import CheckIcon from '@mui/icons-material/Check';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+type Props ={
+  params: {
+    patient_id: string
+  }
+}
 
-export default function page() {
-  const patientId = useParams().patient_id.toString();
-  const router = useRouter();
+export default function Page({params}:Props) {
 
   const [isLoad, setIsLoad] = useState<boolean>(false);
   const [historyFrom, setHistoryFrom] = useState<boolean>(false);
@@ -49,7 +52,7 @@ export default function page() {
 
     switch (true) {
       case key === 0:
-        const result = await findHistoryByPatientId(patientId);
+        const result = await findHistoryByPatientId(params.patient_id);
         setHistory(result.data);
         return setHistoryFilter(result.data);
       case key === 1:
@@ -73,7 +76,7 @@ export default function page() {
 
   const onFeedHistoryByPatientId = useCallback(async () => {
     try {
-      const result = await findHistoryByPatientId(patientId);
+      const result = await findHistoryByPatientId(params.patient_id);
       setHistory(result.data);
       setHistoryFilter(result.data);
     } catch (error: any) {
@@ -83,7 +86,7 @@ export default function page() {
         window.location.href = '/login';
       }
     }
-  }, [setHistory]);
+  }, [setHistory, setHistoryFilter, setIsLoad]);
 
   useEffect(() => {
     onFeedHistoryByPatientId();
@@ -99,7 +102,7 @@ export default function page() {
       const data = {} as Historys;
       data.symptom_details = symtop_detail;
       data.status = 'Draft';
-      data.patient_id = patientId;
+      data.patient_id = params.patient_id;
       const result = await createHistory(data);
       setHistory([...history, result.data]);
       setHistory_id(result.data.id);
@@ -203,7 +206,7 @@ export default function page() {
                 <Button
                   className={historyCss.button}
                   onClick={() => {
-                    router.push('history/' + history_id);
+                    window.location.href = 'history/' + history_id
                     setIsLoad(true);
                   }}
                   startDecorator={<AddCircleIcon />}

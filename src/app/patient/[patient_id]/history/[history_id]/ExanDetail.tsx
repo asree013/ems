@@ -9,17 +9,13 @@ import Box from '@mui/material/Box';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import {
-  TypeOpenExanContext,
-  OpenExanImage,
-  TypeElIDContext,
-  ElIdExanImage,
-  TypeExanContext,
-  ExanContextBody,
-} from './page';
 import { ExanDetailCard } from './ExanDetailCard';
 import { ExanShows, ImageExan } from '@/models/exan.model';
 import { useParams, useRouter } from 'next/navigation';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import { ExanContextBody, TypeExanContext } from '@/context/exan.context';
+import { ElIdExanImage, TypeElIDContext } from '@/context/elIdExanImage.context';
+import { OpenExanImage, TypeOpenExanContext } from '@/context/openExanImage.context';
 
 const drawerBleeding = 56;
 
@@ -55,11 +51,11 @@ export default function ExanDetail({ window }: Props) {
   const patient_id = useParams().patient_id;
   const router = useRouter();
   const { open, setOpen } =
-    React.useContext<TypeOpenExanContext>(OpenExanImage);
-  const { el_id, setEl_id } = React.useContext<TypeElIDContext>(ElIdExanImage);
-  const { exan, setExan } = React.useContext<TypeExanContext>(ExanContextBody);
-  const [exByElId, setExByElId] = React.useState<ExanShows>({} as ExanShows);
-  const [imageExan, setImageExan] = React.useState<ImageExan[]>(
+    useContext<TypeOpenExanContext>(OpenExanImage);
+  const { el_id, setEl_id } = useContext<TypeElIDContext>(ElIdExanImage);
+  const { exan, setExan } = useContext<TypeExanContext>(ExanContextBody);
+  const [exByElId, setExByElId] = useState<ExanShows>({} as ExanShows);
+  const [imageExan, setImageExan] = useState<ImageExan[]>(
     {} as ImageExan[],
   );
 
@@ -70,7 +66,7 @@ export default function ExanDetail({ window }: Props) {
   const container =
     windows !== undefined ? () => windows().document.body : undefined;
 
-  const onChangeEelementId = React.useCallback(async () => {
+  const onChangeEelementId = useCallback(async () => {
     try {
       // const find = exan.filter(r => r.element_id.includes(el_id))
       if (open) {
@@ -93,7 +89,7 @@ export default function ExanDetail({ window }: Props) {
     }
   }, [open]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     onChangeEelementId();
     return () => {
       onChangeEelementId();

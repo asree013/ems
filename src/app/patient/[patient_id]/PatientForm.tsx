@@ -26,13 +26,14 @@ import {
   AccordionDetails,
   Box,
 } from '@mui/material';
-import { PContext, PatientContext } from './page';
 
 import { AspectRatio } from '@mui/joy';
 import CardOverflow from '@mui/joy/CardOverflow';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import './patient_id.css';
 import PatientImageCard from './PatientImageCard';
+import { PContext, PatientContext } from '@/context/patient.context';
+import { useContext, useState } from 'react';
 
 type Props = {
   returnOnCreatePatient: () => void;
@@ -44,8 +45,8 @@ export default function PatientForm({
   returnOnUpdatePatient,
 }: Props) {
   const pathName = usePathname().includes(NIL);
-  const { patient, setPatient } = React.useContext<PContext>(PatientContext);
-  const [onCheck, setOnCheck] = React.useState(false);
+  const { patient, setPatient } = useContext<PContext>(PatientContext);
+  const [onCheck, setOnCheck] = useState(false);
 
   return (
     <div className="patient_toggle">

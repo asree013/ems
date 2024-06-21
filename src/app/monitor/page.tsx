@@ -1,17 +1,13 @@
-'use client';
-import React, { createContext, useState } from 'react';
+// pages/monitor.tsx (เปลี่ยนชื่อไฟล์จาก page.tsx เป็น monitor.tsx)
+'use client'
+import React, { useState } from 'react';
 import './monitor.css';
+import { OrderTranfer } from '@/models/order_tranfer.model'; // ปรับเปลี่ยนเส้นทางตามโครงสร้างโปรเจกต์ของท่าน
 import SubMonitor from './SubMonitor';
-import { OrderTranfer } from '@/models/order_tranfer.model';
+import { OrderContext } from '@/context/order.context';
 
-export type TOrderContext = {
-  order: OrderTranfer[];
-  setOrder: React.Dispatch<React.SetStateAction<OrderTranfer[]>>;
-};
 
-export const OrderContext = createContext<TOrderContext>({} as TOrderContext);
-
-export const chart: { el_id: number }[] = [
+const chart: { el_id: number }[] = [
   { el_id: 1 },
   { el_id: 2 },
   { el_id: 3 },
@@ -22,29 +18,30 @@ export const chart: { el_id: number }[] = [
   { el_id: 8 },
 ];
 
-export default function Page() {
+const Page: React.FC = () => { // กำหนดให้เป็น React.FC (Functional Component) และตั้งชื่อเป็น MonitorPage
+
   const [order, setOrder] = useState<OrderTranfer[]>([]);
 
   return (
-    <>
-      <OrderContext.Provider value={{ order, setOrder }}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexDirection: 'column',
-          }}
-        >
-          <div className="bodyHomeChart">
-            <div className="monitorChart">
-              {chart.map((r, i) => (
-                <SubMonitor key={i} el_id={r.el_id} index={i} />
-              ))}
-            </div>
+    <OrderContext.Provider value={{ order, setOrder }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'column',
+        }}
+      >
+        <div className="bodyHomeChart">
+          <div className="monitorChart">
+            {chart.map((r, i) => (
+              <SubMonitor key={i} el_id={r.el_id} index={i} />
+            ))}
           </div>
         </div>
-      </OrderContext.Provider>
-    </>
+      </div>
+    </OrderContext.Provider>
   );
 }
+
+export default Page; // ส่งออก MonitorPage ให้ Next.js ได้ใช้เป็นหน้าเว็บ

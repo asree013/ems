@@ -1,13 +1,11 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { BodyComponent } from 'reactjs-human-body';
 import { useRouter } from 'next/navigation';
 import { BodyHumans } from '@/models/body.human.module';
-import {
-  TypeOpenExanContext,
-  OpenExanImage,
-} from '@/app/patient/[patient_id]/history/[history_id]/page';
+
 import bodyHumanCss from './styles/BodyHuman.module.css';
+import { TypeOpenExanContext, OpenExanImage } from '@/context/openExanImage.context';
 
 interface ChildProps {
   onChangeData: (data: string) => void;
@@ -18,7 +16,7 @@ export default function BodyHuman({ onChangeData, organ }: ChildProps) {
   const router = useRouter();
 
   const { open, setOpen } =
-    React.useContext<TypeOpenExanContext>(OpenExanImage);
+    useContext<TypeOpenExanContext>(OpenExanImage);
 
   const organResult = {
     head: {
@@ -74,13 +72,6 @@ export default function BodyHuman({ onChangeData, organ }: ChildProps) {
       selected: Boolean(organ.find((r) => r.includes('stomach'))),
     },
   };
-
-  useEffect(() => {
-    if (organ) {
-      console.log('body: ', organ);
-    }
-    return () => {};
-  }, []);
 
   function showBodyPart(element_id: string) {
     router.push('');

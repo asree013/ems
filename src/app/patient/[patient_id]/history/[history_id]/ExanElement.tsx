@@ -1,17 +1,13 @@
 'use client';
 import BodyHuman from '@/components/BodyHuman';
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import exanCss from './exan.module.css';
-import {
-  ElIdExanImage,
-  OpenExanImage,
-  TypeElIDContext,
-  TypeOpenExanContext,
-} from './page';
 import { useParams, useRouter } from 'next/navigation';
 import { NIL } from 'uuid';
 import { ExanShows, Exans } from '@/models/exan.model';
 import Loadding from '@/components/Loadding';
+import { TypeElIDContext, ElIdExanImage } from '@/context/elIdExanImage.context';
+import { TypeOpenExanContext, OpenExanImage } from '@/context/openExanImage.context';
 
 type Props = {
   organ: string[];
@@ -22,11 +18,11 @@ export default function ExanElement({ organ, exan }: Props) {
   const router = useRouter();
   const patient_id = useParams().patient_id;
   const history_id = useParams().history_id;
-  const [load, setLoad] = React.useState<boolean>(false);
+  const [load, setLoad] = useState<boolean>(false);
 
   const { open, setOpen } =
-    React.useContext<TypeOpenExanContext>(OpenExanImage);
-  const { el_id, setEl_id } = React.useContext<TypeElIDContext>(ElIdExanImage);
+    useContext<TypeOpenExanContext>(OpenExanImage);
+  const { el_id, setEl_id } = useContext<TypeElIDContext>(ElIdExanImage);
   async function setParamBody(txt: string) {
     if (txt) {
       router.push(

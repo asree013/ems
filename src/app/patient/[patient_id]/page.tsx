@@ -1,4 +1,4 @@
-'use client';
+'use client'
 import React, { useState, useEffect } from 'react';
 import PatientForm from './PatientForm';
 import PatientGenModel from './PatientGenModal';
@@ -22,19 +22,13 @@ import './patient_id.css';
 import RiskLevelModal from './RiskLevelModal';
 import { useRouter } from 'next/navigation';
 import { toast } from '@/services/alert.service';
+import { PatientContext } from '@/context/patient.context';
 
 type Props = {
   params: {
     patient_id: string;
   };
 };
-
-export type PContext = {
-  patient: Patients;
-  setPatient: React.Dispatch<React.SetStateAction<Patients>>;
-};
-
-export const PatientContext = React.createContext<PContext>({} as PContext);
 
 const Page: React.FC<Props> = ({ params }: Props) => {
   const [open, setOpen] = useState<boolean>(true);
@@ -113,77 +107,8 @@ const Page: React.FC<Props> = ({ params }: Props) => {
     }
   };
 
-  if (params.patient_id === NIL) {
-    return (
-      <div className="patient_id_flex">
-        <PatientContext.Provider value={{ patient, setPatient }}>
-          <div className="patient_id_home">
-            <Box
-              sx={{
-                width: '100%',
-                alignItems: 'center',
-                justifyContent: 'start',
-              }}
-            >
-              <Typography level="title-lg" startDecorator={<InfoOutlined />}>
-                Patient form Create
-              </Typography>
-            </Box>
-            <Card className="card_item">
-              <Box sx={{}}>
-                <Typography
-                  sx={{ margin: '10px' }}
-                  level="title-lg"
-                  startDecorator={<WcIcon />}
-                  onClick={() => {
-                    setOpen(true);
-                  }}
-                >
-                  Gender: {patient.gender ? patient.gender : 'กรุณาเลือกเพศ'}
-                </Typography>
-                <Divider />
-                <Typography
-                  sx={{ margin: '10px' }}
-                  level="title-lg"
-                  startDecorator={<CheckCircleOutlineIcon color="success" />}
-                  onClick={() => {
-                    setOpenRisk(true);
-                  }}
-                >
-                  Risk Level:{' '}
-                  {patient.risk_level ? null : 'กรุณาเลือกระดับความอันตรา'}
-                  {patient.risk_level === 'W'
-                    ? 'W (บาดเจ็ยเล็กน้อย/ไม่อันราย)'
-                    : null}
-                  {patient.risk_level === 'G' ? 'G (ปลอดภัย)' : null}
-                  {patient.risk_level === 'Y'
-                    ? 'Y (บาดเจ็ยเล็กน้อย/อันราย)'
-                    : null}
-                  {patient.risk_level === 'R' ? 'R (บาดเจ็บสาหัส)' : null}
-                  {patient.risk_level === 'B' ? 'B (เสียชีวิต)' : null}
-                </Typography>
-              </Box>
-            </Card>
-            <PatientForm
-              returnOnCreatePatient={onCreatePatient}
-              returnOnUpdatePatient={onUpdatePatient}
-            />
-          </div>
-          <PatientGenModel
-            returnStateOpen={onReturnStateOpen}
-            openModel={open}
-            returnGender={onReturnGender}
-          />
-          <RiskLevelModal
-            openModel={openRisk}
-            returnRiskLevel={onReturnRiskLevel}
-            returnStateOpenRisk={onReturnStateRiskLevel}
-          />
-        </PatientContext.Provider>
-      </div>
-    );
-  } else {
-    useEffect(() => {
+  useEffect(() => {
+    if (params.patient_id !== NIL) {
       const feedPatientById = async () => {
         setIsLoad(true);
         try {
@@ -198,88 +123,86 @@ const Page: React.FC<Props> = ({ params }: Props) => {
       };
 
       feedPatientById();
-    }, [params.patient_id]); // Added params.patient_id as dependency
-    return (
-      <>
-        {isLoad ? (
-          <Loadding />
-        ) : (
-          <div className="patient_id_flex">
-            <PatientContext.Provider value={{ patient, setPatient }}>
-              <div className="patient_id_home">
-                <Box
-                  sx={{
-                    width: '100%',
-                    alignItems: 'center',
-                    justifyContent: 'start',
-                  }}
-                >
+    }
+  }, [params.patient_id]);
+
+  return (
+    <>
+      {isLoad ? (
+        <Loadding />
+      ) : (
+        <div className="patient_id_flex">
+          <PatientContext.Provider value={{ patient, setPatient }}>
+            <div className="patient_id_home">
+              <Box
+                sx={{
+                  width: '100%',
+                  alignItems: 'center',
+                  justifyContent: 'start',
+                }}
+              >
+                <Typography level="title-lg" startDecorator={<InfoOutlined />}>
+                  {params.patient_id === NIL
+                    ? 'Patient form Create'
+                    : 'Detail Patient'}
+                </Typography>
+              </Box>
+              <Card className="card_item">
+                <Box sx={{}}>
                   <Typography
+                    sx={{ margin: '10px' }}
                     level="title-lg"
-                    startDecorator={<InfoOutlined />}
+                    startDecorator={<WcIcon />}
+                    onClick={() => {
+                      setOpen(true);
+                    }}
                   >
-                    Detail Patient
+                    Gender:{' '}
+                    {patient.gender ? patient.gender : 'กรุณาเลือกเพศ'}
+                  </Typography>
+                  <Divider />
+                  <Typography
+                    sx={{ margin: '10px' }}
+                    level="title-lg"
+                    startDecorator={<CheckCircleOutlineIcon color="success" />}
+                    onClick={() => {
+                      setOpenRisk(true);
+                    }}
+                  >
+                    Risk Level:{' '}
+                    {patient.risk_level ? null : 'กรุณาเลือกระดับความอันตรา'}
+                    {patient.risk_level === 'W'
+                      ? 'W (บาดเจ็ยเล็กน้อย/ไม่อันราย)'
+                      : null}
+                    {patient.risk_level === 'G' ? 'G (ปลอดภัย)' : null}
+                    {patient.risk_level === 'Y'
+                      ? 'Y (บาดเจ็ยเล็กน้อย/อันราย)'
+                      : null}
+                    {patient.risk_level === 'R' ? 'R (บาดเจ็บสาหัส)' : null}
+                    {patient.risk_level === 'B' ? 'B (เสียชีวิต)' : null}
                   </Typography>
                 </Box>
-                <Card className="card_item">
-                  <Box sx={{}}>
-                    <Typography
-                      sx={{ margin: '10px' }}
-                      level="title-lg"
-                      startDecorator={<WcIcon />}
-                      onClick={() => {
-                        setOpen(true);
-                      }}
-                    >
-                      Gender:{' '}
-                      {patient.gender ? patient.gender : 'กรุณาเลือกเพศ'}
-                    </Typography>
-                    <Divider />
-                    <Typography
-                      sx={{ margin: '10px' }}
-                      level="title-lg"
-                      startDecorator={
-                        <CheckCircleOutlineIcon color="success" />
-                      }
-                      onClick={() => {
-                        setOpenRisk(true);
-                      }}
-                    >
-                      Risk Level:{' '}
-                      {patient.risk_level ? null : 'กรุณาเลือกระดับความอันตรา'}
-                      {patient.risk_level === 'W'
-                        ? 'W (บาดเจ็ยเล็กน้อย/ไม่อันราย)'
-                        : null}
-                      {patient.risk_level === 'G' ? 'G (ปลอดภัย)' : null}
-                      {patient.risk_level === 'Y'
-                        ? 'Y (บาดเจ็ยเล็กน้อย/อันราย)'
-                        : null}
-                      {patient.risk_level === 'R' ? 'R (บาดเจ็บสาหัส)' : null}
-                      {patient.risk_level === 'B' ? 'B (เสียชีวิต)' : null}
-                    </Typography>
-                  </Box>
-                </Card>
-                <PatientForm
-                  returnOnCreatePatient={onCreatePatient}
-                  returnOnUpdatePatient={onUpdatePatient}
-                />
-              </div>
-              <PatientGenModel
-                returnStateOpen={onReturnStateOpen}
-                openModel={open}
-                returnGender={onReturnGender}
+              </Card>
+              <PatientForm
+                returnOnCreatePatient={onCreatePatient}
+                returnOnUpdatePatient={onUpdatePatient}
               />
-              <RiskLevelModal
-                openModel={openRisk}
-                returnRiskLevel={onReturnRiskLevel}
-                returnStateOpenRisk={onReturnStateRiskLevel}
-              />
-            </PatientContext.Provider>
-          </div>
-        )}
-      </>
-    );
-  }
+            </div>
+            <PatientGenModel
+              returnStateOpen={onReturnStateOpen}
+              openModel={open}
+              returnGender={onReturnGender}
+            />
+            <RiskLevelModal
+              openModel={openRisk}
+              returnRiskLevel={onReturnRiskLevel}
+              returnStateOpenRisk={onReturnStateRiskLevel}
+            />
+          </PatientContext.Provider>
+        </div>
+      )}
+    </>
+  );
 };
 
 export default Page;
