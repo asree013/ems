@@ -1,44 +1,50 @@
 'use client'
-import React, { useEffect } from 'react'
-import FromDevice from './FromDevice'
-import {NIL} from 'uuid'
-import { findDeviceById } from '@/services/device.service'
+import React, { useEffect } from 'react';
+import FromDevice from './FromDevice';
+import { NIL } from 'uuid';
+import { findDeviceById } from '../../../services/device.service';
 
 type Props = {
   params: {
-    device_id: string
-  }
-}
+    device_id: string;
+  };
+};
 
 export default function page({ params }: Props) {
-  const [device, setDevice] = React.useState<Device>({} as Device)
+  const [device, setDevice] = React.useState<Device>({} as Device);
   if (params.device_id !== NIL) {
     useEffect(() => {
       async function feedDevice() {
         try {
-          const result = await findDeviceById(params.device_id)
-          setDevice(result.data)
+          const result = await findDeviceById(params.device_id);
+          setDevice(result.data);
         } catch (error) {
           console.log(error);
-          alert('error')
+          alert('error');
         }
       }
 
-      feedDevice()
-    }, [])
+      feedDevice();
+    }, []);
     return (
       <>
         <FromDevice result={device} />
       </>
-    )
-  }
-  else {
+    );
+  } else {
     return (
       <>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column',
+          }}
+        >
           <FromDevice />
         </div>
       </>
-    )
+    );
   }
 }

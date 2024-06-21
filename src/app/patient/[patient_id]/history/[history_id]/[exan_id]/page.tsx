@@ -1,86 +1,98 @@
-'use client'
-import React from 'react'
-import exan_idCss from './exan_id.module.css'
-import { Box, Card, CardMedia, Fab, Typography } from '@mui/material'
+'use client';
+import React from 'react';
+import exan_idCss from './exan_id.module.css';
+import { Box, Card, CardMedia, Fab, Typography } from '@mui/material';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
-import { Button, Textarea } from '@mui/joy'
+import { Button, Textarea } from '@mui/joy';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
-import { ExanShows, Exans, ImageExan } from '@/models/exan.model'
-import { NIL } from 'uuid'
-import { createExanByHistoryId, findExanByExanId, updateExanByExanId } from '@/services/exan.service'
-import { toast } from '@/services/alert.service'
-import { useSearchParams, useRouter } from 'next/navigation'
+import { ExanShows, Exans, ImageExan } from '@/models/exan.model';
+import { NIL } from 'uuid';
+import {
+  createExanByHistoryId,
+  findExanByExanId,
+  updateExanByExanId,
+} from '@/services/exan.service';
+import { toast } from '@/services/alert.service';
+import { useSearchParams, useRouter } from 'next/navigation';
 import ModalCreateImageExan from './ModalCreateImageExan';
 
 type Props = {
   params: {
-    exan_id: string,
-    patient_id: string,
-    history_id: string
-  }
-}
+    exan_id: string;
+    patient_id: string;
+    history_id: string;
+  };
+};
 
 export type TModalImageExan = {
-  previewImage: ImageExan[]
-  setPreviewImage: React.Dispatch<React.SetStateAction<ImageExan[]>>
-}
+  previewImage: ImageExan[];
+  setPreviewImage: React.Dispatch<React.SetStateAction<ImageExan[]>>;
+};
 
 export type TModalCreate = {
-  open: boolean
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
-}
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
-export const ModalImageExanContext = React.createContext<TModalImageExan>({} as TModalImageExan)
-export const OpenModalCreateImageContext = React.createContext<TModalCreate>({} as TModalCreate)
+export const ModalImageExanContext = React.createContext<TModalImageExan>(
+  {} as TModalImageExan,
+);
+export const OpenModalCreateImageContext = React.createContext<TModalCreate>(
+  {} as TModalCreate,
+);
 
 export default function Page({ params }: Props) {
-  const el_id = useSearchParams().get('el_id')
-  const router = useRouter()
+  const el_id = useSearchParams().get('el_id');
+  const router = useRouter();
 
-  const [open, setOpen] = React.useState<boolean>(false)
+  const [open, setOpen] = React.useState<boolean>(false);
 
-  const [exan, setExan] = React.useState<ExanShows>({} as ExanShows)
-  const [addImage, setAddImage] = React.useState<boolean>(false)
-  const [load, setLoad] = React.useState<boolean>(false)
-  const [created, setCreated] = React.useState<boolean>(false)
-  const [previewImage, setPreviewImage] = React.useState<ImageExan[]>([])
+  const [exan, setExan] = React.useState<ExanShows>({} as ExanShows);
+  const [addImage, setAddImage] = React.useState<boolean>(false);
+  const [load, setLoad] = React.useState<boolean>(false);
+  const [created, setCreated] = React.useState<boolean>(false);
+  const [previewImage, setPreviewImage] = React.useState<ImageExan[]>([]);
 
   async function onCreateExan() {
     if (el_id) {
-      setLoad(true)
-      setCreated(true)
+      setLoad(true);
+      setCreated(true);
       try {
-        const e = {} as Exans
-        e.element_id = el_id
-        e.text = exan.text
-        e.history_id = params.history_id
-        const result = await createExanByHistoryId(e)
-        toast('create exan', 'success')
+        const e = {} as Exans;
+        e.element_id = el_id;
+        e.text = exan.text;
+        e.history_id = params.history_id;
+        const result = await createExanByHistoryId(e);
+        toast('create exan', 'success');
         if (result) {
-          console.log(result.data)
-          setAddImage(true)
-          setLoad(false)
+          console.log(result.data);
+          setAddImage(true);
+          setLoad(false);
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }
   }
 
   async function onUpdateExan() {
     if (el_id) {
-      const e = {} as ExanShows
-      e.history_id = params.history_id
-      e.element_id = el_id
-      e.text = exan.text
+      const e = {} as ExanShows;
+      e.history_id = params.history_id;
+      e.element_id = el_id;
+      e.text = exan.text;
       try {
-        const result = await updateExanByExanId(params.history_id, params.exan_id, e)
-        setExan(result.data)
-        toast('update exan', 'success')
+        const result = await updateExanByExanId(
+          params.history_id,
+          params.exan_id,
+          e,
+        );
+        setExan(result.data);
+        toast('update exan', 'success');
       } catch (error) {
-        toast('has Error', 'error')
-        console.log(error)
-        router.push('/login')
+        toast('has Error', 'error');
+        console.log(error);
+        router.push('/login');
       }
     }
   }
@@ -93,8 +105,8 @@ export default function Page({ params }: Props) {
       FR.onload = (event) => {
         if (event.target && event.target.result) {
           const base64 = event.target.result as string;
-          const img = {} as ImageExan
-          img.src = base64
+          const img = {} as ImageExan;
+          img.src = base64;
           setPreviewImage((prev) => [...prev, img]);
           console.log(base64);
         }
@@ -102,7 +114,7 @@ export default function Page({ params }: Props) {
 
       FR.readAsDataURL(file);
     }
-  }
+  };
 
   if (params.exan_id.includes(NIL)) {
     return (
@@ -110,18 +122,27 @@ export default function Page({ params }: Props) {
         <Card className={exan_idCss.cardBody}>
           <Box className={exan_idCss.cardContent}>
             <Fab sx={{ cursor: 'default' }}>
-              <CreateNewFolderIcon sx={{ color: '#2c387e' }} fontSize='large' />
+              <CreateNewFolderIcon sx={{ color: '#2c387e' }} fontSize="large" />
             </Fab>
 
             <h1 style={{ marginTop: '20px' }}>Create Exan</h1>
             <Textarea
               placeholder="Exan Detail"
-              minRows={3} variant='soft'
+              minRows={3}
+              variant="soft"
               sx={{ width: '100%', marginTop: '20px' }}
               onChange={(e) => setExan({ ...exan, text: e.target.value })}
               disabled={created}
             />
-            <Button onClick={onCreateExan} loading={load} disabled={created} variant='plain' sx={{ background: '#2c387e', color: 'white', width: '100%' }}>Add Exan</Button>
+            <Button
+              onClick={onCreateExan}
+              loading={load}
+              disabled={created}
+              variant="plain"
+              sx={{ background: '#2c387e', color: 'white', width: '100%' }}
+            >
+              Add Exan
+            </Button>
             {/* {
               addImage || previewImage.length === 0 ?
                 <div style={{ width: '100%' }}>
@@ -151,74 +172,101 @@ export default function Page({ params }: Props) {
           </Box>
         </Card>
       </div>
-    )
+    );
   } else {
     // console.log(previewImage);
 
     const onFeedExan = React.useCallback(async () => {
-      setLoad(true)
+      setLoad(true);
       try {
-        const result = await findExanByExanId(params.history_id, params.exan_id)
-        setExan(result.data)
-        setPreviewImage(result.data.ImageExan)
-        setLoad(false)
+        const result = await findExanByExanId(
+          params.history_id,
+          params.exan_id,
+        );
+        setExan(result.data);
+        setPreviewImage(result.data.ImageExan);
+        setLoad(false);
       } catch (error) {
-        toast('has Error', 'error')
-        console.log(error)
-        router.push('/login')
+        toast('has Error', 'error');
+        console.log(error);
+        router.push('/login');
       }
-    }, [setExan, setPreviewImage])
+    }, [setExan, setPreviewImage]);
 
     React.useEffect(() => {
-      onFeedExan()
-    }, [onFeedExan])
+      onFeedExan();
+    }, [onFeedExan]);
     return (
       <>
-        <ModalImageExanContext.Provider value={{ previewImage, setPreviewImage }}>
+        <ModalImageExanContext.Provider
+          value={{ previewImage, setPreviewImage }}
+        >
           <div className={exan_idCss.home}>
             <Card className={exan_idCss.cardBody}>
               <Box className={exan_idCss.cardContent}>
                 <Fab sx={{ cursor: 'default' }}>
-                  <CreateNewFolderIcon sx={{ color: '#2c387e' }} fontSize='large' />
+                  <CreateNewFolderIcon
+                    sx={{ color: '#2c387e' }}
+                    fontSize="large"
+                  />
                 </Fab>
 
                 <h1 style={{ marginTop: '20px' }}>Create image</h1>
                 <Textarea
                   placeholder="Exan Detail"
-                  minRows={3} variant='soft'
+                  minRows={3}
+                  variant="soft"
                   sx={{ width: '100%', marginTop: '20px' }}
                   onChange={(e) => setExan({ ...exan, text: e.target.value })}
                   disabled={created}
                   value={exan.text}
                 />
-                <Button onClick={onUpdateExan} loading={load} disabled={created} variant='plain' sx={{ background: '#2c387e', color: 'white', width: '100%' }}>Update Exan</Button>
-                <Button onClick={() => setOpen(true)} loading={load} disabled={created} variant='plain' sx={{ background: '#2c387e', color: 'white', width: '100%', marginTop: '20px' }}>upload image</Button>
+                <Button
+                  onClick={onUpdateExan}
+                  loading={load}
+                  disabled={created}
+                  variant="plain"
+                  sx={{ background: '#2c387e', color: 'white', width: '100%' }}
+                >
+                  Update Exan
+                </Button>
+                <Button
+                  onClick={() => setOpen(true)}
+                  loading={load}
+                  disabled={created}
+                  variant="plain"
+                  sx={{
+                    background: '#2c387e',
+                    color: 'white',
+                    width: '100%',
+                    marginTop: '20px',
+                  }}
+                >
+                  upload image
+                </Button>
 
-                {
-                  previewImage.length > 0 ?
-                    previewImage.map(r =>
+                {previewImage.length > 0
+                  ? previewImage.map((r) => (
                       <CardMedia
                         key={r.id}
                         component={'img'}
                         image={r.src}
                         style={{ marginTop: '10px' }}
                       />
-                    ) :
-                    null
-                }
+                    ))
+                  : null}
               </Box>
               <Box>
                 <Button>cancel</Button>
-                <Button onClick={()=> router.back()}>save</Button>
+                <Button onClick={() => router.back()}>save</Button>
               </Box>
             </Card>
             <OpenModalCreateImageContext.Provider value={{ open, setOpen }}>
               <ModalCreateImageExan params={params} />
             </OpenModalCreateImageContext.Provider>
-
           </div>
         </ModalImageExanContext.Provider>
       </>
-    )
+    );
   }
 }

@@ -64,8 +64,6 @@ export const ecg: number[] = [
 
 export const ecgNull: number[] = new Array(1000).fill(0);
 
-
-
 export const spo2: number[] = Array.from(
   { length: 1000 },
   () => Math.floor(Math.random() * 11) + 90,

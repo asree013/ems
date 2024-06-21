@@ -4,4 +4,3 @@ export interface ChartMonitor {
   device_id: string;
   patient_id: string;
 }
-

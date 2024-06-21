@@ -1,6 +1,6 @@
-'use client'
-import React, { useEffect, useState } from 'react'
-import { socket } from '@/config/socket'
+'use client';
+import React, { useEffect, useState } from 'react';
+import { socket } from '@/config/socket';
 
 export default function page() {
   const [isConnected, setIsConnected] = useState(socket.connected);
@@ -9,7 +9,7 @@ export default function page() {
   useEffect(() => {
     function onConnect() {
       console.log('connect');
-      
+
       setIsConnected(true);
     }
 
@@ -18,9 +18,9 @@ export default function page() {
     }
 
     function onFooEvent(value: any) {
-      console.log("value: ", value);
-      
-      setFooEvents([...fooEvents,]);
+      console.log('value: ', value);
+
+      setFooEvents([...fooEvents]);
     }
 
     socket.on('connect', onConnect);
@@ -29,20 +29,11 @@ export default function page() {
 
     return () => {
       socket.off('connect', onConnect);
-      socket.emit('ping', JSON.stringify({id: 123, name: 'hisamß'}))
+      socket.emit('ping', JSON.stringify({ id: 123, name: 'hisamß' }));
       socket.off('disconnect', onDisconnect);
       socket.off('pong', onFooEvent);
     };
   }, []);
 
-  return (
-    <div >
-      {
-        isConnected === true ?
-        <p>connect</p>
-        : <p>no connect</p>
-      }
-    </div>
-  );
+  return <div>{isConnected === true ? <p>connect</p> : <p>no connect</p>}</div>;
 }
-

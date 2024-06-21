@@ -1,10 +1,10 @@
-import { enviromentDev } from "@/interfaces/enviroment.dev";
-import axios from "axios";
+import { enviromentDev } from '@/interfaces/enviroment.dev';
+import axios from 'axios';
 
 export const endpoint = axios.create({
   baseURL: enviromentDev.baseUrl,
   timeout: 5000,
-  withCredentials: true
+  withCredentials: true,
 });
 // endpoint.defaults.withCredentials = true
 

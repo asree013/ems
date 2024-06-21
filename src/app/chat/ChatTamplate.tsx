@@ -1,4 +1,4 @@
-import { Session, Chatbox } from "@talkjs/react";
+import { Session, Chatbox } from '@talkjs/react';
 
 export default function ChatTamplate() {
   return (

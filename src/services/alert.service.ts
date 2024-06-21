@@ -1,5 +1,5 @@
-import { Confirm } from "notiflix";
-import Swal from "sweetalert2";
+import { Confirm } from 'notiflix';
+import Swal from 'sweetalert2';
 
 export function toast(txt: string, icons: any, time?: number) {
   if (!time) {
@@ -7,7 +7,7 @@ export function toast(txt: string, icons: any, time?: number) {
   }
   const Toast = Swal.mixin({
     toast: true,
-    position: "center-end",
+    position: 'center-end',
     showConfirmButton: false,
     timer: time,
     timerProgressBar: true,

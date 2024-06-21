@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -19,8 +19,7 @@ import { logout } from '@/services/authen.service';
 import { useRouter } from 'next/navigation';
 import Loadding from './Loadding';
 
-import style from './styles/Nav.module.css'
-
+import style from './styles/Nav.module.css';
 
 interface Props {
   /**
@@ -34,10 +33,10 @@ const drawerWidth = 240;
 const navItems = ['Home', 'Patient', 'Device', 'Monitor', 'Select_Mode'];
 
 export default function Nav(props: Props) {
-  const router = useRouter()
+  const router = useRouter();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [isLoad, setIsLoad] = React.useState(false)
+  const [isLoad, setIsLoad] = React.useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -52,22 +51,34 @@ export default function Nav(props: Props) {
       <List>
         {navItems.map((item) => (
           <ListItem key={item} disablePadding>
-            <ListItemButton onClick={() => setIsLoad(true)} href={'/' + item.toLocaleLowerCase()} sx={{ textAlign: 'center' }}>
+            <ListItemButton
+              onClick={() => setIsLoad(true)}
+              href={'/' + item.toLocaleLowerCase()}
+              sx={{ textAlign: 'center' }}
+            >
               <ListItemText primary={item} />
             </ListItemButton>
           </ListItem>
         ))}
-        <ListItemButton onClick={async () => {
-          try {
-            setIsLoad(true)
-            await logout()
-            router.push('/login')
-
-          } catch (error) {
-            alert(JSON.stringify(error))
-          }
-        }} sx={{ textAlign: 'center' }}>
-          <Box sx={{display: 'flex', alignItems:'center', justifyContent: 'center'}}>
+        <ListItemButton
+          onClick={async () => {
+            try {
+              setIsLoad(true);
+              await logout();
+              router.push('/login');
+            } catch (error) {
+              alert(JSON.stringify(error));
+            }
+          }}
+          sx={{ textAlign: 'center' }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
             <LogoutIcon />
             <ListItemText primary={'Logout'} />
           </Box>
@@ -76,7 +87,8 @@ export default function Nav(props: Props) {
     </Box>
   );
 
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container =
+    window !== undefined ? () => window().document.body : undefined;
 
   return (
     <>
@@ -93,7 +105,13 @@ export default function Nav(props: Props) {
             >
               <MenuIcon />
             </IconButton>
-            <Typography className={style.logo} variant="body1" color="ButtonHighlight">EMS App</Typography>
+            <Typography
+              className={style.logo}
+              variant="body1"
+              color="ButtonHighlight"
+            >
+              EMS App
+            </Typography>
             <Typography
               variant="h6"
               component="div"
@@ -103,20 +121,29 @@ export default function Nav(props: Props) {
             </Typography>
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
               {navItems.map((item) => (
-                <Button onClick={() => setIsLoad(true)} href={"/" + item.toLocaleLowerCase()} key={item} sx={{ color: '#fff' }}>
+                <Button
+                  onClick={() => setIsLoad(true)}
+                  href={'/' + item.toLocaleLowerCase()}
+                  key={item}
+                  sx={{ color: '#fff' }}
+                >
                   {item}
                 </Button>
               ))}
-              <Button onClick={async () => {
-                try {
-                  setIsLoad(true)
-                  await logout()
-                  router.push('/login')
-
-                } catch (error) {
-                  alert(JSON.stringify(error))
-                }
-              }} style={{ color: 'white' }}><LogoutIcon /></Button>
+              <Button
+                onClick={async () => {
+                  try {
+                    setIsLoad(true);
+                    await logout();
+                    router.push('/login');
+                  } catch (error) {
+                    alert(JSON.stringify(error));
+                  }
+                }}
+                style={{ color: 'white' }}
+              >
+                <LogoutIcon />
+              </Button>
             </Box>
           </Toolbar>
         </AppBar>
@@ -131,7 +158,10 @@ export default function Nav(props: Props) {
             }}
             sx={{
               display: { xs: 'block', sm: 'none' },
-              '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+              '& .MuiDrawer-paper': {
+                boxSizing: 'border-box',
+                width: drawerWidth,
+              },
             }}
           >
             {drawer}
@@ -139,11 +169,7 @@ export default function Nav(props: Props) {
         </nav>
       </Box>
 
-      {
-        isLoad ?
-          <Loadding /> :
-          null
-      }
+      {isLoad ? <Loadding /> : null}
     </>
   );
 }

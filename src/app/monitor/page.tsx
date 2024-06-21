@@ -19,23 +19,32 @@ export const chart: { el_id: number }[] = [
   { el_id: 5 },
   { el_id: 6 },
   { el_id: 7 },
-  { el_id: 8 }
+  { el_id: 8 },
 ];
 
 export default function Page() {
   const [order, setOrder] = useState<OrderTranfer[]>([]);
 
   return (
-    <OrderContext.Provider value={{ order, setOrder }}>
-      <div style={{ display: "flex", alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
-        <div className="bodyHomeChart">
-          <div className="monitorChart">
-            {chart.map((r, i) => (
-              <SubMonitor key={i} el_id={r.el_id} index={i} />
-            ))}
+    <>
+      <OrderContext.Provider value={{ order, setOrder }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column',
+          }}
+        >
+          <div className="bodyHomeChart">
+            <div className="monitorChart">
+              {chart.map((r, i) => (
+                <SubMonitor key={i} el_id={r.el_id} index={i} />
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    </OrderContext.Provider>
+      </OrderContext.Provider>
+    </>
   );
 }

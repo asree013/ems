@@ -9,25 +9,29 @@ import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { SvgIconTypeMap } from '@mui/material';
 
 type Props = {
-    icon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>> & { muiName: string };
-    txt: string;
-    seconTxt?: string | number
-}
+  icon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>> & { muiName: string };
+  txt: string;
+  seconTxt?: string | number;
+};
 
 export default function MonitorPatient({ icon: Icon, txt, seconTxt }: Props) {
   return (
     <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-       <ListItem>
+      <ListItem>
         <ListItemAvatar>
           <Avatar>
-            <Icon fontSize='small' />
+            <Icon fontSize="small" />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary={txt} secondary={seconTxt? seconTxt : null} sx={{ 
+        <ListItemText
+          primary={txt}
+          secondary={seconTxt ? seconTxt : null}
+          sx={{
             '& .MuiListItemText-primary': { color: 'black' },
             '& .MuiListItemText-secondary': { color: 'black' },
-            fontSize: '12px'
-          }} />
+            fontSize: '12px',
+          }}
+        />
       </ListItem>
     </List>
   );
