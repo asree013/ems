@@ -1,4 +1,4 @@
-import { enviromentDev } from '@/config/enviroment.dev';
+import { enviromentDev } from '@/configs/enviroment.dev';
 import { CreateOrder, OrderTranfer } from '@/models/order_tranfer.model';
 import axios from 'axios';
 import { endpoint } from '@/services/endpoint.service';

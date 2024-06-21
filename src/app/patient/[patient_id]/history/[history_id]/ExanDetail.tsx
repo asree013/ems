@@ -13,9 +13,9 @@ import { ExanDetailCard } from './ExanDetailCard';
 import { ExanShows, ImageExan } from '@/models/exan.model';
 import { useParams, useRouter } from 'next/navigation';
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { ExanContextBody, TypeExanContext } from '@/context/exan.context';
-import { ElIdExanImage, TypeElIDContext } from '@/context/elIdExanImage.context';
-import { OpenExanImage, TypeOpenExanContext } from '@/context/openExanImage.context';
+import { ExanContextBody, TypeExanContext } from '@/contexts/exan.context';
+import { ElIdExanImage, TypeElIDContext } from '@/contexts/elIdExanImage.context';
+import { OpenExanImage, TypeOpenExanContext } from '@/contexts/openExanImage.context';
 
 const drawerBleeding = 56;
 

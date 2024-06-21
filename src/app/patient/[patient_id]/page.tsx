@@ -22,7 +22,7 @@ import './patient_id.css';
 import RiskLevelModal from './RiskLevelModal';
 import { useRouter } from 'next/navigation';
 import { toast } from '@/services/alert.service';
-import { PatientContext } from '@/context/patient.context';
+import { PatientContext } from '@/contexts/patient.context';
 
 type Props = {
   params: {

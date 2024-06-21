@@ -13,8 +13,8 @@ import { toast } from '@/services/alert.service';
 import { createImageExan } from '@/services/image_exan.service';
 import { useParams } from 'next/navigation';
 import { ChangeEvent, useContext, useState } from 'react';
-import { TModalImageExan, ModalImageExanContext } from '@/context/modalImageExan.context';
-import { TModalCreate, OpenModalCreateImageContext } from '@/context/openModalCreateImage.context';
+import { TModalImageExan, ModalImageExanContext } from '@/contexts/modalImageExan.context';
+import { TModalCreate, OpenModalCreateImageContext } from '@/contexts/openModalCreateImage.context';
 
 type Props = {
   params: {

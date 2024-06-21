@@ -10,7 +10,7 @@ import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import Radio from '@mui/joy/Radio';
 import RadioGroup from '@mui/joy/RadioGroup';
-import { PContext, PatientContext } from '@/context/patient.context';
+import { PContext, PatientContext } from '@/contexts/patient.context';
 import { Fragment, useContext } from 'react';
 
 type Props = {

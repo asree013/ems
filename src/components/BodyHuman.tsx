@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { BodyHumans } from '@/models/body.human.module';
 
 import bodyHumanCss from './styles/BodyHuman.module.css';
-import { TypeOpenExanContext, OpenExanImage } from '@/context/openExanImage.context';
+import { TypeOpenExanContext, OpenExanImage } from '@/contexts/openExanImage.context';
 
 interface ChildProps {
   onChangeData: (data: string) => void;

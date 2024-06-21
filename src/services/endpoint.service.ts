@@ -1,4 +1,4 @@
-import { enviromentDev } from '@/config/enviroment.dev';
+import { enviromentDev } from '@/configs/enviroment.dev';
 import axios from 'axios';
 
 export const endpoint = axios.create({

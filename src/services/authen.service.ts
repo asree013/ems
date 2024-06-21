@@ -1,6 +1,6 @@
 import { Logins } from '@/models/authen.model';
 import { endpoint } from './endpoint.service';
-import { enviromentDev } from '@/config/enviroment.dev';
+import { enviromentDev } from '@/configs/enviroment.dev';
 import axios, { AxiosError } from 'axios';
 import { Users } from '@/models/users.model';
 

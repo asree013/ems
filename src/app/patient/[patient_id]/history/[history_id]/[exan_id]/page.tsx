@@ -15,8 +15,8 @@ import {
 import { toast } from '@/services/alert.service';
 import { useSearchParams, useRouter } from 'next/navigation';
 import ModalCreateImageExan from './ModalCreateImageExan';
-import { ModalImageExanContext } from '@/context/modalImageExan.context';
-import { OpenModalCreateImageContext } from '@/context/openModalCreateImage.context';
+import { ModalImageExanContext } from '@/contexts/modalImageExan.context';
+import { OpenModalCreateImageContext } from '@/contexts/openModalCreateImage.context';
 
 type Props = {
   params: {

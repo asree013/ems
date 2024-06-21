@@ -6,8 +6,8 @@ import { useParams, useRouter } from 'next/navigation';
 import { NIL } from 'uuid';
 import { ExanShows, Exans } from '@/models/exan.model';
 import Loadding from '@/components/Loadding';
-import { TypeElIDContext, ElIdExanImage } from '@/context/elIdExanImage.context';
-import { TypeOpenExanContext, OpenExanImage } from '@/context/openExanImage.context';
+import { TypeElIDContext, ElIdExanImage } from '@/contexts/elIdExanImage.context';
+import { TypeOpenExanContext, OpenExanImage } from '@/contexts/openExanImage.context';
 
 type Props = {
   organ: string[];

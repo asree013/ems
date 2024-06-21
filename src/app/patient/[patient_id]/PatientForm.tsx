@@ -32,7 +32,7 @@ import CardOverflow from '@mui/joy/CardOverflow';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import './patient_id.css';
 import PatientImageCard from './PatientImageCard';
-import { PContext, PatientContext } from '@/context/patient.context';
+import { PContext, PatientContext } from '@/contexts/patient.context';
 import { useContext, useState } from 'react';
 
 type Props = {

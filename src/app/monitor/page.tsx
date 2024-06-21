@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import './monitor.css';
 import { OrderTranfer } from '@/models/order_tranfer.model'; // ปรับเปลี่ยนเส้นทางตามโครงสร้างโปรเจกต์ของท่าน
 import SubMonitor from './SubMonitor';
-import { OrderContext } from '@/context/order.context';
+import { OrderContext } from '@/contexts/order.context';
 
 
 const chart: { el_id: number }[] = [

@@ -1,6 +1,6 @@
 import { ImageExan } from '@/models/exan.model';
 import { endpoint } from './endpoint.service';
-import { enviromentDev } from '@/config/enviroment.dev';
+import { enviromentDev } from '@/configs/enviroment.dev';
 
 export function createImageExan(
   history_id: string,

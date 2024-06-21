@@ -9,7 +9,7 @@ import {
 import { CreateOrder } from '@/models/order_tranfer.model';
 import { useRouter } from 'next/navigation';
 import { toast } from '@/services/alert.service';
-import { TOrderContext, OrderContext } from '@/context/order.context';
+import { TOrderContext, OrderContext } from '@/contexts/order.context';
 
 type Props = {
   el_id: number;

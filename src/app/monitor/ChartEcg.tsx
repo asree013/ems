@@ -19,7 +19,7 @@ import {
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { socket } from '@/config/socket';
+import { socket } from '@/configs/socket';
 import { EcgTransfer } from '@/models/ecg.model';
 import StartChart from './StartChart';
 import { referfToken } from '@/services/authen.service';

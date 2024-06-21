@@ -14,9 +14,9 @@ import { Historys } from '@/models/history.model';
 import { findHistoryByPatientIdById } from '@/services/history.service';
 import { findExanByHistoryId } from '@/services/exan.service';
 import { ExanShows, Exans } from '@/models/exan.model';
-import { ExanContextBody } from '@/context/exan.context';
-import { ElIdExanImage } from '@/context/elIdExanImage.context';
-import { OpenExanImage } from '@/context/openExanImage.context';
+import { ExanContextBody } from '@/contexts/exan.context';
+import { ElIdExanImage } from '@/contexts/elIdExanImage.context';
+import { OpenExanImage } from '@/contexts/openExanImage.context';
 
 type Props = {
   params: {
