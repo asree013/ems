@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import HistoryItem from './HistoryItem';
 import { Box, Divider, Fab, SpeedDial } from '@mui/material';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
@@ -31,18 +31,18 @@ export default function page() {
   const patientId = useParams().patient_id.toString();
   const router = useRouter();
 
-  const [isLoad, setIsLoad] = React.useState<boolean>(false);
-  const [historyFrom, setHistoryFrom] = React.useState<boolean>(false);
-  const [err, setErr] = React.useState<boolean>(false);
+  const [isLoad, setIsLoad] = useState<boolean>(false);
+  const [historyFrom, setHistoryFrom] = useState<boolean>(false);
+  const [err, setErr] = useState<boolean>(false);
 
-  const [created, setCreated] = React.useState<boolean>(false);
+  const [created, setCreated] = useState<boolean>(false);
 
-  const [history, setHistory] = React.useState<Historys[]>({} as Historys[]);
-  const [historyFilter, setHistoryFilter] = React.useState<Historys[]>(
+  const [history, setHistory] = useState<Historys[]>({} as Historys[]);
+  const [historyFilter, setHistoryFilter] = useState<Historys[]>(
     {} as Historys[],
   );
-  const [symtop_detail, setSymtom_detail] = React.useState<string>('');
-  const [history_id, setHistory_id] = React.useState<string>('');
+  const [symtop_detail, setSymtom_detail] = useState<string>('');
+  const [history_id, setHistory_id] = useState<string>('');
 
   async function onChangFilterHistory(key: number) {
     console.log(key);
@@ -71,7 +71,7 @@ export default function page() {
     }
   }
 
-  const onFeedHistoryByPatientId = React.useCallback(async () => {
+  const onFeedHistoryByPatientId = useCallback(async () => {
     try {
       const result = await findHistoryByPatientId(patientId);
       setHistory(result.data);
@@ -85,7 +85,7 @@ export default function page() {
     }
   }, [setHistory]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     onFeedHistoryByPatientId();
   }, [onFeedHistoryByPatientId]);
 

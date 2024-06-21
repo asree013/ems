@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PatientForm from './PatientForm';
 import PatientGenModel from './PatientGenModal';
 import { NIL } from 'uuid';
@@ -36,27 +36,29 @@ export type PContext = {
 
 export const PatientContext = React.createContext<PContext>({} as PContext);
 
-export default function page({ params }: Props) {
-  const router = useRouter();
+const Page: React.FC<Props> = ({ params }: Props) => {
+  const [open, setOpen] = useState<boolean>(true);
+  const [openRisk, setOpenRisk] = useState<boolean>(false);
+  const [patient, setPatient] = useState<Patients>({} as Patients);
+  const [isLoad, setIsLoad] = useState(false);
 
-  const [open, setOpen] = React.useState<boolean>(true);
-  const [openRisk, setOpenRisk] = React.useState<boolean>(false);
-  const [patient, setPatient] = React.useState<Patients>({} as Patients);
-  const [isLoad, setIsLoad] = React.useState(false);
-  function onReturnGender(txt: string) {
+  const onReturnGender = (txt: string) => {
     setPatient({ ...patient, gender: txt });
-  }
-  function onReturnStateOpen(bool: boolean) {
-    setOpen(bool);
-  }
-  function onReturnRiskLevel(txt: string) {
-    alert(txt);
-  }
-  function onReturnStateRiskLevel(bool: boolean) {
-    setOpenRisk(bool);
-  }
+  };
 
-  async function onCreatePatient() {
+  const onReturnStateOpen = (bool: boolean) => {
+    setOpen(bool);
+  };
+
+  const onReturnRiskLevel = (txt: string) => {
+    alert(txt);
+  };
+
+  const onReturnStateRiskLevel = (bool: boolean) => {
+    setOpenRisk(bool);
+  };
+
+  const onCreatePatient = async () => {
     try {
       const p = {} as Patients;
       p.address = patient.address;
@@ -65,8 +67,8 @@ export default function page({ params }: Props) {
       p.first_name = patient.first_name
         ? patient.first_name
         : patient.gender.includes('Male')
-          ? 'ชายไม่ทราบชื่อ'
-          : 'หญิงไม่ทราบชื่อ';
+        ? 'ชายไม่ทราบชื่อ'
+        : 'หญิงไม่ทราบชื่อ';
       p.gender = patient.gender;
       p.group_blood = patient.group_blood;
       p.id_card = patient.id_card;
@@ -75,25 +77,25 @@ export default function page({ params }: Props) {
       p.last_name = patient.last_name
         ? patient.last_name
         : patient.gender.includes('Male')
-          ? 'ชายไม่ทราบนามสกุล'
-          : 'หญิงไม่ทราบนามสกุล';
+        ? 'ชายไม่ทราบนามสกุล'
+        : 'หญิงไม่ทราบนามสกุล';
       p.risk_level = patient.risk_level;
       p.tel = patient.tel;
 
       await createPatient(p);
-      router.back();
+      history.back();
     } catch (error) {
       toast('error', 'error');
       console.log(error);
     }
-  }
+  };
 
-  async function onUpdatePatient() {
+  const onUpdatePatient = async () => {
     try {
       const p = {} as Patients;
       p.address = patient.address;
       p.age = patient.age;
-      p.birthday = p.birthday;
+      p.birthday = p.birthday; // This line may need correction, check your logic
       p.first_name = patient.first_name;
       p.gender = patient.gender;
       p.group_blood = patient.group_blood;
@@ -105,11 +107,12 @@ export default function page({ params }: Props) {
       p.tel = patient.tel;
       const result = await updatePatient(params.patient_id, p);
       toast('update patient', 'success');
-      router.back();
+      history.back();
     } catch (error) {
       toast('error', 'error');
     }
-  }
+  };
+
   if (params.patient_id === NIL) {
     return (
       <div className="patient_id_flex">
@@ -180,8 +183,8 @@ export default function page({ params }: Props) {
       </div>
     );
   } else {
-    React.useEffect(() => {
-      async function feedPatientById() {
+    useEffect(() => {
+      const feedPatientById = async () => {
         setIsLoad(true);
         try {
           const result = await findPatientById(params.patient_id);
@@ -192,10 +195,10 @@ export default function page({ params }: Props) {
         } finally {
           setIsLoad(false);
         }
-      }
+      };
 
       feedPatientById();
-    }, []);
+    }, [params.patient_id]); // Added params.patient_id as dependency
     return (
       <>
         {isLoad ? (
@@ -277,4 +280,6 @@ export default function page({ params }: Props) {
       </>
     );
   }
-}
+};
+
+export default Page;

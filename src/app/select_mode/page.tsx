@@ -12,7 +12,6 @@ import Loadding from '@/components/Loadding';
 import { Button } from '@mui/material';
 
 export default function page() {
-  const router = useRouter();
   const [isLoad, setIsLoad] = useState<boolean>(false);
   // const getRoleByUserId = useCallback(async() => {
   //     try {
@@ -30,7 +29,7 @@ export default function page() {
   // }, [getRoleByUserId])
   function onRedirectPath(path: string) {
     setIsLoad(true);
-    router.push('/' + path);
+    window.location.href = '/' + path
   }
 
   return (

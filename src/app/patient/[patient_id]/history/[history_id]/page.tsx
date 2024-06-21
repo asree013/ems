@@ -1,6 +1,6 @@
 'use client';
 import BodyHuman from '@/components/BodyHuman';
-import React from 'react';
+import React, { Dispatch, SetStateAction, createContext, useCallback, useEffect, useState } from 'react';
 import exanCss from './exan.module.css';
 import ExanElement from './ExanElement';
 import FormControl from '@mui/joy/FormControl';
@@ -24,37 +24,37 @@ type Props = {
 
 export type TypeOpenExanContext = {
   open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpen: Dispatch<SetStateAction<boolean>>;
 };
 export type TypeElIDContext = {
   el_id: string;
-  setEl_id: React.Dispatch<React.SetStateAction<string>>;
+  setEl_id: Dispatch<SetStateAction<string>>;
 };
 export type TypeExanContext = {
   exan: ExanShows[];
-  setExan: React.Dispatch<React.SetStateAction<ExanShows[]>>;
+  setExan: Dispatch<SetStateAction<ExanShows[]>>;
 };
-export const OpenExanImage = React.createContext<TypeOpenExanContext>(
+export const OpenExanImage = createContext<TypeOpenExanContext>(
   {} as TypeOpenExanContext,
 );
-export const ElIdExanImage = React.createContext<TypeElIDContext>(
+export const ElIdExanImage = createContext<TypeElIDContext>(
   {} as TypeElIDContext,
 );
-export const ExanContextBody = React.createContext<TypeExanContext>(
+export const ExanContextBody = createContext<TypeExanContext>(
   {} as TypeExanContext,
 );
 
-export default function page({ params }: Props) {
-  const [open, setOpen] = React.useState<boolean>(false);
-  const [el_id, setEl_id] = React.useState<string>('');
+export default function Page({ params }: Props) {
+  const [open, setOpen] = useState<boolean>(false);
+  const [el_id, setEl_id] = useState<string>('');
 
-  const [history, setHistory] = React.useState<Historys>({} as Historys);
+  const [history, setHistory] = useState<Historys>({} as Historys);
 
-  const [exan, setExan] = React.useState<ExanShows[]>({} as ExanShows[]);
+  const [exan, setExan] = useState<ExanShows[]>({} as ExanShows[]);
 
-  const [value, setValue] = React.useState<string[]>([]);
+  const [value, setValue] = useState<string[]>([]);
 
-  const onFeedHistoryByHistoryId = React.useCallback(async () => {
+  const onFeedHistoryByHistoryId = useCallback(async () => {
     try {
       const result = await findHistoryByPatientIdById(
         params.pateint_id,
@@ -66,7 +66,7 @@ export default function page({ params }: Props) {
     }
   }, [setHistory]);
 
-  const onFeedExanByHistoyrId = React.useCallback(async () => {
+  const onFeedExanByHistoyrId = useCallback(async () => {
     try {
       const result = await findExanByHistoryId(params.history_id);
       const arr = result.data.map((r) => r.element_id);
@@ -77,9 +77,13 @@ export default function page({ params }: Props) {
     }
   }, [setExan, setValue]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     onFeedHistoryByHistoryId();
     onFeedExanByHistoyrId();
+    return () => {
+      onFeedHistoryByHistoryId();
+      onFeedExanByHistoyrId();
+    }
   }, [onFeedHistoryByHistoryId, onFeedExanByHistoyrId]);
 
   return (
@@ -113,5 +117,5 @@ export default function page({ params }: Props) {
     </>
   );
 
-  function renderValue() {}
+  function renderValue() { }
 }

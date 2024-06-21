@@ -4,10 +4,9 @@ import React, {
   useEffect,
   useRef,
   useCallback,
-  useMemo,
 } from 'react';
 import Chart from 'chart.js/auto';
-import { ecg, ecgNull, spo2 } from '@/data/data.medical_result';
+import { ecg, ecgNull } from '@/data/data.medical_result';
 import './monitor.css';
 import MenuChart from '@/app/monitor/MenuChart';
 import { Patients } from '@/models/patient';
@@ -25,35 +24,6 @@ import { EcgTransfer } from '@/models/ecg.model';
 import StartChart from './StartChart';
 import { referfToken } from '@/services/authen.service';
 import { useRouter } from 'next/navigation';
-
-let newData = [
-  18, 16, 16, 14, 14, 13, 13, 13, 14, 16, 18, 22, 26, 32, 38, 46, 52, 58, 64,
-  68, 72, 75, 78, 80, 82, 83, 84, 85, 86, 86, 86, 85, 85, 84, 84, 83, 83, 81,
-  80, 78, 77, 75, 74, 72, 71, 69, 68, 66, 65, 63, 62, 61, 61, 59, 59, 58, 58,
-  57, 57, 56, 56, 55, 55, 54, 54, 52, 52, 51, 51, 49, 49, 47, 47, 45, 45, 43,
-  43, 41, 40, 38, 38, 36, 36, 34, 33, 31, 31, 29, 29, 27, 27, 25, 25, 23, 23,
-  21, 21, 19, 19, 17, 17, 15, 15, 14, 14, 14, 15, 17, 20, 25, 29, 35, 41, 49,
-  55, 61, 66, 70, 74, 77, 80, 81, 83, 84, 85, 18, 16, 16, 14, 14, 13, 13, 13,
-  14, 16, 18, 22, 26, 32, 38, 46, 52, 58, 64, 68, 72, 75, 78, 80, 82, 83, 84,
-  85, 86, 86, 86, 85, 85, 84, 84, 83, 83, 81, 80, 78, 77, 75, 74, 72, 71, 69,
-  68, 66, 65, 63, 62, 61, 61, 59, 59, 58, 58, 57, 57, 56, 56, 55, 55, 54, 54,
-  52, 52, 51, 51, 49, 49, 47, 47, 45, 45, 43, 43, 41, 40, 38, 38, 36, 36, 34,
-  33, 31, 31, 29, 29, 27, 27, 25, 25, 23, 23, 21, 21, 19, 19, 17, 17, 15, 15,
-  14, 14, 14, 15, 17, 20, 25, 29, 35, 41, 49, 55, 61, 66, 70, 74, 77, 80, 81,
-  83, 84, 85, 86, 86, 86, 86, 86, 86, 85, 85, 84, 84, 82, 82, 80, 79, 77, 76,
-  74, 73, 70, 69, 67, 66, 64, 63, 61, 61, 59, 59, 58, 58, 57, 57, 56, 56, 55,
-  55, 54, 54, 53, 53, 51, 51, 49, 49, 47, 47, 46, 46, 44, 43, 41, 41, 39, 39,
-  37, 37, 35, 34, 32, 32, 30, 30, 28, 28, 26, 26, 24, 24, 22, 22, 20, 20, 19,
-  19, 17, 17, 17, 17, 18, 19, 21, 24, 29, 34, 41, 47, 53, 59, 64, 69, 73, 76,
-  78, 81, 82, 84, 85, 86, 86, 86, 86, 86, 86, 85, 85, 84, 84, 82, 81, 79, 78,
-  76, 75, 73, 72, 70, 69, 67, 66, 64, 64, 63, 63, 62, 62, 61, 61, 60, 60, 59,
-  59, 58, 58, 57, 57, 55, 55, 54, 54, 52, 52, 50, 50, 48, 48, 46, 46, 44, 44,
-  42, 42, 40, 40, 38, 37, 35, 35, 33, 33, 32, 32, 30, 30, 28, 28, 26, 26, 24,
-  24, 23, 23, 22, 22, 22, 23, 25, 27, 32, 36, 42, 47, 53, 59, 65, 70, 74, 78,
-  80, 83, 85, 87, 88, 89, 89, 90, 90, 90, 90, 90, 89, 89, 87, 87, 85, 84, 82,
-  81, 79, 78, 76, 75, 73, 72, 70, 70, 68, 68, 66, 66, 65, 65, 64, 64, 63, 63,
-  62, 62, 61, 61, 60,
-];
 
 var x: number[] = [];
 for (let j = 0; j < 625; j++) {
@@ -79,14 +49,11 @@ export default function ChartEcg({
   index,
   onChangeDeleteDeviceID,
   orderTranFer,
-}: GrachProps) {
-  const router = useRouter();
+}: GrachProps) {  
 
   const dataChart = useRef<number[]>(ecgNull);
   const dataChartSpo = useRef<number[]>(ecgNull);
   const intervals = useRef<NodeJS.Timeout | null>(null);
-  const [arrEcg, setArrEcg] = useState<number[][] | null>([{} as number[]]);
-  const [ecgData, setEcgData] = useState<number[]>({} as number[]);
   const [chart, setChart] = useState<Chart | null>(null);
   const [spo2Chart, setSpo2Chart] = useState<Chart | null>(null);
   const [checkBox, setCheckBox] = useState<string>('ecg');
@@ -163,80 +130,28 @@ export default function ChartEcg({
 
   const feedPatientById = useCallback(async () => {
     try {
-      // await referfToken()
       const result = await findPatientById(order.patient_id);
       setPatient(result.data);
     } catch (error) {
-      // router.push('/login')
-      // toast.error(JSON.stringify(error))
     }
   }, [setPatient]);
 
   const runSocket = useCallback(() => {
     const orderId = order.id;
-    // dataChart.current = ecg
-    // socket.on('data-tranfer-ecg', (message: any) => {
-    //   // setEcgData(JSON.parse(message).ecg)
-    //   if (JSON.parse(message).order_id !== orderId || !order) {
-    //     console.log('ไม่ได้ทำงาน');
-    //     return
-    //   }
-    //   // console.log('message: ', message);
-    //   let value: number[] = JSON.parse(message).ecg
-    //   if (arrs.length === 0) {
-    //     arrs.push(value)
-    //     // console.log('add arr 1', arrs);
-    //   }
-    //   if (arrs.length >= 1) {
-    //     arrs.push(value)
-    //     // console.log('add arr 2', arrs);
-    //   }
-    //   if (arrs.length >= 2) {
-    //     // console.log('add arr 3', arrs);
-    //     arrs.push(value)
-    //   }
-    //   if (arrs.length >= 3) {
-    //     // console.log('add arr 4', arrs);
-    //     arrs.push(value)
-    //     dataChart.current = []
-    //     console.log('data current before agsign: ', dataChart.current);
+    socket.on('data-tranfer-ecg', (message: any) => {
+      if (JSON.parse(message).order_id !== orderId || !order) {
+        console.log('ไม่ได้ทำงาน');
+        return
+      }
+      let value: number[] = JSON.parse(message).ecg
 
-    //     const temps = arrs.filter((r, i) => {
-    //       if (i >= 4) {
-    //         return
-    //       }
-    //       else {
-    //         return r
-    //       }
-    //     })
-
-    //     dataChart.current = temps.flat()
-    //     console.log('data current length : ', dataChart.current.length);
-
-    //     arrs = []
-    //     console.log('data current length : ', arrs);
-
-    //     // console.log('arrs null: ', arrs);
-
-    //     const checkData = setInterval(() => {
-    //       if (arrs.length === 0) {
-    //         dataChart.current = ecgNull
-    //         isNotData = true
-    //         clearInterval(checkData)
-    //         console.log('claer');
-    //       }
-    //     }, 5000)
-    //   }
-
-    // });
+    });
 
     socket.on('data-tranfer-pleth', (message: any) => {
-      // setEcgData(JSON.parse(message).ecg)
       if (JSON.parse(message).order_id !== orderId || !order) {
         console.log('ไม่ได้ทำงาน');
         return;
       }
-      // console.log('message: ', message);
       let pleth: number[] = JSON.parse(message).pleth;
       if (arrSpo.flat().length < 1250) {
         arrSpo.push(pleth);
@@ -245,14 +160,9 @@ export default function ChartEcg({
         arrSpo.push(pleth);
         console.log('-----> ', arrSpo.flat());
         dataChartSpo.current = [];
-        const a = Array.from(new Set(arrSpo.flat()));
-        // console.log('arr ----> ',arrSpo.flat().filter(r => r));
         dataChartSpo.current = arrSpo.flat();
         console.log('data current length : ', dataChartSpo.current.length);
         arrSpo = [];
-        // setInterval(() => {
-        //   dataChartSpo.current.length = 0
-        // },3000)
       }
     });
 
@@ -279,7 +189,7 @@ export default function ChartEcg({
     return () => {
       if (intervals.current) clearInterval(intervals.current);
     };
-  }, [socket, setArrEcg]);
+  }, [socket]);
 
   const onFeedChart = useCallback(() => {
     const ctx = document.getElementById(
@@ -441,15 +351,10 @@ export default function ChartEcg({
       animationFrameIdSpo = requestAnimationFrame(updateChartSpo);
     }
 
-    // const intervalId = setInterval(() => {
-    //   updateChartSpo()
-    //   clearInterval(intervalId)
-    // }, 2500);
     animationFrameId = requestAnimationFrame(updateChart);
     animationFrameIdSpo = requestAnimationFrame(updateChartSpo);
 
     return () => {
-      // clearInterval(intervalId)
       cancelAnimationFrame(animationFrameId);
       cancelAnimationFrame(animationFrameIdSpo);
     };
@@ -458,7 +363,6 @@ export default function ChartEcg({
   useEffect(() => {
     runSocket();
     feedPatientById();
-    // onFeedChart()
     const chartDestroy = onFeedChart();
     return () => {
       chartDestroy.ecg.destroy();
@@ -485,7 +389,7 @@ export default function ChartEcg({
                 style={{
                   padding: '8px',
                   background: getRiskLevelColor(patient.risk_level),
-                  color: 'white',
+                  color: getRiskFont(patient.risk_level),
                   fontWeight: 700,
                   fontSize: '22px',
                 }}
@@ -602,6 +506,15 @@ export default function ChartEcg({
         return 'black';
       default:
         return 'gray';
+    }
+  }
+
+  function getRiskFont(level: string) {
+    if(level.includes('W')){
+      return 'black'
+    }
+    else{
+      return 'white'
     }
   }
 }

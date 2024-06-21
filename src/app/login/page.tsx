@@ -15,13 +15,13 @@ import './login.css';
 import Loadding from '../../components/Loadding';
 import { Logins } from '../../models/authen.model';
 import { logins } from '../../services/authen.service';
+import { useState } from 'react';
 
-export default function page() {
-  const router = useRouter();
-  const [login, setLogin] = React.useState<Logins>({} as Logins);
-  const [isLoad, setIsLoad] = React.useState(false);
-  const [errUser, setErrUser] = React.useState(false);
-  const [errPass, setErrPass] = React.useState(false);
+export default function Page() {
+  const [login, setLogin] = useState<Logins>({} as Logins);
+  const [isLoad, setIsLoad] = useState(false);
+  const [errUser, setErrUser] = useState(false);
+  const [errPass, setErrPass] = useState(false);
 
   async function onSubmitLogin(e: any) {
     e.preventDefault();
@@ -29,7 +29,7 @@ export default function page() {
     try {
       await logins(login);
       // await FindUserMe()
-      router.push('/select_mode');
+      window.location.href = '/select_mode'
     } catch (error: any) {
       if (error.response.data.status === 400) {
         toast.error(error.response.data.message);

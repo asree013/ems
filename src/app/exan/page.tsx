@@ -1,9 +1,9 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import exan from './exan.module.css';
 import BodyHuman from '../../components/BodyHuman';
-export default function page() {
-  const [value, setValue] = React.useState<string[]>([
+export default function Page() {
+  const [value, setValue] = useState<string[]>([
     'head',
     'rightShoulder',
     'rightArm',

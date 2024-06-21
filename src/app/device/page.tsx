@@ -1,38 +1,38 @@
 'use client';
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import DeviceItem from './DeviceItem';
 import './device.css';
-import { useRouter } from 'next/navigation';
 import Bar from './Bar';
 import Loadding from '../../components/Loadding';
 import { findDeviceAll } from '../../services/device.service';
 
-export default function page() {
-  const router = useRouter();
-  const [device, setDevice] = React.useState<Device[]>({} as Device[]);
-  const [load, setLoad] = React.useState(false);
+const Page: React.FC = () => {
+  const [device, setDevice] = useState<Device[]>([]);
+  const [load, setLoad] = useState(false);
 
-  function onReturnSearch(str: string) { }
-  React.useEffect(() => {
-    async function feedDevice() {
-      setLoad(true);
-      try {
-        const result = await findDeviceAll();
-        setDevice(result);
-        console.log(device);
-      } catch (error: any) {
-        if (error.message.includes('Network Error')) {
-          router.push('/login');
-        }
-        alert(error);
-        console.log(error);
-      } finally {
-        setLoad(false);
+  function onReturnSearch(str: string) {}
+
+  const feedDevice = useCallback(async () => {
+    setLoad(true);
+    try {
+      const result = await findDeviceAll();
+      setDevice(result);
+      console.log(device);
+    } catch (error: any) {
+      if (error.message.includes('Network Error')) {
+        window.location.href = '/login'
       }
+      alert(error);
+      console.log(error);
+    } finally {
+      setLoad(false);
     }
+  }, [setDevice, device]);
 
+  useEffect(() => {
     feedDevice();
-  }, []);
+  }, [feedDevice]);
+
   return (
     <>
       {load === true ? (
@@ -47,11 +47,13 @@ export default function page() {
           />
           {device.length > 0
             ? device.map((r, i) => (
-              <DeviceItem key={i} deviceItem={r} index={i} />
-            ))
+                <DeviceItem key={i} deviceItem={r} index={i} />
+              ))
             : null}
         </div>
       )}
     </>
   );
-}
+};
+
+export default Page;

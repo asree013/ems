@@ -62,7 +62,8 @@ export default function Monitor_id_detail({ patient_id }: Props) {
         toast(error.message, 'error');
       }
     })();
-  }, []);
+  }, [patient_id]);
+
   return (
     <AccordionGroup
       variant="soft"

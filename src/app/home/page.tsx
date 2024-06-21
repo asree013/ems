@@ -1,6 +1,6 @@
 'use client';
 import Avatar from '@mui/material/Avatar';
-import React from 'react';
+import React, { useState } from 'react';
 import './home.css';
 import { useRouter } from 'next/navigation';
 import patientImage from '../../../public/assets/icon/examination_12772952.png';
@@ -24,13 +24,12 @@ const menuBottom = [
   },
 ];
 
-export default function page() {
-  const router = useRouter();
-  const [isLoad, setIsLoad] = React.useState(false);
+export default function Page() {
+  const [isLoad, setIsLoad] = useState(false);
 
   function onRedirect(str: string) {
     setIsLoad(true);
-    router.push(`/${str}`);
+    window.location.href = `/${str}`
   }
   return (
     <>
