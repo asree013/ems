@@ -4,7 +4,7 @@ import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
 import CardOverflow from '@mui/joy/CardOverflow';
 import { CardMedia } from '@mui/material';
-import './patient_id.css';
+import patientIdCss from './patient_id.module.css'
 import { Patients } from '@/models/patient';
 
 type Props = {
@@ -15,7 +15,7 @@ export default function PatientImageCard({ value }: Props) {
   return (
     <Card orientation="horizontal" variant="outlined" className="imageDetail">
       <CardOverflow>
-        <AspectRatio className="imageItemDetail">
+        <AspectRatio className={patientIdCss.imageItemDetail}>
           <CardMedia
             component="img"
             alt="green iguana"

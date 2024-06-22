@@ -30,7 +30,7 @@ import {
 import { AspectRatio } from '@mui/joy';
 import CardOverflow from '@mui/joy/CardOverflow';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import './patient_id.css';
+import pateintIdCss from './patient_id.module.css';
 import PatientImageCard from './PatientImageCard';
 import { PContext, PatientContext } from '@/contexts/patient.context';
 import { useContext, useState } from 'react';
@@ -49,7 +49,7 @@ export default function PatientForm({
   const [onCheck, setOnCheck] = useState(false);
 
   return (
-    <div className="patient_toggle">
+    <div className={pateintIdCss.patient_toggle}>
       <Accordion>
         <AccordionSummary
           expandIcon={'v'}
@@ -139,7 +139,7 @@ export default function PatientForm({
                 <FormLabel>idCard</FormLabel>
                 <Input
                   onChange={(e) =>
-                    setPatient({ ...patient, age: Number(e.target.value) })
+                    setPatient({ ...patient, id_card: e.target.value })
                   }
                   endDecorator={<BadgeIcon />}
                 />
@@ -148,7 +148,7 @@ export default function PatientForm({
                 <FormLabel>Phone</FormLabel>
                 <Input
                   onChange={(e) =>
-                    setPatient({ ...patient, age: Number(e.target.value) })
+                    setPatient({ ...patient, tel: e.target.value })
                   }
                   endDecorator={<LocalPhoneIcon />}
                 />

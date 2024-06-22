@@ -70,7 +70,10 @@ export default function PatientItem({ order_tranfer_id }: Props) {
               />
             ))
           ) : (
-            <div onClick={() => router.push('/patient/' + NIL)}>
+            <div onClick={() => {
+              setIsload(true)
+              router.push('/patient/' + NIL)
+            }}>
               <Card
                 variant="outlined"
                 style={{
@@ -105,7 +108,10 @@ export default function PatientItem({ order_tranfer_id }: Props) {
             <StyledFab
               style={{ background: '#f50057', color: 'whiteSmoke' }}
               aria-label="add"
-              onClick={() => router.push('/patient/' + NIL)}
+              onClick={() => {
+                setIsload(true)
+                router.push('/patient/' + NIL)
+              }}
             >
               <AddIcon />
             </StyledFab>

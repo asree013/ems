@@ -18,9 +18,8 @@ import Divider from '@mui/material/Divider';
 import InfoOutlined from '@mui/icons-material/InfoOutlined';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
-import './patient_id.css';
+import pateintIdCss from './patient_id.module.css';
 import RiskLevelModal from './RiskLevelModal';
-import { useRouter } from 'next/navigation';
 import { toast } from '@/services/alert.service';
 import { PatientContext } from '@/contexts/patient.context';
 
@@ -53,6 +52,7 @@ const Page: React.FC<Props> = ({ params }: Props) => {
   };
 
   const onCreatePatient = async () => {
+    setIsLoad(true)
     try {
       const p = {} as Patients;
       p.address = patient.address;
@@ -61,8 +61,8 @@ const Page: React.FC<Props> = ({ params }: Props) => {
       p.first_name = patient.first_name
         ? patient.first_name
         : patient.gender.includes('Male')
-        ? 'ชายไม่ทราบชื่อ'
-        : 'หญิงไม่ทราบชื่อ';
+          ? 'ชายไม่ทราบชื่อ'
+          : 'หญิงไม่ทราบชื่อ';
       p.gender = patient.gender;
       p.group_blood = patient.group_blood;
       p.id_card = patient.id_card;
@@ -71,8 +71,8 @@ const Page: React.FC<Props> = ({ params }: Props) => {
       p.last_name = patient.last_name
         ? patient.last_name
         : patient.gender.includes('Male')
-        ? 'ชายไม่ทราบนามสกุล'
-        : 'หญิงไม่ทราบนามสกุล';
+          ? 'ชายไม่ทราบนามสกุล'
+          : 'หญิงไม่ทราบนามสกุล';
       p.risk_level = patient.risk_level;
       p.tel = patient.tel;
 
@@ -81,10 +81,12 @@ const Page: React.FC<Props> = ({ params }: Props) => {
     } catch (error) {
       toast('error', 'error');
       console.log(error);
+      setIsLoad(false)
     }
   };
 
   const onUpdatePatient = async () => {
+    setIsLoad(true)
     try {
       const p = {} as Patients;
       p.address = patient.address;
@@ -104,6 +106,7 @@ const Page: React.FC<Props> = ({ params }: Props) => {
       history.back();
     } catch (error) {
       toast('error', 'error');
+      setIsLoad(false)
     }
   };
 
@@ -128,79 +131,81 @@ const Page: React.FC<Props> = ({ params }: Props) => {
 
   return (
     <>
-      {isLoad ? (
-        <Loadding />
-      ) : (
-        <div className="patient_id_flex">
-          <PatientContext.Provider value={{ patient, setPatient }}>
-            <div className="patient_id_home">
-              <Box
-                sx={{
-                  width: '100%',
-                  alignItems: 'center',
-                  justifyContent: 'start',
-                }}
-              >
-                <Typography level="title-lg" startDecorator={<InfoOutlined />}>
-                  {params.patient_id === NIL
-                    ? 'Patient form Create'
-                    : 'Detail Patient'}
+      <div className={pateintIdCss.patient_id_flex}>
+        <PatientContext.Provider value={{ patient, setPatient }}>
+          <div className={pateintIdCss.patient_id_home}>
+            <Box
+              sx={{
+                width: '100%',
+                alignItems: 'center',
+                justifyContent: 'start',
+              }}
+            >
+              <Typography level="title-lg" startDecorator={<InfoOutlined />}>
+                {params.patient_id === NIL
+                  ? 'Patient form Create'
+                  : 'Detail Patient'}
+              </Typography>
+            </Box>
+            <Card className="card_item">
+              <Box sx={{}}>
+                <Typography
+                  sx={{ margin: '10px' }}
+                  level="title-lg"
+                  startDecorator={<WcIcon />}
+                  onClick={() => {
+                    setOpen(true);
+                  }}
+                >
+                  Gender:{' '}
+                  {patient.gender ? patient.gender : 'กรุณาเลือกเพศ'}
+                </Typography>
+                <Divider />
+                <Typography
+                  sx={{ margin: '10px' }}
+                  level="title-lg"
+                  startDecorator={<CheckCircleOutlineIcon color="success" />}
+                  onClick={() => {
+                    setOpenRisk(true);
+                  }}
+                >
+                  Risk Level:{' '}
+                  {patient.risk_level ? null : 'กรุณาเลือกระดับความอันตรา'}
+                  {patient.risk_level === 'W'
+                    ? 'W (บาดเจ็ยเล็กน้อย/ไม่อันราย)'
+                    : null}
+                  {patient.risk_level === 'G' ? 'G (ปลอดภัย)' : null}
+                  {patient.risk_level === 'Y'
+                    ? 'Y (บาดเจ็ยเล็กน้อย/อันราย)'
+                    : null}
+                  {patient.risk_level === 'R' ? 'R (บาดเจ็บสาหัส)' : null}
+                  {patient.risk_level === 'B' ? 'B (เสียชีวิต)' : null}
                 </Typography>
               </Box>
-              <Card className="card_item">
-                <Box sx={{}}>
-                  <Typography
-                    sx={{ margin: '10px' }}
-                    level="title-lg"
-                    startDecorator={<WcIcon />}
-                    onClick={() => {
-                      setOpen(true);
-                    }}
-                  >
-                    Gender:{' '}
-                    {patient.gender ? patient.gender : 'กรุณาเลือกเพศ'}
-                  </Typography>
-                  <Divider />
-                  <Typography
-                    sx={{ margin: '10px' }}
-                    level="title-lg"
-                    startDecorator={<CheckCircleOutlineIcon color="success" />}
-                    onClick={() => {
-                      setOpenRisk(true);
-                    }}
-                  >
-                    Risk Level:{' '}
-                    {patient.risk_level ? null : 'กรุณาเลือกระดับความอันตรา'}
-                    {patient.risk_level === 'W'
-                      ? 'W (บาดเจ็ยเล็กน้อย/ไม่อันราย)'
-                      : null}
-                    {patient.risk_level === 'G' ? 'G (ปลอดภัย)' : null}
-                    {patient.risk_level === 'Y'
-                      ? 'Y (บาดเจ็ยเล็กน้อย/อันราย)'
-                      : null}
-                    {patient.risk_level === 'R' ? 'R (บาดเจ็บสาหัส)' : null}
-                    {patient.risk_level === 'B' ? 'B (เสียชีวิต)' : null}
-                  </Typography>
-                </Box>
-              </Card>
-              <PatientForm
-                returnOnCreatePatient={onCreatePatient}
-                returnOnUpdatePatient={onUpdatePatient}
-              />
-            </div>
-            <PatientGenModel
-              returnStateOpen={onReturnStateOpen}
-              openModel={open}
-              returnGender={onReturnGender}
+            </Card>
+            <PatientForm
+              returnOnCreatePatient={onCreatePatient}
+              returnOnUpdatePatient={onUpdatePatient}
             />
-            <RiskLevelModal
-              openModel={openRisk}
-              returnRiskLevel={onReturnRiskLevel}
-              returnStateOpenRisk={onReturnStateRiskLevel}
-            />
-          </PatientContext.Provider>
-        </div>
-      )}
+          </div>
+          <PatientGenModel
+            returnStateOpen={onReturnStateOpen}
+            openModel={open}
+            returnGender={onReturnGender}
+          />
+          <RiskLevelModal
+            openModel={openRisk}
+            returnRiskLevel={onReturnRiskLevel}
+            returnStateOpenRisk={onReturnStateRiskLevel}
+          />
+        </PatientContext.Provider>
+      </div>
+
+      {
+        isLoad ?
+          <Loadding /> :
+          null
+      }
     </>
   );
 };

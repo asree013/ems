@@ -69,7 +69,7 @@ export default function Page() {
                 <TextField
                   error={errUser}
                   onChange={(e) =>
-                    setLogin({ ...login, username: e.target.value })
+                    setLogin({ ...login, username: e.target.value.toLocaleLowerCase() })
                   }
                   id="filled-basic"
                   label="Username"
