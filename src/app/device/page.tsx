@@ -27,7 +27,7 @@ const Page: React.FC = () => {
     } finally {
       setLoad(false);
     }
-  }, [setDevice, device]);
+  }, [setDevice]);
 
   useEffect(() => {
     feedDevice();
