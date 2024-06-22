@@ -1,10 +1,14 @@
+import withPWAInit from '@ducanh2912/next-pwa';
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
-    // images: {
-    //   domains: ['cdn2.thecatapi.com'],
-    // },
-    output: 'standalone',
-  };
+  output: 'standalone',
+};
+withPWAInit({
+  dest: "public",
   
-  export default nextConfig;
-  
+})
+
+export default withPWAInit(nextConfig)
+
+// export default nextConfig;
