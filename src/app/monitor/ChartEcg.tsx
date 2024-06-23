@@ -26,7 +26,7 @@ import { referfToken } from '@/services/authen.service';
 import { useRouter } from 'next/navigation';
 
 var x: number[] = [];
-for (let j = 0; j < 625; j++) {
+for (let j = 0; j < 126; j++) {
   x.push(j);
 }
 let p = 0;
@@ -153,17 +153,20 @@ export default function ChartEcg({
         return;
       }
       let pleth: number[] = JSON.parse(message).pleth;
-      if (arrSpo.flat().length < 1250) {
-        arrSpo.push(pleth);
-        console.log('add arr 1', arrSpo);
-      } else {
-        arrSpo.push(pleth);
-        console.log('-----> ', arrSpo.flat());
-        dataChartSpo.current = [];
-        dataChartSpo.current = arrSpo.flat();
-        console.log('data current length : ', dataChartSpo.current.length);
-        arrSpo = [];
+      if(pleth) {
+        dataChartSpo.current = pleth
       }
+      // if (arrSpo.flat().length < 1250) {
+      //   arrSpo.push(pleth);
+      //   console.log('add arr 1', arrSpo);
+      // } else {
+      //   arrSpo.push(pleth);
+      //   console.log('-----> ', arrSpo.flat());
+      //   dataChartSpo.current = [];
+      //   dataChartSpo.current = arrSpo.flat();
+      //   console.log('data current length : ', dataChartSpo.current.length);
+      //   arrSpo = [];
+      // }
     });
 
     socket.on('data-tranfer-press', (message: any) => {
