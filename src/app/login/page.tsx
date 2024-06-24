@@ -51,16 +51,16 @@ export default function Page() {
     }
   }
 
+  const [windowHeight, setWindowHeight] = useState<number>(0);
+
   useEffect(() => {
-    const viewportHeight = window.innerHeight;
-console.log('Viewport height:', viewportHeight);
-    
-  }, [])
+    setWindowHeight(window.innerHeight);
+  }, []);
   
   return (
     <>
       <ToastContainer />
-      <div id='page' style={{ background: '#2c387e', width: '100%', height:window.innerHeight ,
+      <div id='page' style={{ background: '#2c387e', width: '100%', height: windowHeight ,
         display: 'flex', alignItems: 'center', justifyContent: 'center'
       }}>
         <div className="homeLogin">
