@@ -2,6 +2,7 @@ import Nav from '@/components/Nav';
 import { metadata } from '../layout';
 import { useCallback, useEffect } from 'react';
 import { FindUserMe } from '@/services/authen.service';
+import BottomNavigater from '@/components/BottomNavigator';
 
 metadata.title = 'Monitor EMS App';
 
@@ -28,6 +29,8 @@ export default function DashboardLayout({
       {/* Include shared UI here e.g. a header or sidebar */}
       <Nav />
       <div>{children}</div>
+      <BottomNavigater />
+
     </section>
   );
 }

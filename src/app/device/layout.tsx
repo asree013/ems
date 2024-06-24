@@ -1,6 +1,7 @@
 import Nav from '@/components/Nav';
 
 import { metadata } from '../layout';
+import BottomNavigater from '@/components/BottomNavigator';
 metadata.title = 'Device EMS App';
 
 export default function DashboardLayout({
@@ -13,6 +14,7 @@ export default function DashboardLayout({
       {/* Include shared UI here e.g. a header or sidebar */}
       <Nav />
       <div style={{ marginTop: '10%' }}>{children}</div>
+      <BottomNavigater />
     </section>
   );
 }

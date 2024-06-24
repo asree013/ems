@@ -1,6 +1,7 @@
 import Nav from '@/components/Nav';
 import { Metadata } from 'next';
 import { metadata } from '../layout';
+import BottomNavigater from '@/components/BottomNavigator';
 
 metadata.title = 'Patient EMS App';
 
@@ -14,6 +15,8 @@ export default function DashboardLayout({
       {/* Include shared UI here e.g. a header or sidebar */}
       <Nav />
       {children}
+      <BottomNavigater />
+
     </section>
   );
 }

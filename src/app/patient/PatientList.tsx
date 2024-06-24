@@ -51,84 +51,87 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
   }
   return (
     <>
-      {isLoad === true ? (
-        <Loadding />
-      ) : (
-        <Card variant="outlined" sx={{ maxWidth: 360 }}>
-          <Box sx={{ p: 2 }}>
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <div>
-                <Typography
-                  gutterBottom
-                  variant="body1"
-                  component="div"
-                  style={{ fontWeight: 700 }}
-                >
-                  {patient.first_name}
-                </Typography>
-                <Typography
-                  gutterBottom
-                  variant="body1"
-                  component="div"
-                  style={{ fontWeight: 700 }}
-                >
-                  {patient.last_name}
-                </Typography>
-                <Typography color="text.secondary" variant="body2">
-                  G:{patient.gender}, Age:
-                  {patient.age ? patient.age : 'ไม่ได้ระบุ'}, Birthday:
-                  {patient.birthday ? patient.birthday : 'ไม่ได้ระบุ'}
-                </Typography>
-              </div>
-              <CardMedia
-                component="img"
-                sx={{ width: 151 }}
-                image={patient.image ? patient.image : enviromentPath.noImage}
-                alt="Live from space album cover"
-              />
+
+      <Card variant="outlined" sx={{ maxWidth: 360 }}>
+        <Box sx={{ p: 2 }}>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <div>
+              <Typography
+                gutterBottom
+                variant="body1"
+                component="div"
+                style={{ fontWeight: 700 }}
+              >
+                {patient.first_name}
+              </Typography>
+              <Typography
+                gutterBottom
+                variant="body1"
+                component="div"
+                style={{ fontWeight: 700 }}
+              >
+                {patient.last_name}
+              </Typography>
+              <Typography color="text.secondary" variant="body2">
+                G:{patient.gender}, Age:
+                {patient.age ? patient.age : 'ไม่ได้ระบุ'}, Birthday:
+                {patient.birthday ? patient.birthday : 'ไม่ได้ระบุ'}
+              </Typography>
+            </div>
+            <CardMedia
+              component="img"
+              sx={{ width: 151 }}
+              image={patient.image ? patient.image : enviromentPath.noImage}
+              alt="Live from space album cover"
+            />
+          </Stack>
+        </Box>
+        <Divider />
+        <Box sx={{ p: 2 }}>
+          {pathName ? (
+            <Stack direction="row" spacing={1}>
+              <Fab
+                size="small"
+                color="warning"
+                onClick={() => {
+                  router.push('/patient/' + patient.id);
+                  setIsLoad(true);
+                }}
+              >
+                <EditCalendarIcon color="inherit" />
+              </Fab>
+              <Fab
+                size="small"
+                color="success"
+                onClick={() => {
+                  router.push('/patient/' + patient.id + '/history');
+                  setIsLoad(true);
+                }}
+              >
+                <HistoryIcon color="inherit" />
+              </Fab>
             </Stack>
-          </Box>
-          <Divider />
-          <Box sx={{ p: 2 }}>
-            {pathName ? (
-              <Stack direction="row" spacing={1}>
-                <Fab
-                  size="small"
-                  color="warning"
-                  onClick={() => {
-                    router.push('/patient/' + patient.id);
-                    setIsLoad(true);
-                  }}
-                >
-                  <EditCalendarIcon color="inherit" />
-                </Fab>
-                <Fab
-                  size="small"
-                  color="success"
-                  onClick={() => {
-                    router.push('/patient/' + patient.id + '/history');
-                    setIsLoad(true);
-                  }}
-                >
-                  <HistoryIcon color="inherit" />
-                </Fab>
-              </Stack>
-            ) : (
-              <Stack direction="row" spacing={1}>
-                <Fab size="small" onClick={onClickAddPatientInOrder}>
-                  <PersonAddAltIcon color="primary" />
-                </Fab>
-                <Chip label="Medium" size="medium" />
-                <Chip label="Hard" size="medium" />
-              </Stack>
-            )}
-          </Box>
-        </Card>
-      )}
+          ) : (
+            <Stack direction="row" spacing={1}>
+              <Fab size="small" onClick={onClickAddPatientInOrder}>
+                <PersonAddAltIcon color="primary" />
+              </Fab>
+              <Chip label="Medium" size="medium" />
+              <Chip label="Hard" size="medium" />
+            </Stack>
+          )}
+        </Box>
+      </Card>
+
+      {isLoad ?
+        <Loadding /> :
+        null
+      }
+
     </>
   );
 }

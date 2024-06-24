@@ -26,11 +26,17 @@ import { referfToken } from '@/services/authen.service';
 import { useRouter } from 'next/navigation';
 
 var x: number[] = [];
-for (let j = 0; j < 625; j++) {
+var a: number[] = []
+for (let j = 0; j < 250; j++) {
+  a.push(j);
+}
+for (let j = 0; j < 126; j++) {
   x.push(j);
 }
 let p = 0;
 let i = 0;
+let pp = 0;
+let ii = 0;
 let data: any = [];
 let dataSpo2: any = [];
 let arrs: number[][] = [];
@@ -69,7 +75,7 @@ export default function ChartEcg({
   const [dia, setDia] = React.useState<number>(0);
 
   let [hidden, setHidden] = useState<string[]>([]);
-  data = useRef<number[]>(dataChart.current);
+  data = useRef<number[]>(dataChart.current.slice(0 ,250));
   dataSpo2 = useRef<number[]>(dataChartSpo.current);
 
   function activeCheckBox(cb: string, el_id: string) {
@@ -143,7 +149,18 @@ export default function ChartEcg({
         console.log('ไม่ได้ทำงาน');
         return
       }
-      let value: number[] = JSON.parse(message).ecg
+      let ecg: number[] = JSON.parse(message).ecg
+      if (arrs.flat().length < 2500) {
+        arrs.push(ecg);
+        console.log('add ecg 1', arrs);
+      } else {
+        arrs.push(ecg);
+        console.log('ecg -----> ', arrs.flat());
+        dataChart.current = [];
+        dataChart.current = arrs.flat();
+        console.log('data current length : ', dataChart.current.length);
+        arrs = [];
+      }
 
     });
 
@@ -164,6 +181,7 @@ export default function ChartEcg({
         console.log('data current length : ', dataChartSpo.current.length);
         arrSpo = [];
       }
+      
     });
 
     socket.on('data-tranfer-press', (message: any) => {
@@ -199,7 +217,7 @@ export default function ChartEcg({
     const option: any = {
       type: 'line',
       data: {
-        labels: x,
+        labels: a,
         datasets: [
           {
             label: 'ECG Data',
@@ -320,14 +338,14 @@ export default function ChartEcg({
     let animationFrameIdSpo: number;
 
     function updateChart() {
-      data.current[i] = dataChart.current[p];
-      i++;
-      p++;
-      if (p >= dataChart.current.length) {
-        p = 0;
+      data.current[ii] = dataChart.current[pp];
+      ii++;
+      pp++;
+      if (pp >= dataChart.current.length) {
+        pp = 0;
       }
-      if (i >= data.current.length) {
-        i = 0;
+      if (ii >= data.current.length) {
+        ii = 0;
       }
       if (chart) {
         chart.update();
@@ -350,6 +368,11 @@ export default function ChartEcg({
       }
       animationFrameIdSpo = requestAnimationFrame(updateChartSpo);
     }
+
+    // const s = setInterval(() => {
+    //   updateChartSpo()
+    //   clearInterval(s)
+    // }, 1000/dataChartSpo.current.length)
 
     animationFrameId = requestAnimationFrame(updateChart);
     animationFrameIdSpo = requestAnimationFrame(updateChartSpo);

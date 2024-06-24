@@ -92,7 +92,7 @@ export default function PatientForm({
               <FormControl>
                 <FormLabel>Fistname</FormLabel>
                 <Input
-                  value={patient.first_name}
+                  value={patient.first_name? patient.first_name: ''}
                   onChange={(e) =>
                     setPatient({ ...patient, first_name: e.target.value })
                   }

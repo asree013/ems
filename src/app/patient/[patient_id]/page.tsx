@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PatientForm from './PatientForm';
 import PatientGenModel from './PatientGenModal';
 import { NIL } from 'uuid';
@@ -32,8 +32,8 @@ type Props = {
 const Page: React.FC<Props> = ({ params }: Props) => {
   const [open, setOpen] = useState<boolean>(true);
   const [openRisk, setOpenRisk] = useState<boolean>(false);
-  const [patient, setPatient] = useState<Patients>({} as Patients);
   const [isLoad, setIsLoad] = useState(false);
+  const [patient, setPatient] = useState<Patients>({} as Patients)
 
   const onReturnGender = (txt: string) => {
     setPatient({ ...patient, gender: txt });
@@ -131,8 +131,8 @@ const Page: React.FC<Props> = ({ params }: Props) => {
 
   return (
     <>
-      <div className={pateintIdCss.patient_id_flex}>
-        <PatientContext.Provider value={{ patient, setPatient }}>
+      <PatientContext.Provider value={{patient, setPatient}} >
+        <div className={pateintIdCss.patient_id_flex}>
           <div className={pateintIdCss.patient_id_home}>
             <Box
               sx={{
@@ -198,8 +198,8 @@ const Page: React.FC<Props> = ({ params }: Props) => {
             returnRiskLevel={onReturnRiskLevel}
             returnStateOpenRisk={onReturnStateRiskLevel}
           />
-        </PatientContext.Provider>
-      </div>
+        </div>
+      </PatientContext.Provider>
 
       {
         isLoad ?

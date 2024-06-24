@@ -120,16 +120,7 @@ export default function Nav(props: Props) {
               EMS App
             </Typography>
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              {navItems.map((item) => (
-                <Button
-                  onClick={() => setIsLoad(true)}
-                  href={'/' + item.toLocaleLowerCase()}
-                  key={item}
-                  sx={{ color: '#fff' }}
-                >
-                  {item}
-                </Button>
-              ))}
+             
               <Button
                 onClick={async () => {
                   try {

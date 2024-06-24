@@ -5,10 +5,20 @@
     padding: 20px;
     margin-top: 65px;
 }
+.buttonCreate{
+    position: fixed;
+    top: 80%;
+    right: 5%;
+}
 
 @media only screen and (max-width: 1050px) {
     .patient_list{
         grid-template-columns: repeat(2, 1fr); 
+    }
+    .buttonCreate{
+        position: fixed;
+        top: 85%;
+        right: 5%;
     }
 }
 

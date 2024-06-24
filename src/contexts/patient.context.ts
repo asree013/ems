@@ -7,3 +7,10 @@ export type PContext = {
 };
 
 export const PatientContext = createContext<PContext>({} as PContext);
+
+export type PContexts = {
+    patients: Patients[];
+    setPatients: Dispatch<SetStateAction<Patients[]>>;
+}
+
+export const PatientContextsArr = createContext<PContexts>({} as PContexts)

@@ -18,6 +18,7 @@ import { Card, Fab } from '@mui/material';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Loadding from '@/components/Loadding';
 import { NIL } from 'uuid';
+import { PatientContextsArr } from '@/contexts/patient.context';
 
 const StyledFab = styled(Fab)({
   position: 'absolute',
@@ -35,34 +36,16 @@ type Props = {
 export default function PatientItem({ order_tranfer_id }: Props) {
   const pathname = usePathname().includes('patient');
   const router = useRouter();
-
-  const [patient, setPatient] = React.useState<Patients[]>({} as Patients[]);
-  const [isload, setIsload] = React.useState(false);
-
-  const feedPateint = React.useCallback(async () => {
-    setIsload(true);
-    try {
-      const result = await findPatientAll();
-      // const data = await result.json<Patients[]>()
-      setPatient(result.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsload(false);
-    }
-  }, [setPatient]);
-
-  React.useEffect(() => {
-    feedPateint();
-  }, [feedPateint]);
+  const {patients, setPatients} = React.useContext(PatientContextsArr)
+  const [load, setLoad] = React.useState<boolean>(false)
 
   return (
     <>
       <React.Fragment>
         <CssBaseline />
         <div className={patientCss.patient_list}>
-          {patient.length > 0 ? (
-            patient.map((r) => (
+          {patients.length > 0 ? (
+            patients.map((r) => (
               <PatientList
                 order_tranfer_id={order_tranfer_id}
                 patient={r}
@@ -71,7 +54,7 @@ export default function PatientItem({ order_tranfer_id }: Props) {
             ))
           ) : (
             <div onClick={() => {
-              setIsload(true)
+              setLoad(true)
               router.push('/patient/' + NIL)
             }}>
               <Card
@@ -95,7 +78,7 @@ export default function PatientItem({ order_tranfer_id }: Props) {
             </div>
           )}
         </div>
-        <AppBar
+        {/* <AppBar
           position="fixed"
           sx={{ top: 'auto', bottom: 0, background: '#2c387e' }}
         >
@@ -123,9 +106,13 @@ export default function PatientItem({ order_tranfer_id }: Props) {
               <MoreIcon />
             </IconButton>
           </Toolbar>
-        </AppBar>
+        </AppBar> */}
+        {
+          load?
+          <Loadding />:
+          null
+        }
       </React.Fragment>
-      {isload ? <Loadding /> : null}
     </>
   );
 }
