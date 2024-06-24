@@ -15,7 +15,7 @@ import './login.css';
 import Loadding from '../../components/Loadding';
 import { Logins } from '../../models/authen.model';
 import { logins } from '../../services/authen.service';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from '@/services/alert.service'
 
 export default function Page() {
@@ -50,10 +50,19 @@ export default function Page() {
       }
     }
   }
+
+  useEffect(() => {
+    const viewportHeight = window.innerHeight;
+console.log('Viewport height:', viewportHeight);
+    
+  }, [])
+  
   return (
     <>
       <ToastContainer />
-      <div style={{ background: '#2c387e', width: '100%', height: '100%' }}>
+      <div id='page' style={{ background: '#2c387e', width: '100%', height:window.innerHeight ,
+        display: 'flex', alignItems: 'center', justifyContent: 'center'
+      }}>
         <div className="homeLogin">
           <form onSubmit={(e) => onSubmitLogin(e)}>
             <Card sx={{ maxWidth: 345 }}>

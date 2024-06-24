@@ -1,20 +1,12 @@
-.homeLogin {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    height: 60vw;
-}
+
 
 @media only screen and (max-width: 1024px) {
-    .homeLogin {
-        height: 145vw;
-    }
+  
     
 }
 @media only screen and (max-width: 450px) {
-    .homeLogin {
+    /* .homeLogin {
         height: 216vw;
-    }
+    } */
     
 }

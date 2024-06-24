@@ -1,28 +1,32 @@
-'use client'
-import React, { useState } from 'react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import selectModel from './selctMode.module.css';
 import SystemSecurityUpdateIcon from '@mui/icons-material/SystemSecurityUpdate';
 import SailingIcon from '@mui/icons-material/Sailing';
 import AirplanemodeActiveIcon from '@mui/icons-material/AirplanemodeActive';
 import ReportIcon from '@mui/icons-material/Report';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
-import { FindUserMe } from '@/services/authen.service';
-import { useRouter } from 'next/navigation';
 import Loadding from '@/components/Loadding';
 import { Button } from '@mui/material';
 
 const Page: React.FC = () => {
   const [isLoad, setIsLoad] = useState<boolean>(false);
+  const [windowHeight, setWindowHeight] = useState<number>(0);
+
+  useEffect(() => {
+    setWindowHeight(window.innerHeight);
+  }, []);
 
   function onRedirectPath(path: string) {
     setIsLoad(true);
-    window.location.href = '/' + path
+    window.location.href = '/' + path;
   }
 
   return (
     <>
-      <div className={selectModel.home}>
-        <div className={selectModel.cardHome}>
+      <div className={selectModel.home} style={{ height: windowHeight }}>
+        <div className={selectModel.cardHome} style={{height: windowHeight - windowHeight/5}}>
           <p>SELECT MODE</p>
           <div className={selectModel.line}></div>
           <div className={selectModel.gridButton}>

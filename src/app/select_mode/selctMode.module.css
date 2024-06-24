@@ -9,13 +9,11 @@
     flex-direction: column;
     background-color: rgb(198, 197, 197);
     width: 100%;
-    height: 50rem;
 }
 
 .cardHome {
     background-color: rgb(224, 224, 224);
     width: 60%;
-    height: 70%;
     padding: 5%
 }
 
@@ -40,7 +38,7 @@
 
 .cardButton {
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    background: whitesmoke;
+    background-color: whitesmoke;
     color: #2c387e;
     width: 160px;
     height: 150px;
@@ -65,9 +63,6 @@
 }
 
 @media only screen and (max-width: 1370px) {
-    .home {
-        height: 86rem;
-    }
 
     .cardHome {
         width: 80%;
@@ -84,9 +79,6 @@
 }
 
 @media only screen and (max-width: 1200px) {
-    .home {
-        height: 75rem;
-    }
 
     .cardHome {
         width: 80%;
@@ -104,10 +96,6 @@
 }
 
 @media only screen and (max-width: 450px) {
-    .home {
-        height: 42rem;
-        padding: 0;
-    }
 
     .cardHome {
         width: 90%;
