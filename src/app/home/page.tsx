@@ -15,6 +15,8 @@ import { Patients } from '@/models/patient';
 import { findDeviceAll } from '@/services/device.service';
 import { findAllOrderTranfer } from '@/services/order_tranfer.service';
 import { OrderTranfer } from '@/models/order_tranfer.model';
+import MapEms from './MapEms';
+import Vitalsing from './Vitalsing';
 
 const menuBottom = [
   {
@@ -42,7 +44,7 @@ export default function Page() {
     window.location.href = `/${str}`
   }
 
-  const feedPatient = useCallback(async() => {
+  const feedPatient = useCallback(async () => {
     try {
       const result = await findPatientAll()
       setPatients(result.data)
@@ -52,7 +54,7 @@ export default function Page() {
     }
   }, [setPatients])
 
-  const feedDevice = useCallback(async() => {
+  const feedDevice = useCallback(async () => {
     try {
       const result = await findDeviceAll()
       setDevice(result)
@@ -62,7 +64,7 @@ export default function Page() {
     }
   }, [setDevice])
 
-  const feedOrder = useCallback(async() => {
+  const feedOrder = useCallback(async () => {
     try {
       const result = await findAllOrderTranfer()
       setOrder(result.filter(r => r.status_order !== 'Closed'))
@@ -86,7 +88,8 @@ export default function Page() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: '50px',
+          marginTop: '65px',
+          padding: '10px',
           flexDirection: 'column',
         }}
       >
@@ -110,6 +113,10 @@ export default function Page() {
             </div>
           ))}
         </div>
+        <div className={homeCss.mapMenu}>
+          <MapEms />
+          <Vitalsing />
+        </div>
       </div>
 
       {isLoad ? <Loadding /> : null}
@@ -117,12 +124,12 @@ export default function Page() {
   );
 
   function onCheckNumData(key: string) {
-    switch(true){
+    switch (true) {
       case key.toLocaleLowerCase().includes('patient'):
         return patients.length
       case key.toLocaleLowerCase().includes('device'):
         return device.length
-        case key.toLocaleLowerCase().includes('monitor'):
+      case key.toLocaleLowerCase().includes('monitor'):
         return order.length
     }
   }

@@ -4,17 +4,14 @@ import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import RestoreIcon from '@mui/icons-material/Restore';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ArchiveIcon from '@mui/icons-material/Archive';
 import Paper from '@mui/material/Paper';
-import List from '@mui/material/List';
 import HomeIcon from '@mui/icons-material/Home';
 import AirlineSeatFlatAngledIcon from '@mui/icons-material/AirlineSeatFlatAngled';
 import TabletAndroidIcon from '@mui/icons-material/TabletAndroid';
 import MonitorIcon from '@mui/icons-material/Monitor';
 import Loadding from './Loadding';
 import { usePathname } from 'next/navigation';
+import CameraEnhanceIcon from '@mui/icons-material/CameraEnhance';
 
 export default function BottomNavigater() {
   const [value, setValue] = React.useState<number | null>(null);
@@ -50,6 +47,9 @@ export default function BottomNavigater() {
               if (newValue === 3) {
                 window.location.href = '/monitor'
               }
+              if (newValue === 4) {
+                window.location.href = '/camera'
+              }
 
             }}
           >
@@ -57,6 +57,7 @@ export default function BottomNavigater() {
             <BottomNavigationAction label="Patient" icon={<AirlineSeatFlatAngledIcon />} />
             <BottomNavigationAction label="Device" icon={<TabletAndroidIcon />} />
             <BottomNavigationAction label="Monitor" icon={<MonitorIcon />} />
+            <BottomNavigationAction label="Camera" icon={<CameraEnhanceIcon />} />
 
           </BottomNavigation>
         </Paper>
@@ -82,6 +83,9 @@ export default function BottomNavigater() {
     }
     if (pathName.includes('/monitor')) {
       setValue(3)
+    }
+    if (pathName.includes('/camera')) {
+      setValue(4)
     }
   }
 }

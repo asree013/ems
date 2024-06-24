@@ -1,7 +1,6 @@
 .menuItem{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    padding: 20px;
     width: 100%;
     margin-top: 10px;
 }
@@ -15,8 +14,16 @@
     justify-content: center;
     flex-direction: column;
 }
+.mapMenu{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 15px;
+}
 .menuValue:hover{
-    box-shadow: #2c387e 0px 3px 8px;
+    transition: 0.3s;
+    transform: scale(1.1);
 }
 
 @media only screen and (max-width: 600px) {
