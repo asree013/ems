@@ -6,18 +6,24 @@ const nextConfig = {
 
 export default withPWAInit({
   dest: "public",
+  disable: true,
   fallbacks: {
-    // Failed page requests fallback to this.
     document: "/~offline",
-    // This is for /_next/.../.json files.
     data: "/fallback.json",
-    // This is for images.
     image: "/fallback.webp",
-    // This is for audio files.
     audio: "/fallback.mp3",
-    // This is for video files.
     video: "/fallback.mp4",
-    // This is for fonts.
     font: "/fallback-font.woff2",
+  },
+  workbox: {
+    debug: true,
+    strategies: [
+      {
+        strategyName: 'NetworkFirst',
+        options: {
+          ignoreVary: true,
+        },
+      },
+    ],
   },
 })(nextConfig);

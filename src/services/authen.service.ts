@@ -26,7 +26,7 @@ export function logout() {
 }
 
 export function FindUserMe() {
-  return endpoint.get(`${enviromentDev.auth}/me`);
+  return endpoint.get<Users>(`${enviromentDev.auth}/me`);
 }
 export function referfToken() {
   return endpoint.get(`${enviromentDev.auth}/refresh-token`);

@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import GoogleMapReact from "google-map-react";
+import { enviromentDev } from "@/configs/enviroment.dev";
 
 type Geografice = {
     center: {
@@ -44,7 +45,7 @@ export default function MapEms() {
     return (
         <div style={{ height: '50vh', width: '60%' }}>
             <GoogleMapReact
-                bootstrapURLKeys={{ key: "" }}
+                bootstrapURLKeys={{ key: enviromentDev.keyGoogleApi }}
                 center={locate.center}
                 zoom={locate.zoom}
             >

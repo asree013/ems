@@ -26,9 +26,68 @@
     transform: scale(1.1);
 }
 
+.vatalsing{
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    width: 38%;
+    height: 50vh;
+}
+.head{
+    font-size: 2rem;
+    color: #2c387e;
+    font-weight: 700;
+}
+.line{
+    border: 2px solid #2c387e;
+    width: 10rem;
+}
+.operater{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+    margin: 10px;
+}
+.operater button {
+    /* box-shadow: #2c387e 0px 2px 8px 0px; */
+    height: 5rem;
+    display: flex;
+    flex-direction: column;
+    /* color: #2c387e;
+    border-radius: 10px; */
+}
+.emegency{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 10px;
+}
+.emegency button {
+    width: 90%;
+    height: 8rem;
+}
+.cameraCar{
+    margin-top: 10px;
+}
+.bodyCamera{
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 10px;
+}
+
+
+
 @media only screen and (max-width: 600px) {
     .menuItem{
         display: grid;
         grid-template-columns: repeat(1, 1fr);
     } 
 }
+
+@media only screen and (max-width: 1370px) {
+    .bodyCamera{
+        grid-template-columns: repeat(3, 1fr);
+
+    }
+}
+
+

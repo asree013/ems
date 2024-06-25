@@ -7,6 +7,7 @@ export const enviromentDev = {
   auth: '/auth',
   history: '/history',
   exan: '/exan',
+  keyGoogleApi: "AIzaSyApM9zSMh9ZSP3LInOHZ3YGWkrnthaZz-U"
 };
 
 export const enviromentPath = {
