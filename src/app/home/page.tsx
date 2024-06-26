@@ -83,27 +83,27 @@ export default function Page() {
     }
   }, [setOrder])
 
-  const checkRole = useCallback(async() => {
-    try {
-        const result = await FindUserMe()
-        setRole(result.data.role)
-        
-    } catch (error) {
-        toast('error', 'error')
-        window.location.href = '/login'
-    }
-}, [setRole])
+  // const checkRole = useCallback(async () => {
+  //   try {
+  //     const result = await FindUserMe()
+  //     setRole(result.data.role)
+
+  //   } catch (error) {
+  //     toast('error', 'error')
+  //     window.location.href = '/login'
+  //   }
+  // }, [setRole])
 
   useEffect(() => {
     feedPatient()
     feedDevice()
     feedOrder()
-    checkRole()
+    // checkRole()
     setHightMap(window.innerHeight);
-  }, [feedPatient, feedDevice, feedOrder, checkRole])
+  }, [feedPatient, feedDevice, feedOrder])
   return (
     <>
-      <RoleContext.Provider value={{role, setRole}} >
+      <RoleContext.Provider value={{ role, setRole }} >
         <Nav />
 
         <div
@@ -141,10 +141,10 @@ export default function Page() {
             <Vitalsing hightMap={hightMap} />
           </div>
           <div className={homeCss.cameraCar}>
-            <CarmeraCar /> 
+            <CarmeraCar />
           </div>
         </div>
-      {isLoad ? <Loadding /> : null}
+        {isLoad ? <Loadding /> : null}
 
       </RoleContext.Provider>
 
