@@ -57,7 +57,7 @@ export default function Page() {
     } catch (error: any) {
       console.log(error);
       toast(JSON.stringify(error.message), 'error')
-      window.location.href = '/login'
+      // window.location.href = '/login'
     }
   }, [setPatients])
 
@@ -68,7 +68,7 @@ export default function Page() {
     } catch (error: any) {
       console.log(error);
       toast(JSON.stringify(error.message), 'error')
-      window.location.href = '/login'
+      // window.location.href = '/login'
     }
   }, [setDevice])
 
@@ -79,7 +79,7 @@ export default function Page() {
     } catch (error: any) {
       console.log(error);
       toast(JSON.stringify(error.message), 'error')
-      window.location.href = '/login'
+      // window.location.href = '/login'
     }
   }, [setOrder])
 
