@@ -63,12 +63,13 @@
 }
 .emegency button {
     width: 90%;
-    height: 8rem;
+    height: 3rem;
 }
 .cameraCar{
     margin-top: 10px;
 }
 .bodyCamera{
+    position: sticky;
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     grid-gap: 10px;

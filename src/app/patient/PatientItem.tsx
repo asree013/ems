@@ -36,8 +36,22 @@ type Props = {
 export default function PatientItem({ order_tranfer_id }: Props) {
   const pathname = usePathname().includes('patient');
   const router = useRouter();
-  const {patients, setPatients} = React.useContext(PatientContextsArr)
+  const [patients, setPatients] = React.useState<Patients[]>({} as Patients[])
   const [load, setLoad] = React.useState<boolean>(false)
+
+  const feedPatient = React.useCallback(async() => {
+    try {
+      const result = await findPatientAll()
+      setPatients(result.data)
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }, [setPatients])
+
+  React.useEffect(() => {
+    feedPatient()
+  }, [feedPatient])
 
   return (
     <>

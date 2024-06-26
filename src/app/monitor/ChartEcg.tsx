@@ -18,12 +18,15 @@ import {
 } from '@/services/order_tranfer.service';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Divider from '@mui/material/Divider';
 
 import { socket } from '@/configs/socket';
 import { EcgTransfer } from '@/models/ecg.model';
 import StartChart from './StartChart';
 import { referfToken } from '@/services/authen.service';
 import { useRouter } from 'next/navigation';
+
+import chartCss from './chart.module.css'
 
 var x: number[] = [];
 var a: number[] = []
@@ -55,7 +58,7 @@ export default function ChartEcg({
   index,
   onChangeDeleteDeviceID,
   orderTranFer,
-}: GrachProps) {  
+}: GrachProps) {
 
   const dataChart = useRef<number[]>(ecgNull);
   const dataChartSpo = useRef<number[]>(ecgNull);
@@ -66,7 +69,7 @@ export default function ChartEcg({
   const [patient, setPatient] = useState<Patients>({} as Patients);
   const [order] = useState<OrderTranfer>(
     orderTranFer.find((r) => r.element_seq === Number(el_id)) ||
-      ({} as OrderTranfer),
+    ({} as OrderTranfer),
   );
 
   const [hr, setHr] = React.useState<number>(0);
@@ -75,7 +78,7 @@ export default function ChartEcg({
   const [dia, setDia] = React.useState<number>(0);
 
   let [hidden, setHidden] = useState<string[]>([]);
-  data = useRef<number[]>(dataChart.current.slice(0 ,250));
+  data = useRef<number[]>(dataChart.current.slice(0, 250));
   dataSpo2 = useRef<number[]>(dataChartSpo.current);
 
   function activeCheckBox(cb: string, el_id: string) {
@@ -181,7 +184,7 @@ export default function ChartEcg({
         console.log('data current length : ', dataChartSpo.current.length);
         arrSpo = [];
       }
-      
+
     });
 
     socket.on('data-tranfer-press', (message: any) => {
@@ -430,15 +433,16 @@ export default function ChartEcg({
             />
           </div>
         </div>
+        <div style={{border: '1px solid black', width: '100%'}} />
         <div className="body_monitor">
           <div className="hr">
             <p style={{ color: '#21eb56' }}>HR</p>
             <b style={{ fontSize: '2rem', color: '#21eb56' }}>{hr}</b>
           </div>
-          <div className="ecg">
+          {/* <div className="ecg">
             <p style={{ color: '#21eb56' }}>ECG</p>
             <b style={{ fontSize: '2rem', color: '#21eb56' }}>0</b>
-          </div>
+          </div> */}
           <div className="trindal">
             <p style={{ color: 'yellow' }}>tridal</p>
             <b style={{ fontSize: '2rem', color: 'yellow' }}>0</b>
@@ -462,10 +466,10 @@ export default function ChartEcg({
           )}
         </div>
         <div className="chart_option">
-          <div className="check_box_monitor">
+          {/* <div className="check_box_monitor">
             <div>
               <p>EKG</p>
-              <div className="checkbox-wrapper-7">
+              {/* <div className="checkbox-wrapper-7">
                 <input
                   className="tgl tgl-ios"
                   id={`ecg_${index}`}
@@ -489,24 +493,23 @@ export default function ChartEcg({
                 <label className="tgl-btn" htmlFor={`spo2_${index}`} />
               </div>
             </div>
+          </div> */}
+          <div className={chartCss.numChart}>
+            <div className={chartCss.numChartEcg}>
+              <p>ecg</p>
+              <p>20</p>
+            </div>
+            <div className={chartCss.numChartSpo}>
+              <p>spo</p>
+              <p>40</p>
+            </div>
           </div>
-          <div className="canvas">
-            <div
-              hidden={
-                hidden.filter((r) => r === `ecgChart${index}`).length !== 0
-                  ? false
-                  : true
-              }
-            >
+          <div style={{ width: '100%' }}>
+            <div style={{background: 'rgb(7, 7, 26)'}}>
               <canvas id={`ecgChart${index}`}></canvas>
             </div>
-            <div
-              hidden={
-                hidden.filter((r) => r === `ecgChart${index}`).length !== 0
-                  ? true
-                  : false
-              }
-            >
+            <div style={{border: '0.5px solid white'}}></div>
+            <div style={{background: 'rgb(7, 7, 26)'}}>
               <canvas id={`spo2Chart${index}`}></canvas>
             </div>
           </div>
@@ -533,10 +536,10 @@ export default function ChartEcg({
   }
 
   function getRiskFont(level: string) {
-    if(level.includes('W')){
+    if (level.includes('W')) {
       return 'black'
     }
-    else{
+    else {
       return 'white'
     }
   }

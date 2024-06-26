@@ -1,3 +1,4 @@
+'use client'
 import PatientItem from '@/app/patient/PatientItem';
 import React from 'react';
 

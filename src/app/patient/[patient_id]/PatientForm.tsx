@@ -92,7 +92,7 @@ export default function PatientForm({
               <FormControl>
                 <FormLabel>Fistname</FormLabel>
                 <Input
-                  value={patient.first_name? patient.first_name: ''}
+                  value={patient.first_name ? patient.first_name : ''}
                   onChange={(e) =>
                     setPatient({ ...patient, first_name: e.target.value })
                   }
@@ -154,24 +154,25 @@ export default function PatientForm({
                 />
               </FormControl>
               <FormControl sx={{ gridColumn: '1/-1' }}>
-                <Select
-                  onChange={(e) =>
+                <select
+                  id={'group_blood'}
+                  onChange={(e) => {
                     setPatient({
                       ...patient,
-                      group_blood: (e?.target as HTMLInputElement).value,
-                    })
-                  }
-                  value={patient.group_blood ? patient.group_blood : ''}
-                  variant="soft"
+                      group_blood: e.target.value,
+                    });
+                  }}
+                  defaultValue={patient.group_blood ? patient.group_blood : ''}
+                  // variant="soft"
                 >
-                  <Option value="" disabled>
+                  <option value="" disabled >
                     กรุ็ปเลือด
-                  </Option>
-                  <Option value="A">A</Option>
-                  <Option value="B">B</Option>
-                  <Option value="AB">AB</Option>
-                  <Option value="O">O</Option>
-                </Select>
+                  </option>
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="AB">AB</option>
+                  <option value="O">O</option>
+                </select>
               </FormControl>
               <Box className="patientImage">
                 {patient.image ? (

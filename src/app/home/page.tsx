@@ -83,28 +83,28 @@ export default function Page() {
     }
   }, [setOrder])
 
-  // const checkRole = useCallback(async () => {
-  //   try {
-  //     const result = await FindUserMe()
-  //     setRole(result.data.role)
+  const checkRole = useCallback(async () => {
+    try {
+      const result = await FindUserMe()
+      setRole(result.data.role)
 
-  //   } catch (error) {
-  //     toast('error', 'error')
-  //     window.location.href = '/login'
-  //   }
-  // }, [setRole])
+    } catch (error) {
+      toast('error checkRole ', 'error')
+      // window.location.href = '/login'
+    }
+  }, [setRole])
 
   useEffect(() => {
     feedPatient()
     feedDevice()
     feedOrder()
-    // checkRole()
+    checkRole()
     setHightMap(window.innerHeight);
-  }, [feedPatient, feedDevice, feedOrder])
+  }, [feedPatient, feedDevice, feedOrder, checkRole])
   return (
     <>
       <RoleContext.Provider value={{ role, setRole }} >
-        <Nav />
+        {/* <Nav /> */}
 
         <div
           style={{

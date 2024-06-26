@@ -14,8 +14,6 @@ const chart: { el_id: number }[] = [
   { el_id: 4 },
   { el_id: 5 },
   { el_id: 6 },
-  { el_id: 7 },
-  { el_id: 8 },
 ];
 
 const Page: React.FC = () => { // กำหนดให้เป็น React.FC (Functional Component) และตั้งชื่อเป็น MonitorPage
@@ -24,14 +22,7 @@ const Page: React.FC = () => { // กำหนดให้เป็น React.FC 
 
   return (
     <OrderContext.Provider value={{ order, setOrder }}>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection: 'column',
-        }}
-      >
+      <>
         <div className="bodyHomeChart">
           <div className="monitorChart">
             {chart.map((r, i) => (
@@ -39,7 +30,7 @@ const Page: React.FC = () => { // กำหนดให้เป็น React.FC 
             ))}
           </div>
         </div>
-      </div>
+      </>
     </OrderContext.Provider>
   );
 }
