@@ -56,7 +56,7 @@ export default function Page() {
       setPatients(result.data)
     } catch (error: any) {
       console.log(error);
-      toast(JSON.stringify(error.message), 'error')
+      toast(JSON.stringify({status: error.message, message: 'has somtin in patient'}), 'error')
       // window.location.href = '/login'
     }
   }, [setPatients])
@@ -67,7 +67,7 @@ export default function Page() {
       setDevice(result)
     } catch (error: any) {
       console.log(error);
-      toast(JSON.stringify(error.message), 'error')
+      toast(JSON.stringify({status: error.message, message: 'has somtin in patient'}), 'error')
       // window.location.href = '/login'
     }
   }, [setDevice])
@@ -78,7 +78,7 @@ export default function Page() {
       setOrder(result.filter(r => r.status_order !== 'Closed'))
     } catch (error: any) {
       console.log(error);
-      toast(JSON.stringify(error.message), 'error')
+      toast(JSON.stringify({status: error.message, message: 'has somtin in patient'}), 'error')
       // window.location.href = '/login'
     }
   }, [setOrder])

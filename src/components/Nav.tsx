@@ -45,7 +45,7 @@ export default function Nav(props: Props) {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Typography variant="h6" sx={{ my: 2 }}>
-        EMS App
+        EMSink App
       </Typography>
       <Divider />
       <List>
@@ -110,14 +110,14 @@ export default function Nav(props: Props) {
               variant="body1"
               color="ButtonHighlight"
             >
-              EMS App
+              EMSink App
             </Typography>
             <Typography
               variant="h6"
               component="div"
               sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
             >
-              EMS App
+              EMSink App
             </Typography>
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
              

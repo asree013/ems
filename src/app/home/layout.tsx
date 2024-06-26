@@ -12,9 +12,11 @@ export default function DashboardLayout({
     <section style={{ width: '100%' }}>
       {/* Include shared UI here e.g. a header or sidebar */}
       <Nav />
-      
+
       {children}
-      <BottomNavigater />
+      <div style={{marginTop: '60px'}}>
+        <BottomNavigater />
+      </div>
     </section>
   );
 }
