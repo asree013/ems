@@ -22,7 +22,7 @@ export function logins(value: Logins) {
 }
 
 export function logout() {
-  return endpoint.get(`${enviromentDev.auth}/sign-out`);
+  return 
 }
 
 export function FindUserMe() {

@@ -147,27 +147,31 @@ export default function ChartEcg({
 
   const runSocket = useCallback(() => {
     const orderId = order.id;
-    socket.on('data-tranfer-ecg', (message: any) => {
-      if (JSON.parse(message).order_id !== orderId || !order) {
-        console.log('ไม่ได้ทำงาน');
-        return
-      }
-      let ecg: number[] = JSON.parse(message).ecg
-      if (arrs.flat().length < 2500) {
-        arrs.push(ecg);
-        console.log('add ecg 1', arrs);
-      } else {
-        arrs.push(ecg);
-        console.log('ecg -----> ', arrs.flat());
-        dataChart.current = [];
-        dataChart.current = arrs.flat();
-        console.log('data current length : ', dataChart.current.length);
-        arrs = [];
-      }
+    // socket.on('data-tranfer-ecg', (message: any) => {
+    //   console.log('ecg ' ,message);
 
-    });
+    //   // if (JSON.parse(message).order_id !== orderId || !order) {
+    //   //   console.log('ไม่ได้ทำงาน');
+    //   //   return
+    //   // }
+    //   // let ecg: number[] = JSON.parse(message).ecg
+    //   // if (arrs.flat().length < 2500) {
+    //   //   arrs.push(ecg);
+    //   //   console.log('add ecg 1', arrs);
+    //   // } else {
+    //   //   arrs.push(ecg);
+    //   //   console.log('ecg -----> ', arrs.flat());
+    //   //   dataChart.current = [];
+    //   //   dataChart.current = arrs.flat();
+    //   //   console.log('data current length : ', dataChart.current.length);
+    //   //   arrs = [];
+    //   // }
+
+    // });
 
     socket.on('data-tranfer-pleth', (message: any) => {
+      console.log('pleth ' ,message);
+      
       if (JSON.parse(message).order_id !== orderId || !order) {
         console.log('ไม่ได้ทำงาน');
         return;
@@ -186,17 +190,18 @@ export default function ChartEcg({
       }
 
     });
+    //   socket.on('data-tranfer-press', (message: any) => {
+    //   console.log('press ' ,message);
 
-    socket.on('data-tranfer-press', (message: any) => {
-      if (JSON.parse(message).order_id !== orderId || !order || !message) {
-        console.log('ไม่ได้ทำงาน');
-        return;
-      }
-      setHr(JSON.parse(message).hr);
-      setSpo2Press(JSON.parse(message).spo2);
-      setDia(JSON.parse(message).dia);
-      setSys(JSON.parse(message).sys);
-    });
+    //   // if (JSON.parse(message).order_id !== orderId || !order || !message) {
+    //   //   console.log('ไม่ได้ทำงาน');
+    //   //   return;
+    //   // }
+    //   // setHr(JSON.parse(message).hr);
+    //   // setSpo2Press(JSON.parse(message).spo2);
+    //   // setDia(JSON.parse(message).dia);
+    //   // setSys(JSON.parse(message).sys);
+    // });
 
     function onDisconnect() {
       console.log('disconnect');

@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { BodyComponent } from 'reactjs-human-body';
 import { useRouter } from 'next/navigation';
-import { BodyHumans } from '@/models/body.human.module';
+import { BodyHumans } from '@/models/body.human.model';
 
 import bodyHumanCss from './styles/BodyHuman.module.css';
 import { TypeOpenExanContext, OpenExanImage } from '@/contexts/openExanImage.context';

@@ -1,10 +1,73 @@
-.menuItem{
+.homeBody {
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    margin: 75px 10px;
+    flex-direction: row;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    width: 100%;
+    border-radius: 10px;
+}
+.sideBar{
+    width: 18%;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.logoAdin{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+.sideBarContent{
+    display: flex;
+    flex-direction: column;
+    margin-top: 40px;
+    width: 100%;
+}
+.headContent{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.content{
+    width: 100%;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.contentMenu{
+    margin-top: 30px;
+    width: 100%;
+
+}
+.contentTitle{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+.contentItem{
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+}
+
+.menuItem {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     width: 100%;
-    margin-top: 10px;
+    margin-top: 15px;
 }
-.menuValue{
+
+.menuValue {
     width: 90%;
     height: 7rem;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -14,38 +77,52 @@
     justify-content: center;
     flex-direction: column;
 }
-.mapMenu{
+.paperMenu{
+    height: 12rem;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.mapMenu {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-top: 15px;
 }
-.menuValue:hover{
+
+.menuValue:hover {
     transition: 0.3s;
     transform: scale(1.1);
 }
 
-.vatalsing{
+.vatalsing {
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     width: 38%;
     height: 50vh;
 }
-.head{
+
+.head {
     font-size: 2rem;
     color: #2c387e;
     font-weight: 700;
 }
-.line{
+
+.line {
     border: 2px solid #2c387e;
     width: 10rem;
 }
-.operater{
+
+.operater {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 10px;
     margin: 10px;
 }
+
 .operater button {
     /* box-shadow: #2c387e 0px 2px 8px 0px; */
     height: 5rem;
@@ -54,21 +131,25 @@
     /* color: #2c387e;
     border-radius: 10px; */
 }
-.emegency{
+
+.emegency {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     margin-top: 10px;
 }
+
 .emegency button {
     width: 90%;
     height: 3rem;
 }
-.cameraCar{
+
+.cameraCar {
     margin-top: 10px;
 }
-.bodyCamera{
+
+.bodyCamera {
     position: sticky;
     display: grid;
     grid-template-columns: repeat(6, 1fr);
@@ -78,24 +159,22 @@
 
 
 @media only screen and (max-width: 600px) {
-    .menuItem{
+    .menuItem {
         display: grid;
         grid-template-columns: repeat(1, 1fr);
-    } 
+    }
 }
 
 @media only screen and (max-width: 1370px) {
-    .bodyCamera{
+    .bodyCamera {
         grid-template-columns: repeat(3, 1fr);
 
     }
 }
 
 @media only screen and (max-width: 450px) {
-    .bodyCamera{
+    .bodyCamera {
         display: grid;
         grid-template-columns: repeat(1, 1fr);
-    } 
+    }
 }
-
-

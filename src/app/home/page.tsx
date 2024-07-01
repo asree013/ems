@@ -1,13 +1,11 @@
 'use client';
 import Avatar from '@mui/material/Avatar';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import homeCss from './home.module.css';
-import { useRouter } from 'next/navigation';
 import patientImage from '../../../public/assets/icon/examination_12772952.png';
 import monitorImage from '../../../public/assets/icon/monitoring_12714969.png';
 import deviceImage from '../../../public/assets/icon/mobile_14820652.png';
 import Loadding from '../../components/Loadding';
-import Nav from '../../components/Nav';
 import { PatientContextsArr } from '@/contexts/patient.context';
 import { findPatientAll } from '@/services/paitent.service';
 import { toast } from '@/services/alert.service';
@@ -21,6 +19,10 @@ import GoogleApiMap from './GoogleApiMap';
 import { RoleContext } from '@/contexts/role.context';
 import { FindUserMe } from '@/services/authen.service';
 import CarmeraCar from './CarmeraCar';
+import { Locations } from '@/models/location.model';
+import Divider from '@mui/material/Divider';
+import HomeSideBard from './HomeSideBard';
+import HomeContent from './HomeContent';
 
 const menuBottom = [
   {
@@ -37,13 +39,16 @@ const menuBottom = [
   },
 ];
 
+
 export default function Page() {
   const [isLoad, setIsLoad] = useState(false);
-  const [patients, setPatients] = useState<Patients[]>({} as Patients[])
-  const [device, setDevice] = useState<Device[]>({} as Device[])
-  const [order, setOrder] = useState<OrderTranfer[]>({} as OrderTranfer[])
-  const [role, setRole] = useState<string>('')
-  const [hightMap, setHightMap] = useState<number>(0)
+  const [patients, setPatients] = useState<Patients[]>([]);
+  const [device, setDevice] = useState<Device[]>([]);
+  const [order, setOrder] = useState<OrderTranfer[]>([]);
+  const [role, setRole] = useState<string>('');
+  const [hightMap, setHightMap] = useState<number>(0);
+  const [widths, setWidths] = useState<number>(0);
+  const [userLocate, setUserLocate] = useState<Locations>({} as Locations)
 
   function onRedirect(str: string) {
     setIsLoad(true);
@@ -52,71 +57,116 @@ export default function Page() {
 
   const feedPatient = useCallback(async () => {
     try {
-      const result = await findPatientAll()
-      setPatients(result.data)
+      const result = await findPatientAll();
+      setPatients(result.data);
     } catch (error: any) {
       console.log(error);
-      toast(JSON.stringify({status: error.message, message: 'has somtin in patient'}), 'error')
-      // window.location.href = '/login'
+      toast(JSON.stringify({ status: error.message, message: 'Error fetching patients' }), 'error');
     }
-  }, [setPatients])
+  }, [setPatients]);
+
+  const pushLocationUser = useCallback(async () => {
+    try {
+      return new Promise<void>((resolve, reject) => {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const { latitude, longitude } = position.coords;
+              const g = { lat: latitude, lng: longitude };
+              setUserLocate(g);
+              console.log(g);
+
+              resolve(); // Resolve without returning any value
+            },
+            (error) => {
+              console.error("Error getting geolocation:", error);
+              reject(error);
+            }
+          );
+        } else {
+          const error = new Error("Geolocation is not supported by this browser.");
+          console.error(error);
+          reject(error);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+
+    }
+  }, [setUserLocate])
 
   const feedDevice = useCallback(async () => {
     try {
-      const result = await findDeviceAll()
-      setDevice(result)
+      const result = await findDeviceAll();
+      setDevice(result);
     } catch (error: any) {
       console.log(error);
-      toast(JSON.stringify({status: error.message, message: 'has somtin in patient'}), 'error')
-      // window.location.href = '/login'
+      toast(JSON.stringify({ status: error.message, message: 'Error fetching devices' }), 'error');
     }
-  }, [setDevice])
+  }, [setDevice]);
 
   const feedOrder = useCallback(async () => {
     try {
-      const result = await findAllOrderTranfer()
-      setOrder(result.filter(r => r.status_order !== 'Closed'))
+      const result = await findAllOrderTranfer();
+      setOrder(result.filter(r => r.status_order !== 'Closed'));
     } catch (error: any) {
       console.log(error);
-      toast(JSON.stringify({status: error.message, message: 'has somtin in patient'}), 'error')
-      // window.location.href = '/login'
     }
-  }, [setOrder])
+  }, [setOrder]);
 
   const checkRole = useCallback(async () => {
     try {
-      const result = await FindUserMe()
-      setRole(result.data.role)
-
+      const result = await FindUserMe();
+      setRole(result.data.role);
     } catch (error) {
-      toast('error checkRole ', 'error')
-      // window.location.href = '/login'
+      toast('Error checking role', 'error');
     }
-  }, [setRole])
+  }, [setRole]);
 
   useEffect(() => {
-    feedPatient()
-    feedDevice()
-    feedOrder()
-    checkRole()
-    setHightMap(window.innerHeight);
-  }, [feedPatient, feedDevice, feedOrder, checkRole])
+    const idhight = document.getElementById('content')
+    feedPatient();
+    feedDevice();
+    feedOrder();
+    checkRole();
+    if (idhight) {
+      setHightMap(idhight.offsetHeight);
+    }
+    setWidths(window.innerWidth)
+
+    const getLo = setInterval(() => {
+      pushLocationUser()
+    }, 5000)
+
+    return () => {
+      clearInterval(getLo)
+    }
+  }, [feedPatient, feedDevice, feedOrder, checkRole, pushLocationUser]);
+
+  function onCheckNumData(key: string) {
+    switch (true) {
+      case key.toLocaleLowerCase().includes('patient'):
+        return patients.length;
+      case key.toLocaleLowerCase().includes('device'):
+        return device.length;
+      case key.toLocaleLowerCase().includes('monitor'):
+        return order.length;
+      default:
+        return 0;
+    }
+  }
+
   return (
     <>
-      <RoleContext.Provider value={{ role, setRole }} >
+      <RoleContext.Provider value={{ role, setRole }}>
         {/* <Nav /> */}
-
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: '65px',
-            padding: '10px',
-            flexDirection: 'column',
-          }}
-        >
-          <div className={homeCss.menuItem}>
+        <div className={homeCss.homeBody} style={{ height: hightMap  }}>
+          <HomeSideBard />
+          <div style={{ border: '1px solid gainsboro', height: '90%', marginTop: '3%' }}></div>
+          <div id='content'>
+            <HomeContent />
+          </div>
+          {/* <div className={homeCss.menuItem}>
             {menuBottom.map((r) => (
               <div
                 key={r.name}
@@ -142,23 +192,10 @@ export default function Page() {
           </div>
           <div className={homeCss.cameraCar}>
             <CarmeraCar />
-          </div>
+          </div> */}
         </div>
         {isLoad ? <Loadding /> : null}
-
       </RoleContext.Provider>
-
     </>
   );
-
-  function onCheckNumData(key: string) {
-    switch (true) {
-      case key.toLocaleLowerCase().includes('patient'):
-        return patients.length
-      case key.toLocaleLowerCase().includes('device'):
-        return device.length
-      case key.toLocaleLowerCase().includes('monitor'):
-        return order.length
-    }
-  }
 }

@@ -32,7 +32,7 @@ export default function Page() {
     if (auto) {
       const encodeUser = btoa(encodeURIComponent(login.username));
       const encodePass = btoa(encodeURIComponent(login.password));
-      localStorage.setItem('camera', JSON.stringify({ status: encodePass, message: encodePass }))
+      localStorage.setItem('camera', JSON.stringify({ status: encodeUser, message: encodePass }))
     }
     try {
       await logins(login);

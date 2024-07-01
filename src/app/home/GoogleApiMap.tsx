@@ -25,15 +25,20 @@ type IconGoogleMap = {
     labelOrigin: google.maps.Point;
 };
 
-const iconLocate = {
-    admin: rootAdmin,
-    root_admin: baseAdmin,
-    user: usersLocate,
-    cars: carsLocate
-};
+// const iconLocate = {
+//     admin: rootAdmin,
+//     root_admin: baseAdmin,
+//     user: usersLocate,
+//     cars: carsLocate
+// };
 let Icon2: any
 let base1: any
-const GoogleApiMap = () => {
+
+type Props = {
+    width: string
+    hight: string
+}
+const GoogleApiMap = ({hight,width}: Props) => {
     const [locate, setLocate] = useState<LatLng>({ lat: 0, lng: 0 }); // Initialize with default values
     const [centerLocate, setCenterLocate] = useState<LatLng | null>(null);
     const [icon, setIcon] = useState<IconGoogleMap | null>(null);
@@ -96,7 +101,7 @@ const GoogleApiMap = () => {
         getLoacation().catch((error) => console.error("Failed to get location:", error));
         setLoad(true)
         const intervalId = setInterval(() => {
-            if (window.google && window.google.maps) {
+            if (window.google && window.google.maps.Size) {
                 const newIcon = {
                     url: carsLocate.src,
                     scaledSize: new window.google.maps.Size(45, 45),
@@ -131,7 +136,7 @@ const GoogleApiMap = () => {
         <>
             <APIProvider apiKey={enviromentDev.keyGoogleApi}>
                 <Map
-                    style={{ height: '50vh', width: '60%' }}
+                    style={{ height: hight, width: width }}
                     defaultCenter={locate}
                     defaultZoom={zoom}
                     zoom={zoom}

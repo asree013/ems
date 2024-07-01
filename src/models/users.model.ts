@@ -21,4 +21,5 @@ export type Users = {
   Squad: string
   Hospital: string
   Responsibilities: string
+  LocationActive: []
 }

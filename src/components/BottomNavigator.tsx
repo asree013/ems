@@ -12,6 +12,7 @@ import MonitorIcon from '@mui/icons-material/Monitor';
 import Loadding from './Loadding';
 import { usePathname } from 'next/navigation';
 import CameraEnhanceIcon from '@mui/icons-material/CameraEnhance';
+import PlaceIcon from '@mui/icons-material/Place';
 
 export default function BottomNavigater() {
   const [value, setValue] = React.useState<number | null>(null);
@@ -39,21 +40,25 @@ export default function BottomNavigater() {
                 window.location.href = '/home'
               }
               if (newValue === 1) {
-                window.location.href = '/patient'
+                window.location.href = '/map'
               }
               if (newValue === 2) {
-                window.location.href = '/device'
+                window.location.href = '/patient'
               }
               if (newValue === 3) {
-                window.location.href = '/monitor'
+                window.location.href = '/device'
               }
               if (newValue === 4) {
+                window.location.href = '/monitor'
+              }
+              if (newValue === 5) {
                 window.location.href = '/camera'
               }
 
             }}
           >
             <BottomNavigationAction label="Home" icon={<HomeIcon />} />
+            <BottomNavigationAction label="Map" icon={<PlaceIcon />} />
             <BottomNavigationAction label="Patient" icon={<AirlineSeatFlatAngledIcon />} />
             <BottomNavigationAction label="Device" icon={<TabletAndroidIcon />} />
             <BottomNavigationAction label="Monitor" icon={<MonitorIcon />} />
@@ -75,17 +80,20 @@ export default function BottomNavigater() {
     if (pathName.includes('/home')) {
       setValue(0)
     }
-    if (pathName.includes('/patient')) {
+    if (pathName.includes('/map')) {
       setValue(1)
     }
-    if (pathName.includes('/device')) {
+    if (pathName.includes('/patient')) {
       setValue(2)
     }
-    if (pathName.includes('/monitor')) {
+    if (pathName.includes('/device')) {
       setValue(3)
     }
-    if (pathName.includes('/camera')) {
+    if (pathName.includes('/monitor')) {
       setValue(4)
+    }
+    if (pathName.includes('/camera')) {
+      setValue(5)
     }
   }
 }
