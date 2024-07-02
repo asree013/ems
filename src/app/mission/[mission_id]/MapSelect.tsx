@@ -1,16 +1,17 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { APIProvider, Map, MapControl, ControlPosition, Marker } from '@vis.gl/react-google-maps';
+import { APIProvider, Map, MapControl, ControlPosition, Marker, MapMouseEvent } from '@vis.gl/react-google-maps';
 import { enviromentDev } from '@/configs/enviroment.dev';
 import NearMeIcon from '@mui/icons-material/NearMe';
-import { RoleContext, TRoleContext } from '@/contexts/role.context';
+import { TMissionC, MissionContext } from '@/contexts/missions.context';
 import rootAdmin from '@/assets/icon/admin.png';
-import baseAdmin from '@/assets/icon/base_admin.png';
-import usersLocate from '@/assets/icon/user_locate.png';
-import carsLocate from '@/assets/icon/ambulance.png';
-import carsLocateB from '@/assets/icon/ambulance_4550989.png';
+import Loadding from '@/components/Loadding';
+import missionCss from './mission_id.module.css';
+import MgrsPole from 'mgrs-pole-test';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import Loadding from '@/components/Loadding';
+import * as mgrs from 'mgrs';
+import { OpenModalMapContext, TOpenModalMap } from '@/contexts/openModal.context';
+const utmObj = require('utm-latlng');
 
 type LatLng = {
     lat: number;
@@ -25,27 +26,18 @@ type IconGoogleMap = {
     labelOrigin: google.maps.Point;
 };
 
-// const iconLocate = {
-//     admin: rootAdmin,
-//     root_admin: baseAdmin,
-//     user: usersLocate,
-//     cars: carsLocate
-// };
-let Icon2: any
-let base1: any
+const MapSelect = () => {
+    const UTM = new utmObj('Everest');
+    const MGRS = new MgrsPole();
+  const {open, setOpen} = useContext<TOpenModalMap>(OpenModalMapContext)
 
-type Props = {
-    width: string
-    hight: string
-}
-const GoogleApiMap = ({hight,width}: Props) => {
-    const [locate, setLocate] = useState<LatLng>({ lat: 0, lng: 0 }); // Initialize with default values
+
+    const [locate, setLocate] = useState<LatLng>({ lat: 0, lng: 0 });
     const [centerLocate, setCenterLocate] = useState<LatLng | null>(null);
     const [icon, setIcon] = useState<IconGoogleMap | null>(null);
     const [zoom, setZoom] = useState<number>(8);
     const [load, setLoad] = useState<boolean>(false);
-    const { role, setRole } = useContext<TRoleContext>(RoleContext);
-
+    const { mission, setMission } = useContext<TMissionC>(MissionContext);
 
     const getLoacation = useCallback(() => {
         return new Promise<void>((resolve, reject) => {
@@ -55,7 +47,7 @@ const GoogleApiMap = ({hight,width}: Props) => {
                         const { latitude, longitude } = position.coords;
                         const g = { lat: latitude, lng: longitude };
                         setLocate(g);
-                        resolve(); // Resolve without returning any value
+                        resolve();
                     },
                     (error) => {
                         console.error("Error getting geolocation:", error);
@@ -97,35 +89,37 @@ const GoogleApiMap = ({hight,width}: Props) => {
         });
     }, [setCenterLocate]);
 
+    function onSelectLatLng(p: MapMouseEvent) {
+        if (p.detail.latLng) {
+            const utm = UTM.convertLatLngToUtm(p.detail.latLng.lat, p.detail.latLng.lng, 1);
+            const mgrss = mgrs.forward([p.detail.latLng.lng, p.detail.latLng.lat])
+            
+            setMission({
+                ...mission,
+                lat: p.detail.latLng.lat.toString(),
+                long: p.detail.latLng.lng.toString(),
+                utm: JSON.stringify(utm),
+                mgrs: mgrss
+            });
+            setOpen(false)
+        }
+    }
+
     useEffect(() => {
         getLoacation().catch((error) => console.error("Failed to get location:", error));
-        setLoad(true)
+        setLoad(true);
         const intervalId = setInterval(() => {
             if (window.google && window.google.maps.Size) {
                 const newIcon = {
-                    url: carsLocate.src,
-                    scaledSize: new window.google.maps.Size(45, 45),
+                    url: rootAdmin.src,
+                    scaledSize: new window.google.maps.Size(40, 40),
                     origin: new window.google.maps.Point(0, 0),
                     anchor: new window.google.maps.Point(20, 20),
-                    labelOrigin: new google.maps.Point(20, -5)
-                };
-                Icon2 = {
-                    url: carsLocateB.src,
-                    scaledSize: new window.google.maps.Size(45, 45),
-                    origin: new window.google.maps.Point(0, 0),
-                    anchor: new window.google.maps.Point(20, 20),
-                    labelOrigin: new google.maps.Point(20, -5)
-                };
-                base1 = {
-                    url: baseAdmin.src,
-                    scaledSize: new window.google.maps.Size(45, 45),
-                    origin: new window.google.maps.Point(0, 0),
-                    anchor: new window.google.maps.Point(20, 20),
-                    labelOrigin: new google.maps.Point(20, -5)
+                    labelOrigin: new window.google.maps.Point(20, -10)
                 };
                 setIcon(newIcon);
                 clearInterval(intervalId);
-                setLoad(false)
+                setLoad(false);
             }
         }, 100);
 
@@ -136,14 +130,14 @@ const GoogleApiMap = ({hight,width}: Props) => {
         <>
             <APIProvider apiKey={enviromentDev.keyGoogleApi}>
                 <Map
-                    style={{ height: hight, width: width }}
+                    className={missionCss.map}
                     defaultCenter={locate}
                     defaultZoom={zoom}
                     zoom={zoom}
                     center={centerLocate}
                     gestureHandling={'greedy'}
                     disableDefaultUI={true}
-                    onClick={(e) => console.log(e.detail.latLng)}
+                    onClick={onSelectLatLng}
                 >
                     <MapControl position={ControlPosition.CENTER}>
                         <svg width="70px" height="70px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -169,24 +163,18 @@ const GoogleApiMap = ({hight,width}: Props) => {
                     </MapControl>
                     {icon &&
                         <Marker
-                        onClick={(e) => console.log(e.latLng?.toString())}
+                            onClick={(e) => console.log(e.latLng?.toString())}
                             icon={icon}
                             position={locate}
-                            label={'สพส.11071 CPA'}
+                            label={'ตำแหน่งของฉัน'}
                             animation={centerLocate ? window.google.maps.Animation.BOUNCE : null}
-
                         />
                     }
-                    
                 </Map>
             </APIProvider>
-            {
-                load?
-                <Loadding />:
-                null
-            }
+            {load && <Loadding />}
         </>
     );
 };
 
-export default GoogleApiMap;
+export default MapSelect;

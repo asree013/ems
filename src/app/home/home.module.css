@@ -1,15 +1,15 @@
 .homeBody {
     display: flex;
     align-items: start;
-    justify-content: center;
-    margin: 75px 10px;
+    justify-content: start;
+    margin: 75px 0;
     flex-direction: row;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    width: 100%;
     border-radius: 10px;
+    background: white;
 }
 .sideBar{
-    width: 18%;
+    width: 10%;
     padding: 40px;
     display: flex;
     flex-direction: column;
@@ -23,10 +23,10 @@
     width: 100%;
 }
 .sideBarContent{
-    display: flex;
+    /* display: flex;
     flex-direction: column;
-    margin-top: 40px;
-    width: 100%;
+    margin-top: 40px; */
+    width: 50%;
 }
 .headContent{
     width: 100%;
@@ -35,7 +35,7 @@
 }
 .content{
     width: 100%;
-    padding: 40px;
+    padding: 0 40px;
     display: flex;
     flex-direction: column;
     align-items: center;

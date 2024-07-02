@@ -92,7 +92,7 @@ export default function Nav(props: Props) {
 
   return (
     <>
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex' }} >
         <CssBaseline />
         <AppBar component="nav" style={{ background: '#2c387e' }}>
           <Toolbar>

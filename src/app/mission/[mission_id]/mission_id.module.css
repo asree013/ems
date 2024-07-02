@@ -1,0 +1,31 @@
+.home{
+    margin-top: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.card{
+    display: flex;
+}
+.map{
+    width: 45rem;
+    height: 40rem;
+}
+
+@media only screen and (max-width: 450px) {
+    .map{
+        width: 20rem;
+        height: 30rem;
+    }
+    .card{
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media only screen and (max-width: 1024) {
+    .map{
+        width: 35rem;
+        height: 40rem;
+    }
+}
