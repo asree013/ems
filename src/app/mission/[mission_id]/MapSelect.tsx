@@ -1,3 +1,4 @@
+'use client'
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { APIProvider, Map, MapControl, ControlPosition, Marker, MapMouseEvent } from '@vis.gl/react-google-maps';
 import { enviromentDev } from '@/configs/enviroment.dev';
@@ -10,6 +11,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import * as mgrs from 'mgrs';
 import { OpenModalMapContext, TOpenModalMap } from '@/contexts/openModal.context';
+import { Button } from '@mui/material';
 const utmObj = require('utm-latlng');
 
 type LatLng = {
@@ -145,19 +147,19 @@ const MapSelect = () => {
                         </svg>
                     </MapControl>
                     <MapControl position={ControlPosition.RIGHT}>
-                        <button onClick={onCheckUserLocation} className='m-2 border-2 border-black rounded-sm bg-gray-100 hover:bg-gray-300'>
+                        <Button onClick={onCheckUserLocation} className='m-2 border-2 border-black rounded-sm bg-gray-100 hover:bg-gray-300'>
                             <NearMeIcon />
-                        </button>
+                        </Button>
                     </MapControl>
                     <MapControl position={ControlPosition.RIGHT}>
-                        <button onClick={() => setZoom(zoom + 1)} className='m-2 border-2 border-black rounded-sm bg-gray-100 hover:bg-gray-300'>
+                        <Button onClick={() => setZoom(zoom + 1)} className='m-2 border-2 border-black rounded-sm bg-gray-100 hover:bg-gray-300'>
                             <AddIcon />
-                        </button>
+                        </Button>
                     </MapControl>
                     <MapControl position={ControlPosition.RIGHT}>
-                        <button onClick={() => setZoom(zoom - 1)} className='m-2 border-2 border-black rounded-sm bg-gray-100 hover:bg-gray-300'>
+                        <Button onClick={() => setZoom(zoom - 1)} className='m-2 border-2 border-black rounded-sm bg-gray-100 hover:bg-gray-300'>
                             <RemoveIcon />
-                        </button>
+                        </Button>
                     </MapControl>
                     {icon &&
                         <Marker

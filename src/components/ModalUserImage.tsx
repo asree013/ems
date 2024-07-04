@@ -102,8 +102,8 @@ export default function ModalUserImage({data}: Props) {
                     <Typography fontSize="xl" fontWeight="lg">
                         {data.first_name} {data.last_name}
                     </Typography>
-                    <Typography level="body-sm" fontWeight="lg" textColor="text.tertiary">
-                        {'ระยะทางจากที่เกิดเหตุ: ' + haversines(Number(missionId.lat), Number(missionId.long), Number(data.LocationActive[0]?.lat), Number(data.LocationActive[0]?.long)).toFixed(2) + " km."}
+                    <Typography level="body-sm" fontWeight="lg" textColor="success.600">
+                        {'ระยะทางจากที่เกิดเหตุ: ' + haversines(Number(missionId.lat), Number(missionId.long), Number(data.LocationActive.pop()?.lat), Number(data.LocationActive.pop()?.long)).toFixed(2) + " km."}
                     </Typography>
                     <Sheet
                         sx={{

@@ -6,8 +6,6 @@ import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
 import React, { Fragment, useContext } from 'react';
 import { OpenModalMapContext, TOpenModalMap } from '@/contexts/openModal.context';
-import { TMissionC, MissionContext } from '@/contexts/missions.context';
-import GoogleApiMap from '@/app/home/GoogleApiMap';
 import MapSelect from './MapSelect';
 
 export default function MapModal() {
@@ -44,9 +42,7 @@ export default function MapModal() {
           >
             Click for Add Location
           </Typography>
-          <Typography id="modal-desc"  component={'div'}>
             <MapSelect />
-          </Typography>
         </Sheet>
       </Modal>
     </Fragment>

@@ -6,13 +6,11 @@ import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import Paper from '@mui/material/Paper';
 import HomeIcon from '@mui/icons-material/Home';
-import AirlineSeatFlatAngledIcon from '@mui/icons-material/AirlineSeatFlatAngled';
-import TabletAndroidIcon from '@mui/icons-material/TabletAndroid';
 import MonitorIcon from '@mui/icons-material/Monitor';
 import Loadding from './Loadding';
 import { usePathname } from 'next/navigation';
-import CameraEnhanceIcon from '@mui/icons-material/CameraEnhance';
 import PlaceIcon from '@mui/icons-material/Place';
+import SpeedDialButton from './SpeedDialButton';
 
 export default function BottomNavigater() {
   const [value, setValue] = React.useState<number | null>(null);
@@ -35,35 +33,24 @@ export default function BottomNavigater() {
             showLabels
             value={value}
             onChange={(event, newValue) => {
-              setLoad(true)
               if (newValue === 0) {
+                setLoad(true)
                 window.location.href = '/home'
               }
               if (newValue === 1) {
+                setLoad(true)
                 window.location.href = '/map'
               }
               if (newValue === 2) {
-                window.location.href = '/patient'
-              }
-              if (newValue === 3) {
-                window.location.href = '/device'
-              }
-              if (newValue === 4) {
                 window.location.href = '/monitor'
+                setLoad(true)
               }
-              if (newValue === 5) {
-                window.location.href = '/camera'
-              }
-
             }}
           >
             <BottomNavigationAction label="Home" icon={<HomeIcon />} />
             <BottomNavigationAction label="Map" icon={<PlaceIcon />} />
-            <BottomNavigationAction label="Patient" icon={<AirlineSeatFlatAngledIcon />} />
-            <BottomNavigationAction label="Device" icon={<TabletAndroidIcon />} />
             <BottomNavigationAction label="Monitor" icon={<MonitorIcon />} />
-            <BottomNavigationAction label="Camera" icon={<CameraEnhanceIcon />} />
-
+            <BottomNavigationAction label="All" icon={<SpeedDialButton />} />
           </BottomNavigation>
         </Paper>
       </Box>
@@ -97,5 +84,7 @@ export default function BottomNavigater() {
     }
   }
 }
+
+
 
 

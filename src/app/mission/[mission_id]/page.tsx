@@ -12,15 +12,14 @@ export default function Page() {
   const [open, setOpen] = useState<boolean>(false)
   return (
     <>
-      <div className={missionCss.home}>
-
-        <OpenModalMapContext.Provider value={{ open, setOpen }}>
-          <MissionContext.Provider value={{ mission, setMission }}>
+      <OpenModalMapContext.Provider value={{ open, setOpen }}>
+        <MissionContext.Provider value={{ mission, setMission }}>
+          <div className={missionCss.home}>
             <MissionForm />
             <MapModal />
-          </MissionContext.Provider>
-        </OpenModalMapContext.Provider>
-      </div>
+          </div>
+        </MissionContext.Provider>
+      </OpenModalMapContext.Provider>
     </>
   )
 }

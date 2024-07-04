@@ -7,7 +7,6 @@ import Typography from '@mui/material/Typography';
 import missionCss from './mission_id.module.css'
 import { Alert, Button, Fab, Paper, TextField } from '@mui/material';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
-import MyLocationIcon from '@mui/icons-material/MyLocation';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import { useContext, useState } from 'react';
 import { OpenModalMapContext, TOpenModalMap } from '@/contexts/openModal.context';
@@ -18,7 +17,6 @@ import Divider from '@mui/material/Divider';
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import { toast } from '@/services/alert.service';
 import { createMission } from '@/services/mission.service';
-import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -99,7 +97,7 @@ export default function MissionForm() {
               <TextField error={isNull} value={mission.utm ? mission.utm : '0.000000'} style={{ width: '48%', marginTop: '10px' }} id="filled-basic" label="utm" variant="filled" disabled />
               <TextField error={isNull} value={mission.mgrs ? mission.mgrs : '0.000000'} style={{ width: '48%', marginTop: '10px' }} id="filled-basic" label="mgrs" variant="filled" disabled />
             </Box>
-            <Alert hidden={mission.lat ? false : true} style={{ marginTop: '10px' }} icon={<CheckIcon fontSize="inherit" />} severity="success">
+            <Alert hidden={!mission.lat? true: false } style={{ marginTop: '10px' }} icon={<CheckIcon fontSize="inherit" />} severity="success">
               Select location Success
             </Alert>
           </Typography>

@@ -1,6 +1,7 @@
 import Nav from '@/components/Nav';
 import { metadata } from '../layout';
 import BottomNavigater from '@/components/BottomNavigator';
+import SpeedDialButton from '@/components/SpeedDialButton';
 metadata.title = 'Home EMS App';
 
 export default function DashboardLayout({
@@ -16,6 +17,7 @@ export default function DashboardLayout({
       {children}
       <div style={{marginTop: '60px'}}>
         <BottomNavigater />
+        <SpeedDialButton />
       </div>
     </section>
   );
