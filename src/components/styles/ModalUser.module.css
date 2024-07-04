@@ -1,0 +1,9 @@
+.userContent{
+    overflow: scroll;
+    height: 30rem;
+    background: rgb(215, 215, 215);
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}

@@ -7,3 +7,10 @@ export type TMissionC = {
 }
 
 export const MissionContext = createContext<TMissionC>({} as TMissionC)
+
+export type TMissionCs = {
+    missions: Missions[]
+    setMissions: Dispatch<SetStateAction<Missions[]>>
+}
+
+export const MissionContexts = createContext<TMissionCs>({} as TMissionCs)

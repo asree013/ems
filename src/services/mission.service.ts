@@ -9,3 +9,19 @@ export function createMission(data: Missions) {
         throw error
     }
 }
+
+export function findMission(page: number, limit: number) {
+    try {
+        return endpoint.get<Missions[]>(enviromentDev.mission+ `?page=${page}&limit=${limit}`)
+    } catch (error) {
+        throw error
+    }
+}
+
+export function joinMissionByAdmin(mission_id: string, user_id: string) {
+    try {
+        return endpoint.put(`${enviromentDev.mission}/${mission_id}/join-mission/${user_id}`)
+    } catch (error) {
+        throw error
+    }
+}

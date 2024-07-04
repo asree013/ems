@@ -19,7 +19,7 @@ export default function HomeContent() {
     const [alignment, setAlignment] = useState<string | null>('left');
     const [selected, setSelected] = useState<boolean>(true);
     const [load, setLoad] = useState<boolean>(false);
-    const [mission, setMission] = useState<Missions[]>({} as Missions[])
+    const [missions, setMissions] = useState<Missions[]>({} as Missions[])
 
 
 
@@ -60,7 +60,7 @@ export default function HomeContent() {
                         }} size='small' color='primary'><AddIcon /></Fab>
                     </div>
                     <div style={{ margin: '15px 0' }}>
-                        <TableMissioon data={mission} />
+                        <TableMissioon />
                     </div>
                 </div>
                 <div className={homeCss.contentMenu}>

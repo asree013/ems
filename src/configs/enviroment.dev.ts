@@ -8,7 +8,8 @@ export const enviromentDev = {
   history: '/history',
   exan: '/exan',
   keyGoogleApi: "AIzaSyApM9zSMh9ZSP3LInOHZ3YGWkrnthaZz-U",
-  mission: '/mission'
+  mission: '/missions',
+  user: '/users'
 };
 
 export const enviromentPath = {

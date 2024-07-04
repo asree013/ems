@@ -1,4 +1,6 @@
 export interface Locations {
-    lat: number
-    lng: number
+    lat: string
+    long: string
+    utm: string
+    mgrs: string
 }

@@ -6,7 +6,6 @@ import { TMissionC, MissionContext } from '@/contexts/missions.context';
 import rootAdmin from '@/assets/icon/admin.png';
 import Loadding from '@/components/Loadding';
 import missionCss from './mission_id.module.css';
-import MgrsPole from 'mgrs-pole-test';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import * as mgrs from 'mgrs';
@@ -28,7 +27,6 @@ type IconGoogleMap = {
 
 const MapSelect = () => {
     const UTM = new utmObj('Everest');
-    const MGRS = new MgrsPole();
   const {open, setOpen} = useContext<TOpenModalMap>(OpenModalMapContext)
 
 
