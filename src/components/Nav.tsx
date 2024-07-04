@@ -65,6 +65,7 @@ export default function Nav(props: Props) {
             try {
               setIsLoad(true);
               await logout();
+              localStorage.removeItem('camera')
               router.push('/login');
             } catch (error) {
               alert(JSON.stringify(error));
@@ -120,13 +121,14 @@ export default function Nav(props: Props) {
               EMSink App
             </Typography>
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-             
+
               <Button
                 onClick={async () => {
                   try {
                     setIsLoad(true);
                     await logout();
                     router.push('/login');
+                    localStorage.removeItem('camera')
                   } catch (error) {
                     alert(JSON.stringify(error));
                   }
