@@ -14,14 +14,15 @@ import { LocateContext, TLocateC } from '@/contexts/locate.context';
 export default function CardMissionUser() {
     const { missionUser, setMissionUser } = useContext<TCurrentMission>(CurrentMissionContext)
     const { userLocate, setUserLocate } = useContext<TLocateC>(LocateContext)
-    
-    
+
+
     return (
         <>
             {
                 missionUser.length > 0 ?
                     missionUser.map(r =>
                         <Card
+                            key={r.id}
                             variant="outlined"
                             orientation="horizontal"
                             sx={{
@@ -48,7 +49,7 @@ export default function CardMissionUser() {
                                         href="#interactive-card"
                                         sx={{ color: 'text.tertiary' }}
                                     >
-                                       {r.status}
+                                        {r.status}
                                     </Link>
                                 </Typography>
                                 <Chip
@@ -58,13 +59,13 @@ export default function CardMissionUser() {
                                     sx={{ pointerEvents: 'none' }}
                                 >
                                     {
-                                        'ห่างจากที่เกิดเหตุ ' +haversines(Number(userLocate.lat), Number(userLocate.long), Number(r.lat), Number(r.long)).toFixed(2) + " km"
+                                        'ห่างจากที่เกิดเหตุ ' + haversines(Number(userLocate.lat), Number(userLocate.long), Number(r.lat), Number(r.long)).toFixed(2) + " km"
                                     }
                                 </Chip>
                             </CardContent>
-                        </Card> 
+                        </Card>
 
-                    ):
+                    ) :
                     <h1>ไม่มี ภารกิจ</h1>
             }
         </>
