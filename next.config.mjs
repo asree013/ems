@@ -6,7 +6,7 @@ const nextConfig = {
 
 export default withPWAInit({
   dest: "public",
-  disable: true,
+  // disable: true,
   fallbacks: {
     document: "/~offline",
     data: "/fallback.json",
