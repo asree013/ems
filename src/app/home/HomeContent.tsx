@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import homeCss from './home.module.css'
 
 import { Fab, Paper, ToggleButtonGroup } from '@mui/material';
@@ -13,6 +13,8 @@ import PlaceIcon from '@mui/icons-material/Place';
 import GoogleApiMap from './GoogleApiMap';
 import { NIL } from 'uuid';
 import Loadding from '@/components/Loadding';
+import { RoleContext, TRoleContext } from '@/contexts/role.context';
+import CardMissionUser from './CardMissionUser';
 
 
 export default function HomeContent() {
@@ -20,8 +22,7 @@ export default function HomeContent() {
     const [selected, setSelected] = useState<boolean>(true);
     const [load, setLoad] = useState<boolean>(false);
     const [missions, setMissions] = useState<Missions[]>({} as Missions[])
-
-
+    const { role, setRole } = useContext<TRoleContext>(RoleContext)
 
     return (
         <>
@@ -54,13 +55,22 @@ export default function HomeContent() {
                             <WorkOutlineIcon />
                             <p style={{ marginLeft: '10px' }}>Mission</p>
                         </div>
-                        <Fab onClick={() => {
-                            setLoad(true)
-                            window.location.href = '/mission/' + NIL
-                        }} size='small' color='primary'><AddIcon /></Fab>
+                        {
+                            role.toLocaleLowerCase().includes('user')?
+                            <div></div>:
+                            <Fab onClick={() => {
+                                setLoad(true)
+                                window.location.href = '/mission/' + NIL
+                            }} size='small' color='primary'><AddIcon /></Fab>
+                        }
                     </div>
                     <div style={{ margin: '15px 0' }}>
-                        <TableMissioon />
+                        {
+                            role.toLocaleLowerCase().includes('user') ?
+                                <CardMissionUser /> :
+                                <TableMissioon />
+
+                        }
                     </div>
                 </div>
                 <div className={homeCss.contentMenu}>
@@ -78,9 +88,9 @@ export default function HomeContent() {
             </div>
 
             {
-                load?
-                <Loadding />:
-                null
+                load ?
+                    <Loadding /> :
+                    null
             }
         </>
     )

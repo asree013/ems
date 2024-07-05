@@ -12,7 +12,7 @@ export function createMission(data: Missions) {
 
 export function findMission(page: number, limit: number) {
     try {
-        return endpoint.get<Missions[]>(enviromentDev.mission+ `?page=${page}&limit=${limit}`)
+        return endpoint.get<Missions[]>(enviromentDev.mission + `?page=${page}&limit=${limit}`)
     } catch (error) {
         throw error
     }
@@ -20,7 +20,15 @@ export function findMission(page: number, limit: number) {
 
 export function joinMissionByAdmin(mission_id: string, user_id: string) {
     try {
-        return endpoint.put(`${enviromentDev.mission}/${mission_id}/join-mission/${user_id}`)
+        return endpoint.put<Missions>(`${enviromentDev.mission}/${mission_id}/join-mission/${user_id}`)
+    } catch (error) {
+        throw error
+    }
+}
+
+export function findMissionByUser() {
+    try {
+        return endpoint.get<Missions[]>(`${enviromentDev.mission}/get-current-mission`)
     } catch (error) {
         throw error
     }

@@ -21,7 +21,7 @@ import Input from '@mui/joy/Input';
 import SearchIcon from '@mui/icons-material/Search';
 import { Button, Divider } from '@mui/joy';
 import { Missions } from '@/models/mission.model';
-import { findMission } from '@/services/mission.service';
+import { findMission, findMissionByUser } from '@/services/mission.service';
 import { MissionContext, MissionContexts } from '@/contexts/missions.context';
 import { OpenModalUserContext } from '@/contexts/modalUser.context';
 import ModalUser from '@/components/ModalUser';
@@ -33,6 +33,11 @@ import HomeSideBard from './HomeSideBard';
 import HomeContent from './HomeContent';
 import { UsersContexts } from '@/contexts/users.context';
 import { Users } from '@/models/users.model';
+import { FindUserMe } from '@/services/authen.service';
+import { RoleContext } from '@/contexts/role.context';
+import Loadding from '@/components/Loadding';
+import { CurrentMissionContext } from '@/contexts/currentMission.context';
+import { LocateContext } from '@/contexts/locate.context';
 
 const drawerWidth = 240;
 
@@ -43,18 +48,35 @@ export default function Page() {
   const [isClosing, setIsClosing] = useState(false);
   const [missions, setMissions] = useState<Missions[]>([]); // Initialize as an empty array
   const [missionId, setMissionId] = useState<Missions>({} as Missions); // Initialize as an empty object
+  const [missionUser, setMissionUser] = useState<Missions[]>({} as Missions[]); // Initialize as an empty object
   const [userLocate, setUserLocate] = useState<Locations>({} as Locations); // Initialize as an empty object
   const [users, setUsers] = useState<Users[]>([]); // Initialize as an empty array
+  const [role, setRole] = useState<string>('')
+  const [load, setLoad] = useState<boolean>(false)
+  
+
+  const checkRole = useCallback(async () => {
+    try {
+      setLoad(true)
+      const role = await FindUserMe()
+      setRole(role.data.role)
+      onFeedForRole(role.data.role)
+    } catch (error: any) {
+      if (error.message !== "timeout of 5000ms exceeded") {
+        alert(error.message);
+        console.log(error);
+      }
+    }
+  }, [setRole])
 
   const feedMission = useCallback(async () => {
     try {
       const result = await findMission(1, 10);
-      console.log(result.data);
       setMissions(result.data);
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [setMissionId]);
 
   const pushLocationUser = useCallback(async () => {
     try {
@@ -71,10 +93,8 @@ export default function Page() {
               g.mgrs = mgrss;
               g.utm = JSON.stringify(utm);
 
-              setUserLocate(g);
               const a = await saveLocation(g);
-              console.log(a);
-              console.log(g);
+              setUserLocate(g);
 
               resolve();
             },
@@ -92,7 +112,7 @@ export default function Page() {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [setUserLocate]);
 
   const feedUser = useCallback(async () => {
     try {
@@ -102,11 +122,38 @@ export default function Page() {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [setUsers]);
+
+  function onFeedForRole(role: string) {
+    if (role.toLocaleLowerCase().includes('user')) {
+      findMissionUsre()
+      setLoad(false)
+      return
+    }
+    else {
+
+      feedMission()
+      feedUser()
+      setLoad(false)
+      return
+    }
+  }
+
+  const findMissionUsre = useCallback(async () => {
+    try {
+      const result = await findMissionByUser()
+      setMissionUser(result.data)
+      console.log(result.data);
+      
+    } catch (error) {
+      console.log(error);
+
+    }
+  }, [setMissionUser])
 
   useEffect(() => {
-    feedMission();
-    feedUser();
+    checkRole()
+    pushLocationUser();
     const saveLo = setInterval(() => {
       console.log('timeout');
       pushLocationUser();
@@ -115,7 +162,7 @@ export default function Page() {
     return () => {
       clearInterval(saveLo);
     };
-  }, [feedMission, feedUser]);
+  }, [checkRole, pushLocationUser]);
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -167,89 +214,107 @@ export default function Page() {
   const container = typeof window !== 'undefined' ? () => window.document.body : undefined;
 
   return (
-    <MissionContexts.Provider value={{ missions, setMissions }}>
-      <OpenModalUserContext.Provider value={{ openUser, setOpenUser, missionId, setMissionId }}>
-        <UsersContexts.Provider value={{ users, setUsers }} >
+    <>
+      <MissionContexts.Provider value={{ missions, setMissions }}>
+        <OpenModalUserContext.Provider value={{ openUser, setOpenUser, missionId, setMissionId }}>
+          <UsersContexts.Provider value={{ users, setUsers }} >
 
-          <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
-            <AppBar
-              sx={{
-                background: 'white',
-                color: 'black',
-                width: '100%',
-                ml: { sm: `${drawerWidth}px` },
-                marginTop: '63px'
+            <Box sx={{ display: 'flex' }}>
+              <CssBaseline />
+              <AppBar
+                sx={{
+                  background: 'white',
+                  color: 'black',
+                  width: '100%',
+                  ml: { sm: `${drawerWidth}px` },
+                  marginTop: '63px'
 
-              }}
-            >
-              <Toolbar>
-                <IconButton
-                  color="inherit"
-                  aria-label="open drawer"
-                  edge="start"
-                  onClick={handleDrawerToggle}
-                  sx={{ mr: 2, display: { sm: 'none' } }}
+                }}
+              >
+                <Toolbar>
+                  <IconButton
+                    color="inherit"
+                    aria-label="open drawer"
+                    edge="start"
+                    onClick={handleDrawerToggle}
+                    sx={{ mr: 2, display: { sm: 'none' } }}
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                  <Typography variant="h6" noWrap component="div">
+                    <Input
+                      placeholder='Seach'
+                      sx={{ width: '90%', borderRadius: '10px' }}
+                      endDecorator={<Button><SearchIcon /></Button>}
+                    />
+                  </Typography>
+                </Toolbar>
+              </AppBar>
+              <Box
+                component="nav"
+                sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 }, marginTop: '60px' }}
+                aria-label="mailbox folders"
+              >
+                {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+                <Drawer
+                  container={container}
+                  variant="temporary"
+                  open={mobileOpen}
+                  onTransitionEnd={handleDrawerTransitionEnd}
+                  onClose={handleDrawerClose}
+                  ModalProps={{
+                    keepMounted: true, // Better open performance on mobile.
+                  }}
+                  sx={{
+                    display: { xs: 'block', sm: 'none' },
+                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                  }}
                 >
-                  <MenuIcon />
-                </IconButton>
-                <Typography variant="h6" noWrap component="div">
-                  <Input
-                    placeholder='Seach'
-                    sx={{ width: '90%', borderRadius: '10px' }}
-                    endDecorator={<Button><SearchIcon /></Button>}
-                  />
-                </Typography>
-              </Toolbar>
-            </AppBar>
-            <Box
-              component="nav"
-              sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 }, marginTop: '60px' }}
-              aria-label="mailbox folders"
-            >
-              {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-              <Drawer
-                container={container}
-                variant="temporary"
-                open={mobileOpen}
-                onTransitionEnd={handleDrawerTransitionEnd}
-                onClose={handleDrawerClose}
-                ModalProps={{
-                  keepMounted: true, // Better open performance on mobile.
-                }}
-                sx={{
-                  display: { xs: 'block', sm: 'none' },
-                  '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-                }}
-              >
-                <HomeSideBard />
-              </Drawer>
-              <Drawer
-                variant="permanent"
-                sx={{
-                  display: { xs: 'none', sm: 'block' },
-                  '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, marginTop: '63px' },
+                  <HomeSideBard />
+                </Drawer>
+                <Drawer
+                  variant="permanent"
+                  sx={{
+                    display: { xs: 'none', sm: 'block' },
+                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, marginTop: '63px' },
 
-                }}
-                open
+                  }}
+                  open
+                >
+                  <HomeSideBard />
+                </Drawer>
+              </Box>
+              <Box
+                component="main"
+                sx={{ flexGrow: 1, p: 3, marginTop: '60px' }}
+                className={homeCss.contentBox}
               >
-                <HomeSideBard />
-              </Drawer>
-            </Box>
-            <Box
-              component="main"
-              sx={{ flexGrow: 1, p: 3, marginTop: '60px' }}
-              className={homeCss.contentBox}
-            >
-              <Toolbar />
-              <HomeContent />
-            </Box>
-          </Box>
-          <ModalUser />
+                <Toolbar />
 
-        </UsersContexts.Provider>
-      </OpenModalUserContext.Provider>
-    </MissionContexts.Provider>
+                <RoleContext.Provider value={{ role, setRole }} >
+                  <CurrentMissionContext.Provider value={{missionUser, setMissionUser}} >
+                    <LocateContext.Provider value={{userLocate, setUserLocate}} >
+
+                    <HomeContent />
+                      
+                    </LocateContext.Provider>
+                  </CurrentMissionContext.Provider>
+                </RoleContext.Provider>
+
+              </Box>
+            </Box>
+            <ModalUser />
+
+          </UsersContexts.Provider>
+        </OpenModalUserContext.Provider>
+      </MissionContexts.Provider>
+
+      {
+        load ?
+          <Loadding /> :
+          null
+      }
+    </>
   );
 }
 

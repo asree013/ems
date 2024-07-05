@@ -12,18 +12,19 @@ import { joinMissionByAdmin } from '@/services/mission.service';
 import { OpenModalUserContext, TOpenModalUser } from '@/contexts/modalUser.context';
 import { useContext } from 'react';
 import { toast } from '@/services/alert.service';
-import {haversines} from '@/services/sum_lat_long.service'
+import { haversines } from '@/services/sum_lat_long.service'
+import modalUser from './styles/ModalUser.module.css'
 
 type Props = {
     data: Users
 }
 
-export default function ModalUserImage({data}: Props) {
+export default function ModalUserImage({ data }: Props) {
 
-    const {missionId, setMissionId} = useContext<TOpenModalUser>(OpenModalUserContext)
-    console.log('lat: ====> ' ,missionId);
-    console.log('long: ====> ' ,missionId.long);
-      
+    const { missionId, setMissionId } = useContext<TOpenModalUser>(OpenModalUserContext)
+    console.log('lat: ====> ', missionId);
+    console.log('long: ====> ', missionId.long);
+
     async function onAddUserInMission() {
         try {
             const result = await joinMissionByAdmin(missionId.id, data.id)
@@ -31,7 +32,7 @@ export default function ModalUserImage({data}: Props) {
             toast('Added Users', 'success')
         } catch (error) {
             console.log(error);
-            
+
         }
     }
 
@@ -90,8 +91,9 @@ export default function ModalUserImage({data}: Props) {
                     resize: 'horizontal',
                 }}
             >
-                <AspectRatio flex ratio="1" maxHeight={150} sx={{ minWidth: 150 }}>
+                <AspectRatio flex ratio="1" >
                     <img
+                        className={modalUser.imageUser}
                         src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
                         srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
                         loading="lazy"

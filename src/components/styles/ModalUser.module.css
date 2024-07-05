@@ -6,4 +6,16 @@
     flex-direction: column;
     justify-content: start;
     align-items: center;
+    padding: 10px;
+}
+.imageUser{
+    width: 12rem;
+    height: 22rem;
+    object-fit: scale-down;
+}
+
+@media only screen and (max-width: 450px) {
+    .userContent{
+        width: 90%;
+    }
 }

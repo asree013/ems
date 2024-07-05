@@ -8,6 +8,7 @@ export const enviromentDev = {
   history: '/history',
   exan: '/exan',
   keyGoogleApi: "AIzaSyApM9zSMh9ZSP3LInOHZ3YGWkrnthaZz-U",
+  keyGoogleDev: "AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg",
   mission: '/missions',
   user: '/users'
 };

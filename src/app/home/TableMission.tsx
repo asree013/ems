@@ -29,12 +29,14 @@ function handleChangePage() {
 function handleChangeRowsPerPage() {
   // Implement rows per page logic here
 }
+
 const ITEM_HEIGHT = 48;
 
 export default function AccessibleTable() {
   const { missions, setMissions } = useContext<TMissionCs>(MissionContexts);
   const [selectedMissionId, setSelectedMissionId] = React.useState<string | null>(null);
   const [anchorElMap, setAnchorElMap] = React.useState<{ [key: string]: HTMLElement | null }>({});
+  const [open, setOpen] = React.useState<boolean>(false);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>, id: string) => {
     setSelectedMissionId(id);
@@ -51,7 +53,7 @@ export default function AccessibleTable() {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="caption table">
-        <TableHead >
+        <TableHead>
           <TableRow>
             <TableCell>Image</TableCell>
             <TableCell align="right">Title</TableCell>
@@ -62,79 +64,77 @@ export default function AccessibleTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {
-            missions.length > 0 ?
-              missions.map((r, i) =>
-                <TableRow key={i}>
-                  <TableCell component="th" scope="row">
-                    <img style={{ width: '9rem', height: '9rem' }} src={r.image} alt="" />
-                  </TableCell>
-                  <TableCell align="right">{r.titel}</TableCell>
-                  <TableCell align="right">{r.status}</TableCell>
-                  <TableCell align="right">{r._count.Users}</TableCell>
-                  <TableCell align="right">{r.create_date}</TableCell>
-                  <TableCell align="right">
-                    <IconButton
-                      aria-label="more"
-                      id={`long-button-${r.id}`}
-                      aria-controls={anchorElMap[r.id] ? `long-menu-${r.id}` : undefined}
-                      aria-expanded={anchorElMap[r.id] ? 'true' : undefined}
-                      aria-haspopup="true"
-                      onClick={(event) => handleClick(event, r.id)}
-                    >
-                      <MoreVertIcon />
-                    </IconButton>
-                    <Menu
-                      id={`long-menu-${r.id}`}
-                      MenuListProps={{
-                        'aria-labelledby': `long-button-${r.id}`,
-                      }}
-                      anchorEl={anchorElMap[r.id]}
-                      open={Boolean(anchorElMap[r.id])}
-                      onClose={() => handleClose(r.id)}
-                      PaperProps={{
-                        style: {
-                          maxHeight: ITEM_HEIGHT * 4.5,
-                          width: '20ch',
-                        },
-                      }}
-                    >
-                      <MenuItem onClick={() => {
-                        setOpenUser(true);
-                        setMissionId(r);
-                        handleClose(r.id);
-                      }}>
-                        <ListItemIcon>
-                          <PersonAddIcon fontSize="small" />
-                        </ListItemIcon>
-                        <Typography variant="inherit">Add User</Typography>
-                      </MenuItem>
-                      <MenuItem>
-                        <ListItemIcon>
-                          <PendingActionsIcon fontSize="small" />
-                        </ListItemIcon>
-                        <Typography variant="inherit">Edit Status</Typography>
-                      </MenuItem>
-                      <MenuItem>
-                        <ListItemIcon>
-                          <EditCalendarIcon fontSize="small" />
-                        </ListItemIcon>
-                        <Typography variant="inherit">Edit Mission</Typography>
-                      </MenuItem>
-                    </Menu>
-                  </TableCell>
-                </TableRow>
-              ) :
-              <TableRow >
+          {missions.length > 0 ? (
+            missions.map((r, i) => (
+              <TableRow key={i}>
                 <TableCell component="th" scope="row">
-                  No data
+                  <img style={{ width: '9rem', height: '9rem' }} src={r.image} alt="" />
                 </TableCell>
-                <TableCell align="right">No data</TableCell>
-                <TableCell align="right">No data</TableCell>
-                <TableCell align="right">No data</TableCell>
-                <TableCell align="right">No data</TableCell>
+                <TableCell align="right">{r.titel}</TableCell>
+                <TableCell align="right">{r.status}</TableCell>
+                <TableCell align="right">{r._count.Users}</TableCell>
+                <TableCell align="right">{r.create_date}</TableCell>
+                <TableCell align="right">
+                  <IconButton
+                    aria-label="more"
+                    id={`long-button-${r.id}`}
+                    aria-controls={anchorElMap[r.id] ? `long-menu-${r.id}` : undefined}
+                    aria-expanded={anchorElMap[r.id] ? 'true' : undefined}
+                    aria-haspopup="true"
+                    onClick={(event) => handleClick(event, r.id)}
+                  >
+                    <MoreVertIcon />
+                  </IconButton>
+                  <Menu
+                    id={`long-menu-${r.id}`}
+                    MenuListProps={{
+                      'aria-labelledby': `long-button-${r.id}`,
+                    }}
+                    anchorEl={anchorElMap[r.id]}
+                    open={Boolean(anchorElMap[r.id])}
+                    onClose={() => handleClose(r.id)}
+                    PaperProps={{
+                      style: {
+                        maxHeight: ITEM_HEIGHT * 4.5,
+                        width: '20ch',
+                      },
+                    }}
+                  >
+                    <MenuItem onClick={() => {
+                      setOpenUser(true);
+                      setMissionId(r);
+                      handleClose(r.id);
+                    }}>
+                      <ListItemIcon>
+                        <PersonAddIcon fontSize="small" />
+                      </ListItemIcon>
+                      <Typography variant="inherit">Add User</Typography>
+                    </MenuItem>
+                    <MenuItem>
+                      <ListItemIcon>
+                        <PendingActionsIcon fontSize="small" />
+                      </ListItemIcon>
+                      <Typography variant="inherit">Edit Status</Typography>
+                    </MenuItem>
+                    <MenuItem>
+                      <ListItemIcon>
+                        <EditCalendarIcon fontSize="small" />
+                      </ListItemIcon>
+                      <Typography variant="inherit">Edit Mission</Typography>
+                    </MenuItem>
+                  </Menu>
+                </TableCell>
               </TableRow>
-          }
+            ))
+          ) : (
+            <TableRow>
+              <TableCell component="th" scope="row">No data</TableCell>
+              <TableCell align="right">No data</TableCell>
+              <TableCell align="right">No data</TableCell>
+              <TableCell align="right">No data</TableCell>
+              <TableCell align="right">No data</TableCell>
+            </TableRow>
+          )}
         </TableBody>
         {/* <TablePagination
           rowsPerPageOptions={[10, 25, 100]}

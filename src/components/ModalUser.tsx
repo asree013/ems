@@ -25,12 +25,12 @@ export default function ModalUser() {
         onClose={() => {
           setOpenUser(false)
         }}
-        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '5px' }}
       >
         <Sheet
           variant="outlined"
           sx={{
-            maxWidth: 500,
+            maxWidth: 700,
             borderRadius: 'md',
             p: 3,
             boxShadow: 'lg',
