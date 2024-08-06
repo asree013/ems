@@ -72,7 +72,7 @@ export default function HomeContent() {
                                 missions.length == 0?
                                 null:
                                 missions.map(r => 
-                                    <TableMissioon mission={r} />
+                                    <TableMissioon key={r.id} mission={r} />
                                 )
                         }
                     </div>

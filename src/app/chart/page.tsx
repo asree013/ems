@@ -129,8 +129,8 @@ export default function EcgChart() {
             return;
           }
           isHighlightChanging = true;
-          seriesLeft.setHighlight(value);
-          seriesRight.setHighlight(value);
+          seriesLeft.setHighlight(true);
+          seriesRight.setHighlight(true);
           isHighlightChanging = false;
         });
       });
@@ -246,7 +246,6 @@ export default function EcgChart() {
     let chart1 = document.getElementById('chart-1');
     let lcjs = document.getElementById('lcjs-auto-flexbox');
 
-    chartR?.appendChild(lcjs)
     if (chart2) {
       chart2.style.display = "none";
     }
@@ -254,6 +253,7 @@ export default function EcgChart() {
     //   chart1.style.display = "none";
     // }
     if (lcjs) {
+      chartR?.appendChild(lcjs)
       // lcjs.style.height = "180px";
       // lcjs.style.width = "24.3%";
       // lcjs.style.position = 'static'

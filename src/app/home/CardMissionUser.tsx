@@ -40,7 +40,7 @@ export default function CardMissionUser() {
                             </AspectRatio>
                             <CardContent>
                                 <Typography level="title-lg" id="card-description">
-                                    {r.titel}
+                                    {r.title}
                                 </Typography>
                                 <Typography level="body-sm" aria-describedby="card-description" mb={1}>
                                     <Link
