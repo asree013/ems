@@ -22,7 +22,7 @@ export default function HomeContent() {
     const [alignment, setAlignment] = useState<string | null>('left');
     const [selected, setSelected] = useState<boolean>(true);
     const [load, setLoad] = useState<boolean>(false);
-    const { role, setRole } = useContext<TRoleContext>(RoleContext)
+    const { findMe, setFindMe } = useContext<TRoleContext>(RoleContext)
     const {missions, setMissions} = useContext<TMissionCs>(MissionContexts)
 
     return (
@@ -57,7 +57,7 @@ export default function HomeContent() {
                             <p style={{ marginLeft: '10px' }}>Mission</p>
                         </div>
                         {
-                            role.toLocaleLowerCase().includes('user')?
+                            findMe.role === 'User'?
                             <div></div>:
                             <Fab onClick={() => {
                                 setLoad(true)
@@ -67,7 +67,7 @@ export default function HomeContent() {
                     </div>
                     <div style={{ margin: '15px 0' }}>
                         {
-                            role.toLocaleLowerCase().includes('user') ?
+                            findMe.role === 'user' ?
                                 <CardMissionUser /> :
                                 missions.length == 0?
                                 null:

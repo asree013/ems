@@ -51,16 +51,15 @@ export default function Page() {
   const [missionUser, setMissionUser] = useState<Missions[]>({} as Missions[]); // Initialize as an empty object
   const [userLocate, setUserLocate] = useState<Locations>({} as Locations); // Initialize as an empty object
   const [users, setUsers] = useState<Users[]>([]); // Initialize as an empty array
-  const [role, setRole] = useState<string>('')
+  const [findMe, setFindMe] = useState<Users>({} as Users)
   const [load, setLoad] = useState<boolean>(false)
-
 
   const checkRole = useCallback(async () => {
     try {
       setLoad(true)
-      const role = await FindUserMe()
-      setRole(role.data.role)
-      if (role.data.role.includes("RootAdmin" || "Admin")) {
+      const result = await FindUserMe()
+      setFindMe(result.data)
+      if (result.data.role.includes("RootAdmin" || "Admin")) {
         feedMission()
         feedUser()
         setLoad(false)
@@ -78,7 +77,7 @@ export default function Page() {
       }
       alert(JSON.stringify(error.message));
     }
-  }, [setRole])
+  }, [setFindMe])
 
   const feedMission = useCallback(async () => {
     try {
@@ -291,7 +290,7 @@ export default function Page() {
               >
                 <Toolbar />
 
-                <RoleContext.Provider value={{ role, setRole }} >
+                <RoleContext.Provider value={{ findMe, setFindMe }} >
                   <CurrentMissionContext.Provider value={{ missionUser, setMissionUser }} >
                     <LocateContext.Provider value={{ userLocate, setUserLocate }} >
 
