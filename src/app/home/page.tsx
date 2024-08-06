@@ -73,7 +73,7 @@ export default function Page() {
       }
     } catch (error: any) {
       if (error.message !== "timeout of 5000ms exceeded") {
-        alert(error.message);
+        alert('check role');
         console.log(error);
       }
     }
@@ -85,6 +85,7 @@ export default function Page() {
       setMissions(result.data);
     } catch (error) {
       console.log(error);
+      alert('mission')
     }
   }, [setMissionId]);
 
@@ -131,6 +132,7 @@ export default function Page() {
       console.log(result.data);
     } catch (error) {
       console.log(error);
+      alert('find user')
     }
   }, [setUsers]);
 
@@ -141,9 +143,9 @@ export default function Page() {
       const result = await findMissionByUser()
       setMissionUser(result.data)
       console.log(result.data);
-
     } catch (error) {
       console.log(error);
+      alert('find mission by user')
 
     }
   }, [setMissionUser])
