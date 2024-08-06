@@ -41,7 +41,7 @@ const GoogleApiMap = ({ hight, width }: Props) => {
     const [icon, setIcon] = useState<IconGoogleMap | null>(null);
     const [zoom, setZoom] = useState<number>(13);
     const [load, setLoad] = useState<boolean>(false);
-    const { role, setRole } = useContext<TRoleContext>(RoleContext);
+    const { findMe, setFindMe } = useContext<TRoleContext>(RoleContext);
     const { missionUser, setMissionUser } = useContext<TCurrentMission>(CurrentMissionContext)
 
 
