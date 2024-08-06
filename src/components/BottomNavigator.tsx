@@ -7,21 +7,23 @@ import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import Paper from '@mui/material/Paper';
 import HomeIcon from '@mui/icons-material/Home';
 import MonitorIcon from '@mui/icons-material/Monitor';
-import Loadding from './Loadding';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import PlaceIcon from '@mui/icons-material/Place';
 import SpeedDialButton from './SpeedDialButton';
+import Loadding from './Loadding';
 
 export default function BottomNavigater() {
   const [value, setValue] = React.useState<number | null>(null);
   const ref = React.useRef<HTMLDivElement>(null);
-  const [load, setLoad] = React.useState<boolean>(false)
-  const pathName = usePathname()
-
+  const [load, setLoad] = React.useState<boolean>(false);
+  const pathName = usePathname();
+  const router = useRouter();
 
   React.useEffect(() => {
-    (ref.current as HTMLDivElement).ownerDocument.body.scrollTop = 0;
-    onCheckPath()
+    if (ref.current) {
+      ref.current.ownerDocument.body.scrollTop = 0;
+    }
+    onCheckPath();
   }, []);
 
   return (
@@ -33,17 +35,17 @@ export default function BottomNavigater() {
             showLabels
             value={value}
             onChange={(event, newValue) => {
-              if (newValue === 0) {
-                setLoad(true)
-                window.location.href = '/home'
-              }
-              if (newValue === 1) {
-                setLoad(true)
-                window.location.href = '/map'
-              }
-              if (newValue === 2) {
-                window.location.href = '/monitor'
-                setLoad(true)
+              setLoad(true);
+              switch (newValue) {
+                case 0:
+                  router.push('/home');
+                  break;
+                case 1:
+                  router.push('/map');
+                  break;
+                case 2:
+                  router.push('/monitor');
+                  break;
               }
             }}
           >
@@ -65,26 +67,17 @@ export default function BottomNavigater() {
 
   function onCheckPath() {
     if (pathName.includes('/home')) {
-      setValue(0)
-    }
-    if (pathName.includes('/map')) {
-      setValue(1)
-    }
-    if (pathName.includes('/patient')) {
-      setValue(2)
-    }
-    if (pathName.includes('/device')) {
-      setValue(3)
-    }
-    if (pathName.includes('/monitor')) {
-      setValue(4)
-    }
-    if (pathName.includes('/camera')) {
-      setValue(5)
+      setValue(0);
+    } else if (pathName.includes('/map')) {
+      setValue(1);
+    } else if (pathName.includes('/patient')) {
+      setValue(2);
+    } else if (pathName.includes('/device')) {
+      setValue(3);
+    } else if (pathName.includes('/monitor')) {
+      setValue(4);
+    } else if (pathName.includes('/camera')) {
+      setValue(5);
     }
   }
 }
-
-
-
-

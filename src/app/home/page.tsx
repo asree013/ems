@@ -56,28 +56,22 @@ export default function Page() {
 
   const checkRole = useCallback(async () => {
     try {
-      setLoad(true)
-      const result = await FindUserMe()
-      setFindMe(result.data)
-      if (result.data.role.includes("RootAdmin" || "Admin")) {
-        feedMission()
-        feedUser()
-        setLoad(false)
-        return
+      setLoad(true);
+      const result = await FindUserMe(); // เรียกใช้งาน API เพื่อตรวจสอบข้อมูลผู้ใช้ปัจจุบัน
+      setFindMe(result.data); // บันทึกข้อมูลผู้ใช้ที่ดึงมาได้
+      // ตรวจสอบว่า role ของผู้ใช้มีค่าเป็น "RootAdmin" หรือ "Admin" หรือไม่
+      if (result.data.role.includes("RootAdmin") || result.data.role.includes("Admin")) {
+        feedMission(); // ถ้าใช่ เรียกฟังก์ชั่น feedMission
+        feedUser(); // เรียกฟังก์ชั่น feedUser
+      } else {
+        findMissionUsre(); // ถ้าไม่ใช่ เรียกฟังก์ชั่น findMissionUsre
       }
-      else {
-        findMissionUsre()
-        setLoad(false)
-        return
-      }
+      setLoad(false); // เปลี่ยนสถานะการโหลดเป็น false
     } catch (error: any) {
-      // if (error.message !== "timeout of 5000ms exceeded") {
-      //   alert('check role');
-      //   console.log(error);
-      // }
-      alert(JSON.stringify(error.message));
+      alert(JSON.stringify(error.message)); // แสดงข้อความแจ้งเตือนหากเกิดข้อผิดพลาด
     }
-  }, [setFindMe])
+  }, [setFindMe]);
+  
 
   const feedMission = useCallback(async () => {
     try {

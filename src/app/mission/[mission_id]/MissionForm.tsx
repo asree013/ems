@@ -24,6 +24,8 @@ import { NIL } from 'uuid';
 import MapSelect from './MapSelect';
 import { MissionFromContext, TMissionFromContext } from '@/contexts/mission.from.context'
 
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
+
 type Props = {
   mission_id: string
 }
@@ -127,9 +129,6 @@ export default function MissionForm({ mission_id }: Props) {
           <Typography color="text.secondary" variant="body2" component={'div'} style={{ marginTop: '25px' }}>
             <TextField value={missions.title ?? ''} onChange={(e) => setMissions({ ...missions, title: e.target.value })} error={isNull} style={{ width: '100%' }} id="filled-basic" label="Title" variant="filled" />
             <TextField value={missions.description ?? ''} onChange={(e) => setMissions({ ...missions, description: e.target.value })} error={isNull} style={{ width: '100%', marginTop: '10px' }} id="filled-basic" label="Description" variant="filled" />
-            <Alert hidden={!missions.lat ? true : false} style={{ marginTop: '10px' }} icon={<CheckIcon fontSize="inherit" />} severity="success">
-              Select location Success
-            </Alert>
           </Typography>
 
           <Divider />
@@ -151,11 +150,41 @@ export default function MissionForm({ mission_id }: Props) {
                 <TextField error={isNull} value={missions.utm ? missions.utm : '0.000000'} style={{ width: '48%', marginTop: '10px' }} id="filled-basic" label="utm" variant="filled" disabled />
                 <TextField error={isNull} value={missions.mgrs ? missions.mgrs : '0.000000'} style={{ width: '48%', marginTop: '10px' }} id="filled-basic" label="mgrs" variant="filled" disabled />
               </Box>
-              <IconButton size='small' style={{ marginTop: '10px' }} color='success' onClick={() => setOpen(true)}>
-                <AddLocationAltIcon />
-              </IconButton>
-            </Stack>
+              <Stack spacing={1} style={{ margin: '10px 40px' }}>
+                {
+                  src.length > 0 ?
+                    <>
+                      <Fab size='small' color='error' onClick={() => {
+                        setSrc('')
+                        setMissions({ ...missions, image: '' })
+                      }}>
+                        <CancelIcon />
+                      </Fab>
+                      <ImageListItem style={{ width: '14rem', height: '12rem' }}>
+                        <img
+                          src={src}
+                          alt={src}
+                          loading="lazy"
+                        />
+                        <ImageListItemBar
+                          title={'image mission'}
+                          subtitle={<span>by: nonuser</span>}
+                          position="below"
+                        />
+                      </ImageListItem>
+                    </> :
+                    <Typography component={'div'}
+                      style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                      color="initial" onClick={() => document.getElementById('camera')?.click()}>
+                      <Paper elevation={3} style={{ padding: '20px', cursor: 'pointer' }} >
+                        <AddAPhotoIcon style={{ fontSize: '12rem' }} />
+                      </Paper>
+                    </Typography>
 
+                }
+                <input onChange={handlerUpload} id='camera' type="file" capture accept='image/*' hidden />
+              </Stack>
+            </Stack>
           </Box>
         </Box>
 
