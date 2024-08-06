@@ -76,6 +76,7 @@ export default function Page() {
         alert('check role');
         console.log(error);
       }
+      alert(JSON.stringify(error.message));
     }
   }, [setRole])
 
