@@ -4,7 +4,7 @@ export interface Missions {
     id: string
     status: string
     type: string
-    titel: string
+    title: string
     description: string
     image: string
     lat: string

@@ -1,18 +1,20 @@
 'use client'
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { APIProvider, Map, MapControl, ControlPosition, Marker, MapMouseEvent } from '@vis.gl/react-google-maps';
+import { APIProvider, Map, MapControl, ControlPosition, Marker, MapMouseEvent, MapCameraChangedEvent } from '@vis.gl/react-google-maps';
 import { enviromentDev } from '@/configs/enviroment.dev';
 import NearMeIcon from '@mui/icons-material/NearMe';
-import { TMissionC, MissionContext } from '@/contexts/missions.context';
 import rootAdmin from '@/assets/icon/admin.png';
 import Loadding from '@/components/Loadding';
-import missionCss from './mission_id.module.css';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import * as mgrs from 'mgrs';
 import { OpenModalMapContext, TOpenModalMap } from '@/contexts/openModal.context';
 import { Button } from '@mui/material';
+import { MissionFromContext, TMissionFromContext } from '@/contexts/mission.from.context';
 const utmObj = require('utm-latlng');
+
+import missionCss from './mission_id.module.css';
+
 
 type LatLng = {
     lat: number;
@@ -29,7 +31,7 @@ type IconGoogleMap = {
 
 const MapSelect = () => {
     const UTM = new utmObj('Everest');
-  const {open, setOpen} = useContext<TOpenModalMap>(OpenModalMapContext)
+    const { open, setOpen } = useContext<TOpenModalMap>(OpenModalMapContext)
 
 
     const [locate, setLocate] = useState<LatLng>({ lat: 0, lng: 0 });
@@ -37,7 +39,7 @@ const MapSelect = () => {
     const [icon, setIcon] = useState<IconGoogleMap | null>(null);
     const [zoom, setZoom] = useState<number>(8);
     const [load, setLoad] = useState<boolean>(false);
-    const { mission, setMission } = useContext<TMissionC>(MissionContext);
+    const { missions, setMissions } = useContext<TMissionFromContext>(MissionFromContext);
 
     const getLoacation = useCallback(() => {
         return new Promise<void>((resolve, reject) => {
@@ -63,6 +65,8 @@ const MapSelect = () => {
     }, []);
 
     const onCheckUserLocation = useCallback(() => {
+        setLoad(true);
+
         return new Promise<void>((resolve, reject) => {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
@@ -73,8 +77,11 @@ const MapSelect = () => {
                         const center = setInterval(() => {
                             setCenterLocate(null);
                             clearInterval(center);
+                            setLoad(false);
+
                         }, 500);
                         resolve();
+
                     },
                     (error) => {
                         console.error("Error retrieving geolocation:", error);
@@ -89,15 +96,15 @@ const MapSelect = () => {
         });
     }, [setCenterLocate]);
 
-    function onSelectLatLng(p: MapMouseEvent) {
-        if (p.detail.latLng) {
-            const utm = UTM.convertLatLngToUtm(p.detail.latLng.lat, p.detail.latLng.lng, 1);
-            const mgrss = mgrs.forward([p.detail.latLng.lng, p.detail.latLng.lat])
-            
-            setMission({
-                ...mission,
-                lat: p.detail.latLng.lat.toString(),
-                long: p.detail.latLng.lng.toString(),
+    function onSelectLatLng(p: MapCameraChangedEvent) {
+        if (p.detail.center) {
+            const utm = UTM.convertLatLngToUtm(p.detail.center.lat, p.detail.center.lng, 1);
+            const mgrss = mgrs.forward([p.detail.center.lng, p.detail.center.lat])
+
+            setMissions({
+                ...missions,
+                lat: p.detail.center.lat.toString(),
+                long: p.detail.center.lng.toString(),
                 utm: JSON.stringify(utm),
                 mgrs: mgrss
             });
@@ -128,51 +135,57 @@ const MapSelect = () => {
 
     return (
         <>
-            <APIProvider apiKey={enviromentDev.keyGoogleApi}>
-                <Map
-                    className={missionCss.map}
-                    defaultCenter={locate}
-                    defaultZoom={zoom}
-                    zoom={zoom}
-                    center={centerLocate}
-                    gestureHandling={'greedy'}
-                    disableDefaultUI={true}
-                    onClick={onSelectLatLng}
-                >
-                    <MapControl position={ControlPosition.CENTER}>
-                        <svg width="70px" height="70px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="24" height="24" fill="none" />
-                            <path d="M12 6V18" stroke="#ef4444" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M6 12H18" stroke="#ef4444" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                    </MapControl>
-                    <MapControl position={ControlPosition.RIGHT}>
-                        <Button onClick={onCheckUserLocation} className='m-2 border-2 border-black rounded-sm bg-gray-100 hover:bg-gray-300'>
-                            <NearMeIcon />
-                        </Button>
-                    </MapControl>
-                    <MapControl position={ControlPosition.RIGHT}>
-                        <Button onClick={() => setZoom(zoom + 1)} className='m-2 border-2 border-black rounded-sm bg-gray-100 hover:bg-gray-300'>
-                            <AddIcon />
-                        </Button>
-                    </MapControl>
-                    <MapControl position={ControlPosition.RIGHT}>
-                        <Button onClick={() => setZoom(zoom - 1)} className='m-2 border-2 border-black rounded-sm bg-gray-100 hover:bg-gray-300'>
-                            <RemoveIcon />
-                        </Button>
-                    </MapControl>
-                    {icon &&
-                        <Marker
-                            onClick={(e) => console.log(e.latLng?.toString())}
-                            icon={icon}
-                            position={locate}
-                            label={'ตำแหน่งของฉัน'}
-                            animation={centerLocate ? window.google.maps.Animation.BOUNCE : null}
-                        />
+            <div style={{ display: "flex", alignItems: 'center', justifyContent: 'center' }}>
+                <APIProvider apiKey={enviromentDev.keyGoogleApi}>
+                    {
+                        load ?
+                            <p>กำลังประมลผลแผนที่</p> :
+                            <Map
+                                className={missionCss.map}
+                                defaultCenter={locate}
+                                defaultZoom={zoom}
+                                zoom={zoom}
+                                center={centerLocate}
+                                gestureHandling={'greedy'}
+                                disableDefaultUI={true}
+                                // onClick={onSelectLatLng}
+                                onCameraChanged={onSelectLatLng}
+                            >
+                                <MapControl position={ControlPosition.CENTER}>
+                                    <svg width="70px" height="70px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect width="24" height="24" fill="none" />
+                                        <path d="M12 6V18" stroke="#ef4444" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M6 12H18" stroke="#ef4444" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                </MapControl>
+                                <MapControl position={ControlPosition.RIGHT}>
+                                    <Button onClick={onCheckUserLocation} className='m-2 border-2 border-black rounded-sm bg-gray-100 active:bg-gray-300'>
+                                        <NearMeIcon />
+                                    </Button>
+                                </MapControl>
+                                <MapControl position={ControlPosition.RIGHT}>
+                                    <Button onClick={() => setZoom(zoom + 1)} className='m-2 border-2 border-black rounded-sm bg-gray-100 active:bg-gray-300'>
+                                        <AddIcon />
+                                    </Button>
+                                </MapControl>
+                                <MapControl position={ControlPosition.RIGHT}>
+                                    <Button onClick={() => setZoom(zoom - 1)} className='m-2 border-2 border-black rounded-sm bg-gray-100 active:bg-gray-300'>
+                                        <RemoveIcon />
+                                    </Button>
+                                </MapControl>
+                                {icon &&
+                                    <Marker
+                                        onClick={(e) => console.log(e.latLng?.toString())}
+                                        icon={icon}
+                                        position={locate}
+                                        label={'ตำแหน่งของฉัน'}
+                                        animation={centerLocate ? window.google.maps.Animation.BOUNCE : null}
+                                    />
+                                }
+                            </Map>
                     }
-                </Map>
-            </APIProvider>
-            {load && <Loadding />}
+                </APIProvider>
+            </div>
         </>
     );
 };

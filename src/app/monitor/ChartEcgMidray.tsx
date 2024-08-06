@@ -30,10 +30,10 @@ import chartCss from './chart.module.css'
 
 var x: number[] = [];
 var a: number[] = []
-for (let j = 0; j < 1000; j++) {
+for (let j = 0; j < 250; j++) {
   a.push(j);
 }
-for (let j = 0; j < 100; j++) {
+for (let j = 0; j < 126; j++) {
   x.push(j);
 }
 let p = 0;
@@ -53,7 +53,7 @@ interface GrachProps {
   orderTranFer: OrderTranfer[];
 }
 
-export default function ChartEcg({
+export default function ChartEcgMidRay({
   el_id,
   index,
   onChangeDeleteDeviceID,
@@ -78,7 +78,7 @@ export default function ChartEcg({
   const [dia, setDia] = React.useState<number>(0);
 
   let [hidden, setHidden] = useState<string[]>([]);
-  data = useRef<number[]>(dataChart.current);
+  data = useRef<number[]>(dataChart.current.slice(0, 250));
   dataSpo2 = useRef<number[]>(dataChartSpo.current);
 
   function activeCheckBox(cb: string, el_id: string) {
@@ -147,49 +147,49 @@ export default function ChartEcg({
 
   const runSocket = useCallback(() => {
     const orderId = order.id;
-    socket.on('data-tranfer-ecg', (message: any) => {
-      console.log('ecg ' ,message);
+    // socket.on('data-tranfer-ecg', (message: any) => {
+    //   console.log('ecg ' ,message);
 
+    //   // if (JSON.parse(message).order_id !== orderId || !order) {
+    //   //   console.log('ไม่ได้ทำงาน');
+    //   //   return
+    //   // }
+    //   // let ecg: number[] = JSON.parse(message).ecg
+    //   // if (arrs.flat().length < 2500) {
+    //   //   arrs.push(ecg);
+    //   //   console.log('add ecg 1', arrs);
+    //   // } else {
+    //   //   arrs.push(ecg);
+    //   //   console.log('ecg -----> ', arrs.flat());
+    //   //   dataChart.current = [];
+    //   //   dataChart.current = arrs.flat();
+    //   //   console.log('data current length : ', dataChart.current.length);
+    //   //   arrs = [];
+    //   // }
+
+    // });
+
+    socket.on('data-tranfer-pleth', (message: any) => {
+      console.log('pleth ' ,message);
+      
       if (JSON.parse(message).order_id !== orderId || !order) {
         console.log('ไม่ได้ทำงาน');
-        return
+        return;
       }
-      let ecg: number[] = JSON.parse(message).ecg
-      if (arrs.flat().length < 1500) {
-        arrs.push(ecg);
-        console.log('add ecg 1', arrs);
+      let pleth: number[] = JSON.parse(message).pleth;
+      if (arrSpo.flat().length < 1250) {
+        arrSpo.push(pleth);
+        console.log('add arr 1', arrSpo);
       } else {
-        arrs.push(ecg);
-        console.log('ecg -----> ', arrs.flat());
-        dataChart.current = [];
-        dataChart.current = arrs.flat();
-        console.log('data current length : ', dataChart.current.length);
-        arrs = [];
+        arrSpo.push(pleth);
+        console.log('-----> ', arrSpo.flat());
+        dataChartSpo.current = [];
+        dataChartSpo.current = arrSpo.flat();
+        console.log('data current length : ', dataChartSpo.current.length);
+        arrSpo = [];
       }
 
     });
-
-    // socket.on('data-tranfer-pleth', (message: any) => {
-    //   console.log('pleth ' ,message);
-      
-    //   if (JSON.parse(message).order_id !== orderId || !order) {
-    //     console.log('ไม่ได้ทำงาน');
-    //     return;
-    //   }
-    //   let pleth: number[] = JSON.parse(message).pleth;
-    //   if (arrSpo.flat().length < 1250) {
-    //     arrSpo.push(pleth);
-    //     console.log('add arr 1', arrSpo);
-    //   } else {
-    //     arrSpo.push(pleth);
-    //     console.log('-----> ', arrSpo.flat());
-    //     dataChartSpo.current = [];
-    //     dataChartSpo.current = arrSpo.flat();
-    //     console.log('data current length : ', dataChartSpo.current.length);
-    //     arrSpo = [];
-    //   }
-
-    // });
     //   socket.on('data-tranfer-press', (message: any) => {
     //   console.log('press ' ,message);
 
@@ -261,8 +261,8 @@ export default function ChartEcg({
           y: {
             beginAtZero: false,
             display: false,
-            min: -1000,
-            max: 1000,
+            min: -100,
+            max: 100,
           },
         },
         responsive: true,
@@ -405,6 +405,7 @@ export default function ChartEcg({
     <>
       <div className="monitorItems" id={order.id}>
         <StartChart funOnOpen={onStartMonitor} />
+        <p style={{color: 'white', fontSize: '5rem'}}>Midray</p>
         <ToastContainer />
         <div className="hearder_monitor">
           <div className="name_monitor">

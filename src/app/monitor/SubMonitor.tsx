@@ -10,6 +10,7 @@ import { CreateOrder } from '@/models/order_tranfer.model';
 import { useRouter } from 'next/navigation';
 import { toast } from '@/services/alert.service';
 import { TOrderContext, OrderContext } from '@/contexts/order.context';
+import MonitorItem from './MonitorItem';
 
 type Props = {
   el_id: number;
@@ -46,6 +47,7 @@ export default function SubMonitor({ el_id, index }: Props) {
 
         setOrder(sot);
         const or = result.filter((r) => r.status_order === 'Transfer');
+        
         setOrderTranfer(or.map((r) => r.element_seq));
       } catch (error: any) {
         if (error.message.includes('Network Error')) {
@@ -66,13 +68,7 @@ export default function SubMonitor({ el_id, index }: Props) {
   if (orderTranfer.includes(el_id)) {
     return (
       <>
-        <ChartEcg
-          key={index}
-          orderTranFer={order}
-          el_id={el_id}
-          index={index}
-          onChangeDeleteDeviceID={onChangeDeleteDevices}
-        />
+        <MonitorItem el_id={el_id} key={index} />
       </>
     );
   } else {

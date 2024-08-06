@@ -53,14 +53,24 @@ export default function Page() {
   const [users, setUsers] = useState<Users[]>([]); // Initialize as an empty array
   const [role, setRole] = useState<string>('')
   const [load, setLoad] = useState<boolean>(false)
-  
+
 
   const checkRole = useCallback(async () => {
     try {
       setLoad(true)
       const role = await FindUserMe()
       setRole(role.data.role)
-      onFeedForRole(role.data.role)
+      if (role.data.role.includes("RootAdmin" || "Admin")) {
+        feedMission()
+        feedUser()
+        setLoad(false)
+        return
+      }
+      else {
+        findMissionUsre()
+        setLoad(false)
+        return
+      }
     } catch (error: any) {
       if (error.message !== "timeout of 5000ms exceeded") {
         alert(error.message);
@@ -124,27 +134,14 @@ export default function Page() {
     }
   }, [setUsers]);
 
-  function onFeedForRole(role: string) {
-    if (role.toLocaleLowerCase().includes('user')) {
-      findMissionUsre()
-      setLoad(false)
-      return
-    }
-    else {
 
-      feedMission()
-      feedUser()
-      setLoad(false)
-      return
-    }
-  }
 
   const findMissionUsre = useCallback(async () => {
     try {
       const result = await findMissionByUser()
       setMissionUser(result.data)
       console.log(result.data);
-      
+
     } catch (error) {
       console.log(error);
 
@@ -292,11 +289,11 @@ export default function Page() {
                 <Toolbar />
 
                 <RoleContext.Provider value={{ role, setRole }} >
-                  <CurrentMissionContext.Provider value={{missionUser, setMissionUser}} >
-                    <LocateContext.Provider value={{userLocate, setUserLocate}} >
+                  <CurrentMissionContext.Provider value={{ missionUser, setMissionUser }} >
+                    <LocateContext.Provider value={{ userLocate, setUserLocate }} >
 
-                    <HomeContent />
-                      
+                      <HomeContent />
+
                     </LocateContext.Provider>
                   </CurrentMissionContext.Provider>
                 </RoleContext.Provider>

@@ -7,6 +7,10 @@ import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import { Button, TextField } from '@mui/material';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useRouter } from 'next/navigation';
 import style from './Device_id.module.css';
 import Loadding from '../../../components/Loadding';
@@ -19,6 +23,7 @@ type Props = {
 export default function FromDevice({ result }: Props) {
   const router = useRouter();
   const [str, setStr] = React.useState<string>('');
+  const [brand, setBrand] = React.useState<string>('');
   const [isLoad, setIsLoad] = React.useState<boolean>(false);
 
   async function onSubmitCreateDevice(e: React.FormEvent<HTMLElement>) {
@@ -27,6 +32,7 @@ export default function FromDevice({ result }: Props) {
     try {
       const d = {} as Device;
       d.device_id = str;
+      d.brand = brand
       await createDevice(d);
       router.back();
     } catch (error) {
@@ -34,6 +40,10 @@ export default function FromDevice({ result }: Props) {
       alert(error);
     }
   }
+
+  const handleChange = (event: SelectChangeEvent<string>) => {
+    setBrand(event.target.value);
+  };
 
   async function onSubmitEditDevice(e: React.FormEvent<HTMLElement>) {
     e.preventDefault();
@@ -131,6 +141,18 @@ export default function FromDevice({ result }: Props) {
                   variant="filled"
                   required
                 />
+                <FormControl fullWidth className='mt-3'>
+                  <InputLabel id="demo-simple-select-label">เลือกยี่ห้อ</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    label="เลือกยี่ห้อ"
+                    onChange={handleChange}
+                  >
+                    <MenuItem value={'witleaf'}>witleaf</MenuItem>
+                    <MenuItem value={'midray'}>midray</MenuItem>
+                  </Select>
+                </FormControl>
               </Box>
               <Divider />
               <Box sx={{ p: 2 }}>

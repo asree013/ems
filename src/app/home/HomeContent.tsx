@@ -15,14 +15,15 @@ import { NIL } from 'uuid';
 import Loadding from '@/components/Loadding';
 import { RoleContext, TRoleContext } from '@/contexts/role.context';
 import CardMissionUser from './CardMissionUser';
+import { MissionContexts, TMissionCs } from '@/contexts/missions.context';
 
 
 export default function HomeContent() {
     const [alignment, setAlignment] = useState<string | null>('left');
     const [selected, setSelected] = useState<boolean>(true);
     const [load, setLoad] = useState<boolean>(false);
-    const [missions, setMissions] = useState<Missions[]>({} as Missions[])
     const { role, setRole } = useContext<TRoleContext>(RoleContext)
+    const {missions, setMissions} = useContext<TMissionCs>(MissionContexts)
 
     return (
         <>
@@ -68,8 +69,11 @@ export default function HomeContent() {
                         {
                             role.toLocaleLowerCase().includes('user') ?
                                 <CardMissionUser /> :
-                                <TableMissioon />
-
+                                missions.length == 0?
+                                null:
+                                missions.map(r => 
+                                    <TableMissioon mission={r} />
+                                )
                         }
                     </div>
                 </div>

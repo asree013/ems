@@ -14,8 +14,8 @@
 
 @media only screen and (max-width: 450px) {
     .map{
-        width: 20rem;
-        height: 30rem;
+        width: 17.5rem;
+        height: 17.5rem;
     }
     .card{
         display: flex;

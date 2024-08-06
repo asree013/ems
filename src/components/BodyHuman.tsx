@@ -74,7 +74,7 @@ export default function BodyHuman({ onChangeData, organ }: ChildProps) {
   };
 
   function showBodyPart(element_id: string) {
-    router.push('');
+    // router.push('');
     onChangeData(element_id);
     // router.refresh();
   }

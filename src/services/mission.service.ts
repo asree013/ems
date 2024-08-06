@@ -33,3 +33,19 @@ export function findMissionByUser() {
         throw error
     }
 }
+
+export function findMissionByMissionId(mission_id: string) {
+    try {
+        return endpoint.get<Missions>(`${enviromentDev.mission}/${mission_id}`)
+    } catch (error) {
+        throw error
+    }
+}
+
+export function updateMissionByMissionId(mission_id: string, data: Missions) {
+    try {
+        return endpoint.put<Missions>(`${enviromentDev.mission}/${mission_id}`, data)
+    } catch (error) {
+        throw error
+    }
+}

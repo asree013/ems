@@ -259,6 +259,25 @@
     margin-left: -0.8em;
 }
 
+
+.monitor_item {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    width: 99%;
+    height: 31rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: rgb(12, 12, 52);
+    margin: 2px;
+}
+
+.positionChart{
+    width: 50%;
+    position: static;
+    
+}
+
 @media only screen and (min-width: 1370px) {
     .monitorChart {
         display: grid;

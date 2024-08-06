@@ -7,9 +7,6 @@ import {
 import { enviromentDev } from '@/configs/enviroment.dev';
 import NearMeIcon from '@mui/icons-material/NearMe';
 import { RoleContext, TRoleContext } from '@/contexts/role.context';
-import rootAdmin from '@/assets/icon/admin.png';
-import baseAdmin from '@/assets/icon/base_admin.png';
-import usersLocate from '@/assets/icon/user_locate.png';
 import carsLocate from '@/assets/icon/ambulance.png';
 import carsLocateB from '@/assets/icon/ambulance_4550989.png';
 import AddIcon from '@mui/icons-material/Add';
@@ -33,15 +30,6 @@ type IconGoogleMap = {
     anchor: google.maps.Point;
     labelOrigin: google.maps.Point;
 };
-
-// const iconLocate = {
-//     admin: rootAdmin,
-//     root_admin: baseAdmin,
-//     user: usersLocate,
-//     cars: carsLocate
-// };
-let Icon2: any
-let base1: any
 
 type Props = {
     width: string
