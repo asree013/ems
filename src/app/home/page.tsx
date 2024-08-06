@@ -71,10 +71,10 @@ export default function Page() {
         return
       }
     } catch (error: any) {
-      if (error.message !== "timeout of 5000ms exceeded") {
-        alert('check role');
-        console.log(error);
-      }
+      // if (error.message !== "timeout of 5000ms exceeded") {
+      //   alert('check role');
+      //   console.log(error);
+      // }
       alert(JSON.stringify(error.message));
     }
   }, [setFindMe])
