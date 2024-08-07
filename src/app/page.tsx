@@ -12,6 +12,15 @@ export default function Home() {
 
   useEffect(() => {
     window.location.href = '/login';
+    self.addEventListener('install', event => {
+      // การติดตั้ง Service Worker
+      console.log('Service Worker installing...');
+    });
+    
+    self.addEventListener('activate', event => {
+      // การเปิดใช้งาน Service Worker
+      console.log('Service Worker activating...');
+    });
     
   }, []);
 

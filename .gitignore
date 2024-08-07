@@ -38,11 +38,12 @@ next-env.d.ts
 # certificates
 certificates
 
-# PWA specific (optional)
-public/sw.js
+# PWA specific files
 public/workbox-*.js
 public/worker-*.js
 public/precache-manifest.*.js
+public/sw.js
+public/sw.js.map
 
 # IDE specific
 .vscode/
