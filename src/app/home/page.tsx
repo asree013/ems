@@ -32,7 +32,8 @@ export default function Page() {
   const [userLocate, setUserLocate] = useState<Locations>({} as Locations);
   const [users, setUsers] = useState<Users[]>([]);
   const [load, setLoad] = useState<boolean>(false)
-  const { findMe, setFindMe } = useContext<TFindContext>(FindMeContext)
+  // const { findMe, setFindMe } = useContext<TFindContext>(FindMeContext)
+  const [findMe, setFindMe] = useState<Users>({} as Users)
 
   const feedMission = useCallback(async () => {
     setLoad(true)
@@ -110,15 +111,28 @@ export default function Page() {
     }
   }, [setMissionUser])
 
-  useEffect(() => {
-    if (Object.keys(findMe).length > 0) {
-      if (findMe.role.toLocaleLowerCase().includes('user')) {
+  const feedFindMe = useCallback(async() => {
+    try {
+      const resutl = await FindUserMe()
+      setFindMe(resutl.data)
+      if (resutl.data.role.toLocaleLowerCase().includes('user')) {
         findMissionUsre()
+        setLoad(false)
       }
-      if (findMe.role.toLocaleLowerCase().includes('admin' || 'rootadmin')) {
+      if (resutl.data.role.toLocaleLowerCase().includes('admin' || 'rootadmin')) {
         feedMission()
+        setLoad(false)
       }
+    } catch (error) {
+      console.log(error);
+      
     }
+  }, [setFindMe])
+
+  useEffect(() => {
+    setLoad(true)
+    feedFindMe()
+    
     pushLocationUser();
     const saveLo = setInterval(() => {
       pushLocationUser();

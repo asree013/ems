@@ -98,5 +98,4 @@ export default function Page({ params }: Props) {
     </>
   );
 
-  function renderValue() { }
 }

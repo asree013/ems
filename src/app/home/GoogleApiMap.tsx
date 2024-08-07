@@ -121,66 +121,65 @@ const GoogleApiMap = () => {
 
     return (
         <>
-            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <APIProvider apiKey={enviromentDev.keyGoogleApi}>
-                    <Map
-                        className={homeCss.sizeMap}
-                        defaultCenter={{ lng: Number(locate.long), lat: Number(locate.lat) }}
-                        defaultZoom={zoom}
-                        zoom={zoom}
-                        center={centerLocate}
-                        gestureHandling={'greedy'}
-                        disableDefaultUI={true}
-                        onClick={(e) => console.log(e.detail.latLng)}
-                    >
-                        <MapControl position={ControlPosition.CENTER}>
-                            <svg width="70px" height="70px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="24" height="24" fill="none" />
-                                <path d="M12 6V18" stroke="#ef4444" strokeLinecap="round" strokeLinejoin="round" />
-                                <path d="M6 12H18" stroke="#ef4444" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                        </MapControl>
-                        <MapControl position={ControlPosition.RIGHT}>
-                            <Button type='button' onClick={onCheckUserLocation} variant='contained' className='m-2'>
-                                <NearMeIcon />
-                            </Button>
-                        </MapControl>
-                        <MapControl position={ControlPosition.RIGHT}>
-                            <Button type='button' onClick={() => setZoom(zoom + 1)}variant='contained' className='m-2'>
-                                <AddIcon />
-                            </Button>
-                        </MapControl>
-                        <MapControl position={ControlPosition.RIGHT}>
-                            <Button type='button' onClick={() => setZoom(zoom - 1)} variant='contained' className='m-2'>
-                                <RemoveIcon />
-                            </Button>
-                        </MapControl>
-                        {icon &&
-                            <Marker
-                                onClick={(e) => console.log(e.latLng?.toString())}
-                                icon={icon}
-                                position={{ lng: Number(locate.long), lat: Number(locate.lat) }}
-                                label={'สพส.11071 CPA'}
-                                animation={centerLocate ? window.google.maps.Animation.BOUNCE : null}
+                    {
+                        load ?
+                            <p>loadding ...</p> :
+                            <Map
+                                className={homeCss.sizeMap}
+                                defaultCenter={{ lng: Number(locate.long), lat: Number(locate.lat) }}
+                                defaultZoom={zoom}
+                                zoom={zoom}
+                                center={centerLocate? centerLocate: null}
+                                gestureHandling={'greedy'}
+                                disableDefaultUI={true}
+                                onClick={(e) => console.log(e.detail.latLng)}
+                            >
+                                <MapControl position={ControlPosition.CENTER}>
+                                    <svg width="70px" height="70px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect width="24" height="24" fill="none" />
+                                        <path d="M12 6V18" stroke="#ef4444" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M6 12H18" stroke="#ef4444" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                </MapControl>
+                                <MapControl position={ControlPosition.RIGHT}>
+                                    <Button type='button' onClick={onCheckUserLocation} variant='contained' className='m-2'>
+                                        <NearMeIcon />
+                                    </Button>
+                                </MapControl>
+                                <MapControl position={ControlPosition.RIGHT}>
+                                    <Button type='button' onClick={() => setZoom(zoom + 1)} variant='contained' className='m-2'>
+                                        <AddIcon />
+                                    </Button>
+                                </MapControl>
+                                <MapControl position={ControlPosition.RIGHT}>
+                                    <Button type='button' onClick={() => setZoom(zoom - 1)} variant='contained' className='m-2'>
+                                        <RemoveIcon />
+                                    </Button>
+                                </MapControl>
+                                {icon &&
+                                    <Marker
+                                        onClick={(e) => console.log(e.latLng?.toString())}
+                                        icon={icon}
+                                        position={{ lng: Number(locate.long), lat: Number(locate.lat) }}
+                                        label={'สพส.11071 CPA'}
+                                        animation={centerLocate ? window.google.maps.Animation.BOUNCE : null}
 
-                            />
-                        }
-                        {
-                            missionUser.length > 0 ?
-                                missionUser.map((r, i) =>
-                                    <Directions key={i} lat={Number(r.lat)} lng={Number(r.long)} />
-                                ) :
-                                null
-                        }
+                                    />
+                                }
+                                {
+                                    missionUser.length > 0 ?
+                                        missionUser.map((r, i) =>
+                                            <Directions key={i} lat={Number(r.lat)} lng={Number(r.long)} />
+                                        ) :
+                                        null
+                                }
 
-                    </Map>
+                            </Map>
+                    }
                 </APIProvider>
             </div>
-            {
-                load ?
-                    <Loadding /> :
-                    null
-            }
         </>
     );
 };
