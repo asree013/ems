@@ -1,6 +1,7 @@
 // pages/some-page.js
 
 'use client';
+import Loadding from '@/components/Loadding';
 import { useEffect } from 'react';
 
 const SomePage = () => {
@@ -19,13 +20,11 @@ const SomePage = () => {
           });
       });
     }
+    window.location.href = '/login'
   }, []);
 
   return (
-    <div>
-      <h1>Service Worker Page</h1>
-      {/* เนื้อหาของหน้านี้ */}
-    </div>
+    <Loadding />
   );
 }
 
