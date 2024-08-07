@@ -39,7 +39,6 @@ export default function Page() {
       const result = await findMission(1, 10);
       setMissions(result.data);
     } catch (error) {
-      console.log(error);
       alert('mission')
     } finally {
       setLoad(false)
@@ -88,7 +87,6 @@ export default function Page() {
       setUsers(result.data);
       console.log(result.data);
     } catch (error) {
-      console.log(error);
       alert('find user')
     }
   }, [setUsers]);
@@ -101,7 +99,6 @@ export default function Page() {
       setMissionUser(result.data)
       console.log('---------------> ', result.data);
     } catch (error) {
-      console.log(error);
       alert('find mission by user')
 
     } finally {
