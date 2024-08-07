@@ -4,22 +4,22 @@
 import Loadding from '@/components/Loadding';
 import { useEffect } from 'react';
 
-const SomePage = () => {
+const page = () => {
 
   useEffect(() => {
     // ลงทะเบียน Service Worker เฉพาะในหน้านี้
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        const swUrl = '/service-worker.js';
-        navigator.serviceWorker.register(swUrl)
-          .then(registration => {
-            console.log('Service Worker registered with scope:', registration.scope);
-          })
-          .catch(error => {
-            console.error('Service Worker registration failed:', error);
-          });
-      });
-    }
+    // if ('serviceWorker' in navigator) {
+    //   window.addEventListener('load', () => {
+    //     const swUrl = '/service-worker.js';
+    //     navigator.serviceWorker.register(swUrl)
+    //       .then(registration => {
+    //         console.log('Service Worker registered with scope:', registration.scope);
+    //       })
+    //       .catch(error => {
+    //         console.error('Service Worker registration failed:', error);
+    //       });
+    //   });
+    // }
     window.location.href = '/login'
   }, []);
 
@@ -28,4 +28,4 @@ const SomePage = () => {
   );
 }
 
-export default SomePage;
+export default page;

@@ -1,17 +1,15 @@
 'use client'
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 
-import Toolbar from '@mui/material/Toolbar';
 import { Missions } from '@/models/mission.model';
 import { findMission, findMissionByUser } from '@/services/mission.service';
-import { MissionContext, MissionContexts } from '@/contexts/missions.context';
+import { MissionContexts } from '@/contexts/missions.context';
 import { OpenModalUserContext } from '@/contexts/modalUser.context';
 import ModalUser from '@/components/ModalUser';
 import { findUsers, saveLocation } from '@/services/user.service';
 const utmObj = require('utm-latlng')
 import * as mgrs from 'mgrs'
 import { Locations } from '@/models/location.model';
-import HomeSideBard from './HomeSideBard';
 import HomeContent from './HomeContent';
 import { UsersContexts } from '@/contexts/users.context';
 import { Users } from '@/models/users.model';
