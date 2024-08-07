@@ -12,6 +12,7 @@
 # next.js
 /.next/
 /out/
+/.vercel
 
 # production
 /build
@@ -26,13 +27,23 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
-.env*.local
-
-# vercel
-.vercel
+.env
+.env.*.local
+.env.local
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
 
+# certificates
 certificates
+
+# PWA specific (optional)
+public/sw.js
+public/workbox-*.js
+public/worker-*.js
+public/precache-manifest.*.js
+
+# IDE specific
+.vscode/
+.idea/
