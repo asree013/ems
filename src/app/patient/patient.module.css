@@ -26,4 +26,9 @@
     .patient_list{
         grid-template-columns: repeat(1, 1fr); 
     }
+    .buttonCreate{
+        position: fixed;
+        top: 78%;
+        right: 5%;
+    }
 }

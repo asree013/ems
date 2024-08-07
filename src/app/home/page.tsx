@@ -33,7 +33,7 @@ export default function Page() {
   let role = ''
   const { findMe, setFindMe } = useContext<TFindContext>(FindMeContext)
 
-  const feedMission = useCallback(async () => {
+  const feedMissionAll = useCallback(async () => {
     setLoad(true)
     try {
       const result = await findMission(1, 10);
@@ -92,7 +92,7 @@ export default function Page() {
   }, [setUsers]);
 
 
-  const findMissionUsre = useCallback(async () => {
+  const findMissionByUsre = useCallback(async () => {
     setLoad(true)
     try {
       const result = await findMissionByUser()
@@ -108,24 +108,19 @@ export default function Page() {
 
   useEffect(() => {
     setLoad(true)
-    if (localStorage.getItem('sika')) {
-      const sika = localStorage.getItem('sika')
-      if (sika) {
-        role = decodeURIComponent(atob(sika));
-        role.includes("User")?findMissionUsre(): feedMission()
-
-      }
-    }
-
     pushLocationUser();
+    findMissionByUsre()
+
     const saveLo = setInterval(() => {
       pushLocationUser();
+      console.log('5 secon');
+      
     }, 5000);
 
     return () => {
       clearInterval(saveLo);
     };
-  }, [pushLocationUser]);
+  }, [pushLocationUser, findMissionByUsre]);
 
 
   return (

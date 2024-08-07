@@ -13,6 +13,8 @@ import { Users } from '@/models/users.model';
 import { useCallback } from 'react';
 import { FindUserMe } from '@/services/authen.service';
 import Loadding from './Loadding';
+import MenuItem from './Menu';
+import { MenuValueContext } from '@/contexts/menu.value.context';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -92,7 +94,9 @@ export default function TabMenu({ children }: Props) {
                         </div>
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={1}>
-                        Menu
+                        <MenuValueContext.Provider value={{value, setValue}}>
+                            <MenuItem />
+                        </MenuValueContext.Provider>
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={2}>
                         Profile
@@ -111,9 +115,9 @@ export default function TabMenu({ children }: Props) {
             </Box>
 
             {
-                load? 
-                <Loadding />:
-                null
+                load ?
+                    <Loadding /> :
+                    null
             }
         </>
     );
