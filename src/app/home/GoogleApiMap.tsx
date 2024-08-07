@@ -6,7 +6,7 @@ import {
 } from '@vis.gl/react-google-maps';
 import { enviromentDev } from '@/configs/enviroment.dev';
 import NearMeIcon from '@mui/icons-material/NearMe';
-import { RoleContext, TRoleContext } from '@/contexts/role.context';
+import { FindMeContext, TFindContext } from '@/contexts/findme.context';
 import carsLocate from '@/assets/icon/ambulance.png';
 import carsLocateB from '@/assets/icon/ambulance_4550989.png';
 import AddIcon from '@mui/icons-material/Add';
@@ -31,17 +31,13 @@ type IconGoogleMap = {
     labelOrigin: google.maps.Point;
 };
 
-type Props = {
-    width: string
-    hight: string
-}
-const GoogleApiMap = ({ hight, width }: Props) => {
+const GoogleApiMap = () => {
     const [locate, setLocate] = useState<Locations>({} as Locations); // Initialize with default values
     const [centerLocate, setCenterLocate] = useState<LatLng | null>(null);
     const [icon, setIcon] = useState<IconGoogleMap | null>(null);
     const [zoom, setZoom] = useState<number>(13);
     const [load, setLoad] = useState<boolean>(false);
-    const { findMe, setFindMe } = useContext<TRoleContext>(RoleContext);
+    const { findMe, setFindMe } = useContext<TFindContext>(FindMeContext);
     const { missionUser, setMissionUser } = useContext<TCurrentMission>(CurrentMissionContext)
 
 
@@ -125,59 +121,61 @@ const GoogleApiMap = ({ hight, width }: Props) => {
 
     return (
         <>
-            <APIProvider apiKey={enviromentDev.keyGoogleApi}>
-                <Map
-                    style={{ height: hight, width: width }}
-                    defaultCenter={{ lng: Number(locate.long), lat: Number(locate.lat) }}
-                    defaultZoom={zoom}
-                    zoom={zoom}
-                    center={centerLocate}
-                    gestureHandling={'greedy'}
-                    disableDefaultUI={true}
-                    onClick={(e) => console.log(e.detail.latLng)}
-                >
-                    <MapControl position={ControlPosition.CENTER}>
-                        <svg width="70px" height="70px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="24" height="24" fill="none" />
-                            <path d="M12 6V18" stroke="#ef4444" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M6 12H18" stroke="#ef4444" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                    </MapControl>
-                    <MapControl position={ControlPosition.RIGHT}>
-                        <Button onClick={onCheckUserLocation} className='m-2 border-2 border-black rounded-sm bg-gray-100 hover:bg-gray-300'>
-                            <NearMeIcon />
-                        </Button>
-                    </MapControl>
-                    <MapControl position={ControlPosition.RIGHT}>
-                        <Button onClick={() => setZoom(zoom + 1)} className='m-2 border-2 border-black rounded-sm bg-gray-100 hover:bg-gray-300'>
-                            <AddIcon />
-                        </Button>
-                    </MapControl>
-                    <MapControl position={ControlPosition.RIGHT}>
-                        <Button onClick={() => setZoom(zoom - 1)} className='m-2 border-2 border-black rounded-sm bg-gray-100 hover:bg-gray-300'>
-                            <RemoveIcon />
-                        </Button>
-                    </MapControl>
-                    {icon &&
-                        <Marker
-                            onClick={(e) => console.log(e.latLng?.toString())}
-                            icon={icon}
-                            position={{ lng: Number(locate.long), lat: Number(locate.lat) }}
-                            label={'สพส.11071 CPA'}
-                            animation={centerLocate ? window.google.maps.Animation.BOUNCE : null}
+            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                <APIProvider apiKey={enviromentDev.keyGoogleApi}>
+                    <Map
+                        className={homeCss.sizeMap}
+                        defaultCenter={{ lng: Number(locate.long), lat: Number(locate.lat) }}
+                        defaultZoom={zoom}
+                        zoom={zoom}
+                        center={centerLocate}
+                        gestureHandling={'greedy'}
+                        disableDefaultUI={true}
+                        onClick={(e) => console.log(e.detail.latLng)}
+                    >
+                        <MapControl position={ControlPosition.CENTER}>
+                            <svg width="70px" height="70px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="24" height="24" fill="none" />
+                                <path d="M12 6V18" stroke="#ef4444" strokeLinecap="round" strokeLinejoin="round" />
+                                <path d="M6 12H18" stroke="#ef4444" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </MapControl>
+                        <MapControl position={ControlPosition.RIGHT}>
+                            <Button type='button' onClick={onCheckUserLocation} variant='contained' className='m-2'>
+                                <NearMeIcon />
+                            </Button>
+                        </MapControl>
+                        <MapControl position={ControlPosition.RIGHT}>
+                            <Button type='button' onClick={() => setZoom(zoom + 1)}variant='contained' className='m-2'>
+                                <AddIcon />
+                            </Button>
+                        </MapControl>
+                        <MapControl position={ControlPosition.RIGHT}>
+                            <Button type='button' onClick={() => setZoom(zoom - 1)} variant='contained' className='m-2'>
+                                <RemoveIcon />
+                            </Button>
+                        </MapControl>
+                        {icon &&
+                            <Marker
+                                onClick={(e) => console.log(e.latLng?.toString())}
+                                icon={icon}
+                                position={{ lng: Number(locate.long), lat: Number(locate.lat) }}
+                                label={'สพส.11071 CPA'}
+                                animation={centerLocate ? window.google.maps.Animation.BOUNCE : null}
 
-                        />
-                    }
-                    {
-                        missionUser.length > 0 ?
-                            missionUser.map((r, i) =>
-                                <Directions key={i} lat={Number(r.lat)} lng={Number(r.long)} />
-                            ) :
-                            null
-                    }
+                            />
+                        }
+                        {
+                            missionUser.length > 0 ?
+                                missionUser.map((r, i) =>
+                                    <Directions key={i} lat={Number(r.lat)} lng={Number(r.long)} />
+                                ) :
+                                null
+                        }
 
-                </Map>
-            </APIProvider>
+                    </Map>
+                </APIProvider>
+            </div>
             {
                 load ?
                     <Loadding /> :

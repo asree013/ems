@@ -1,7 +1,7 @@
 import Nav from '@/components/Nav';
 import { metadata } from '../layout';
-import BottomNavigater from '@/components/BottomNavigator';
 import SpeedDialButton from '@/components/SpeedDialButton';
+import TabMenu from '@/components/TabMenu';
 metadata.title = 'Home EMS App';
 
 export default function DashboardLayout({
@@ -14,10 +14,10 @@ export default function DashboardLayout({
       {/* Include shared UI here e.g. a header or sidebar */}
       <Nav />
 
-      {children}
-      <div style={{marginTop: '60px'}}>
-        <BottomNavigater />
-        <SpeedDialButton />
+      <div style={{ marginTop: '60px' }}>
+        <TabMenu>
+          {children}
+        </TabMenu>
       </div>
     </section>
   );

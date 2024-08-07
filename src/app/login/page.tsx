@@ -70,6 +70,15 @@ export default function Page() {
       try {
         await logins({username: decodeUser, password: decodePass})
         window.location.href = '/home'
+
+        // if(Object.keys(findMe).length > 0) {
+        //   if(Object.keys(findMe.Responsibilities).length === 0 && findMe.role.toLocaleLowerCase().includes('user')){
+        //     window.location.href = '/forbidden'
+        //   }
+        //   if(findMe.role.toLocaleLowerCase().includes('admin' || 'rootadmin')){
+            
+        //   }
+        // }
       } catch (error: any) {
         toast(JSON.stringify(error.message), 'error')
       }

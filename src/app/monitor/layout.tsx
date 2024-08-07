@@ -2,7 +2,7 @@ import Nav from '@/components/Nav';
 import { metadata } from '../layout';
 import { useCallback, useEffect } from 'react';
 import { FindUserMe } from '@/services/authen.service';
-import BottomNavigater from '@/components/BottomNavigator';
+import TabMenu from '@/components/TabMenu';
 
 metadata.title = 'Monitor EMS App';
 
@@ -28,11 +28,12 @@ export default function DashboardLayout({
     <section style={{ width: '100%' }}>
       {/* Include shared UI here e.g. a header or sidebar */}
       <Nav />
-      <div>{children}</div>
-      <div style={{marginTop: '60px'}}>
-        <BottomNavigater />
-      </div>
 
+      <div style={{ marginTop: '60px' }}>
+        <TabMenu>
+          {children}
+        </TabMenu>
+      </div>
     </section>
   );
 }

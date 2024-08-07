@@ -1,7 +1,7 @@
 import Nav from '@/components/Nav';
 
 import { metadata } from '../layout';
-import BottomNavigater from '@/components/BottomNavigator';
+import TabMenu from '@/components/TabMenu';
 metadata.title = 'Device EMS App';
 
 export default function DashboardLayout({
@@ -13,9 +13,11 @@ export default function DashboardLayout({
     <section style={{ width: '100%' }}>
       {/* Include shared UI here e.g. a header or sidebar */}
       <Nav />
-      <div style={{ marginTop: '10%' }}>{children}</div>
-      <div style={{marginTop: '60px'}}>
-        <BottomNavigater />
+
+      <div style={{ marginTop: '60px' }}>
+        <TabMenu>
+          {children}
+        </TabMenu>
       </div>
     </section>
   );

@@ -18,6 +18,8 @@ import CameraEnhanceIcon from '@mui/icons-material/CameraEnhance';
 import { useState } from 'react';
 import Loadding from './Loadding';
 
+import RuleIcon from '@mui/icons-material/Rule';
+
 const options = [
   'Patient',
   'Device',
@@ -66,6 +68,7 @@ export default function SpeedDialButton() {
         }}
       >
           <MenuList>
+
             <MenuItem onClick={() => {
               setLoad(true)
               window.location.href = '/patient'
@@ -75,6 +78,7 @@ export default function SpeedDialButton() {
               </ListItemIcon>
               <Typography variant="inherit">Patient</Typography>
             </MenuItem>
+
             <MenuItem onClick={() => {
               setLoad(true)
               window.location.href = '/device'
@@ -84,6 +88,7 @@ export default function SpeedDialButton() {
               </ListItemIcon>
               <Typography variant="inherit">Device</Typography>
             </MenuItem>
+
             <MenuItem onClick={() => {
               setLoad(true)
               window.location.href = '/camera'
@@ -93,6 +98,18 @@ export default function SpeedDialButton() {
               </ListItemIcon>
               <Typography variant="inherit" noWrap>
                 Camera
+              </Typography>
+            </MenuItem>
+
+            <MenuItem onClick={() => {
+              setLoad(true)
+              window.location.href = '/mission'
+            }}>
+              <ListItemIcon>
+                <RuleIcon fontSize="small" />
+              </ListItemIcon>
+              <Typography variant="inherit" noWrap>
+                Mission
               </Typography>
             </MenuItem>
           </MenuList>

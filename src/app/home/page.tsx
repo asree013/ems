@@ -1,25 +1,7 @@
 'use client'
-import Avatar from '@mui/material/Avatar';
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import homeCss from './home.module.css';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import MailIcon from '@mui/icons-material/Mail';
-import MenuIcon from '@mui/icons-material/Menu';
+
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Input from '@mui/joy/Input';
-import SearchIcon from '@mui/icons-material/Search';
-import { Button, Divider } from '@mui/joy';
 import { Missions } from '@/models/mission.model';
 import { findMission, findMissionByUser } from '@/services/mission.service';
 import { MissionContext, MissionContexts } from '@/contexts/missions.context';
@@ -34,52 +16,34 @@ import HomeContent from './HomeContent';
 import { UsersContexts } from '@/contexts/users.context';
 import { Users } from '@/models/users.model';
 import { FindUserMe } from '@/services/authen.service';
-import { RoleContext } from '@/contexts/role.context';
 import Loadding from '@/components/Loadding';
 import { CurrentMissionContext } from '@/contexts/currentMission.context';
 import { LocateContext } from '@/contexts/locate.context';
+import { FindMeContext, TFindContext } from '@/contexts/findme.context';
 
 const drawerWidth = 240;
 
 export default function Page() {
   const UTM = new utmObj('Everest');
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [openUser, setOpenUser] = useState(false);
-  const [isClosing, setIsClosing] = useState(false);
-  const [missions, setMissions] = useState<Missions[]>([]); // Initialize as an empty array
-  const [missionId, setMissionId] = useState<Missions>({} as Missions); // Initialize as an empty object
-  const [missionUser, setMissionUser] = useState<Missions[]>({} as Missions[]); // Initialize as an empty object
-  const [userLocate, setUserLocate] = useState<Locations>({} as Locations); // Initialize as an empty object
-  const [users, setUsers] = useState<Users[]>([]); // Initialize as an empty array
-  const [findMe, setFindMe] = useState<Users>({} as Users)
+  const [missions, setMissions] = useState<Missions[]>([]);
+  const [missionId, setMissionId] = useState<Missions>({} as Missions);
+  const [missionUser, setMissionUser] = useState<Missions[]>({} as Missions[]);
+  const [userLocate, setUserLocate] = useState<Locations>({} as Locations);
+  const [users, setUsers] = useState<Users[]>([]);
   const [load, setLoad] = useState<boolean>(false)
-
-  const checkRole = useCallback(async () => {
-    try {
-      setLoad(true);
-      const result = await FindUserMe(); // เรียกใช้งาน API เพื่อตรวจสอบข้อมูลผู้ใช้ปัจจุบัน
-      setFindMe(result.data); // บันทึกข้อมูลผู้ใช้ที่ดึงมาได้
-      // ตรวจสอบว่า role ของผู้ใช้มีค่าเป็น "RootAdmin" หรือ "Admin" หรือไม่
-      if (result.data.role.includes("RootAdmin") || result.data.role.includes("Admin")) {
-        feedMission(); // ถ้าใช่ เรียกฟังก์ชั่น feedMission
-        feedUser(); // เรียกฟังก์ชั่น feedUser
-      } else {
-        findMissionUsre(); // ถ้าไม่ใช่ เรียกฟังก์ชั่น findMissionUsre
-      }
-      setLoad(false); // เปลี่ยนสถานะการโหลดเป็น false
-    } catch (error: any) {
-      alert(JSON.stringify(error.message)); // แสดงข้อความแจ้งเตือนหากเกิดข้อผิดพลาด
-    }
-  }, [setFindMe]);
-  
+  const { findMe, setFindMe } = useContext<TFindContext>(FindMeContext)
 
   const feedMission = useCallback(async () => {
+    setLoad(true)
     try {
       const result = await findMission(1, 10);
       setMissions(result.data);
     } catch (error) {
       console.log(error);
       alert('mission')
+    } finally {
+      setLoad(false)
     }
   }, [setMissionId]);
 
@@ -131,80 +95,40 @@ export default function Page() {
   }, [setUsers]);
 
 
-
   const findMissionUsre = useCallback(async () => {
+    setLoad(true)
     try {
       const result = await findMissionByUser()
       setMissionUser(result.data)
-      console.log(result.data);
+      console.log('---------------> ', result.data);
     } catch (error) {
       console.log(error);
       alert('find mission by user')
 
+    } finally {
+      setLoad(false)
     }
   }, [setMissionUser])
 
   useEffect(() => {
-    checkRole()
+    if (Object.keys(findMe).length > 0) {
+      if (findMe.role.toLocaleLowerCase().includes('user')) {
+        findMissionUsre()
+      }
+      if (findMe.role.toLocaleLowerCase().includes('admin' || 'rootadmin')) {
+        feedMission()
+      }
+    }
     pushLocationUser();
     const saveLo = setInterval(() => {
-      console.log('timeout');
       pushLocationUser();
     }, 5000);
 
     return () => {
       clearInterval(saveLo);
     };
-  }, [checkRole, pushLocationUser]);
+  }, [pushLocationUser]);
 
-  const handleDrawerClose = () => {
-    setIsClosing(true);
-    setMobileOpen(false);
-  };
-
-  const handleDrawerTransitionEnd = () => {
-    setIsClosing(false);
-  };
-
-  const handleDrawerToggle = () => {
-    if (!isClosing) {
-      setMobileOpen(!mobileOpen);
-    }
-  };
-
-  const drawer = (
-    <div>
-      <Toolbar />
-      <Divider />
-      <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </div>
-  );
-
-  const container = typeof window !== 'undefined' ? () => window.document.body : undefined;
 
   return (
     <>
@@ -212,90 +136,14 @@ export default function Page() {
         <OpenModalUserContext.Provider value={{ openUser, setOpenUser, missionId, setMissionId }}>
           <UsersContexts.Provider value={{ users, setUsers }} >
 
-            <Box sx={{ display: 'flex' }}>
-              <CssBaseline />
-              <AppBar
-                sx={{
-                  background: 'white',
-                  color: 'black',
-                  width: '100%',
-                  ml: { sm: `${drawerWidth}px` },
-                  marginTop: '63px'
+            <CurrentMissionContext.Provider value={{ missionUser, setMissionUser }} >
+              <LocateContext.Provider value={{ userLocate, setUserLocate }} >
 
-                }}
-              >
-                <Toolbar>
-                  <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    edge="start"
-                    onClick={handleDrawerToggle}
-                    sx={{ mr: 2, display: { sm: 'none' } }}
-                  >
-                    <MenuIcon />
-                  </IconButton>
-                  <Typography variant="h6" noWrap component="div">
-                    <Input
-                      placeholder='Seach'
-                      sx={{ width: '90%', borderRadius: '10px' }}
-                      endDecorator={<Button><SearchIcon /></Button>}
-                    />
-                  </Typography>
-                </Toolbar>
-              </AppBar>
-              <Box
-                component="nav"
-                sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 }, marginTop: '60px' }}
-                aria-label="mailbox folders"
-              >
-                {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-                <Drawer
-                  container={container}
-                  variant="temporary"
-                  open={mobileOpen}
-                  onTransitionEnd={handleDrawerTransitionEnd}
-                  onClose={handleDrawerClose}
-                  ModalProps={{
-                    keepMounted: true, // Better open performance on mobile.
-                  }}
-                  sx={{
-                    display: { xs: 'block', sm: 'none' },
-                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-                  }}
-                >
-                  <HomeSideBard />
-                </Drawer>
-                <Drawer
-                  variant="permanent"
-                  sx={{
-                    display: { xs: 'none', sm: 'block' },
-                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, marginTop: '63px' },
+                <HomeContent />
 
-                  }}
-                  open
-                >
-                  <HomeSideBard />
-                </Drawer>
-              </Box>
-              <Box
-                component="main"
-                sx={{ flexGrow: 1, p: 3, marginTop: '60px' }}
-                className={homeCss.contentBox}
-              >
-                <Toolbar />
+              </LocateContext.Provider>
+            </CurrentMissionContext.Provider>
 
-                <RoleContext.Provider value={{ findMe, setFindMe }} >
-                  <CurrentMissionContext.Provider value={{ missionUser, setMissionUser }} >
-                    <LocateContext.Provider value={{ userLocate, setUserLocate }} >
-
-                      <HomeContent />
-
-                    </LocateContext.Provider>
-                  </CurrentMissionContext.Provider>
-                </RoleContext.Provider>
-
-              </Box>
-            </Box>
             <ModalUser />
 
           </UsersContexts.Provider>

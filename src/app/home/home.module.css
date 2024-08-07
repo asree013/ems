@@ -1,14 +1,16 @@
 .homeBody {
     display: flex;
     align-items: start;
-    justify-content: start;
-    margin: 75px 0;
+    justify-content: center;
     flex-direction: row;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     border-radius: 10px;
     background: white;
+    width: 100%;
 }
-.sideBar{
+
+
+.sideBar {
     width: 10%;
     padding: 40px;
     display: flex;
@@ -16,44 +18,51 @@
     align-items: center;
     justify-content: center;
 }
-.logoAdin{
+
+.logoAdin {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
 }
-.sideBarContent{
+
+.sideBarContent {
     /* display: flex;
     flex-direction: column;
     margin-top: 40px; */
     width: 50%;
 }
-.headContent{
+
+.headContent {
     width: 100%;
     display: flex;
     justify-content: space-between;
 }
-.content{
+
+.content {
     width: 100%;
-    padding: 0 40px;
+    padding: 0 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
-.contentMenu{
+
+.contentMenu {
     margin-top: 30px;
     width: 100%;
 
 }
-.contentTitle{
+
+.contentTitle {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     width: 100%;
 }
-.contentItem{
+
+.contentItem {
     margin-top: 20px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -77,7 +86,8 @@
     justify-content: center;
     flex-direction: column;
 }
-.paperMenu{
+
+.paperMenu {
     height: 12rem;
     border-radius: 15px;
     display: flex;
@@ -168,7 +178,16 @@
     background-color: #2d3748;
     border-radius: 0.25rem;
     font-size: 0.5rem;
-  }
+}
+
+.contentBox {
+    width: 100%;
+}
+
+.sizeMap{
+    width: 750px;
+    height: 500px;
+}
 
 
 @media only screen and (max-width: 600px) {
@@ -176,6 +195,11 @@
         display: grid;
         grid-template-columns: repeat(1, 1fr);
     }
+    .sizeMap{
+        width: 750px;
+        height: 500px;
+    }
+    
 }
 
 @media only screen and (max-width: 1370px) {
@@ -183,9 +207,7 @@
         grid-template-columns: repeat(3, 1fr);
 
     }
-    .contentBox{
-        width: 70%;
-    }
+
 }
 
 @media only screen and (max-width: 450px) {
@@ -193,8 +215,8 @@
         display: grid;
         grid-template-columns: repeat(1, 1fr);
     }
-    .content{
-        width: 100%;
-        padding: 0;
+    .sizeMap{
+        width: 270px;
+        height: 270px;
     }
 }

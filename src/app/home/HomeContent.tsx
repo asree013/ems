@@ -13,7 +13,7 @@ import PlaceIcon from '@mui/icons-material/Place';
 import GoogleApiMap from './GoogleApiMap';
 import { NIL } from 'uuid';
 import Loadding from '@/components/Loadding';
-import { RoleContext, TRoleContext } from '@/contexts/role.context';
+import { FindMeContext, TFindContext } from '@/contexts/findme.context';
 import CardMissionUser from './CardMissionUser';
 import { MissionContexts, TMissionCs } from '@/contexts/missions.context';
 
@@ -22,7 +22,7 @@ export default function HomeContent() {
     const [alignment, setAlignment] = useState<string | null>('left');
     const [selected, setSelected] = useState<boolean>(true);
     const [load, setLoad] = useState<boolean>(false);
-    const { findMe, setFindMe } = useContext<TRoleContext>(RoleContext)
+    const { findMe, setFindMe } = useContext<TFindContext>(FindMeContext)
     const {missions, setMissions} = useContext<TMissionCs>(MissionContexts)
 
     return (
@@ -86,7 +86,7 @@ export default function HomeContent() {
                         <div></div>
                     </div>
                     <div style={{ margin: '15px 0' }}>
-                        <GoogleApiMap hight={'30rem'} width={'100%'} />
+                        <GoogleApiMap />
                     </div>
                 </div>
             </div>
