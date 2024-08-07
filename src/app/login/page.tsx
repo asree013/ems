@@ -15,7 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import './login.css';
 import Loadding from '../../components/Loadding';
 import { Logins } from '../../models/authen.model';
-import { logins } from '../../services/authen.service';
+import { FindUserMe, logins } from '../../services/authen.service';
 import { useEffect, useState } from 'react';
 import { toast } from '@/services/alert.service'
 import { escape } from 'querystring';
@@ -68,17 +68,20 @@ export default function Page() {
       const decodeUser = decodeURIComponent(atob(JSON.parse(camera).status));
       const decodePass = decodeURIComponent(atob(JSON.parse(camera).message))
       try {
-        await logins({username: decodeUser, password: decodePass})
-        window.location.href = '/home'
+        await logins({ username: decodeUser, password: decodePass })
+        const findMe = await FindUserMe()
+        const roleUser = btoa(encodeURIComponent(findMe.data.role));
+        localStorage.setItem('sika', roleUser)
 
-        // if(Object.keys(findMe).length > 0) {
-        //   if(Object.keys(findMe.Responsibilities).length === 0 && findMe.role.toLocaleLowerCase().includes('user')){
-        //     window.location.href = '/forbidden'
-        //   }
-        //   if(findMe.role.toLocaleLowerCase().includes('admin' || 'rootadmin')){
-            
-        //   }
-        // }
+        if (Object.keys(findMe).length > 0) {
+          if (Object.keys(findMe.data.Responsibilities).length === 0 && findMe.data.role.toLocaleLowerCase().includes('user')) {
+            window.location.href = '/forbidden'
+          }
+          if (findMe.data.role.toLocaleLowerCase().includes('admin' || 'rootadmin')) {
+            window.location.href = '/home'
+
+          }
+        }
       } catch (error: any) {
         toast(JSON.stringify(error.message), 'error')
       }
