@@ -14,7 +14,7 @@ import { Missions } from '@/models/mission.model';
 import Divider from '@mui/material/Divider';
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import { toast } from '@/services/alert.service';
-import { createMission, findMissionByMissionId, findMissionByUser, updateMissionByMissionId } from '@/services/mission.service';
+import { createMission, findMissionByMissionId, updateMissionByMissionId } from '@/services/mission.service';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import CancelIcon from '@mui/icons-material/Cancel';
