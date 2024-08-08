@@ -107,7 +107,6 @@ export default function Page() {
   }, [setMissionUser])
 
   useEffect(() => {
-    setLoad(true)
     pushLocationUser();
     findMissionByUsre()
 
