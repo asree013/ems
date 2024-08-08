@@ -15,6 +15,7 @@ import { FindUserMe } from '@/services/authen.service';
 import Loadding from './Loadding';
 import MenuItem from './Menu';
 import { MenuValueContext } from '@/contexts/menu.value.context';
+import { timeOutJwt } from '@/services/timeout.service';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -68,6 +69,7 @@ export default function TabMenu({ children }: Props) {
             setLoad(false);
         } catch (error: any) {
             alert(JSON.stringify(error.message));
+            timeOutJwt(error)
         }
     }, [setFindMe]);
 
@@ -94,7 +96,7 @@ export default function TabMenu({ children }: Props) {
                         </div>
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={1}>
-                        <MenuValueContext.Provider value={{value, setValue}}>
+                        <MenuValueContext.Provider value={{ value, setValue }}>
                             <MenuItem />
                         </MenuValueContext.Provider>
                     </CustomTabPanel>

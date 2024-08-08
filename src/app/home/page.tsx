@@ -2,7 +2,7 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 import { Missions } from '@/models/mission.model';
-import { findMission, findMissionByUser } from '@/services/mission.service';
+import { findMission, findMissionCurrent } from '@/services/mission.service';
 import { MissionContexts } from '@/contexts/missions.context';
 import { OpenModalUserContext } from '@/contexts/modalUser.context';
 import ModalUser from '@/components/ModalUser';
@@ -18,6 +18,7 @@ import Loadding from '@/components/Loadding';
 import { CurrentMissionContext } from '@/contexts/currentMission.context';
 import { LocateContext } from '@/contexts/locate.context';
 import { FindMeContext, TFindContext } from '@/contexts/findme.context';
+import { timeOutJwt } from '@/services/timeout.service';
 
 const drawerWidth = 240;
 
@@ -95,12 +96,11 @@ export default function Page() {
   const findMissionByUsre = useCallback(async () => {
     setLoad(true)
     try {
-      const result = await findMissionByUser()
+      const result = await findMissionCurrent()
       setMissionUser(result.data)
-      console.log('---------------> ', result.data);
     } catch (error) {
       alert('find mission by user')
-
+      timeOutJwt(error)
     } finally {
       setLoad(false)
     }

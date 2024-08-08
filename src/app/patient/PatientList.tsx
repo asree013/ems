@@ -7,7 +7,7 @@ import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import { Patients } from '@/models/patient';
-import { CardMedia, Fab } from '@mui/material';
+import { CardMedia, Fab, IconButton } from '@mui/material';
 import { enviromentDev, enviromentPath } from '@/configs/enviroment.dev';
 import HistoryIcon from '@mui/icons-material/History';
 import { usePathname, useRouter } from 'next/navigation';
@@ -94,7 +94,7 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
         <Box sx={{ p: 2 }}>
           {pathName ? (
             <Stack direction="row" spacing={1}>
-              <Fab
+              <IconButton
                 size="small"
                 color="warning"
                 onClick={() => {
@@ -103,8 +103,8 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
                 }}
               >
                 <EditCalendarIcon color="inherit" />
-              </Fab>
-              <Fab
+              </IconButton>
+              <IconButton
                 size="small"
                 color="success"
                 onClick={() => {
@@ -113,7 +113,7 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
                 }}
               >
                 <HistoryIcon color="inherit" />
-              </Fab>
+              </IconButton>
             </Stack>
           ) : (
             <Stack direction="row" spacing={1}>

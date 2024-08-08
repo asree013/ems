@@ -1,5 +1,5 @@
 'use client'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import menuCss from './styles/MenuItem.module.css'
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import { Card, IconButton, Paper } from '@mui/material';
@@ -7,11 +7,28 @@ import { Card, IconButton, Paper } from '@mui/material';
 import { MenuValueContext, TMenuValueC } from '@/contexts/menu.value.context';
 import Loadding from './Loadding';
 
-import HomeIcon from '@mui/icons-material/Home';
-import HotelIcon from '@mui/icons-material/Hotel';
-
+// import HomeIcon from '@mui/icons-material/Home';
+// import HotelIcon from '@mui/icons-material/Hotel';
+import DeviceIcon from '@/assets/icon/device_5062836.png'
+import MissionIcon from '@/assets/icon/mission.png'
+import PatientIcon from '@/assets/icon/patient_menu.png'
+import HomeIcons from '@/assets/icon/home_9449216.png'
+import MornitorIcon from '@/assets/icon/monitor_4765315.png'
+import ChatIcon from '@/assets/icon/ui-element_15768343.png'
 
 export default function MenuItem() {
+
+    function onRedirect() {
+        setInterval(() => {
+            setValue(0)
+        }, 4000)
+    }
+
+    useEffect(() => {
+        return() => {
+            onRedirect
+        }
+    }, [])
 
     const { value, setValue } = useContext<TMenuValueC>(MenuValueContext)
     const [load, setLoad] = useState<boolean>(false)
@@ -25,37 +42,83 @@ export default function MenuItem() {
                 </div>
 
                 <div className={menuCss.body}>
-                    <Card elevation={5} style={{ padding: 5, width: '100%' }}>
+                    <Card elevation={3} style={{ padding: 5, width: '100%' }}>
                         <div onClick={() => {
-                            setLoad(true)
-                            setValue(0)
                             window.location.href = '/home'
-                        }}>
-                            <HomeIcon style={{ height: '5rem', width: '5rem' }} />
-                            <p>หน้าหลัก</p>
+                            setLoad(true)
+                            onRedirect()
+                        }} className={menuCss.menuItem}>
+                            <img src={HomeIcons.src} style={{ height: '4rem', width: '4rem' }} alt="" />
+                            <div className={menuCss.menuDetail}>
+                                <h3>หน้าหลัก</h3>
+                                <p>detail</p>
+                            </div>
                         </div>
                     </Card>
-                    <Card elevation={5} style={{ padding: 5, width: '100%' }}>
+                    <Card elevation={3} style={{ padding: 5, width: '100%' }}>
+                        <div onClick={() => {
+                            window.location.href = '/chat'
+                            setLoad(true)
+                            onRedirect()
+                        }} className={menuCss.menuItem}>
+                            <img src={ChatIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
+                            <div className={menuCss.menuDetail}>
+                                <h3>แชท</h3>
+                                <p>detail</p>
+                            </div>
+                        </div>
+                    </Card>
+                    <Card elevation={3}>
+                        <div onClick={() => {
+                            window.location.href = '/mission'
+                            setLoad(true)
+                            onRedirect()
+                        }} className={menuCss.menuItem}>
+                            <img src={MissionIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
+                            <div className={menuCss.menuDetail}>
+                                <h3>ภารกิจ</h3>
+                                <p>detail</p>
+                            </div>
+                        </div>
+                    </Card>
+                    <Card elevation={3} style={{ padding: 5, width: '100%' }}>
+                        <div onClick={() => {
+                            window.location.href = '/patient'
+                            setLoad(true)
+                            onRedirect()
+                        }} className={menuCss.menuItem}>
+                            <img src={PatientIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
+                            <div className={menuCss.menuDetail}>
+                                <h3>ผู้ป่วย</h3>
+                                <p>detail</p>
+                            </div>
+                        </div>
+                    </Card>
+                    <Card elevation={3} >
+                        <div onClick={() => {
+                            window.location.href = '/device'
+                            setLoad(true)
+                            onRedirect()
+                        }} className={menuCss.menuItem}>
+                            <img src={DeviceIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
+                            <div className={menuCss.menuDetail}>
+                                <h3>เครื่องวัด</h3>
+                                <p>detail</p>
+                            </div>
+                        </div>
+                    </Card>
+                    <Card elevation={3}>
                         <div onClick={() => {
                             setLoad(true)
-                            setValue(0)
-                            window.location.href = '/patient'
-                        }}>
-                            <HotelIcon style={{ height: '5rem', width: '5rem' }} />
-                            <p>ผู้ป่วย</p>
+                            window.location.href = '/monitor'
+                            onRedirect()
+                        }} className={menuCss.menuItem}>
+                            <img src={MornitorIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
+                            <div className={menuCss.menuDetail}>
+                                <h3>จอแสดงเครื่องวัด</h3>
+                                <p>detail</p>
+                            </div>
                         </div>
-                    </Card>
-                    <Card elevation={5} className={menuCss.cards}>
-                        <HotelIcon style={{ height: '5rem', width: '5rem' }} />
-                    </Card>
-                    <Card elevation={5} className={menuCss.cards}>
-                        <HotelIcon style={{ height: '5rem', width: '5rem' }} />
-                    </Card>
-                    <Card elevation={5} className={menuCss.cards}>
-                        <HotelIcon style={{ height: '5rem', width: '5rem' }} />
-                    </Card>
-                    <Card elevation={5} className={menuCss.cards}>
-                        <HotelIcon style={{ height: '5rem', width: '5rem' }} />
                     </Card>
                 </div>
             </div>

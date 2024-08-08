@@ -18,7 +18,8 @@ import { Card, Fab } from '@mui/material';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Loadding from '@/components/Loadding';
 import { NIL } from 'uuid';
-import { PatientContextsArr } from '@/contexts/patient.context';
+import { PatientContextsArr, PContexts } from '@/contexts/patient.context';
+import PaginationThemplete from '@/components/PaginationThemplete';
 
 const StyledFab = styled(Fab)({
   position: 'absolute',
@@ -36,22 +37,9 @@ type Props = {
 export default function PatientItem({ order_tranfer_id }: Props) {
   const pathname = usePathname().includes('patient');
   const router = useRouter();
-  const [patients, setPatients] = React.useState<Patients[]>({} as Patients[])
+  const {patients, setPatients} = React.useContext<PContexts>(PatientContextsArr)
   const [load, setLoad] = React.useState<boolean>(false)
-
-  const feedPatient = React.useCallback(async() => {
-    try {
-      const result = await findPatientAll()
-      setPatients(result.data)
-    } catch (error) {
-      console.log(error);
-      
-    }
-  }, [setPatients])
-
-  React.useEffect(() => {
-    feedPatient()
-  }, [feedPatient])
+  
 
   return (
     <>
@@ -59,13 +47,15 @@ export default function PatientItem({ order_tranfer_id }: Props) {
         <CssBaseline />
         <div className={patientCss.patient_list}>
           {patients.length > 0 ? (
-            patients.map((r) => (
-              <PatientList
-                order_tranfer_id={order_tranfer_id}
-                patient={r}
-                key={r.id}
-              />
-            ))
+            <>
+              {patients.map((r) => (
+                <PatientList
+                  order_tranfer_id={order_tranfer_id}
+                  patient={r}
+                  key={r.id}
+                />
+              ))}
+            </>
           ) : (
             <div onClick={() => {
               setLoad(true)
@@ -122,9 +112,9 @@ export default function PatientItem({ order_tranfer_id }: Props) {
           </Toolbar>
         </AppBar> */}
         {
-          load?
-          <Loadding />:
-          null
+          load ?
+            <Loadding /> :
+            null
         }
       </React.Fragment>
     </>

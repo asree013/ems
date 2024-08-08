@@ -26,7 +26,7 @@ export function joinMissionByAdmin(mission_id: string, user_id: string) {
     }
 }
 
-export function findMissionByUser() {
+export function findMissionCurrent() {
     try {
         return endpoint.get<Missions[]>(`${enviromentDev.mission}/get-current-mission`)
     } catch (error) {

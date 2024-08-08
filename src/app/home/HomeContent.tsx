@@ -23,7 +23,7 @@ export default function HomeContent() {
     const [selected, setSelected] = useState<boolean>(true);
     const [load, setLoad] = useState<boolean>(false);
     const { findMe, setFindMe } = useContext<TFindContext>(FindMeContext)
-    const {missions, setMissions} = useContext<TMissionCs>(MissionContexts)
+    const { missions, setMissions } = useContext<TMissionCs>(MissionContexts)
 
     return (
         <>
@@ -56,24 +56,21 @@ export default function HomeContent() {
                             <WorkOutlineIcon />
                             <p style={{ marginLeft: '10px' }}>Mission</p>
                         </div>
-                        {
-                            findMe.role === 'User'?
-                            <div></div>:
-                            <Fab onClick={() => {
-                                setLoad(true)
-                                window.location.href = '/mission/' + NIL
-                            }} size='small' color='primary'><AddIcon /></Fab>
-                        }
+
+                        <Fab onClick={() => {
+                            setLoad(true)
+                            window.location.href = '/mission'
+                        }} size='small' color='primary'><AddIcon /></Fab>
                     </div>
                     <div style={{ margin: '15px 0' }}>
                         {
                             findMe.role === 'user' ?
                                 <CardMissionUser /> :
-                                missions.length == 0?
-                                null:
-                                missions.map(r => 
-                                    <TableMissioon key={r.id} mission={r} />
-                                )
+                                missions.length == 0 ?
+                                    null :
+                                    missions.map(r =>
+                                        <TableMissioon key={r.id} mission={r} />
+                                    )
                         }
                     </div>
                 </div>

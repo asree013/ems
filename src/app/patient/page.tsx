@@ -9,16 +9,33 @@ import { NIL } from 'uuid';
 import { PatientContextsArr } from '@/contexts/patient.context';
 import { Patients } from '@/models/patient';
 import { findPatientAll } from '@/services/paitent.service';
+import PaginationThemplete from '@/components/PaginationThemplete';
+import { timeOutJwt } from '@/services/timeout.service';
 
 export default function Page() {
   const [load, setLoad] = useState<boolean>(false)
   const [patients, setPatients] = useState<Patients[]>([]);
 
+  async function onUpdatePage(page: number, limit: number) {
+    if(page=== 1){
+      page = 2
+    }
+    setLoad(true)
+    try {
+      const result = await findPatientAll(page, limit)
+      setPatients(result.data)
+    } catch (error) {
+      timeOutJwt(error)
+    } finally {
+      setLoad(false)
+    }
+
+  }
 
   const feedPateint = useCallback(async () => {
     setLoad(true);
     try {
-      const result = await findPatientAll();
+      const result = await findPatientAll(1, 5);
       // const data = await result.json<Patients[]>()
       setPatients(result.data);
     } catch (error) {
@@ -35,26 +52,31 @@ export default function Page() {
   return (
     <>
       {/* <PatientList patient={{} as Patient}/> */}
-      <PatientContextsArr.Provider value={{patients, setPatients}} >
+      <PatientContextsArr.Provider value={{ patients, setPatients }} >
+        <h1>ผู้ป่วย</h1>
         <PatientItem />
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '25px' }}>
+          <PaginationThemplete returnCurrent={onUpdatePage} />
+        </div>
+
       </PatientContextsArr.Provider>
       <Box className={patientCss.buttonCreate}>
-          <Fab
-            style={{ background: '#2c387e', color: 'white' }}
-            onClick={() => {
-              setLoad(true)
-              window.location.href = '/patient/' + NIL
-            }}
-          >
-            <SpeedDialIcon />
-          </Fab>
-        </Box>
+        <Fab
+          style={{ background: '#2c387e', color: 'white' }}
+          onClick={() => {
+            setLoad(true)
+            window.location.href = '/patient/' + NIL
+          }}
+        >
+          <SpeedDialIcon />
+        </Fab>
+      </Box>
 
-        {
-          load ? 
-          <Loadding />:
+      {
+        load ?
+          <Loadding /> :
           null
-        }
+      }
     </>
   );
 }
