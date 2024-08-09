@@ -9,7 +9,7 @@ import missionCss from './missionCss.module.css'
 import { getLocationUser } from '@/services/user.service';
 import { Locations } from '@/models/location.model';
 
-export default function page() {
+export default function Page() {
   const [missions, setMissions] = useState<Missions[]>({} as Missions[])
   const [locate, setLocate] = useState<Locations[]>({} as Locations[])
 
