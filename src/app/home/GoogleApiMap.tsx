@@ -17,6 +17,7 @@ import { CurrentMissionContext, TCurrentMission } from '@/contexts/currentMissio
 import { Locations } from '@/models/location.model';
 import { LocateContext, TLocateC } from '@/contexts/locate.context';
 import homeCss from './home.module.css'
+import { MissionContexts, TMissionCs } from '@/contexts/missions.context';
 
 type LatLng = {
     lat: number;
@@ -38,7 +39,7 @@ const GoogleApiMap = () => {
     const [zoom, setZoom] = useState<number>(13);
     const [load, setLoad] = useState<boolean>(false);
     const { findMe, setFindMe } = useContext<TFindContext>(FindMeContext);
-    const { missionUser, setMissionUser } = useContext<TCurrentMission>(CurrentMissionContext)
+    const { missions, setMissions } = useContext<TMissionCs>(MissionContexts)
 
 
     const getLoacation = useCallback(() => {
@@ -46,8 +47,8 @@ const GoogleApiMap = () => {
         return new Promise<void>((resolve, reject) => {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const { latitude, longitude } = position.coords;
+                    async (position) => {
+                        const { latitude, longitude } = await position.coords;
                         const g = {} as Locations;
                         g.lat = latitude.toString()
                         g.long = longitude.toString()
@@ -131,7 +132,7 @@ const GoogleApiMap = () => {
                                 defaultCenter={{ lng: Number(locate.long), lat: Number(locate.lat) }}
                                 defaultZoom={zoom}
                                 zoom={zoom}
-                                center={centerLocate? centerLocate: null}
+                                center={centerLocate}
                                 gestureHandling={'greedy'}
                                 disableDefaultUI={true}
                                 onClick={(e) => console.log(e.detail.latLng)}
@@ -169,8 +170,8 @@ const GoogleApiMap = () => {
                                     />
                                 }
                                 {
-                                    missionUser.length > 0 ?
-                                        missionUser.map((r, i) =>
+                                    missions.length > 0 ?
+                                        missions.map((r, i) =>
                                             <Directions key={i} lat={Number(r.lat)} lng={Number(r.long)} />
                                         ) :
                                         null
@@ -196,7 +197,8 @@ function Directions({ lat, lng }: { lat: number, lng: number }) {
     const selected = routes[routeIndex];
     const leg = selected?.legs[0];
     const { userLocate, setUserLocate } = useContext<TLocateC>(LocateContext)
-
+    console.log(userLocate);
+    
     // Initialize directions service and renderer
     useEffect(() => {
         if (!routesLibrary || !map) return;

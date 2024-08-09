@@ -54,6 +54,7 @@ export default function MissionForm({ mission_id }: Props) {
         m.long = missions.long
         m.utm = missions.utm
         m.mgrs = missions.mgrs
+        m.address = missions.address
         await createMission(m)
         toast('Created Mission', 'success')
         history.back()
@@ -129,6 +130,7 @@ export default function MissionForm({ mission_id }: Props) {
           <Typography color="text.secondary" variant="body2" component={'div'} style={{ marginTop: '25px' }}>
             <TextField value={missions.title ?? ''} onChange={(e) => setMissions({ ...missions, title: e.target.value })} error={isNull} style={{ width: '100%' }} id="filled-basic" label="Title" variant="filled" />
             <TextField value={missions.description ?? ''} onChange={(e) => setMissions({ ...missions, description: e.target.value })} error={isNull} style={{ width: '100%', marginTop: '10px' }} id="filled-basic" label="Description" variant="filled" />
+            <TextField value={missions.address ?? ''} onChange={(e) => setMissions({ ...missions, address: e.target.value })} error={isNull} style={{ width: '100%', marginTop: '10px' }} id="filled-basic" label="ชื่อสถานที่" variant="filled" />
           </Typography>
 
           <Divider />

@@ -26,6 +26,22 @@ export function joinMissionByAdmin(mission_id: string, user_id: string) {
     }
 }
 
+export function joinMission(mission_id: string) {
+    try {
+        return endpoint.put<Missions>(`${enviromentDev.mission}/${mission_id}/join-mission`)
+    } catch (error) {
+        throw error
+    }
+}
+export function leaveMission(mission_id: string) {
+    try {
+        return endpoint.put<Missions>(`${enviromentDev.mission}/${mission_id}/un-join-mission`)
+    } catch (error) {
+        throw error
+    }
+}
+
+
 export function findMissionCurrent() {
     try {
         return endpoint.get<Missions[]>(`${enviromentDev.mission}/get-current-mission`)

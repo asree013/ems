@@ -6,10 +6,12 @@ import Box from '@mui/material/Box';
 import MissionDetail from './MissionDetail';
 import { MissionDetailContext } from '../../../../contexts/mission.detail.context';
 import { Missions } from '../../../../models/mission.model';
-import { findMissionByMissionId } from "../../../../services/mission.service"
+import { findMissionByMissionId, leaveMission } from "../../../../services/mission.service"
 import { timeOutJwt } from "../../../../services/timeout.service"
 import MissionUser from './MissionUser';
 import MissionStateTag from './MissionStateTag';
+import { Button } from '@mui/material';
+import { toast } from '@/services/alert.service';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -54,6 +56,16 @@ export default function BasicTabs({ params }: Props) {
         setValue(newValue);
     };
 
+    async function onLeaveMission() {
+        try {
+            await leaveMission(params.mission_id)
+            toast('ออกจสกภารกิจสำเร็จ', 'success')
+            window.location.href = '/home'
+        } catch (error) {
+            timeOutJwt(error)
+        }
+    }
+
     const feedMissionByMissionId = React.useCallback(async () => {
         try {
             const result = await findMissionByMissionId(params.mission_id);
@@ -85,6 +97,7 @@ export default function BasicTabs({ params }: Props) {
             <MissionDetailContext.Provider value={{ mission, setMission }} >
                 <CustomTabPanel value={value} index={0}>
                     <MissionDetail />
+                    <Button onClick={onLeaveMission} style={{width: '100%', margin: '10px 0'}} type='button' variant='contained' color='error'>ออกจากภารกิจ</Button>
                 </CustomTabPanel>
                 <CustomTabPanel value={value} index={1}>
                     <MissionUser />

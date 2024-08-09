@@ -4,7 +4,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Paper } from '@mui/material';
+import { Button, Paper } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import Avatar from '@mui/material/Avatar';
@@ -66,6 +66,7 @@ export default function TabMenu({ children }: Props) {
             setLoad(true);
             const result = await FindUserMe();
             setFindMe(result.data);
+            localStorage.setItem('user_id', result.data.id)
             setLoad(false);
         } catch (error: any) {
             alert(JSON.stringify(error.message));
@@ -102,9 +103,13 @@ export default function TabMenu({ children }: Props) {
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={2}>
                         Profile
+                        <Button variant='contained' type='button' onClick={() => {
+                            localStorage.clear()
+                            window.location.href = '/login'
+                        }} >logout</Button>
                     </CustomTabPanel>
                 </FindMeContext.Provider>
-                <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={6}>
+                <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 1 }} elevation={6}>
 
                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered>

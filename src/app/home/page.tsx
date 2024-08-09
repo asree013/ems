@@ -34,17 +34,6 @@ export default function Page() {
   let role = ''
   const { findMe, setFindMe } = useContext<TFindContext>(FindMeContext)
 
-  const feedMissionAll = useCallback(async () => {
-    setLoad(true)
-    try {
-      const result = await findMission(1, 10);
-      setMissions(result.data);
-    } catch (error) {
-      alert('mission')
-    } finally {
-      setLoad(false)
-    }
-  }, [setMissionId]);
 
   const pushLocationUser = useCallback(async () => {
     try {
@@ -62,7 +51,7 @@ export default function Page() {
               g.utm = JSON.stringify(utm);
 
               const a = await saveLocation(g);
-              setUserLocate(g);
+              setUserLocate(a.data);
 
               resolve();
             },
@@ -82,15 +71,6 @@ export default function Page() {
     }
   }, [setUserLocate]);
 
-  const feedUser = useCallback(async () => {
-    try {
-      const result = await findUsers(1, 10);
-      setUsers(result.data);
-      console.log(result.data);
-    } catch (error) {
-      alert('find user')
-    }
-  }, [setUsers]);
 
 
   const findMissionByUsre = useCallback(async () => {
@@ -99,7 +79,7 @@ export default function Page() {
       const result = await findMissionCurrent()
       setMissionUser(result.data)
     } catch (error) {
-      alert('find mission by user')
+      console.log(error);      
       timeOutJwt(error)
     } finally {
       setLoad(false)
