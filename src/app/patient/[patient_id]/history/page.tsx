@@ -13,7 +13,6 @@ import ModalClose from '@mui/joy/ModalClose';
 import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
 import { Historys } from '@/models/history.model';
-import { useParams, useRouter } from 'next/navigation';
 import {
   createHistory,
   findHistoryByPatientId,
@@ -26,13 +25,13 @@ import Loadding from '@/components/Loadding';
 import Alert from '@mui/material/Alert';
 import CheckIcon from '@mui/icons-material/Check';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-type Props ={
+type Props = {
   params: {
     patient_id: string
   }
 }
 
-export default function Page({params}:Props) {
+export default function Page({ params }: Props) {
 
   const [isLoad, setIsLoad] = useState<boolean>(false);
   const [historyFrom, setHistoryFrom] = useState<boolean>(false);
@@ -115,17 +114,9 @@ export default function Page({params}:Props) {
     <>
       <div className={historyCss.homePage}>
         <div className={historyCss.item}>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}
-          >
-            <h1>History</h1>
-            <HistoryTab returnString={onChangFilterHistory} />
-          </div>
-          <Divider style={{ margin: '15px 0' }} />
+
+          <HistoryTab />
+          <Divider style={{ margin: '10px 0' }} />
           <div className={historyCss.history_item}>
             {history.length > 0
               ? historyFilter.map((r, i) => <HistoryItem value={r} key={i} />)

@@ -6,4 +6,4 @@ export type TLocateC = {
     setUserLocate: Dispatch<SetStateAction<Locations>>
 }
 
-export const LocateContext = createContext<TLocateC>({} as TLocateC)
+export const LocateContextUser = createContext<TLocateC>({} as TLocateC)

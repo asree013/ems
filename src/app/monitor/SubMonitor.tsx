@@ -21,6 +21,7 @@ export default function SubMonitor({ el_id, index }: Props) {
   const { order, setOrder } = useContext<TOrderContext>(OrderContext);
   const router = useRouter();
   const [orderTranfer, setOrderTranfer] = useState<number[]>([]);
+  const [orderId, setOrderId] = useState<string>('');
   const [isLoad, setisLoad] = useState(false);
 
   async function onReturnCreateMonitor(el_id: number, device_id: string) {
@@ -47,8 +48,12 @@ export default function SubMonitor({ el_id, index }: Props) {
 
         setOrder(sot);
         const or = result.filter((r) => r.status_order === 'Transfer');
-        
-        setOrderTranfer(or.map((r) => r.element_seq));
+        const a = or.find(r => r.element_seq === el_id)
+        if (a) {
+          setOrderId(a.id)
+          setOrderTranfer(or.map((r) => r.element_seq));
+
+        }
       } catch (error: any) {
         if (error.message.includes('Network Error')) {
           router.push('/login');
@@ -68,7 +73,7 @@ export default function SubMonitor({ el_id, index }: Props) {
   if (orderTranfer.includes(el_id)) {
     return (
       <>
-        <MonitorItem el_id={el_id} key={index} />
+        <MonitorItem order_id={orderId} el_id={el_id} key={index} />
       </>
     );
   } else {

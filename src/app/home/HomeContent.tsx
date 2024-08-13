@@ -15,7 +15,7 @@ import { NIL } from 'uuid';
 import Loadding from '@/components/Loadding';
 import { FindMeContext, TFindContext } from '@/contexts/findme.context';
 import CardMissionUser from './CardMissionUser';
-import { MissionContexts, TMissionCs } from '@/contexts/missions.context';
+import { CurrentMissionContext, TCurrentMission } from '@/contexts/currentMission.context';
 
 
 export default function HomeContent() {
@@ -23,12 +23,13 @@ export default function HomeContent() {
     const [selected, setSelected] = useState<boolean>(true);
     const [load, setLoad] = useState<boolean>(false);
     const { findMe, setFindMe } = useContext<TFindContext>(FindMeContext)
-    const { missions, setMissions } = useContext<TMissionCs>(MissionContexts)
+    const { missionUser, setMissionUser } = useContext<TCurrentMission>(CurrentMissionContext)
+
 
     return (
         <>
             <div className={homeCss.content}>
-                <div className={homeCss.contentMenu}>
+                {/* <div className={homeCss.contentMenu}>
                     <div className={homeCss.contentTitle}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <SpaceDashboardIcon />
@@ -49,7 +50,7 @@ export default function HomeContent() {
                             <p>3</p>
                         </Paper>
                     </div>
-                </div>
+                </div> */}
                 <div className={homeCss.contentMenu}>
                     <div className={homeCss.contentTitle}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -63,14 +64,7 @@ export default function HomeContent() {
                         }} size='small' color='primary'><AddIcon /></Fab>
                     </div>
                     <div style={{ margin: '15px 0' }}>
-                        
-                                <CardMissionUser /> 
-                                {/* missions.length == 0 ?
-                                    null :
-                                    missions.map(r =>
-                                        <TableMissioon key={r.id} mission={r} />
-                                    ) */}
-    
+                        <CardMissionUser />
                     </div>
                 </div>
                 <div className={homeCss.contentMenu}>
@@ -82,7 +76,7 @@ export default function HomeContent() {
                         <div></div>
                     </div>
                     <div style={{ margin: '15px 0' }}>
-                        <GoogleApiMap />
+                        <GoogleApiMap mission={missionUser[0]} />
                     </div>
                 </div>
             </div>

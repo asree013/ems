@@ -17,7 +17,7 @@ export interface Missions {
   user_update_id: string
   create_date: string
   update_date: string
-  Users: Array<any>
+  Users: Array<UsersR>
   MissionHistory: Array<any>
   MissionSecondary: Array<any>
   MissionTag: any
@@ -33,5 +33,18 @@ export interface Missions {
     CarJoinMission: number
     ShipJoinMission: number
     MissionSecondary: number
+  }
+}
+
+type UsersR = {
+  first_name: string
+  last_name: string
+  phone_number: string
+  career: string
+  address: any
+  role: string
+  image: string
+  Responsibilities: {
+    role: string
   }
 }

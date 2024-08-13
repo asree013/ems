@@ -2,6 +2,7 @@ import Nav from '@/components/Nav';
 import { Metadata } from 'next';
 import { metadata } from '../layout';
 import TabMenu from '@/components/TabMenu';
+import ChatButton from '@/components/ChatButton';
 
 metadata.title = 'Patient EMS App';
 
@@ -20,6 +21,9 @@ export default function DashboardLayout({
           {children}
         </TabMenu>
       </div>
+
+      <ChatButton />
+
     </section>
   );
 }

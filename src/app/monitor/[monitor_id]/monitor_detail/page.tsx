@@ -1,7 +1,7 @@
 'use client'
+import ECG from '@/app/chart/ECG'
+import SPO from '@/app/chart/SPO'
 import React from 'react'
-import ECG from './ECG'
-import SPO from './SPO'
 
 export default function page() {
   return (

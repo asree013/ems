@@ -11,7 +11,7 @@ import Avatar from '@mui/material/Avatar';
 import { FindMeContext } from '@/contexts/findme.context';
 import { Users } from '@/models/users.model';
 import { useCallback } from 'react';
-import { FindUserMe } from '@/services/authen.service';
+import { FindUserMe, logout } from '@/services/authen.service';
 import Loadding from './Loadding';
 import MenuItem from './Menu';
 import { MenuValueContext } from '@/contexts/menu.value.context';
@@ -103,9 +103,10 @@ export default function TabMenu({ children }: Props) {
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={2}>
                         Profile
-                        <Button variant='contained' type='button' onClick={() => {
+                        <Button variant='contained' type='button' onClick={async() => {
                             localStorage.clear()
                             window.location.href = '/login'
+                            await logout()
                         }} >logout</Button>
                     </CustomTabPanel>
                 </FindMeContext.Provider>

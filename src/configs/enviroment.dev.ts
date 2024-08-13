@@ -1,4 +1,5 @@
 export const enviromentDev = {
+  myUrl: 'http://localhost:3000',
   baseUrl: 'https://ems.monitor-test.cloud/v1',
   patient: '/patient',
   login: '/login',
@@ -10,7 +11,8 @@ export const enviromentDev = {
   keyGoogleApi: "AIzaSyApM9zSMh9ZSP3LInOHZ3YGWkrnthaZz-U",
   keyGoogleDev: "AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg",
   mission: '/missions',
-  user: '/users'
+  user: '/users',
+  chat: '/chat'
 };
 
 export const enviromentPath = {

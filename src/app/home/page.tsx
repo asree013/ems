@@ -16,7 +16,7 @@ import { Users } from '@/models/users.model';
 import { FindUserMe } from '@/services/authen.service';
 import Loadding from '@/components/Loadding';
 import { CurrentMissionContext } from '@/contexts/currentMission.context';
-import { LocateContext } from '@/contexts/locate.context';
+import { LocateContextUser } from '@/contexts/locate.context';
 import { FindMeContext, TFindContext } from '@/contexts/findme.context';
 import { timeOutJwt } from '@/services/timeout.service';
 
@@ -41,19 +41,24 @@ export default function Page() {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
             async (position) => {
-              const { latitude, longitude } = position.coords;
-              const utm = UTM.convertLatLngToUtm(longitude, latitude, 1);
-              const mgrss = mgrs.forward([longitude, latitude]);
-              const g = {} as Locations;
-              g.lat = latitude.toString();
-              g.long = longitude.toString();
-              g.mgrs = mgrss;
-              g.utm = JSON.stringify(utm);
+              try {
+                const { latitude, longitude } = position.coords;
+                const utm = UTM.convertLatLngToUtm(longitude, latitude, 1);
+                const mgrss = mgrs.forward([longitude, latitude]);
+                const g = {} as Locations;
+                g.lat = latitude.toString();
+                g.long = longitude.toString();
+                g.mgrs = mgrss;
+                g.utm = JSON.stringify(utm);
 
-              const a = await saveLocation(g);
-              setUserLocate(a.data);
+                await saveLocation(g);
+                setUserLocate(g);
 
-              resolve();
+                resolve();
+              } catch (error) {
+                setLoad(true)
+                timeOutJwt(error)
+              }
             },
             (error) => {
               console.error("Error getting geolocation:", error);
@@ -77,9 +82,14 @@ export default function Page() {
     setLoad(true)
     try {
       const result = await findMissionCurrent()
+      if (!result.data) {
+        localStorage.removeItem('mission_id')
+        setMissionUser([])
+      }
       setMissionUser(result.data)
+      localStorage.setItem('mission_id', result.data[0].id)
     } catch (error) {
-      console.log(error);      
+      console.log(error);
       timeOutJwt(error)
     } finally {
       setLoad(false)
@@ -93,7 +103,7 @@ export default function Page() {
     const saveLo = setInterval(() => {
       pushLocationUser();
       console.log('5 secon');
-      
+
     }, 5000);
 
     return () => {
@@ -109,11 +119,11 @@ export default function Page() {
           <UsersContexts.Provider value={{ users, setUsers }} >
 
             <CurrentMissionContext.Provider value={{ missionUser, setMissionUser }} >
-              <LocateContext.Provider value={{ userLocate, setUserLocate }} >
+              <LocateContextUser.Provider value={{ userLocate, setUserLocate }} >
 
                 <HomeContent />
 
-              </LocateContext.Provider>
+              </LocateContextUser.Provider>
             </CurrentMissionContext.Provider>
 
             <ModalUser />

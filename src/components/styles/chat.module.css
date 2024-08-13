@@ -1,0 +1,49 @@
+.chat {
+    width: 300px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: end;
+    padding: 10px;
+    overflow: scroll;
+}
+
+.is_not_my_user {
+    display: flex;
+    justify-content: start;
+    width: 100%;
+    align-items: center;
+}
+.is_user{
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    width: 100%; 
+    margin-top: 10px;
+    flex-direction: column;
+}
+.not_user{
+    background: #e5e3e3;
+    color: rgb(0, 0, 0);
+    padding: 2px 8px;
+    border-radius: 8px;
+}
+
+.user{
+    background: #1769aa;
+    color: aliceblue;
+    padding: 2px 8px;
+    border-radius: 8px;
+}
+.positionChat{
+    position: fixed;
+    top: 78%;
+    right: 40px;
+}
+
+@media only screen and (max-width: 450px) {
+    .positionChat{
+        right: 15px;
+    }
+}

@@ -9,12 +9,11 @@ import Typography from '@mui/joy/Typography';
 import { useContext } from 'react';
 import { CurrentMissionContext, TCurrentMission } from '@/contexts/currentMission.context';
 import { getLatLng, haversines } from '@/services/sum_lat_long.service';
-import { LocateContext, TLocateC } from '@/contexts/locate.context';
+import { LocateContextUser, TLocateC } from '@/contexts/locate.context';
 
 export default function CardMissionUser() {
     const { missionUser, setMissionUser } = useContext<TCurrentMission>(CurrentMissionContext)
-    const { userLocate, setUserLocate } = useContext<TLocateC>(LocateContext)
-
+    const { userLocate, setUserLocate } = useContext<TLocateC>(LocateContextUser)    
 
     return (
         <>
@@ -22,9 +21,11 @@ export default function CardMissionUser() {
                 missionUser.length > 0 ?
                     missionUser.map(r =>
                         <Card
+                            onClick={() => window.location.href = '/mission/' + r.id+ '/mission_detail'}
                             key={r.id}
                             variant="outlined"
                             orientation="horizontal"
+                            
                             sx={{
                                 width: '100%',
                                 '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder' },

@@ -19,6 +19,7 @@ import { FindUserMe, logins } from '../../services/authen.service';
 import { useEffect, useState } from 'react';
 import { toast } from '@/services/alert.service'
 import { escape } from 'querystring';
+import { socket } from '@/configs/socket';
 
 export default function Page() {
   const [login, setLogin] = useState<Logins>({} as Logins);
@@ -36,7 +37,8 @@ export default function Page() {
     }
     try {
       await logins(login);
-      // await FindUserMe()
+      const findme = await FindUserMe()
+      socket.emit('is-online', {user_id: findme.data.id})
       window.location.href = '/select_mode'
     } catch (error: any) {
       console.log(error);

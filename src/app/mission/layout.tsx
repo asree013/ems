@@ -3,6 +3,7 @@ import { metadata } from '../layout';
 import { useCallback, useEffect } from 'react';
 import { FindUserMe } from '@/services/authen.service';
 import TabMenu from '@/components/TabMenu';
+import ChatButton from '@/components/ChatButton';
 
 metadata.title = 'Monitor EMS App';
 
@@ -29,11 +30,12 @@ export default function DashboardLayout({
       {/* Include shared UI here e.g. a header or sidebar */}
       <Nav />
 
-      <div style={{ marginTop: '60px' }}>
-        <TabMenu>
-          {children}
-        </TabMenu>
-      </div>
+      <TabMenu>
+        {children}
+      </TabMenu>
+
+      <ChatButton />
+
     </section>
   );
 }

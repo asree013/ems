@@ -29,7 +29,7 @@ export default function MissionItem({ mission, currentLo }: Props) {
       localStorage.setItem('mission_id', mission.id)
       toast('เข้าร่วมภารกิจ', 'successs')
     } catch (error) {
-      timeOutJwt(error)
+      // timeOutJwt(error)
     }
   }
   return (
