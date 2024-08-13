@@ -17,12 +17,12 @@ export default function MonitorItem({ el_id, order_id }: Props) {
   return (
     <div style={{ width: '100%', height: '100%' }} key={el_id}>
       <div>
-        <p>monitor num {el_id + 1}</p>
+        <p>monitor num {el_id }</p>
         <p>start</p>
         <div>
           <p>viatul sing</p>
         </div>
-        <a href={enviromentDev.myUrl + '/monitor/' + order_id + '/monitor_detail'} target='_top'></a>
+        <a style={{color: 'white'}} href={enviromentDev.myUrl + '/monitor/' + order_id + '/monitor_detail/' + order_id} target='_blank'>monitor</a>
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ export default function page() {
   return (
     <div>
       <ECG />
-      <SPO />
+      {/* <SPO /> */}
     </div>
   )
 }

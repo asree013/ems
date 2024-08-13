@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { lightningChart, Themes, emptyLine, AutoCursorModes, AxisTickStrategies, ColorHEX, SolidFill, PointShape } from '@lightningchart/lcjs';
 import { ecg, ecgNull, spo2 } from '@/data/data.medical_result';
+import { socket } from '@/configs/socket';
 
 interface ECGDataPoint {
   x: number;
@@ -15,7 +16,11 @@ interface ChannelInfo {
   yMax: number;
 }
 
-export default function SPO() {
+type Props = {
+  order_id: string
+}
+
+export default function SPO({ order_id }: Props) {
 
   const chartRef = useRef<HTMLDivElement | null>(null);
 
@@ -44,6 +49,15 @@ export default function SPO() {
       // }
 
     }, 10000)
+    const orderId = order_id
+    const joinroom = socket.emit('data-tranfer-join-room', order_id);
+    console.log(joinroom);
+
+    socket.emit('data-tranfer', { orderId, message: order_id });
+
+    socket.on('data-tranfer-pleth', (message: any) => {
+      console.log('pleth ', JSON.parse(message).pleth);
+    })
 
     const channelCount = 1;
     const dataRateHz = 250;
@@ -249,20 +263,31 @@ export default function SPO() {
     let chart2 = document.getElementById('chart-3');
     let chart1 = document.getElementById('chart-1');
     let lcjs = document.getElementById('lcjs-auto-flexbox');
-
+    const widthInner = window.innerWidth
     if (chart2) {
       chart2.remove()
     }
-    if(spo){
-        spo.style.height = '200px'
+    if (spo) {
+      spo.style.height = '200px'
     }
     // if (chart1) {
     //   chart1.style.display = "none";
     // }
     if (lcjs && spo) {
+      spo.appendChild(lcjs);
+      if (widthInner <= 450) {
+        console.log('mobile');
+        
         lcjs.style.height = '300px'
 
-      spo.appendChild(lcjs);
+      }
+      else if(widthInner <= 1024){
+        lcjs.style.height = '650px'
+      }
+      else if(widthInner > 1024){
+        lcjs.style.height = '450px'
+      }
+
     }
   };
 

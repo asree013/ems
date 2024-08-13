@@ -76,7 +76,7 @@ export default function ChatButton() {
         timeOutJwt(error);
       }
     }
-    if(!missId && userId) {
+    if (!missId && userId) {
       try {
         const result = await findMissionCurrent()
         setMissionId(result.data[0].id);
@@ -114,6 +114,8 @@ export default function ChatButton() {
       const arr = arrmessage
       arr.post_date = new Date().toLocaleString('th-TH')
       setMessages((prevMessages) => [...prevMessages, arrmessage]);
+      console.log(messages);
+      
     });
 
     // ล้าง event listener เมื่อ component ถูกถอด
@@ -283,19 +285,23 @@ export default function ChatButton() {
                         if (r.user_id === user_id) {
                           return (
                             <div key={i} className={chatCss.is_user}>
-                              <p style={{ fontSize: '12px' }}>Asree</p>
+                              <p style={{ fontSize: '12px' }}>{r.name_send}</p>
                               <div style={{ display: 'flex' }}>
                                 <p className={chatCss.user}>{r.message}</p>
-                                <Avatar style={{ marginLeft: '3px', height: '2rem', width: '2rem' }} src='' />
+                                <Avatar style={{ marginLeft: '3px', height: '2rem', width: '2rem' }} src={r.avatar} />
                               </div>
-                              <p style={{ fontSize: '12px' }}>{r.post_date}</p>
+                              <p style={{ fontSize: '10px' }}>{r.post_date}</p>
                             </div>
                           );
                         } else {
                           return (
                             <div key={i} className={chatCss.is_not_my_user}>
-                              <p className={chatCss.not_user}>{r.message}</p>
-                              <p>{r.post_date}</p>
+                              <p style={{ fontSize: '12px' }}>{r.name_send}</p>
+                              <div style={{ display: 'flex' }}>
+                                <Avatar style={{ marginRight: '3px', height: '2rem', width: '2rem' }} src={r.avatar} />
+                                <p className={chatCss.not_user}>{r.message}</p>
+                              </div>
+                              <p style={{ fontSize: '10px' }}>{r.post_date}</p>
                             </div>
                           );
                         }

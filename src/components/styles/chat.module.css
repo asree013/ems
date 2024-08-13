@@ -6,14 +6,16 @@
     align-items: center;
     justify-content: end;
     padding: 10px;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 
 .is_not_my_user {
     display: flex;
     justify-content: start;
-    width: 100%;
-    align-items: center;
+    align-items: end;
+    width: 100%; 
+    margin-top: 10px;
+    flex-direction: column;
 }
 .is_user{
     display: flex;

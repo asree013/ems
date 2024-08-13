@@ -100,14 +100,14 @@ export default function Page() {
     pushLocationUser();
     findMissionByUsre()
 
-    const saveLo = setInterval(() => {
-      pushLocationUser();
-      console.log('5 secon');
+    // const saveLo = setInterval(() => {
+    //   pushLocationUser();
+    //   console.log('5 secon');
 
-    }, 5000);
+    // }, 5000);
 
     return () => {
-      clearInterval(saveLo);
+      // clearInterval(saveLo);
     };
   }, [pushLocationUser, findMissionByUsre]);
 
