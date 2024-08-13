@@ -1,6 +1,6 @@
 export const enviromentDev = {
-  myUrl: 'http://localhost:3000',
-  baseUrl: 'http://localhost:3333/v1',
+  myUrl: 'https://ems-test-eta.vercel.app',
+  baseUrl: 'https://ems.monitor-test.cloud/v1',
   patient: '/patient',
   login: '/login',
   device: '/device',
