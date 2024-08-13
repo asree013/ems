@@ -20,7 +20,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import TypographyM from '@mui/material/Typography';
-import { findMissionByMissionId } from '@/services/mission.service';
+import { findMissionByMissionId, findMissionCurrent } from '@/services/mission.service';
 import { Missions } from '@/models/mission.model';
 import { timeOutJwt } from '@/services/timeout.service';
 import { socket } from '@/configs/socket';
@@ -74,6 +74,16 @@ export default function ChatButton() {
         setMission(result.data);
       } catch (error) {
         timeOutJwt(error);
+      }
+    }
+    if(!missId && userId) {
+      try {
+        const result = await findMissionCurrent()
+        setMissionId(result.data[0].id);
+        setMission(result.data[0]);
+        setUserId(userId);
+      } catch (error) {
+        timeOutJwt(error)
       }
     }
   }, []);
@@ -159,10 +169,10 @@ export default function ChatButton() {
                     currentChat.is_online === true ?
                       <StyledBadge badgeContent color="success">
                         <Avatar alt="Cindy Baker" src={currentChat.image_chat} />
-                      </StyledBadge>:
+                      </StyledBadge> :
                       <StyledBadge badgeContent color="error">
-                      <Avatar alt="Cindy Baker" src={currentChat.image_chat} />
-                    </StyledBadge>
+                        <Avatar alt="Cindy Baker" src={currentChat.image_chat} />
+                      </StyledBadge>
                   }
                 </ListItemAvatar>
                 <Box>

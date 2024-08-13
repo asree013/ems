@@ -30,7 +30,7 @@ export default function SPO() {
     let i = 1
     // let lengthData = testData.length | 250
     let lengthData = 250
-    ecgData = spo2.slice(0, 125)
+    ecgData = spo2
 
     setInterval(() => {
       console.log(i);
@@ -249,7 +249,7 @@ export default function SPO() {
     let chart2 = document.getElementById('chart-3');
     let chart1 = document.getElementById('chart-1');
     let lcjs = document.getElementById('lcjs-auto-flexbox');
-    const windowWidth = window.innerHeight
+
     if (chart2) {
       chart2.remove()
     }
@@ -259,10 +259,8 @@ export default function SPO() {
     // if (chart1) {
     //   chart1.style.display = "none";
     // }
-    if (lcjs && spo && windowWidth) {
-        if(windowWidth <= 450){
-          lcjs.style.height = '200px'
-        }
+    if (lcjs && spo) {
+        lcjs.style.height = '300px'
 
       spo.appendChild(lcjs);
     }

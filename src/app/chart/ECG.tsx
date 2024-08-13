@@ -258,7 +258,6 @@ const [maxLength, setMaxLenght] = useState<{
     let chart2 = document.getElementById('chart-2');
     let chart1 = document.getElementById('chart-1');
     let lcjs = document.getElementById('lcjs-auto-flexbox');
-    const windowWidth = window.innerHeight
 
     if (chart2) {
       chart2.remove()
@@ -266,13 +265,9 @@ const [maxLength, setMaxLenght] = useState<{
     // if (chart1) {
     //   chart1.style.display = "none";
     // }
-    if (lcjs && chartR && windowWidth) {
-      if(windowWidth <= 450){
-        lcjs.style.height = '200px'
-      }
-
+    if (lcjs && chartR) {
       chartR.appendChild(lcjs);
-  }
+    }
   };
 
   useEffect(() => {

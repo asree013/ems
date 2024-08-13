@@ -38,6 +38,7 @@ export default function Page() {
     try {
       await logins(login);
       const findme = await FindUserMe()
+      localStorage.setItem('user_id', JSON.stringify(findme.data.id))
       socket.emit('is-online', {user_id: findme.data.id})
       window.location.href = '/select_mode'
     } catch (error: any) {
