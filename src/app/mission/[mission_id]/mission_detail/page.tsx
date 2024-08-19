@@ -60,9 +60,9 @@ export default function BasicTabs({ params }: Props) {
         try {
             await leaveMission(params.mission_id)
             toast('ออกจสกภารกิจสำเร็จ', 'success')
-            window.location.href = '/home'
+            // window.location.href = '/home'
         } catch (error) {
-            timeOutJwt(error)
+            // timeOutJwt(error)
         }
     }
 
@@ -106,7 +106,7 @@ export default function BasicTabs({ params }: Props) {
                     Item Three
                 </CustomTabPanel>
                 <CustomTabPanel value={value} index={3}>
-                    <MissionStateTag />
+                    <MissionStateTag data={mission} />
                 </CustomTabPanel>
             </MissionDetailContext.Provider>
         </Box>

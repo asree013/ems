@@ -58,10 +58,14 @@ export default function HomeContent() {
                             <p style={{ marginLeft: '10px' }}>Mission</p>
                         </div>
 
-                        <Fab onClick={() => {
-                            setLoad(true)
-                            window.location.href = '/mission'
-                        }} size='small' color='primary'><AddIcon /></Fab>
+                        {
+                            missionUser?
+                            null:
+                            <Fab onClick={() => {
+                                setLoad(true)
+                                window.location.href = '/mission'
+                            }} size='small' color='primary'><AddIcon /></Fab>
+                        }
                     </div>
                     <div style={{ margin: '15px 0' }}>
                         <CardMissionUser />
@@ -76,7 +80,7 @@ export default function HomeContent() {
                         <div></div>
                     </div>
                     <div style={{ margin: '15px 0' }}>
-                        <GoogleApiMap mission={missionUser[0]} />
+                        <GoogleApiMap mission={missionUser} />
                     </div>
                 </div>
             </div>

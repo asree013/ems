@@ -2,6 +2,7 @@ import { enviromentDev } from "@/configs/enviroment.dev"
 import { endpoint } from "./endpoint.service"
 import { Locations } from "@/models/location.model"
 import { Users } from "@/models/users.model"
+import { Vehicles } from "@/models/vehicle.model"
 
 export function saveLocation(locate: Locations) {
     try {
@@ -22,6 +23,22 @@ export function findUsers(page: number, limit: number) {
 export function getLocationUser() {
     try {
         return endpoint.get<Locations[]>(enviromentDev.user+ '/get-location?page=0&limit=1',)
+    } catch (error) {
+        throw error
+    }
+}
+
+export function findCurrentVehicleByUser() {
+    try {
+        return endpoint.get<Vehicles>(enviromentDev.user + '/current-vehicle')
+    } catch (error) {
+        throw error
+    }
+}
+
+export function editUserByUserCookie(data: Users) {
+    try {
+        return endpoint.put<Users>(enviromentDev.user, data)
     } catch (error) {
         throw error
     }

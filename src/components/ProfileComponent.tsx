@@ -1,0 +1,216 @@
+'use client'
+import * as React from 'react';
+import AspectRatio from '@mui/joy/AspectRatio';
+import Box from '@mui/joy/Box';
+import Button from '@mui/joy/Button';
+import Card from '@mui/joy/Card';
+import CardContent from '@mui/joy/CardContent';
+import Typography from '@mui/joy/Typography';
+import Sheet from '@mui/joy/Sheet';
+import { FindMeTabContext, TfindMeSubC } from './subContext/findMeTab.content';
+import { Input } from '@mui/material';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { logout } from '@/services/authen.service';
+import { enviromentDev } from '@/configs/enviroment.dev';
+
+import ImageListItem from '@mui/material/ImageListItem';
+import ImageListItemBar from '@mui/material/ImageListItemBar';
+import IconButton from '@mui/material/IconButton';
+import InfoIcon from '@mui/icons-material/Info';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import { editUserByUserCookie } from '@/services/user.service';
+import { Users } from '@/models/users.model';
+
+export default function ProfileComponent() {
+
+    const { findMe, setFindMe } = React.useContext<TfindMeSubC>(FindMeTabContext)
+    const [isEdit, setIsEdit] = React.useState<boolean>(false)
+
+    function handlerUploadImage(e: React.ChangeEvent<HTMLInputElement>) {
+        e.preventDefault()
+        if (e.target.files) {
+            const FR = new FileReader()
+            FR.onload = async (event) => {
+                const base64 = event.target?.result as string
+                const u = {} as Users
+                u.image = base64
+                const result = await editUserByUserCookie(u)
+                setFindMe({ ...findMe, image: result.data.image })
+            }
+            FR.readAsDataURL(e.target.files[0])
+        }
+    }
+    return (
+        <Box
+            sx={{
+
+                width: '100%',
+                position: 'relative',
+                overflow: { xs: 'auto', sm: 'initial' },
+            }}
+        >
+            <Box
+            />
+            <Card
+                orientation="horizontal"
+                sx={{
+                    width: '100%',
+                    flexWrap: 'wrap',
+                    [`& > *`]: {
+                        '--stack-point': '500px',
+                        minWidth:
+                            'clamp(0px, (calc(var(--stack-point) - 2 * var(--Card-padding) - 2 * var(--variant-borderWidth, 0px)) + 1px - 100%) * 999, 100%)',
+                    },
+                    // make the card resizable for demo
+                    overflow: 'auto',
+                    resize: 'horizontal',
+                }}
+            >
+                <AspectRatio flex ratio="1" >
+                    <ImageListItem >
+                        <input type="file" id='img_profile' hidden onChange={handlerUploadImage} />
+                        <img
+                            srcSet={`${findMe.image ?? enviromentDev.noImage}`}
+                            src={`${findMe.image ?? enviromentDev.noImage}`}
+                            alt={findMe.image}
+                            loading="lazy"
+                        />
+                        <ImageListItemBar
+                            title={'item.title'}
+                            subtitle={'item.author'}
+                            actionIcon={
+                                <IconButton
+                                    sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                                    aria-label={`info about`}
+                                    onClick={() => document.getElementById('img_profile')?.click()}
+                                >
+                                    <CameraAltIcon />
+                                </IconButton>
+                            }
+                        />
+                    </ImageListItem>
+                </AspectRatio>
+                <CardContent>
+                    <Typography fontSize="xl" fontWeight="lg">
+                        {findMe.first_name}
+                    </Typography>
+                    <Typography level="body-sm" fontWeight="lg" textColor="text.tertiary">
+                        {findMe.last_name}
+                    </Typography>
+                    <Button color='danger' endDecorator={<ExitToAppIcon />} onClick={async () => {
+                        localStorage.clear()
+                        window.location.href = '/login'
+                        await logout()
+                    }} >ออกจากระบบ</Button>
+                    {
+                        isEdit === false ?
+                            <Sheet
+                                sx={{
+                                    bgcolor: 'background.level1',
+                                    borderRadius: 'sm',
+                                    p: 1.5,
+                                    my: 1.5,
+                                    display: 'flex',
+                                    gap: 2,
+                                    '& > div': { flex: 1 },
+                                }}
+                            >
+                                <div>
+                                    <Typography level="body-xs" fontWeight="lg">
+                                        Articles
+                                    </Typography>
+                                    <Typography fontWeight="lg">34</Typography>
+                                </div>
+                                <div>
+                                    <Typography level="body-xs" fontWeight="lg">
+                                        Followers
+                                    </Typography>
+                                    <Typography fontWeight="lg">980</Typography>
+                                </div>
+                                <div>
+                                    <Typography level="body-xs" fontWeight="lg">
+                                        Rating
+                                    </Typography>
+                                    <Typography fontWeight="lg">8.9</Typography>
+                                </div>
+                            </Sheet> :
+                            <div>
+                                <Sheet
+                                    sx={{
+                                        bgcolor: 'background.level1',
+                                        borderRadius: 'sm',
+                                        p: 1.5,
+                                        my: 1.5,
+                                        display: 'flex',
+                                        gap: 2,
+                                        '& > div': { flex: 1 },
+                                    }}
+                                >
+                                    <div>
+                                        <Typography level="body-xs" fontWeight="lg">
+                                            ชื่อ
+                                        </Typography>
+                                        <Input type='text' value={findMe.first_name} />
+                                    </div>
+                                    <div>
+                                        <Typography level="body-xs" fontWeight="lg">
+                                            นามสกุล
+                                        </Typography>
+                                        <Input type='text' value={findMe.last_name} />
+                                    </div>
+                                </Sheet>
+                                <Sheet
+                                    sx={{
+                                        bgcolor: 'background.level1',
+                                        borderRadius: 'sm',
+                                        p: 1.5,
+                                        my: 1.5,
+                                        display: 'flex',
+                                        gap: 2,
+                                        '& > div': { flex: 1 },
+                                    }}
+                                >
+                                    <div>
+                                        <Typography level="body-xs" fontWeight="lg">
+                                            อีเมล
+                                        </Typography>
+                                        <Input type='text' value={findMe.email} />
+                                    </div>
+                                    <div>
+                                        <Typography level="body-xs" fontWeight="lg">
+                                            อาชีพ
+                                        </Typography>
+                                        <Input type='text' value={findMe.career} />
+                                    </div>
+                                </Sheet>
+                            </div>
+                    }
+                    <Box sx={{ display: 'flex', gap: 1.5, '& > button': { flex: 1 } }}>
+                        {
+                            isEdit === false ?
+                                <Button variant="outlined" color="neutral" onClick={() => setIsEdit(true)}>
+                                    แก้ไขข้อมูล
+                                </Button> :
+                                <Button variant="solid" color="primary" onClick={() => setIsEdit(false)}>
+                                    บันทึกข้อมูล
+                                </Button>
+                        }
+                        {
+                            isEdit === false ?
+                                <Button variant="solid" color="primary" endDecorator={<ExitToAppIcon />}>
+                                    ออกจากระบบ
+                                </Button> :
+                                <Button variant="outlined" color="neutral" endDecorator={<ExitToAppIcon />} onClick={async () => {
+                                    localStorage.clear()
+                                    window.location.href = '/login'
+                                    await logout()
+                                }}>
+                                    ออกจากระบบ
+                                </Button>
+                        }
+                    </Box>
+                </CardContent>
+            </Card>
+        </Box>
+    );
+}

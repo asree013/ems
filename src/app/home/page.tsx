@@ -27,7 +27,7 @@ export default function Page() {
   const [openUser, setOpenUser] = useState(false);
   const [missions, setMissions] = useState<Missions[]>([]);
   const [missionId, setMissionId] = useState<Missions>({} as Missions);
-  const [missionUser, setMissionUser] = useState<Missions[]>({} as Missions[]);
+  const [missionUser, setMissionUser] = useState<Missions>({} as Missions);
   const [userLocate, setUserLocate] = useState<Locations>({} as Locations);
   const [users, setUsers] = useState<Users[]>([]);
   const [load, setLoad] = useState<boolean>(false)
@@ -84,10 +84,10 @@ export default function Page() {
       const result = await findMissionCurrent()
       if (!result.data) {
         localStorage.removeItem('mission_id')
-        setMissionUser([])
+        setMissionUser({} as Missions)
       }
       setMissionUser(result.data)
-      localStorage.setItem('mission_id', result.data[0].id)
+      localStorage.setItem('mission_id', result.data.id)
     } catch (error) {
       console.log(error);
       timeOutJwt(error)

@@ -18,11 +18,10 @@ export default function CardMissionUser() {
     return (
         <>
             {
-                missionUser.length > 0 ?
-                    missionUser.map(r =>
+                missionUser ?
                         <Card
-                            onClick={() => window.location.href = '/mission/' + r.id+ '/mission_detail'}
-                            key={r.id}
+                            onClick={() => window.location.href = '/mission/' + missionUser.id+ '/mission_detail'}
+                            key={missionUser.id}
                             variant="outlined"
                             orientation="horizontal"
                             
@@ -33,15 +32,15 @@ export default function CardMissionUser() {
                         >
                             <AspectRatio ratio="1" sx={{ width: 90 }}>
                                 <img
-                                    src={r.image}
-                                    srcSet={r.image}
+                                    src={missionUser.image}
+                                    srcSet={missionUser.image}
                                     loading="lazy"
                                     alt=""
                                 />
                             </AspectRatio>
                             <CardContent>
                                 <Typography level="title-lg" id="card-description">
-                                    {r.title}
+                                    {missionUser.title}
                                 </Typography>
                                 <Typography level="body-sm" aria-describedby="card-description" mb={1}>
                                     <Link
@@ -50,7 +49,7 @@ export default function CardMissionUser() {
                                         href="#interactive-card"
                                         sx={{ color: 'text.tertiary' }}
                                     >
-                                        {r.status}
+                                        {missionUser.status}
                                     </Link>
                                 </Typography>
                                 <Chip
@@ -60,13 +59,11 @@ export default function CardMissionUser() {
                                     sx={{ pointerEvents: 'none' }}
                                 >
                                     {
-                                        'ห่างจากที่เกิดเหตุ ' + haversines(Number(userLocate.lat), Number(userLocate.long), Number(r.lat), Number(r.long)).toFixed(2) + " km"
+                                        'ห่างจากที่เกิดเหตุ ' + haversines(Number(userLocate.lat), Number(userLocate.long), Number(missionUser.lat), Number(missionUser.long)).toFixed(2) + " km"
                                     }
                                 </Chip>
                             </CardContent>
-                        </Card>
-
-                    ) :
+                        </Card> :
                     <h1>ไม่มี ภารกิจ</h1>
             }
         </>

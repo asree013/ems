@@ -57,7 +57,7 @@ export default function Page({ params }: Props) {
         <AccordionDetail />
       </div>
       <div className='mt-2'>
-        <ECG />
+        <ECG order_id={params.order_id} />
         <SPO order_id={params.order_id} />
       </div>
     </div>

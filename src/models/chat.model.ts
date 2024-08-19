@@ -1,4 +1,5 @@
 export interface Chats {
+    type: string
     room_id: string,
     message: string,
     user_id: string,

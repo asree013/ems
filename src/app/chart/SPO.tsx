@@ -31,38 +31,28 @@ export default function SPO({ order_id }: Props) {
   async function fetchData() {
     // const response = await fetch('http://localhost:3333/v1/ecg?page=0&limit=10');
     // const testData = await response.json();
-    let ecgData: any[]
+    let spoData: any[]
     let i = 1
     // let lengthData = testData.length | 250
     let lengthData = 250
-    ecgData = spo2
+    spoData = ecgNull
 
-    setInterval(() => {
-      console.log(i);
-
-      // if (testData) {
-      //   ecgData = testData[i].ecg
-      //   i += 1
-      //   if (i === lengthData) {
-      //     i = 0
-      //   }
-      // }
-
-    }, 10000)
     const orderId = order_id
     const joinroom = socket.emit('data-tranfer-join-room', order_id);
     console.log(joinroom);
 
     socket.emit('data-tranfer', { orderId, message: order_id });
 
+    socket.off('data-tranfer-pleth')
     socket.on('data-tranfer-pleth', (message: any) => {
       console.log('pleth ', JSON.parse(message).pleth);
+      spoData = JSON.parse(message).pleth
     })
 
     const channelCount = 1;
-    const dataRateHz = 250;
+    const dataRateHz = 250 /3;
     const xViewMs = 15 * 250;
-    const CHANNELS: ChannelInfo[] = new Array(channelCount).fill(0).map((_, i) => ({ name: `SPO-${i + 1}`, yMin: 0, yMax: 200 }));
+    const CHANNELS: ChannelInfo[] = new Array(channelCount).fill(0).map((_, i) => ({ name: `SPO-${i + 1}`, yMin: 0, yMax: 100 }));
 
     const lc = lightningChart({
       license: "0002-n4og2qUEgC6VgJvI1q8/aqe6hqXfKwCLIOOxHIgwgZiT1g4X529OLq7Qtbgve7sJrvgeOl7HcTSHb1/Y+RjhShb/-MEQCIEa3i+fOlLW4WKbQ2wNSu0PG0mWEK0agBgFqenq8XG2BAiB6H8X14CvUnu5vd+SpvMYtJkka1/HGxZxvWDNDrQL0tw==",
@@ -246,8 +236,8 @@ export default function SPO({ order_id }: Props) {
         const newDataPoints: ECGDataPoint[] = [];
         for (let iDp = 0; iDp < newDataPointsCount; iDp++) {
           const x = (pushedDataCount + iDp) * xStep;
-          const iData = (pushedDataCount + iDp) % ecgData.length;
-          const y = ecgData[iData];
+          const iData = (pushedDataCount + iDp) % spoData.length;
+          const y = spoData[iData];
           const point = { x, y };
           newDataPoints.push(point);
         }

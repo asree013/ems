@@ -1,18 +1,18 @@
 .chat {
-    width: 300px;
-    height: 300px;
+    width: 270px;
+    height: 220px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: end;
-    padding: 10px;
+    padding: 5px;
     overflow-y: scroll;
 }
 
 .is_not_my_user {
     display: flex;
     justify-content: start;
-    align-items: end;
+    align-items: start;
     width: 100%; 
     margin-top: 10px;
     flex-direction: column;
@@ -44,8 +44,46 @@
     right: 40px;
 }
 
-@media only screen and (max-width: 450px) {
+@media only screen and (min-width: 350px) {
     .positionChat{
         right: 15px;
+    }
+    .chat_size {
+        height: 25rem;
+        width: 20rem;
+    }
+    .bodyCard{
+        position: fixed;
+        top: 6.5rem;
+        right: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 5px;
+        overflow: scroll;
+        z-index: 1;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .positionChat{
+        right: 3rem;
+    }
+    .chat_size {
+        height: 25rem;
+        width: 20rem;
+    }
+    .bodyCard{
+        position: fixed;
+        top: 12.5rem;
+        right: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 5px;
+        overflow: scroll;
+        z-index: 1;
     }
 }

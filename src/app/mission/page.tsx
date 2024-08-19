@@ -48,7 +48,7 @@ export default function Page() {
   }, [feedMissionAll, feedLocationUser])
   return (
     <>
-      <div>
+      <div className={missionCss.body}>
         <div className={missionCss.itemCard}>
           {
             Object.keys(missions).length === 0 ?

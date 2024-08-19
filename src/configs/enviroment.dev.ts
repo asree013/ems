@@ -1,5 +1,5 @@
 export const enviromentDev = {
-  myUrl: 'https://ems-test-eta.vercel.app',
+  myUrl: 'http://localhost:3000',
   baseUrl: 'https://ems.monitor-test.cloud/v1',
   patient: '/patient',
   login: '/login',
@@ -12,7 +12,10 @@ export const enviromentDev = {
   keyGoogleDev: "AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg",
   mission: '/missions',
   user: '/users',
-  chat: '/chat'
+  chat: '/chat',
+  car: '/car',
+  helicopter: '/helicopter',
+  noImage: 'https://us.123rf.com/450wm/koblizeek/koblizeek2208/koblizeek220800254/190563481-no-image-vector-symbol-missing-available-icon-no-gallery-for-this-moment-placeholder.jpg'
 };
 
 export const enviromentPath = {

@@ -4,10 +4,14 @@
     grid-gap: 20px;
 }
 
+
 @media only screen and (max-width: 450px) {
     .itemCard{
         display: grid;
         grid-template-columns: repeat(1, 2fr);
         grid-gap: 20px;
+    }
+    .body{
+        margin-top: 60px;
     }
 }

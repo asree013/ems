@@ -36,6 +36,16 @@ export interface Missions {
   }
 }
 
+export interface MissionState {
+  id: string
+  status: number
+  mission_id: string
+  users_id: string
+  create_date: string
+  update_date: string
+  mission: Missions
+}
+
 type UsersR = {
   first_name: string
   last_name: string
@@ -46,5 +56,21 @@ type UsersR = {
   image: string
   Responsibilities: {
     role: string
+  }
+}
+
+export interface MissionTag{
+  id: string
+  status: number
+  date_time_tag: string
+  mission_id: string
+  users_id: string
+  create_date: string
+  update_date: string
+  mission: Missions
+  Users: {
+    first_name: string
+    last_name: string
+    id: string
   }
 }

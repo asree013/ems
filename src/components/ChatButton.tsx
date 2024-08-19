@@ -4,7 +4,7 @@ import * as React from 'react';
 import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import MessageIcon from '@mui/icons-material/Message';
-import { Badge, BadgeProps, Box, Chip, Fab, styled } from '@mui/material';
+import { Badge, BadgeProps, Box, Chip, Fab, IconButton, Paper, styled } from '@mui/material';
 
 import Input from '@mui/joy/Input';
 import Button from '@mui/joy/Button';
@@ -30,10 +30,13 @@ import { Chats } from '@/models/chat.model';
 import Link from 'next/link';
 import { NIL } from 'uuid';
 
-const actions = [
-  { icon: <FileCopyIcon />, name: 'Mission' },
-  { icon: <SaveIcon />, name: 'AOC' },
-];
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+
+import ToggleButton from '@mui/material/ToggleButton';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+
 
 type CurrenChat = {
   chat_id: string,
@@ -51,6 +54,35 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   },
 }));
 
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+function CustomTabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </div>
+  );
+}
+
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
+
 export default function ChatButton() {
   const [open, setOpen] = React.useState<boolean>(false);
   const [openChat, setOpenChat] = React.useState<boolean>(false);
@@ -58,8 +90,12 @@ export default function ChatButton() {
   const [currentChat, setCurrentChat] = React.useState<CurrenChat>({} as CurrenChat)
   const [user_id, setUserId] = React.useState<string>('');
   const [message, setMessage] = React.useState<string>('');
+  const inputRef = React.useRef<HTMLInputElement>(null);
   const [messages, setMessages] = React.useState<Chats[]>([]);
   const [room_id, setRoomId] = React.useState<string>('');
+
+  const [value, setValue] = React.useState(0);
+  const [selected, setSelected] = React.useState(true);
 
   const [mission, setMission] = React.useState<Missions>({} as Missions);
 
@@ -79,8 +115,8 @@ export default function ChatButton() {
     if (!missId && userId) {
       try {
         const result = await findMissionCurrent()
-        setMissionId(result.data[0].id);
-        setMission(result.data[0]);
+        setMissionId(result.data.id);
+        setMission(result.data);
         setUserId(userId);
       } catch (error) {
         timeOutJwt(error)
@@ -97,14 +133,27 @@ export default function ChatButton() {
     }
   }
 
-  function onSendMessage() {
+  const handleChangeMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setMessage(event.target.value);
+    inputRef.current?.focus();
+  };
+
+  function onSendMessage(e: React.ChangeEvent<HTMLFormElement>) {
+    e.preventDefault()
     socket.emit('send-message', {
       room_id: room_id,
       message: message,
       user_id: user_id,
     });
     setMessage('')
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   }
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
 
   React.useEffect(() => {
     getMissionIdBylocalstorage();
@@ -115,7 +164,7 @@ export default function ChatButton() {
       arr.post_date = new Date().toLocaleString('th-TH')
       setMessages((prevMessages) => [...prevMessages, arrmessage]);
       console.log(messages);
-      
+
     });
 
     // ล้าง event listener เมื่อ component ถูกถอด
@@ -124,207 +173,327 @@ export default function ChatButton() {
     };
   }, [getMissionIdBylocalstorage]);
 
-  return (
-    <>
-      <Fab size='large' variant='extended' className={chatCss.positionChat} color='warning' onClick={() => setOpen(true)}>
-        <MessageIcon fontSize='large' color='inherit' />
-      </Fab>
+  const WindowChat = () => <div>
+    <ListItem sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
+      <Button onClick={() => {
+        setOpenChat(false)
+        setMessages([])
+        setCurrentChat({} as CurrenChat)
+      }} variant='plain' color='neutral'><ArrowBackIosIcon /></Button>
+      <ListItemAvatar>
+        {currentChat.is_online ? (
+          <StyledBadge badgeContent=" " color="success">
+            <Avatar alt="Cindy Baker" src={currentChat.image_chat} />
+          </StyledBadge>
+        ) : (
+          <StyledBadge badgeContent=" " color="error">
+            <Avatar alt="Cindy Baker" src={currentChat.image_chat} />
+          </StyledBadge>
+        )}
+      </ListItemAvatar>
+      <Box>
+        <Typography sx={{ fontSize: '1.5rem', fontWeight: 700 }}>
+          {currentChat.title}
+        </Typography>
 
-      <Modal
-        aria-labelledby="modal-title"
-        aria-describedby="modal-desc"
-        open={open}
-        onClose={() => {
-          setOpen(false);
-          setOpenChat(false);
-          setMessage('')
-          setMessages([])
-          setCurrentChat({} as CurrenChat)
-        }}
-        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-      >
-        <Sheet
-          variant="outlined"
-          sx={{
-            maxWidth: 500,
-            borderRadius: 'md',
-            p: 3,
-            boxShadow: 'lg',
-          }}
+      </Box>
+
+    </ListItem>
+
+    <div className={chatCss.chat}>
+      {
+        messages.length > 0 ?
+          messages.map((r, i) => {
+            if (r.user_id === user_id) {
+              return (
+                <div key={i} className={chatCss.is_user}>
+                  <p style={{ fontSize: '12px' }}>{r.name_send}</p>
+                  <div style={{ display: 'flex' }}>
+                    <p className={chatCss.user}>{r.message}</p>
+                    <Avatar style={{ marginLeft: '3px', height: '2rem', width: '2rem' }} src={r.avatar} />
+                  </div>
+                  <p style={{ fontSize: '10px' }}>{r.post_date}</p>
+                </div>
+              );
+            } else {
+              return (
+                <div key={i} className={chatCss.is_not_my_user}>
+                  <p style={{ fontSize: '12px' }}>{r.name_send}</p>
+                  <div style={{ display: 'flex' }}>
+                    <Avatar style={{ marginRight: '3px', height: '2rem', width: '2rem' }} src={r.avatar} />
+                    <p className={chatCss.not_user}>{r.message}</p>
+                  </div>
+                  <p style={{ fontSize: '10px' }}>{r.post_date}</p>
+                </div>
+              );
+            }
+          })
+          :
+          null
+      }
+    </div>
+    <form onSubmit={onSendMessage}>
+
+      <Input type='text' value={message} autoFocus onChange={handleChangeMessage} ref={inputRef}  endDecorator={
+        <Button
+          variant="solid"
+          color="primary"
+          type="submit"
+          sx={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
         >
-          <ModalClose variant="plain" sx={{ m: 1 }} />
-          {
-            openChat === false ?
-              <Typography
-                component="h2"
-                id="modal-title"
-                level="h4"
-                textColor="inherit"
-                fontWeight="lg"
-                mb={1}
-              >
-                Chat mobile
-              </Typography> :
+          ส่ง
+        </Button>
+      } />
+    </form>
+  </div>
+
+  function ChatTab() {
+    return (
+      <>
+
+        {
+          openChat === false ?
+            <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper', cursor: 'pointer' }}>
+
+              {/* <Divider>
+                <Chip label="แชทส่วนตัว" size="small" />
+              </Divider> */}
+
               <ListItem alignItems="flex-start">
                 <ListItemAvatar>
-                  {
-                    currentChat.is_online === true ?
-                      <StyledBadge badgeContent color="success">
-                        <Avatar alt="Cindy Baker" src={currentChat.image_chat} />
-                      </StyledBadge> :
-                      <StyledBadge badgeContent color="error">
-                        <Avatar alt="Cindy Baker" src={currentChat.image_chat} />
-                      </StyledBadge>
-                  }
+                  <Avatar alt="Travis Howard" src="" />
                 </ListItemAvatar>
-                <Box>
-                  <Typography sx={{ fontSize: '1.5rem', fontWeight: 700 }}>
-                    {currentChat.title}
-                  </Typography>
-
-                </Box>
-
+                <ListItemText
+                  primary="Summer BBQ"
+                  secondary={
+                    <React.Fragment>
+                      <TypographyM
+                        sx={{ display: 'inline' }}
+                        component="span"
+                        variant="body2"
+                        color="text.primary"
+                      >
+                        to Scott, Alex, Jennifer
+                      </TypographyM>
+                      {" — Wish I could come, but I'm out of town this…"}
+                    </React.Fragment>
+                  }
+                />
               </ListItem>
+
+              <Divider variant="inset" component="li" />
+
+              <ListItem alignItems="flex-start">
+                <ListItemAvatar>
+                  <Avatar alt="Cindy Baker" src="" />
+                </ListItemAvatar>
+                <ListItemText
+                  primary="Oui Oui"
+                  secondary={
+                    <React.Fragment>
+                      <TypographyM
+                        sx={{ display: 'inline' }}
+                        component="span"
+                        variant="body2"
+                        color="text.primary"
+                      >
+                        Sandra Adams
+                      </TypographyM>
+                      {' — Do you have Paris recommendations? Have you ever…'}
+                    </React.Fragment>
+                  }
+                />
+              </ListItem>
+            </List> :
+            <WindowChat />
+        }
+      </>
+    )
+  }
+
+  function PersonalTab() {
+    return (
+      <>
+
+        {
+          openChat === false ?
+            <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper', cursor: 'pointer' }}>
+
+              <Divider>
+                <Chip label="แชทศูนย์ AOC" size="small" />
+              </Divider>
+
+              <ListItem alignItems="flex-start">
+                <ListItemAvatar>
+                  <Avatar alt="Remy Sharp" src="" />
+                </ListItemAvatar>
+                <ListItemText
+                  primary="ผู้ดูแล/ควบคุม/ศูนย์ AOC"
+                />
+              </ListItem>
+
+              <Divider>
+                <Chip label="แชทกลุ่มภารกิจ" size="small" />
+              </Divider>
+
+              {
+                Object.keys(mission).length === 0 ?
+                  <Box>
+                    <Typography>ยังไม่มีภารกิจ</Typography>
+                    <Link href={'/mission/' + NIL}>
+                      <p>คลิกเพื่อเลือกภารกิจ</p>
+                    </Link>
+                  </Box> :
+                  <ListItem alignItems="flex-start" onClick={() => onOpenChatAndChatId(mission.id, 'mis')}>
+                    <ListItemAvatar>
+                      <Avatar alt="Remy Sharp" src={mission.image} />
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={mission.title}
+                    />
+                  </ListItem>
+              }
+
+              <Divider>
+                <Chip label="แชทส่วนตัว" size="small" />
+              </Divider>
+
+              <ListItem alignItems="flex-start">
+                <ListItemAvatar>
+                  <Avatar alt="Travis Howard" src="" />
+                </ListItemAvatar>
+                <ListItemText
+                  primary="Summer BBQ"
+                  secondary={
+                    <React.Fragment>
+                      <TypographyM
+                        sx={{ display: 'inline' }}
+                        component="span"
+                        variant="body2"
+                        color="text.primary"
+                      >
+                        to Scott, Alex, Jennifer
+                      </TypographyM>
+                      {" — Wish I could come, but I'm out of town this…"}
+                    </React.Fragment>
+                  }
+                />
+              </ListItem>
+
+              <Divider variant="inset" component="li" />
+
+              <ListItem alignItems="flex-start">
+                <ListItemAvatar>
+                  <Avatar alt="Cindy Baker" src="" />
+                </ListItemAvatar>
+                <ListItemText
+                  primary="Oui Oui"
+                  secondary={
+                    <React.Fragment>
+                      <TypographyM
+                        sx={{ display: 'inline' }}
+                        component="span"
+                        variant="body2"
+                        color="text.primary"
+                      >
+                        Sandra Adams
+                      </TypographyM>
+                      {' — Do you have Paris recommendations? Have you ever…'}
+                    </React.Fragment>
+                  }
+                />
+              </ListItem>
+            </List> :
+            <WindowChat />
+        }
+      </>
+    )
+  }
+
+  return (
+    <>
+      <ToggleButton
+        value="check"
+        selected={selected}
+        size='large'
+        onChange={(e) => {
+          setSelected(!selected)
+          if (e.currentTarget.ariaPressed === 'true') {
+            setOpen(true)
           }
+          else {
+            setOpen(false);
+            setMessage('')
+          }
+        }}
+        color='warning'
+        className={chatCss.positionChat}
+      >
+        {
+          open ?
+            <ArrowUpwardIcon fontSize='large' color='inherit' /> :
+            <MessageIcon fontSize='large' color='inherit' />
+        }
+      </ToggleButton>
 
-          {
-            openChat === false ?
-              <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
 
-                <Divider>
-                  <Chip label="แชทศูนย์ AOC" size="small" />
-                </Divider>
+      {
+        open ?
+          <Paper elevation={8} className={chatCss.bodyCard}>
+            <Sheet
+              className={chatCss.chat_size}
+            >
+              <Box sx={{ width: '100%' }}>
 
-                <ListItem alignItems="flex-start">
-                  <ListItemAvatar>
-                    <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary="ผู้ดูแล/ควบคุม/ศูนย์ AOC"
-                  />
-                </ListItem>
-
-                <Divider>
-                  <Chip label="แชทกลุ่มภารกิจ" size="small" />
-                </Divider>
-
-                {
-                  Object.keys(mission).length === 0 ?
-                    <Box>
-                      <Typography>ยังไม่มีภารกิจ</Typography>
-                      <Link href={'/mission/' + NIL}>
-                        <p>คลิกเพื่อเลือกภารกิจ</p>
-                      </Link>
-                    </Box> :
-                    <ListItem alignItems="flex-start" onClick={() => onOpenChatAndChatId(mission.id, 'mis')}>
-                      <ListItemAvatar>
-                        <Avatar alt="Remy Sharp" src={mission.image} />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={mission.title}
-                      />
-                    </ListItem>
-                }
-
-                <Divider>
-                  <Chip label="แชทส่วนตัว" size="small" />
-                </Divider>
-
-                <ListItem alignItems="flex-start">
-                  <ListItemAvatar>
-                    <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary="Summer BBQ"
-                    secondary={
-                      <React.Fragment>
-                        <TypographyM
-                          sx={{ display: 'inline' }}
-                          component="span"
-                          variant="body2"
-                          color="text.primary"
-                        >
-                          to Scott, Alex, Jennifer
-                        </TypographyM>
-                        {" — Wish I could come, but I'm out of town this…"}
-                      </React.Fragment>
-                    }
-                  />
-                </ListItem>
-
-                <Divider variant="inset" component="li" />
-
-                <ListItem alignItems="flex-start">
-                  <ListItemAvatar>
-                    <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary="Oui Oui"
-                    secondary={
-                      <React.Fragment>
-                        <TypographyM
-                          sx={{ display: 'inline' }}
-                          component="span"
-                          variant="body2"
-                          color="text.primary"
-                        >
-                          Sandra Adams
-                        </TypographyM>
-                        {' — Do you have Paris recommendations? Have you ever…'}
-                      </React.Fragment>
-                    }
-                  />
-                </ListItem>
-              </List> :
-              <div>
-
-                <div className={chatCss.chat}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Typography
+                    component="h2"
+                    id="modal-title"
+                    level="h4"
+                    textColor="inherit"
+                    fontWeight="lg"
+                    mb={1}
+                  >
+                    Chat mobile
+                  </Typography>
+                  <div
+                    style={{ cursor: 'pointer', borderRadius: '50%', backgroundColor: 'transparent' }}
+                    onClick={() => {
+                      setSelected(!selected);
+                      setOpen(false);
+                      setMessage('');
+                    }}
+                  >
+                    <ModalClose variant='outlined' color='neutral' />
+                  </div>
+                </div>
+                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                   {
-                    messages.length > 0 ?
-                      messages.map((r, i) => {
-                        if (r.user_id === user_id) {
-                          return (
-                            <div key={i} className={chatCss.is_user}>
-                              <p style={{ fontSize: '12px' }}>{r.name_send}</p>
-                              <div style={{ display: 'flex' }}>
-                                <p className={chatCss.user}>{r.message}</p>
-                                <Avatar style={{ marginLeft: '3px', height: '2rem', width: '2rem' }} src={r.avatar} />
-                              </div>
-                              <p style={{ fontSize: '10px' }}>{r.post_date}</p>
-                            </div>
-                          );
-                        } else {
-                          return (
-                            <div key={i} className={chatCss.is_not_my_user}>
-                              <p style={{ fontSize: '12px' }}>{r.name_send}</p>
-                              <div style={{ display: 'flex' }}>
-                                <Avatar style={{ marginRight: '3px', height: '2rem', width: '2rem' }} src={r.avatar} />
-                                <p className={chatCss.not_user}>{r.message}</p>
-                              </div>
-                              <p style={{ fontSize: '10px' }}>{r.post_date}</p>
-                            </div>
-                          );
-                        }
-                      })
-                      :
+                    openChat === false ?
+                      <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                        <Tab label="การพูดคุย" {...a11yProps(0)} />
+                        <Tab label="รายชื่อติดต่อ" {...a11yProps(1)} />
+                      </Tabs> :
                       null
                   }
-                </div>
-                <Input type='text' value={message} onChange={(e) => setMessage(e.target.value)} endDecorator={
-                  <Button
-                    variant="solid"
-                    color="primary"
-                    type="button"
-                    sx={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
-                    onClick={onSendMessage}
-                  >
-                    ส่ง
-                  </Button>
-                } />
-              </div>
-          }
-        </Sheet>
-      </Modal>
+                </Box>
+                <CustomTabPanel value={value} index={0}>
+                  <ChatTab />
+                </CustomTabPanel>
+                <CustomTabPanel value={value} index={1}>
+                  <PersonalTab />
+                </CustomTabPanel>
+              </Box>
+
+            </Sheet>
+          </Paper> :
+          null
+      }
+
     </>
   );
+
+
 }
+
+

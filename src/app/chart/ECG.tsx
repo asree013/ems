@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { lightningChart, Themes, emptyLine, AutoCursorModes, AxisTickStrategies, ColorHEX, SolidFill, PointShape, ColorRGBA } from '@lightningchart/lcjs';
 import { ecg, ecgNull } from '@/data/data.medical_result';
+import { socket } from '@/configs/socket';
 
 interface ECGDataPoint {
   x: number;
@@ -15,7 +16,12 @@ interface ChannelInfo {
   yMax: number;
 }
 
-export default function ECG() {
+type Props = {
+  order_id: string
+}
+
+
+export default function ECG({order_id}: Props) {
 
   const chartRefEcg = useRef<HTMLDivElement | null>(null);
 const [maxLength, setMaxLenght] = useState<{
@@ -33,20 +39,15 @@ const [maxLength, setMaxLenght] = useState<{
     let i = 1
     // let lengthData = testData.length | 250
     let lengthData = 250
-    ecgData = ecg
+    ecgData = ecgNull
 
-    setInterval(() => {
-      console.log(i);
+    socket.emit('data-tranfer', { order_id, message: order_id });
 
-      // if (testData) {
-      //   ecgData = testData[i].ecg
-      //   i += 1
-      //   if (i === lengthData) {
-      //     i = 0
-      //   }
-      // }
-
-    }, 10000)
+    socket.off('data-tranfer-ecg')
+    socket.on('data-tranfer-ecg', (message: any) => {
+      console.log('pleth ', JSON.parse(message).ecg);
+      ecgData = JSON.parse(message).ecg
+    })
 
     const channelCount = 1;
     const dataRateHz = 250;

@@ -16,6 +16,8 @@ import Loadding from './Loadding';
 import MenuItem from './Menu';
 import { MenuValueContext } from '@/contexts/menu.value.context';
 import { timeOutJwt } from '@/services/timeout.service';
+import ProfileComponent from './ProfileComponent';
+import { FindMeTabContext } from './subContext/findMeTab.content';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -102,12 +104,9 @@ export default function TabMenu({ children }: Props) {
                         </MenuValueContext.Provider>
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={2}>
-                        Profile
-                        <Button variant='contained' type='button' onClick={async() => {
-                            localStorage.clear()
-                            window.location.href = '/login'
-                            await logout()
-                        }} >logout</Button>
+                        <FindMeTabContext.Provider value={{findMe, setFindMe}} >
+                            <ProfileComponent />
+                        </FindMeTabContext.Provider>
                     </CustomTabPanel>
                 </FindMeContext.Provider>
                 <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 1 }} elevation={6}>

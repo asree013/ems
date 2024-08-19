@@ -40,7 +40,7 @@ export default function ModalCreateImageExan({ params }: Props) {
       const file = e.target.files[0];
       const FR = new FileReader();
 
-      FR.onload = async (event) => {
+      FR.onload = (event) => {
         if (event.target && event.target.result) {
           const base64 = event.target.result as string;
           console.log('Base64:', base64); // เพิ่ม console.log เพื่อตรวจสอบค่า base64

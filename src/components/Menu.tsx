@@ -15,6 +15,7 @@ import PatientIcon from '@/assets/icon/patient_menu.png'
 import HomeIcons from '@/assets/icon/home_9449216.png'
 import MornitorIcon from '@/assets/icon/monitor_4765315.png'
 import ChatIcon from '@/assets/icon/ui-element_15768343.png'
+import Ambulance from '@/assets/icon/ambulance.png'
 
 export default function MenuItem() {
 
@@ -116,6 +117,19 @@ export default function MenuItem() {
                             <img src={MornitorIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
                             <div className={menuCss.menuDetail}>
                                 <h3>จอแสดงเครื่องวัด</h3>
+                                <p>detail</p>
+                            </div>
+                        </div>
+                    </Card>
+                    <Card elevation={3}>
+                        <div onClick={() => {
+                            setLoad(true)
+                            window.location.href = '/vehicle'
+                            onRedirect()
+                        }} className={menuCss.menuItem}>
+                            <img src={Ambulance.src} style={{ height: '4rem', width: '4rem' }} alt="" />
+                            <div className={menuCss.menuDetail}>
+                                <h3>ยานภาหณะ</h3>
                                 <p>detail</p>
                             </div>
                         </div>

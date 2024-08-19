@@ -1,4 +1,4 @@
-import { Missions } from "@/models/mission.model";
+import { Missions, MissionState, MissionTag } from "@/models/mission.model";
 import { endpoint } from "./endpoint.service";
 import { enviromentDev } from "@/configs/enviroment.dev";
 
@@ -13,6 +13,33 @@ export function createMission(data: Missions) {
 export function findMission(page: number, limit: number) {
     try {
         return endpoint.get<Missions[]>(enviromentDev.mission + `?page=${page}&limit=${limit}`)
+    } catch (error) {
+        throw error
+    }
+}
+
+export function findMissionStateByMissionId(mission_id: string) {
+    try {
+        return endpoint.get<MissionState>(enviromentDev.mission + `/${mission_id}/state`)
+    } catch (error) {
+        throw error
+    }
+}
+
+export function findMissionTagByMissionId(mission_id: string) {
+    try {
+        return endpoint.get<MissionTag[]>(enviromentDev.mission + `/${mission_id}/tag`)
+    } catch (error) {
+        throw error
+    }
+}
+
+export function updateMissionTagByMissionId(mission_id: string, tag_id: string, value: number) {
+    const data = {
+        status: value
+    }
+    try {
+        return endpoint.put<MissionState>(enviromentDev.mission + `/${mission_id}/tag/${tag_id}`, data)
     } catch (error) {
         throw error
     }
@@ -44,7 +71,7 @@ export function leaveMission(mission_id: string) {
 
 export function findMissionCurrent() {
     try {
-        return endpoint.get<Missions[]>(`${enviromentDev.mission}/get-current-mission`)
+        return endpoint.get<Missions>(`${enviromentDev.mission}/get-current-mission`)
     } catch (error) {
         throw error
     }
