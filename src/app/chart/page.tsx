@@ -6,7 +6,7 @@ import SPO from './SPO'
 export default function page() {
   return (
     <div>
-      <ECG />
+      <ECG order_id='' />
       {/* <SPO /> */}
     </div>
   )

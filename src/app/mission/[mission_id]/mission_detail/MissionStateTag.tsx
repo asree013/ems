@@ -179,6 +179,111 @@ let steps = [
     },
 ];
 
+let stepsDammy = [
+    {
+        label: 'ศูนย์เฮลิคอปเตอร์พยาบาล(HOC)รับแจ้งเหตุ',
+        status: 1,
+        description: `สถาณะนี้จะแสดงขึ้นเมื่อศูนย์เฮลิคอปเตอร์พยาบาล(HOC)รับแจ้งเหตุ`,
+    },
+    {
+        label: 'ทีมHEMSรับแจ้งภากิจ',
+        status: 2,
+        description: `ทีมHEMSรับแจ้งภากิจ เพื่อเตรียมพร้อมออกปฎิบัตการ`,
+    },
+    {
+        label: 'ทีมHEMSพร้อม รถEMS ออกไปสนาม ฮ.',
+        status: 3,
+        description: `กดถัดไปเมื่อทีมHEMSพร้อม รถEMS ออกไปสนาม ฮ. เพื่อเก็บข้อมูลเวลาออกไปสนาม ฮ.`,
+    },
+    {
+        label: 'ทีมHEMSพร้อม รถEMS ถึง สนาม ฮ.',
+        status: 4,
+        description:
+            'กดถัดไปเมื่อทีมHEMSพร้อม รถEMS ถึง สนาม ฮ.',
+    },
+    {
+        label: 'ฮ. ยกตัวไปสนาม ฮ. ที่หมายผู้ป่วย',
+        status: 5,
+        description: `กดถัดไปเมื่อ ฮ. ยกตัวไปสนาม ฮ. ที่หมายผู้ป่วย`,
+    },
+    {
+        label: 'ฮ. ถึงสนาม ฮ. ที่หมายผู้ป่วย',
+        status: 6,
+        description: `กดถัดไปเมื่อ ฮ. ถึงสนาม ฮ. ที่หมายผู้ป่วย`,
+    },
+    {
+        label: 'ทีมHEMS ออกเดินทางไป รพ.หรือจุดรับผู้ป่วย',
+        status: 7,
+        description: `กดถัดไปเมื่อ ทีมHEMS ออกเดินทางไป รพ.หรือจุดรับผู้ป่วย`,
+    },
+    {
+        label: 'ทีมHEMS ถึง รพ.หรือจุดรับผู้ป่วย',
+        status: 8,
+        description: `กดถัดไปเมื่อทีมHEMS ถึง รพ.หรือจุดรับผู้ป่วย`,
+    },
+    {
+        label: 'ทีมHEMS รับผู้ป่วยและทำการประเมิน ตกลงใจ',
+        status: 9,
+        description: `กดถัดไปเมื่อทีมHEMS รับผู้ป่วยและทำการประเมิน ตกลงใจ`,
+    },
+    {
+        label: 'ทีมHEMS ลำเลียงผู้ป่วยออกจาก รพ. หรือจุดรับผู้ป่วย',
+        status: 10,
+        description: `กดถัดไปเมื่อทีมHEMS ลำเลียงผู้ป่วยออกจาก รพ. หรือจุดรับผู้ป่วย`,
+    },
+    {
+        label: 'รับผู้ป่วยขึ้น ฮ. เสร็จและประเมิน preflight assessment',
+        status: 11,
+        description: `กดถัดไปเมื่อรับผู้ป่วยขึ้น ฮ. เสร็จและประเมิน preflight assessment`,
+    },
+    {
+        label: 'ฮ. ยกตัวไปสนาม ฮ. ปลายทางและประเมิน flight assessment',
+        status: 12,
+        description: `กดถัดไปเมื่อ ฮ. ยกตัวไปสนาม ฮ. ปลายทางและประเมิน flight assessment`,
+    },
+    {
+        label: 'ฮ. ถึงสนาม ฮ. ปลายทางและประเมินผู้ป่วยก่อนส่งต่อ ทีมภาคพื้น',
+        status: 13,
+        description: `กดถัดไปเมื่อ ฮ. ถึงสนาม ฮ. ปลายทางและประเมินผู้ป่วยก่อนส่งต่อ ทีมภาคพื้น`,
+    },
+    {
+        label: 'ทีมภาคพื้น พร้อมรถEMS ออกเดินทางไป รพ.ปลายทาง',
+        status: 14,
+        description: `กดถัดไปเมื่อทีมภาคพื้น พร้อมรถEMS ออกเดินทางไป รพ.ปลายทาง`,
+    },
+    {
+        label: 'ทีมภาคพื้นพร้อมรถEMS ถึง รพ.ปลายทาง',
+        status: 15,
+        description: `กดถัดไปเมื่อ ทีมภาคพื้นพร้อมรถEMS ถึง รพ.ปลายทาง`,
+    },
+    {
+        label: 'ทีมภาคพื้น ส่งผู้ป่วย ที่รพ.ปลายทางเรียบร้อย พร้อมสรุปreport',
+        status: 16,
+        description: `กดถัดไปเมื่อทีมภาคพื้น ส่งผู้ป่วย ที่รพ.ปลายทางเรียบร้อย พร้อมสรุปreport`,
+    },
+    {
+        label: 'สรุปภารกิจระหว่างทีมHEMSและทีมนักบิน',
+        status: 17,
+        description: `กดถัดไปเมื่อสรุปภารกิจระหว่างทีมHEMSและทีมนักบิน`,
+    },
+    {
+        label: 'ฮ. ยกตัวบินกลับถึง สนาม ฮ. และส่งทีมHEMSลง',
+        status: 18,
+        description: `กดถัดไปเมื่อ ฮ. ยกตัวบินกลับถึง สนาม ฮ. และส่งทีมHEMSลง`,
+    },
+    {
+        label: 'รถEMSรับทีมHEMS จากสนาม ฮ.',
+        status: 19,
+        description: `กดถัดไปเมื่อรถEMSรับทีมHEMS จากสนาม ฮ.`,
+    },
+    {
+        label: 'รถEMSและทีมHEMS กลับถึงที่ตั้ง',
+        status: 20,
+        description: `กดถัดไปเมื่อรถEMSและทีมHEMS กลับถึงที่ตั้ง`,
+    },
+];
+
+
 type Props = {
     data: Missions
 }
@@ -226,7 +331,7 @@ export default function MissionStateTag({ data }: Props) {
     React.useEffect(() => {
         findStateByMissionId()
         findTagAll()
-        
+
         return () => {
             findStateByMissionId
             findTagAll
@@ -268,7 +373,7 @@ export default function MissionStateTag({ data }: Props) {
             <Stepper activeStep={activeStep} orientation="vertical" style={{ width: '100%' }}>
                 {steps.map((step, index) => (
                     <Step key={step.label}>
-                        <StepLabel>
+                        <StepLabel >
                             {step.label} {step.time_stamp ? 'เวลา: ' + step.time_stamp.split(' ')[1] : ''}
                         </StepLabel>
                         <StepContent>

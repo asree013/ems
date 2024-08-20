@@ -2,7 +2,8 @@ version: '3.5'
 services:
   app: 
     container_name: app
-    image: ems-local
+    image: asree001/app-ems
     build: 
       context: .
       dockerfile: ./dockerfile
+    platform: 'linux/amd64'

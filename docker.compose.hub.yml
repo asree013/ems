@@ -5,4 +5,8 @@ services:
     image: asree001/app-ems
     ports:
       - 3000:3000
-      
+    networks:
+      - ems
+networks:
+  ems:
+    external: true  

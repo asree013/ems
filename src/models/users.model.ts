@@ -1,3 +1,5 @@
+import { Hospitals } from "./hospital.model"
+
 export type Users = {
   id: string
   first_name: string
@@ -19,7 +21,7 @@ export type Users = {
   team_id: string
   mission_id: string
   Squad: string
-  Hospital: string
+  Hospital: Hospitals
   Responsibilities: string
   LocationActive: LocationActive[]
 }

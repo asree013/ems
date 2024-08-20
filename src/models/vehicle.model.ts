@@ -53,14 +53,14 @@ export interface Helicopters {
 
 export interface Vehicles {
     car: {
-        id: string
-        user_id: string
-        car_id: string
-        time_un_belong: any
-        create_date: string
-        update_date: string
-        Car: Cars
-        is_driver: boolean
+      id: string
+      user_id: string
+      car_id: string
+      time_un_belong: any
+      create_date: string
+      update_date: string
+      Car: Cars
+      is_driver: boolean
     },
     helicopter: Helicopters,
     ship: {}
