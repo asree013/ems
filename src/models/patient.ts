@@ -9,9 +9,9 @@ export interface Patients {
   id: string
   first_name: string
   last_name: string
+  qr_number: string
   gender: string
-  age: number
-  risk_level: string
+  age: string
   birthday: string
   id_card: string
   tel: string
@@ -21,27 +21,35 @@ export interface Patients {
   image_id_card: string
   user_create_id: string
   user_update_id: string
+  date_time_died: string
+  date_time_go_home: string
   create_date: string
   update_date: string
-  TriageSieve: string
-  TriageSort: string
-  Teatment: string
-  Loading: string
-  Parking: any
-  AllergyDrug: Array<AllergyDrug>
-  AllergyFood: Array<AllergyFoods>
-  BedUseHistory: Array<Bed>
-  CongenitalDisease: Array<CongenitalDiseases>
-  History: Array<History>
-  DiscoveredPatient: any
-  OrderTransfer: Array<OrderTranfer>
-  ParkingHistory: ParkingHistorys
+  mission_id: string
+  risk_level_id: string
+  TriageSieve: {}
+  TriageSort: {}
+  Teatment: {}
+  Risklevel: {}
+  Loading: {}
+  Parking: {}
+  AllergyDrug: Array<{}>
+  AllergyFood: Array<{}>
+  BedUseHistory: Array<{}>
+  CongenitalDisease: Array<{}>
+  History: Array<{}>
+  DiscoveredPatient: {}
+  OrderTransfer: Array<{}>
+  ParkingHistory: {}
   _count: {
+    OrderTransfer: number
+    BedUseHistory: number
     AllergyFood: number
     AllergyDrug: number
     CongenitalDisease: number
     History: number
-    OrderTransfer: number
-    BedUseHistory: number
+    HistoryPatientBelongCar: number
+    HistoryPatientBelongShip: number
+    HistoryPatientBelongHelicopter: number
   }
 }

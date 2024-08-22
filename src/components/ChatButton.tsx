@@ -167,10 +167,9 @@ export default function ChatButton() {
 
     });
 
-    // ล้าง event listener เมื่อ component ถูกถอด
-    return () => {
-      socket.off('receive-message');
-    };
+    // return () => {
+    //   socket.off('receive-message');
+    // };
   }, [getMissionIdBylocalstorage]);
 
   const WindowChat = () => <div>
@@ -183,16 +182,16 @@ export default function ChatButton() {
       <ListItemAvatar>
         {currentChat.is_online ? (
           <StyledBadge badgeContent=" " color="success">
-            <Avatar alt="Cindy Baker" src={currentChat.image_chat} />
+            <Avatar alt="Cindy Baker" sx={{width: '2rem', height: '2rem'}} src={currentChat.image_chat} />
           </StyledBadge>
         ) : (
           <StyledBadge badgeContent=" " color="error">
-            <Avatar alt="Cindy Baker" src={currentChat.image_chat} />
+            <Avatar alt="Cindy Baker" sx={{width: '2rem', height: '2rem'}} src={currentChat.image_chat} />
           </StyledBadge>
         )}
       </ListItemAvatar>
       <Box>
-        <Typography sx={{ fontSize: '1.5rem', fontWeight: 700 }}>
+        <Typography sx={{ fontSize: '1.3rem', fontWeight: 700 }}>
           {currentChat.title}
         </Typography>
 

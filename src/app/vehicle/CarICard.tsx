@@ -21,7 +21,7 @@ import ListSubheader from '@mui/material/ListSubheader';
 import InfoIcon from '@mui/icons-material/Info';
 import { Cars } from '@/models/vehicle.model';
 import { Button, Chip } from '@mui/material';
-import { findCarByCarId, updateDriverInCar } from '@/services/car.service';
+import { findCarByCarId, updateDriverInCar, updateUserInCar } from '@/services/car.service';
 import { timeOutJwt } from '@/services/timeout.service';
 import Loadding from '@/components/Loadding';
 import { TabValueVehicleContext, TtabvalueC } from './tabValue.context';
@@ -91,6 +91,15 @@ export default function CarCard({ data, car_id }: Props) {
             setLoad(false)
         }
     }, [car_id])
+
+    async function handlerAddUserInCar() {
+        try {
+            await updateUserInCar(car.id)
+            setValue(0)
+        } catch (error) {
+            timeOutJwt(error)
+        }
+    }
 
     React.useEffect(() => {
         if (car_id) {
@@ -209,7 +218,7 @@ export default function CarCard({ data, car_id }: Props) {
                                         null :
                                         <Button type='button' onClick={hanlerAddDriver}>ขับรถ</Button>
                                 }
-                                <Button>เข้ามร่วมรถ</Button>
+                                <Button type='button' onClick={handlerAddUserInCar}>เข้ามร่วมรถ</Button>
                             </div>
                     }
                 </CardContent>

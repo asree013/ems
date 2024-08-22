@@ -41,9 +41,9 @@ export default function PatientGenModel({
             <Fab
               variant="extended"
               sx={{
-                width: '200px',
-                height: '200px',
-                margin: '5px',
+                width: '120px',
+                height: '120px',
+                margin: '4px',
                 cursor: 'pointer',
               }}
               onClick={() => {
@@ -53,15 +53,15 @@ export default function PatientGenModel({
             >
               <ManIcon
                 color="primary"
-                sx={{ width: '200px', height: '200px' }}
+                sx={{ width: '120px', height: '120px' }}
               />
             </Fab>
             <Fab
               variant="extended"
               sx={{
-                width: '200px',
-                height: '200px',
-                margin: '5px',
+                width: '120px',
+                height: '120px',
+                margin: '4px',
                 cursor: 'pointer',
               }}
               onClick={() => {
@@ -71,7 +71,7 @@ export default function PatientGenModel({
             >
               <WomanIcon
                 color="error"
-                sx={{ width: '200px', height: '200px' }}
+                sx={{ width: '120px', height: '120px' }}
               />
             </Fab>
           </Box>

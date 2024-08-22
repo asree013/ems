@@ -33,3 +33,11 @@ export function updateDriverInCar(car_id: string, user_id: string){
         throw error
     }
 }
+
+export function updateUserInCar(car_id: string) {
+    try {
+        return endpoint.put<Cars>(enviromentDev.car + `/${car_id}/belong_car`)
+    } catch (error) {
+        throw error
+    }
+}

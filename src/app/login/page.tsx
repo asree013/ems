@@ -9,7 +9,6 @@ import Typography from '@mui/material/Typography';
 import { TextField } from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox'
-import { ToastContainer } from 'react-toastify';
 import logoImage from '@/assets/icon/user_6543039.png';
 import 'react-toastify/dist/ReactToastify.css';
 import './login.css';
@@ -39,7 +38,8 @@ export default function Page() {
       await logins(login);
       const findme = await FindUserMe()
       localStorage.setItem('user_id', JSON.stringify(findme.data.id))
-      socket.emit('is-online', {user_id: findme.data.id})
+      socket.emit('is-online', { user_id: findme.data.id })
+      toast('เข้าสู่ระบบ', 'success')
       window.location.href = '/select_mode'
     } catch (error: any) {
       console.log(error);
@@ -94,14 +94,27 @@ export default function Page() {
     }
   }
 
+  const checkFindMe = React.useCallback(async () => {
+    try {
+      await FindUserMe()
+      window.location.href = '/home'
+    } catch (error) {
+      return
+    }
+  }, [])
+
   useEffect(() => {
     setWindowHeight(window.innerHeight);
     onCheckAutoLogin()
-  }, [onCheckAutoLogin]);
+    checkFindMe()
+
+    return () => {
+      checkFindMe
+    }
+  }, [onCheckAutoLogin, checkFindMe]);
 
   return (
     <>
-      <ToastContainer />
       <div id='page' style={{
         background: '#2c387e', width: '100%', height: windowHeight,
         display: 'flex', alignItems: 'center', justifyContent: 'center'
@@ -116,7 +129,7 @@ export default function Page() {
               />
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
-                  Login EMS system
+                  Login EMS system New Api
                 </Typography>
                 <TextField
                   error={errUser}

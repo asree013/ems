@@ -1,7 +1,7 @@
 "use client"
 import React, { useCallback, useEffect, useState } from 'react';
 import PatientItem from './PatientItem';
-import { Box, Divider, Fab, SpeedDial } from '@mui/material';
+import { Box, Button, Divider, Fab, SpeedDial } from '@mui/material';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import patientCss from './patient.module.css'
 import Loadding from '@/components/Loadding';
@@ -53,14 +53,17 @@ export default function Page() {
     <>
       {/* <PatientList patient={{} as Patient}/> */}
       <PatientContextsArr.Provider value={{ patients, setPatients }} >
-        <h1>ผู้ป่วย</h1>
+        <Button style={{width: '100%'}} variant='outlined' type='button' onClick={() => {
+          setLoad(true)
+          window.location.href = '/patient/' + NIL
+        }}>เพิ่มผู้ป่าย</Button>
         <PatientItem />
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '25px' }}>
           <PaginationThemplete returnCurrent={onUpdatePage} />
         </div>
 
       </PatientContextsArr.Provider>
-      <Box className={patientCss.buttonCreate}>
+      {/* <Box className={patientCss.buttonCreate}>
         <Fab
           style={{ background: '#2c387e', color: 'white' }}
           onClick={() => {
@@ -70,7 +73,7 @@ export default function Page() {
         >
           <SpeedDialIcon />
         </Fab>
-      </Box>
+      </Box> */}
 
       {
         load ?

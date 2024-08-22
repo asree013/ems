@@ -18,16 +18,18 @@ import { toast } from '@/services/alert.service';
 type Props = {
   mission: Missions
   currentLo: Locations
+  returnLoad: (bool: boolean) => void
 }
 
-export default function MissionItem({ mission, currentLo }: Props) {
+export default function MissionItem({ mission, currentLo, returnLoad }: Props) {
 
   async function onJoinMission() {
     try {
       await joinMission(mission.id)
       window.location.href = '/mission/' + mission.id+ '/mission_detail'
       localStorage.setItem('mission_id', mission.id)
-      toast('เข้าร่วมภารกิจ', 'successs')
+      returnLoad(true)
+      toast('เข้าร่วมภารกิจ', 'seccess')
     } catch (error) {
       // timeOutJwt(error)
     }
