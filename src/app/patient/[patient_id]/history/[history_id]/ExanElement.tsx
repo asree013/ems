@@ -26,7 +26,7 @@ export default function ExanElement({ organ, exan }: Props) {
   async function setParamBody(txt: string) {
     if (txt) {
       router.push(
-        `/patient/${patient_id}/history/${history_id}/${NIL}?el_id=${txt}`,
+        `/patient/${patient_id}/history/${history_id}/exan/${NIL}?el_id=${txt}`,
       );
       setLoad(true);
     }

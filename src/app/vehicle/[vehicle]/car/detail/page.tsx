@@ -8,6 +8,7 @@ import { findCarByCarId } from '@/services/car.service';
 import { timeOutJwt } from '@/services/timeout.service';
 import { Cars } from '@/models/vehicle.model';
 import { CarDetailContext } from './CarDetail.context';
+import PateintDetail from './PateintDetail';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -87,7 +88,7 @@ export default function Page({ params }: Props) {
         Item Two
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        Item Three
+        <PateintDetail />
       </CustomTabPanel>
     </Box>
   );

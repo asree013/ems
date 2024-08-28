@@ -49,7 +49,7 @@ export default function RiskLevelModal({
           }}
         >
           <ModalClose variant="plain" sx={{ m: 1 }} />
-          <Box
+          {/* <Box
             sx={{
               margin: '10px',
               display: 'flex',
@@ -143,7 +143,7 @@ export default function RiskLevelModal({
                 </Sheet>
               </RadioGroup>
             </FormControl>
-          </Box>
+          </Box> */}
         </Sheet>
       </Modal>
     </Fragment>

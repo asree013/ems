@@ -117,7 +117,7 @@ export default function Page({ params }: Props) {
   // Separate rendering functions to avoid conditional hook calls within the main component
   const renderCreateExan = () => (
     <div className={exan_idCss.home}>
-      <Card className={exan_idCss.cardBody}>
+      <Card className={exan_idCss.cardBody} elevation={8}>
         <Box className={exan_idCss.cardContent}>
           <Fab sx={{ cursor: 'default' }}>
             <CreateNewFolderIcon sx={{ color: '#2c387e' }} fontSize="large" />
@@ -148,7 +148,7 @@ export default function Page({ params }: Props) {
   const renderUpdateExan = () => (
     <ModalImageExanContext.Provider value={{ previewImage, setPreviewImage }}>
       <div className={exan_idCss.home}>
-        <Card className={exan_idCss.cardBody}>
+        <Card className={exan_idCss.cardBody} elevation={8}>
           <Box className={exan_idCss.cardContent}>
             <Fab sx={{ cursor: 'default' }}>
               <CreateNewFolderIcon sx={{ color: '#2c387e' }} fontSize="large" />

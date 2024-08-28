@@ -160,10 +160,25 @@ export default function Page() {
                 <Button
                   type="submit"
                   size="large"
-                  variant="outlined"
+                  variant="contained"
                   style={{ width: '100%' }}
                 >
                   Login
+                </Button>
+              </CardActions>
+              <CardActions>
+                <Button
+                  type="button"
+                  size="large"
+                  color='success'
+                  variant="contained"
+                  style={{ width: '100%' }}
+                  onClick={() => {
+                    setIsLoad(true)
+                    window.location.href = '/SAR'
+                  }}
+                >
+                  ใช้งานแบบ ofline(SAR)
                 </Button>
               </CardActions>
             </Card>

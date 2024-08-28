@@ -73,7 +73,7 @@ const Page: React.FC<Props> = ({ params }: Props) => {
         : patient.gender.includes('Male')
           ? 'ชายไม่ทราบนามสกุล'
           : 'หญิงไม่ทราบนามสกุล';
-      p.risk_level = patient.risk_level;
+      // p.risk_level = patient.risk_level;
       p.tel = patient.tel;
 
       await createPatient(p);
@@ -99,7 +99,7 @@ const Page: React.FC<Props> = ({ params }: Props) => {
       p.image = patient.image;
       p.image_id_card = patient.image_id_card;
       p.last_name = patient.last_name;
-      p.risk_level = patient.risk_level;
+      // p.risk_level = patient.risk_level;
       p.tel = patient.tel;
       const result = await updatePatient(params.patient_id, p);
       toast('update patient', 'success');
@@ -161,7 +161,7 @@ const Page: React.FC<Props> = ({ params }: Props) => {
                   {patient.gender ? patient.gender : 'กรุณาเลือกเพศ'}
                 </Typography>
                 <Divider />
-                <Typography
+                {/* <Typography
                   sx={{ margin: '10px' }}
                   level="title-lg"
                   startDecorator={<CheckCircleOutlineIcon color="success" />}
@@ -180,7 +180,7 @@ const Page: React.FC<Props> = ({ params }: Props) => {
                     : null}
                   {patient.risk_level === 'R' ? 'R (บาดเจ็บสาหัส)' : null}
                   {patient.risk_level === 'B' ? 'B (เสียชีวิต)' : null}
-                </Typography>
+                </Typography> */}
               </Box>
             </Card>
             <PatientForm

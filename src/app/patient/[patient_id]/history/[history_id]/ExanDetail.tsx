@@ -148,7 +148,7 @@ export default function ExanDetail({ window }: Props) {
             color="primary"
             onClick={() => {
               router.push(
-                `/patient/${patient_id}/history/${exByElId.History.id}/${exByElId.id}?el_id=${el_id}`,
+                `/patient/${patient_id}/history/${exByElId.History.id}/exan/${exByElId.id}?el_id=${el_id}`,
               );
             }}
           >

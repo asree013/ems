@@ -1,12 +1,14 @@
-.home{
-    height: 55vw;
-    background-color: rgb(224, 224, 224);
+.home {
     display: flex;
-    align-items: center;
+    align-items: start;
     justify-content: center;
-    flex-direction: column;
 }
-.cardBody{
+
+.card{
+    width: 580px;
+}
+
+.cardBody {
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     width: 60%;
     /* height: 100%; */
@@ -14,13 +16,15 @@
     border-radius: 10px;
     padding: 25px;
 }
-.cardContent{
+
+.cardContent {
     display: flex;
     align-items: start;
     justify-content: center;
     flex-direction: column;
 }
-.CardUpload{
+
+.CardUpload {
     margin-top: 20px;
     border: 2px dashed black;
     height: 13rem;
@@ -34,21 +38,26 @@
 
 }
 
-.modalImage{
+.modalImage {
     width: 600px;
 }
-.imagePreview{
+
+.imagePreview {
     width: 600px;
 }
-.loopImage{
+
+.loopImage {
     overflow: scroll;
     max-height: 300px;
     padding: 10px;
     background: rgb(235, 235, 235);
 }
 
-@media only screen and (max-width: 1025px) {
-    .home{
-        height: 145vw;
+@media only screen and (max-width: 450px) {
+    .cardBody {
+        width: 100%;
+    }
+    .card{
+        width: 350px;
     }
 }

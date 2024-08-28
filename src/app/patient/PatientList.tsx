@@ -10,7 +10,7 @@ import { Patients } from '@/models/patient';
 import { CardMedia, Fab, IconButton } from '@mui/material';
 import { enviromentDev, enviromentPath } from '@/configs/enviroment.dev';
 import HistoryIcon from '@mui/icons-material/History';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import {
   editOrderTranferByOrderId,
@@ -19,6 +19,8 @@ import {
 import { OrderTranfer } from '@/models/order_tranfer.model';
 import { toast } from '@/services/alert.service';
 import Loadding from '@/components/Loadding';
+
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 
 import EditCalendarIcon from '@mui/icons-material/EditCalendar';
 
@@ -31,6 +33,8 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
   const pathName = usePathname().includes('patient');
   const router = useRouter();
   const [isLoad, setIsLoad] = React.useState(false);
+  const key = useSearchParams().get('key')
+
 
   async function onClickAddPatientInOrder() {
     setIsLoad(true);
@@ -47,6 +51,17 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
     } catch (error) {
       console.log(error);
       setIsLoad(false);
+    }
+  }
+
+  async function handlerOnAddPatientInCar() {
+    setIsLoad(true)
+    try {
+      
+    } catch (error) {
+      
+    } finally{
+      setIsLoad(false)
     }
   }
   return (
@@ -92,38 +107,48 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
         </Box>
         <Divider />
         <Box sx={{ p: 2 }}>
-          {pathName ? (
-            <Stack direction="row" spacing={1}>
-              <IconButton
-                size="small"
-                color="warning"
-                onClick={() => {
-                  router.push('/patient/' + patient.id);
-                  setIsLoad(true);
-                }}
-              >
-                <EditCalendarIcon color="inherit" />
-              </IconButton>
-              <IconButton
-                size="small"
-                color="success"
-                onClick={() => {
-                  router.push('/patient/' + patient.id + '/history');
-                  setIsLoad(true);
-                }}
-              >
-                <HistoryIcon color="inherit" />
-              </IconButton>
-            </Stack>
-          ) : (
-            <Stack direction="row" spacing={1}>
-              <Fab size="small" onClick={onClickAddPatientInOrder}>
-                <PersonAddAltIcon color="primary" />
-              </Fab>
-              <Chip label="Medium" size="medium" />
-              <Chip label="Hard" size="medium" />
-            </Stack>
-          )}
+          {
+            key ?
+              <Chip
+                label="เพื่มผู้ป่วยในรถรับส่ง"
+                icon={<DirectionsCarIcon />}
+                onClick={handlerOnAddPatientInCar}
+                variant="outlined"
+                color='success'
+              /> :
+              pathName ? (
+                <Stack direction="row" spacing={1}>
+                  <IconButton
+                    size="small"
+                    color="warning"
+                    onClick={() => {
+                      router.push('/patient/' + patient.id);
+                      setIsLoad(true);
+                    }}
+                  >
+                    <EditCalendarIcon color="inherit" />
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    color="success"
+                    onClick={() => {
+                      router.push('/patient/' + patient.id + '/history');
+                      setIsLoad(true);
+                    }}
+                  >
+                    <HistoryIcon color="inherit" />
+                  </IconButton>
+                </Stack>
+              ) : (
+                <Stack direction="row" spacing={1}>
+                  <Fab size="small" onClick={onClickAddPatientInOrder}>
+                    <PersonAddAltIcon color="primary" />
+                  </Fab>
+                  <Chip label="Medium" size="medium" />
+                  <Chip label="Hard" size="medium" />
+                </Stack>
+              )
+          }
         </Box>
       </Card>
 

@@ -1,0 +1,25 @@
+.home{
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.card{
+    padding: 10px;
+}
+
+.menuItem{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px;
+}
+.menuDetail{
+    width: 100%;
+    margin-left: 10px;
+}
+.menuDetail h3{
+    font-size: 1.2rem;
+    font-weight: 700;
+}

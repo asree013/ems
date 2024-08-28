@@ -8,3 +8,7 @@
     - พิมพ์คำสั้ง docker compose docker-compose.build.yml -d up 
     - พิมพ์คำสั้ง docker compose docker-compose.yml -d up app
     - ให้เข้า path http://localhost:3000
+
+  -login coushDb
+    - พิมพ์คำสั่ง curl -X GET http://admin:admin@localhost:5984/sar_local_db
+    - เข้าหน้าฐานข้มูล http://localhost:5984/_utils/#

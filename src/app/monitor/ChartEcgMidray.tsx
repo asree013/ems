@@ -415,7 +415,7 @@ export default function ChartEcgMidRay({
                 : 'โปรดเพิ่มข้อมูลผู้ป่วย'}
             </p>
           </div>
-          {patient.risk_level && (
+          {/* {patient.risk_level && (
             <div className="status_monitor">
               <p
                 style={{
@@ -429,7 +429,7 @@ export default function ChartEcgMidRay({
                 {patient.risk_level}
               </p>
             </div>
-          )}
+          )} */}
           <div className="menu_monitor">
             <MenuChart
               orderTranfer={order}

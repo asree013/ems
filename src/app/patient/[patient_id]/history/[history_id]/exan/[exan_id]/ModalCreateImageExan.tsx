@@ -8,13 +8,13 @@ import { Alert, Box, CardMedia, Paper, TextField } from '@mui/material';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import exanCss from './exan_id.module.css';
 import { ImageExan } from '@/models/exan.model';
-import ModalImageDetail from './ModalImageDetail';
 import { toast } from '@/services/alert.service';
 import { createImageExan } from '@/services/image_exan.service';
-import { useParams } from 'next/navigation';
 import { ChangeEvent, useContext, useState } from 'react';
 import { TModalImageExan, ModalImageExanContext } from '@/contexts/modalImageExan.context';
 import { TModalCreate, OpenModalCreateImageContext } from '@/contexts/openModalCreateImage.context';
+
+import exan_id from './exan_id.module.css'
 
 type Props = {
   params: {
@@ -94,11 +94,11 @@ export default function ModalCreateImageExan({ params }: Props) {
         <Sheet
           variant="outlined"
           sx={{
-            maxWidth: 2000,
             borderRadius: 'md',
             p: 3,
             boxShadow: 'lg',
           }}
+          className={exan_id.card}
         >
           <ModalClose variant="plain" sx={{ m: 1 }} />
           <Typography

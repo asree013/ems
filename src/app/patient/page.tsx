@@ -40,6 +40,7 @@ export default function Page() {
       setPatients(result.data);
     } catch (error) {
       console.log(error);
+      timeOutJwt(error)
     } finally {
       setLoad(false);
     }
