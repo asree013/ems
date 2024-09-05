@@ -13,14 +13,14 @@ type Props = {
 
 export default function PatientImageCard({ value }: Props) {
   return (
-    <Card orientation="horizontal" variant="outlined" className="imageDetail">
+    <Card orientation="horizontal" variant="outlined" className="imageDetail mt-3">
       <CardOverflow>
         <AspectRatio className={patientIdCss.imageItemDetail}>
           <CardMedia
             component="img"
             alt="green iguana"
             height="140"
-            image="https://scontent.fbkk5-4.fna.fbcdn.net/v/t39.30808-6/414980625_7089112141134367_1209359816226383970_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_ohc=BkqIc_AIQ48Q7kNvgGhHWVI&_nc_ht=scontent.fbkk5-4.fna&oh=00_AfCtimlt_bdDtiNH5UmLbsR-BHeD0oUfmetT7fV1ojdKCQ&oe=66416515"
+            image={value.image? value.image: 'https://scontent.fbkk5-4.fna.fbcdn.net/v/t39.30808-6/414980625_7089112141134367_1209359816226383970_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_ohc=BkqIc_AIQ48Q7kNvgGhHWVI&_nc_ht=scontent.fbkk5-4.fna&oh=00_AfCtimlt_bdDtiNH5UmLbsR-BHeD0oUfmetT7fV1ojdKCQ&oe=66416515'}
           />
         </AspectRatio>
       </CardOverflow>

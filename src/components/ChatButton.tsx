@@ -25,7 +25,7 @@ import { Missions } from '@/models/mission.model';
 import { timeOutJwt } from '@/services/timeout.service';
 import { socket } from '@/configs/socket';
 
-import chatCss from './styles/chat.module.css';
+import chatCss from './styles/chatCss.module.css';
 import { Chats } from '@/models/chat.model';
 import Link from 'next/link';
 import { NIL } from 'uuid';

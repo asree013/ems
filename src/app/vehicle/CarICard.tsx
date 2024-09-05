@@ -28,6 +28,8 @@ import { TabValueVehicleContext, TtabvalueC } from './tabValue.context';
 
 import DetailIcon from '@/assets/icon/detail.png'
 import EditIcon from '@/assets/icon/eidt.png'
+import PatientIcon from '@/assets/icon/patient_menu.png'
+import EmployeIcon from '@/assets/icon/employees.png'
 
 import vehicleCss from './vehicle.module.css'
 
@@ -259,6 +261,30 @@ export default function CarCard({ data, car_id }: Props) {
                                     <img src={EditIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
                                     <div className={vehicleCss.menuDetail}>
                                         <h3>แก้ไขรถ</h3>
+                                        <p>detail</p>
+                                    </div>
+                                </div>
+                            </Card>
+                            <Card elevation={5} className='mt-4'>
+                                <div onClick={() => {
+                                    setLoad(true)
+                                    window.location.href = '/vehicle/' + car.id + '/car/detail?key=patient'
+                                }} className={vehicleCss.menuItem} style={{cursor: 'pointer'}}>
+                                    <img src={PatientIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
+                                    <div className={vehicleCss.menuDetail}>
+                                        <h3>ผู้ป่วย</h3>
+                                        <p>detail</p>
+                                    </div>
+                                </div>
+                            </Card>
+                            <Card elevation={5} className='mt-4'>
+                                <div onClick={() => {
+                                    setLoad(true)
+                                    window.location.href = '/vehicle/' + car.id + '/car/detail?key=employes'
+                                }} className={vehicleCss.menuItem} style={{cursor: 'pointer'}}>
+                                    <img src={EmployeIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
+                                    <div className={vehicleCss.menuDetail}>
+                                        <h3>สมาชิกยานพาหนะ</h3>
                                         <p>detail</p>
                                     </div>
                                 </div>

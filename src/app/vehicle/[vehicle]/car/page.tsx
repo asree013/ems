@@ -31,6 +31,7 @@ import { toast } from '@/services/alert.service';
 import { createCar, findCarByCarId } from '@/services/car.service';
 import { timeOutJwt } from '@/services/timeout.service';
 import { NIL } from 'uuid';
+import { useSearchParams } from 'next/navigation';
 
 type Props = {
   params: {

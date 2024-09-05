@@ -1,5 +1,5 @@
 'use client';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import HistoryItem from './HistoryItem';
 import { Box, Divider, Fab, SpeedDial } from '@mui/material';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
@@ -19,12 +19,15 @@ import {
 } from '@/services/history.service';
 
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import { Input } from '@mui/joy';
+import { Input, Textarea } from '@mui/joy';
 import Loadding from '@/components/Loadding';
 
 import Alert from '@mui/material/Alert';
 import CheckIcon from '@mui/icons-material/Check';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import StepHistory from './StepHistory';
+import { PhysicalStatusContext, StepContext, TraigeLevelContext } from './StepContext';
+import { PhysicalStatus, TriageLevels } from '@/models/historyDetail.model';
 type Props = {
   params: {
     patient_id: string
@@ -43,8 +46,13 @@ export default function Page({ params }: Props) {
   const [historyFilter, setHistoryFilter] = useState<Historys[]>(
     {} as Historys[],
   );
+
+  const [currentStep, setCurrentStep] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
   const [symtop_detail, setSymtom_detail] = useState<string>('');
   const [history_id, setHistory_id] = useState<string>('');
+
+  const [triageLevel, setTriageLevel] = useState<TriageLevels>({} as TriageLevels)
+  const [physicalStatus, setPhysicalStatus] = useState<PhysicalStatus>({} as PhysicalStatus)
 
   async function onChangFilterHistory(key: number) {
     console.log(key);
@@ -110,11 +118,26 @@ export default function Page({ params }: Props) {
     }
   }
 
+  function onChangeNumber(e: ChangeEvent<HTMLInputElement>) {
+    e.preventDefault()
+    const value = e.target.value;
+
+    // กรองให้เหลือเฉพาะตัวเลข
+    const numericValue = value.replace(/[^0-9]/g, '');
+    e.target.value = numericValue
+    console.log(e.target.value);
+
+  }
+
   return (
     <>
       <div className={historyCss.homePage}>
         <div className={historyCss.item}>
-
+          <Button variant='solid' color='primary' onClick={() => {
+            setHistoryFrom(true);
+            setCreated(false);
+            setHistory_id('');
+          }}>เพิ่มประวัติ</Button>
           <HistoryTab />
           <Divider style={{ margin: '10px 0' }} />
           <div className={historyCss.history_item}>
@@ -123,93 +146,115 @@ export default function Page({ params }: Props) {
               : null}
           </div>
         </div>
-        <Box className={historyCss.buttonCreate}>
-          <Fab
-            style={{ background: '#2c387e', color: 'white' }}
-            onClick={() => {
-              setHistoryFrom(true);
-              setCreated(false);
-              setHistory_id('');
-            }}
-          >
-            <SpeedDialIcon />
-          </Fab>
-        </Box>
       </div>
-      {historyFrom ? (
-        <Modal
-          aria-labelledby="modal-title"
-          aria-describedby="modal-desc"
-          open={historyFrom}
-          onClose={() => setHistoryFrom(false)}
-          className={historyCss.modalCreate}
-        >
-          <Sheet
-            variant="outlined"
-            sx={{
-              borderRadius: 'md',
-              p: 3,
-              boxShadow: 'lg',
-            }}
-            className={historyCss.sheet}
+      {
+        historyFrom ?
+          <Modal
+            aria-labelledby="modal-title"
+            aria-describedby="modal-desc"
+            open={historyFrom}
+            onClose={() => setHistoryFrom(false)}
+            className={historyCss.modalCreate}
           >
-            <ModalClose variant="plain" sx={{ m: 1 }} />
-            <Typography
-              component="h2"
-              id="modal-title"
-              level="h4"
-              textColor="inherit"
-              fontWeight="lg"
-              mb={1}
+            <Sheet
+              variant="outlined"
+              sx={{
+                borderRadius: 'md',
+                p: 3,
+                boxShadow: 'lg',
+              }}
+              className={historyCss.sheet}
             >
-              Creact History
-            </Typography>
-            <Input
-              onChange={(e) => setSymtom_detail(e.target.value)}
-              placeholder="Symptom Detail"
-              startDecorator={<AssignmentIcon />}
-              error={err}
-              disabled={created}
-            />
-            <Button
-              sx={{ fontSize: '1.2rem', width: '100%', marginTop: '10px' }}
-              onClick={onCreateHistory}
-              loading={created}
-            >
-              Add History
-            </Button>
-            <div hidden={!created}>
-              <Alert
-                sx={{ marginTop: '10px' }}
-                icon={<CheckIcon fontSize="inherit" />}
-                severity="success"
+              <ModalClose variant="plain" sx={{ m: 1 }} />
+              {/* <Typography
+                component="h2"
+                id="modal-title"
+                level="h4"
+                textColor="inherit"
+                fontWeight="lg"
+                mb={1}
               >
-                Created History
-              </Alert>
-              <Box className={historyCss.buttonGroup}>
-                <Button
-                  className={historyCss.button}
-                  onClick={() => setHistoryFrom(false)}
-                  color="neutral"
+                Creact History
+              </Typography>
+              <Input
+                onChange={(e) => setSymtom_detail(e.target.value)}
+                placeholder="Symptom Detail"
+                startDecorator={<AssignmentIcon />}
+                error={err}
+                disabled={created}
+              />
+
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }} className='mt-2'>
+                <Input
+                  onChange={(e) => setSymtom_detail(e.target.value)}
+                  placeholder="Chief Complaint (CC.)"
+                  error={err}
+                  disabled={created}
+                />
+                <input onChange={onChangeNumber}
+                  style={{ width: '30px', border: '1px solid gray', borderRadius: '5pxe' }} maxLength={2} type='text' defaultValue={0} />
+              </div>
+              <Textarea
+                minRows={2}
+                className='mt-2'
+                onChange={(e) => setSymtom_detail(e.target.value)}
+                placeholder="Present Illness (PI.)"
+                error={err}
+                disabled={created}
+              />
+              <Button
+                sx={{ fontSize: '1.2rem', width: '100%', marginTop: '10px' }}
+                onClick={onCreateHistory}
+                loading={created}
+              >
+                เพิ่มประวัติ
+              </Button> */}
+              <div hidden={!created}>
+                <Alert
+                  sx={{ marginTop: '10px' }}
+                  icon={<CheckIcon fontSize="inherit" />}
+                  severity="success"
                 >
-                  Cancel
-                </Button>
-                <Button
-                  className={historyCss.button}
-                  onClick={() => {
-                    window.location.href = 'history/' + history_id
-                    setIsLoad(true);
-                  }}
-                  startDecorator={<AddCircleIcon />}
-                  color="success"
-                >
-                  Add Exan
-                </Button>
-              </Box>
-            </div>
-          </Sheet>
-        </Modal>
-      ) : null}
+                  เพิ่มประวัติสำเร็จ
+                </Alert>
+                <Box className={historyCss.buttonGroup}>
+                  <Button
+                    className={historyCss.button}
+                    onClick={() => setHistoryFrom(false)}
+                    color="neutral"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    className={historyCss.button}
+                    onClick={() => {
+                      window.location.href = 'history/' + history_id
+                      setIsLoad(true);
+                    }}
+                    startDecorator={<AddCircleIcon />}
+                    color="success"
+                  >
+                    ถัดไป
+                  </Button>
+                </Box>
+              </div>
+
+              <StepContext.Provider value={{ currentStep, setCurrentStep }} >
+                <TraigeLevelContext.Provider value={{ triageLevel, setTriageLevel }}>
+                  <PhysicalStatusContext.Provider value={{physicalStatus, setPhysicalStatus}} >
+
+                    <StepHistory />
+
+                  </PhysicalStatusContext.Provider>
+                </TraigeLevelContext.Provider>
+              </StepContext.Provider>
+            </Sheet>
+          </Modal>
+
+          : null
+      }
+
+
       {isLoad ? <Loadding /> : null}
     </>
   );

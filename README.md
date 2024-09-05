@@ -12,3 +12,5 @@
   -login coushDb
     - พิมพ์คำสั่ง curl -X GET http://admin:admin@localhost:5984/sar_local_db
     - เข้าหน้าฐานข้มูล http://localhost:5984/_utils/#
+
+    npm install --legacy-peer-deps

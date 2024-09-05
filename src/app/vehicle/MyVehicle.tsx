@@ -9,6 +9,8 @@ import Helicopter from '@/assets/icon/army-helicopter_4806203.png'
 import { TabValueVehicleContext, TtabvalueC } from './tabValue.context'
 import { findCurrentVehicleByUser } from '@/services/user.service'
 import { timeOutJwt } from '@/services/timeout.service'
+import TabPanel from '@mui/joy/TabPanel';
+import Typography from '@mui/joy/Typography';
 
 export default function MyVehicle() {
     const [currentMission, setCurrentMission] = useState({})
@@ -23,7 +25,7 @@ export default function MyVehicle() {
             console.log(result.data);
 
         } catch (error) {
-            // timeOutJwt(error)
+            timeOutJwt(error)
         }
     }, [setVehicle])
 
@@ -70,7 +72,35 @@ export default function MyVehicle() {
                 !vehicle.car ?
                     null :
                     <div>
-                        <Button sx={{ width: '100%' }} type='button' variant='contained' color='success'>นำยานพาหนะเข้าร่วมภารกิจ</Button>
+                        <Button sx={{ width: '100%' }} onClick={() => {
+                            setLoad(true)
+                            window.location.href = '/vehicle/' + vehicle.car.car_id + '/add_mission?key=car'
+                        }} type='button' variant='contained' color='success'>นำยานพาหนะเข้าร่วมภารกิจ</Button>
+                        <Typography
+                            textColor="text.secondary"
+                            sx={{ fontSize: 'sm', fontWeight: 'md' }}
+                            className='m-4'
+                        >
+                            สถาณะของคุณคือ
+                            {
+                                vehicle.car.is_driver ?
+                                    <Typography
+                                        textColor="warning.400"
+                                        className='ml-3'
+                                        sx={{ fontSize: 'xl2', fontWeight: 'xl', mt: 1 }}
+                                    >
+                                        ผลขับรถ
+                                    </Typography>
+                                    : <Typography
+                                        className='ml-3'
+                                        textColor="warning.400"
+                                        sx={{ fontSize: 'xl2', fontWeight: 'xl', mt: 1 }}
+                                    >
+                                        เจ้าหน้าที่รถ
+                                    </Typography>
+                            }
+
+                        </Typography>
                         <CarCard data={{} as Cars} car_id={vehicle.car.car_id} />
                     </div>
             }

@@ -23,13 +23,16 @@ import { Users } from '@/models/users.model';
 import { toast } from '@/services/alert.service';
 import { timeOutJwt } from '@/services/timeout.service';
 import Divider from '@mui/material/Divider';
+import Loadding from './Loadding';
 
 export default function ProfileComponent() {
 
     const { findMe, setFindMe } = React.useContext<TfindMeSubC>(FindMeTabContext)
     const [isEdit, setIsEdit] = React.useState<boolean>(false)
+    const [load, setLoad] = React.useState<boolean>(false)
 
     function handlerUploadImage(e: React.ChangeEvent<HTMLInputElement>) {
+        setLoad(true)
         e.preventDefault()
         if (e.target.files) {
             const FR = new FileReader()
@@ -39,6 +42,7 @@ export default function ProfileComponent() {
                 u.image = base64
                 const result = await editUserByUserCookie(u)
                 setFindMe({ ...findMe, image: result.data.image })
+                setLoad(false)
             }
             FR.readAsDataURL(e.target.files[0])
         }
@@ -56,276 +60,284 @@ export default function ProfileComponent() {
         }
     }
     return (
-        <Box
-            sx={{
-
-                width: '100%',
-                position: 'relative',
-                overflow: { xs: 'auto', sm: 'initial' },
-            }}
-        >
+        <>
             <Box
-            />
-            <Card
-                orientation="horizontal"
                 sx={{
+
                     width: '100%',
-                    flexWrap: 'wrap',
-                    [`& > *`]: {
-                        '--stack-point': '500px',
-                        minWidth:
-                            'clamp(0px, (calc(var(--stack-point) - 2 * var(--Card-padding) - 2 * var(--variant-borderWidth, 0px)) + 1px - 100%) * 999, 100%)',
-                    },
-                    // make the card resizable for demo
-                    overflow: 'auto',
-                    resize: 'horizontal',
+                    position: 'relative',
+                    overflow: { xs: 'auto', sm: 'initial' },
                 }}
             >
-                <AspectRatio flex ratio="1" >
-                    <ImageListItem >
-                        <input type="file" id='img_profile' hidden onChange={handlerUploadImage} />
-                        <img
-                            srcSet={`${findMe.image ?? enviromentDev.noImage}`}
-                            src={`${findMe.image ?? enviromentDev.noImage}`}
-                            alt={findMe.image}
-                            loading="lazy"
-                        />
-                        <ImageListItemBar
-                            title={'item.title'}
-                            subtitle={'item.author'}
-                            actionIcon={
-                                <IconButton
-                                    sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                                    aria-label={`info about`}
-                                    onClick={() => document.getElementById('img_profile')?.click()}
+                <Box
+                />
+                <Card
+                    orientation="horizontal"
+                    sx={{
+                        width: '100%',
+                        flexWrap: 'wrap',
+                        [`& > *`]: {
+                            '--stack-point': '500px',
+                            minWidth:
+                                'clamp(0px, (calc(var(--stack-point) - 2 * var(--Card-padding) - 2 * var(--variant-borderWidth, 0px)) + 1px - 100%) * 999, 100%)',
+                        },
+                        // make the card resizable for demo
+                        overflow: 'auto',
+                        resize: 'horizontal',
+                    }}
+                >
+                    <AspectRatio flex ratio="1" >
+                        <ImageListItem >
+                            <input type="file" id='img_profile' hidden onChange={handlerUploadImage} />
+                            <img
+                                srcSet={`${findMe.image ?? enviromentDev.noImage}`}
+                                src={`${findMe.image ?? enviromentDev.noImage}`}
+                                alt={findMe.image}
+                                loading="lazy"
+                            />
+                            <ImageListItemBar
+                                title={'item.title'}
+                                subtitle={'item.author'}
+                                actionIcon={
+                                    <IconButton
+                                        sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                                        aria-label={`info about`}
+                                        onClick={() => document.getElementById('img_profile')?.click()}
+                                    >
+                                        <CameraAltIcon />
+                                    </IconButton>
+                                }
+                            />
+                        </ImageListItem>
+                    </AspectRatio>
+                    <CardContent>
+                        <Typography fontSize="xl" fontWeight="lg">
+                            {findMe.first_name}
+                        </Typography>
+                        <Typography level="body-sm" fontWeight="lg" textColor="text.tertiary">
+                            {findMe.last_name}
+                        </Typography>
+                        <Button color='danger' endDecorator={<ExitToAppIcon />} onClick={async () => {
+                            localStorage.clear()
+                            window.location.href = '/login'
+                            await logout()
+                        }} >ออกจากระบบ</Button>
+                        {
+                            isEdit === false ?
+                                <div>
+                                    <Sheet
+                                        sx={{
+                                            bgcolor: 'background.level1',
+                                            borderRadius: 'sm',
+                                            p: 1.5,
+                                            my: 1.5,
+                                            display: 'flex',
+                                            gap: 2,
+                                            '& > div': { flex: 1 },
+                                        }}
+                                    >
+                                        <div>
+                                            <Typography level="body-xs" fontWeight="lg">
+                                                ชื่อ
+                                            </Typography>
+                                            <Typography fontWeight="lg">{findMe.first_name ?? 'ไม่มีข้อมูล'}</Typography>
+                                        </div>
+                                        <div>
+                                            <Typography level="body-xs" fontWeight="lg">
+                                                นามสกุล
+                                            </Typography>
+                                            <Typography fontWeight="lg">{findMe.last_name ?? 'ไม่มีข้อมูล'}</Typography>
+                                        </div>
+                                    </Sheet>
+                                    <Sheet
+                                        sx={{
+                                            bgcolor: 'background.level1',
+                                            borderRadius: 'sm',
+                                            p: 1.5,
+                                            my: 1.5,
+                                            display: 'flex',
+                                            gap: 2,
+                                            '& > div': { flex: 1 },
+                                            zIndex: 0
+                                        }}
+                                    >
+                                        <div>
+                                            <Typography level="body-xs" fontWeight="lg">
+                                                อีเมล
+                                            </Typography>
+                                            <Typography fontWeight="lg">{findMe.email ?? 'ไม่มีข้อมูล'}</Typography>
+                                        </div>
+                                        <div>
+                                            <Typography level="body-xs" fontWeight="lg">
+                                                อาชีพ
+                                            </Typography>
+                                            <Typography fontWeight="lg">{findMe.career ?? 'ไม่มีข้อมูล'}</Typography>
+                                        </div>
+                                    </Sheet>
+                                    <Sheet
+                                        sx={{
+                                            bgcolor: 'background.level1',
+                                            borderRadius: 'sm',
+                                            p: 1.5,
+                                            my: 1.5,
+                                            display: 'flex',
+                                            gap: 2,
+                                            '& > div': { flex: 1 },
+                                            zIndex: 0
+                                        }}
+                                    >
+                                        <div>
+                                            <Typography level="body-xs" fontWeight="lg">
+                                                ที่อยู่
+                                            </Typography>
+                                            <Typography fontWeight="lg">{findMe.address ?? 'ไม่มีข้อมูล'}</Typography>
+                                        </div>
+                                        <div>
+                                            <Typography level="body-xs" fontWeight="lg">
+                                                เบอร์โทร
+                                            </Typography>
+                                            <Typography fontWeight="lg">{findMe.phone_number ?? 'ไม่มีข้อมูล'}</Typography>
+                                        </div>
+                                    </Sheet>
+                                </div> :
+                                <div>
+                                    <Sheet
+                                        sx={{
+                                            bgcolor: 'background.level1',
+                                            borderRadius: 'sm',
+                                            p: 1.5,
+                                            my: 1.5,
+                                            display: 'flex',
+                                            gap: 2,
+                                            '& > div': { flex: 1 },
+                                        }}
+                                    >
+                                        <div>
+                                            <Typography level="body-xs" fontWeight="lg">
+                                                ชื่อ
+                                            </Typography>
+                                            <Input type='text' onChange={(e) => setFindMe({ ...findMe, first_name: e.target.value })} value={findMe.first_name} />
+                                        </div>
+                                        <div>
+                                            <Typography level="body-xs" fontWeight="lg">
+                                                นามสกุล
+                                            </Typography>
+                                            <Input type='text' onChange={(e) => setFindMe({ ...findMe, last_name: e.target.value })} value={findMe.last_name} />
+                                        </div>
+                                    </Sheet>
+                                    <Sheet
+                                        sx={{
+                                            bgcolor: 'background.level1',
+                                            borderRadius: 'sm',
+                                            p: 1.5,
+                                            my: 1.5,
+                                            display: 'flex',
+                                            gap: 2,
+                                            '& > div': { flex: 1 },
+                                            zIndex: 0
+                                        }}
+                                    >
+                                        <div>
+                                            <Typography level="body-xs" fontWeight="lg">
+                                                อีเมล
+                                            </Typography>
+                                            <Input type='text' onChange={(e) => setFindMe({ ...findMe, email: e.target.value })} value={findMe.email} />
+                                        </div>
+                                        <div>
+                                            <Typography level="body-xs" fontWeight="lg">
+                                                อาชีพ
+                                            </Typography>
+                                            <Input type='text' onChange={(e) => setFindMe({ ...findMe, career: e.target.value })} value={findMe.career} />
+                                        </div>
+                                    </Sheet>
+                                    <Sheet
+                                        sx={{
+                                            bgcolor: 'background.level1',
+                                            borderRadius: 'sm',
+                                            p: 1.5,
+                                            my: 1.5,
+                                            display: 'flex',
+                                            gap: 2,
+                                            '& > div': { flex: 1 },
+                                            zIndex: 0
+                                        }}
+                                    >
+                                        <div>
+                                            <Typography level="body-xs" fontWeight="lg">
+                                                ที่อยู่
+                                            </Typography>
+                                            <Input type='text' onChange={(e) => setFindMe({ ...findMe, address: e.target.value })} value={findMe.address} />
+                                        </div>
+                                        <div>
+                                            <Typography level="body-xs" fontWeight="lg">
+                                                เบอร์โทร
+                                            </Typography>
+                                            <Input type='text' onChange={(e) => setFindMe({ ...findMe, phone_number: e.target.value })} value={findMe.phone_number} />
+                                        </div>
+                                    </Sheet>
+                                </div>
+                        }
+                        <Divider>โรงพยาบาล</Divider>
+                        {
+                            Object.keys(findMe.Hospital).length === 0 ?
+                                <Button>เพื่มโรงพยาบาล</Button> :
+                                <Sheet
+                                    sx={{
+                                        bgcolor: 'background.level1',
+                                        borderRadius: 'sm',
+                                        p: 1.5,
+                                        my: 1.5,
+                                        display: 'flex',
+                                        gap: 2,
+                                        '& > div': { flex: 1 },
+                                        zIndex: 0
+                                    }}
                                 >
-                                    <CameraAltIcon />
-                                </IconButton>
+                                    <div>
+                                        <Typography level="body-xs" fontWeight="lg">
+                                            ชื่อโรงพยาบาล
+                                        </Typography>
+                                        <Typography fontWeight="lg">{findMe.Hospital.hospital_name ?? 'ไม่มีข้อมูล'}</Typography>
+                                    </div>
+                                    <div>
+                                        <Typography level="body-xs" fontWeight="lg">
+                                            เบอร์โทร
+                                        </Typography>
+                                        <Typography fontWeight="lg">{findMe.Hospital.hospital_tel ?? 'ไม่มีข้อมูล'}</Typography>
+                                    </div>
+                                </Sheet>
+                        }
+                        <Box sx={{ marginTop: '8px', display: 'flex', gap: 1.5, '& > button': { flex: 1 }, zIndex: 0 }}>
+                            {
+                                isEdit === false ?
+                                    <Button variant="outlined" color="neutral" onClick={() => setIsEdit(true)}>
+                                        แก้ไขข้อมูล
+                                    </Button> :
+                                    <Button variant="solid" color="primary" onClick={handlerOnUpdateUser}>
+                                        บันทึกข้อมูล
+                                    </Button>
                             }
-                        />
-                    </ImageListItem>
-                </AspectRatio>
-                <CardContent>
-                    <Typography fontSize="xl" fontWeight="lg">
-                        {findMe.first_name}
-                    </Typography>
-                    <Typography level="body-sm" fontWeight="lg" textColor="text.tertiary">
-                        {findMe.last_name}
-                    </Typography>
-                    <Button color='danger' endDecorator={<ExitToAppIcon />} onClick={async () => {
-                        localStorage.clear()
-                        window.location.href = '/login'
-                        await logout()
-                    }} >ออกจากระบบ</Button>
-                    {
-                        isEdit === false ?
-                            <div>
-                                <Sheet
-                                    sx={{
-                                        bgcolor: 'background.level1',
-                                        borderRadius: 'sm',
-                                        p: 1.5,
-                                        my: 1.5,
-                                        display: 'flex',
-                                        gap: 2,
-                                        '& > div': { flex: 1 },
-                                    }}
-                                >
-                                    <div>
-                                        <Typography level="body-xs" fontWeight="lg">
-                                            ชื่อ
-                                        </Typography>
-                                        <Typography fontWeight="lg">{findMe.first_name ?? 'ไม่มีข้อมูล'}</Typography>
-                                    </div>
-                                    <div>
-                                        <Typography level="body-xs" fontWeight="lg">
-                                            นามสกุล
-                                        </Typography>
-                                        <Typography fontWeight="lg">{findMe.last_name ?? 'ไม่มีข้อมูล'}</Typography>
-                                    </div>
-                                </Sheet>
-                                <Sheet
-                                    sx={{
-                                        bgcolor: 'background.level1',
-                                        borderRadius: 'sm',
-                                        p: 1.5,
-                                        my: 1.5,
-                                        display: 'flex',
-                                        gap: 2,
-                                        '& > div': { flex: 1 },
-                                        zIndex: 0
-                                    }}
-                                >
-                                    <div>
-                                        <Typography level="body-xs" fontWeight="lg">
-                                            อีเมล
-                                        </Typography>
-                                        <Typography fontWeight="lg">{findMe.email ?? 'ไม่มีข้อมูล'}</Typography>
-                                    </div>
-                                    <div>
-                                        <Typography level="body-xs" fontWeight="lg">
-                                            อาชีพ
-                                        </Typography>
-                                        <Typography fontWeight="lg">{findMe.career ?? 'ไม่มีข้อมูล'}</Typography>
-                                    </div>
-                                </Sheet>
-                                <Sheet
-                                    sx={{
-                                        bgcolor: 'background.level1',
-                                        borderRadius: 'sm',
-                                        p: 1.5,
-                                        my: 1.5,
-                                        display: 'flex',
-                                        gap: 2,
-                                        '& > div': { flex: 1 },
-                                        zIndex: 0
-                                    }}
-                                >
-                                    <div>
-                                        <Typography level="body-xs" fontWeight="lg">
-                                            ที่อยู่
-                                        </Typography>
-                                        <Typography fontWeight="lg">{findMe.address ?? 'ไม่มีข้อมูล'}</Typography>
-                                    </div>
-                                    <div>
-                                        <Typography level="body-xs" fontWeight="lg">
-                                            เบอร์โทร
-                                        </Typography>
-                                        <Typography fontWeight="lg">{findMe.phone_number ?? 'ไม่มีข้อมูล'}</Typography>
-                                    </div>
-                                </Sheet>
-                            </div> :
-                            <div>
-                                <Sheet
-                                    sx={{
-                                        bgcolor: 'background.level1',
-                                        borderRadius: 'sm',
-                                        p: 1.5,
-                                        my: 1.5,
-                                        display: 'flex',
-                                        gap: 2,
-                                        '& > div': { flex: 1 },
-                                    }}
-                                >
-                                    <div>
-                                        <Typography level="body-xs" fontWeight="lg">
-                                            ชื่อ
-                                        </Typography>
-                                        <Input type='text' onChange={(e) => setFindMe({ ...findMe, first_name: e.target.value })} value={findMe.first_name} />
-                                    </div>
-                                    <div>
-                                        <Typography level="body-xs" fontWeight="lg">
-                                            นามสกุล
-                                        </Typography>
-                                        <Input type='text' onChange={(e) => setFindMe({ ...findMe, last_name: e.target.value })} value={findMe.last_name} />
-                                    </div>
-                                </Sheet>
-                                <Sheet
-                                    sx={{
-                                        bgcolor: 'background.level1',
-                                        borderRadius: 'sm',
-                                        p: 1.5,
-                                        my: 1.5,
-                                        display: 'flex',
-                                        gap: 2,
-                                        '& > div': { flex: 1 },
-                                        zIndex: 0
-                                    }}
-                                >
-                                    <div>
-                                        <Typography level="body-xs" fontWeight="lg">
-                                            อีเมล
-                                        </Typography>
-                                        <Input type='text' onChange={(e) => setFindMe({ ...findMe, email: e.target.value })} value={findMe.email} />
-                                    </div>
-                                    <div>
-                                        <Typography level="body-xs" fontWeight="lg">
-                                            อาชีพ
-                                        </Typography>
-                                        <Input type='text' onChange={(e) => setFindMe({ ...findMe, career: e.target.value })} value={findMe.career} />
-                                    </div>
-                                </Sheet>
-                                <Sheet
-                                    sx={{
-                                        bgcolor: 'background.level1',
-                                        borderRadius: 'sm',
-                                        p: 1.5,
-                                        my: 1.5,
-                                        display: 'flex',
-                                        gap: 2,
-                                        '& > div': { flex: 1 },
-                                        zIndex: 0
-                                    }}
-                                >
-                                    <div>
-                                        <Typography level="body-xs" fontWeight="lg">
-                                            ที่อยู่
-                                        </Typography>
-                                        <Input type='text' onChange={(e) => setFindMe({ ...findMe, address: e.target.value })} value={findMe.address} />
-                                    </div>
-                                    <div>
-                                        <Typography level="body-xs" fontWeight="lg">
-                                            เบอร์โทร
-                                        </Typography>
-                                        <Input type='text' onChange={(e) => setFindMe({ ...findMe, phone_number: e.target.value })} value={findMe.phone_number} />
-                                    </div>
-                                </Sheet>
-                            </div>
-                    }
-                    <Divider>โรงพยาบาล</Divider>
-                    {
-                        Object.keys(findMe.Hospital).length === 0 ?
-                            <Button>เพื่มโรงพยาบาล</Button> :
-                            <Sheet
-                                sx={{
-                                    bgcolor: 'background.level1',
-                                    borderRadius: 'sm',
-                                    p: 1.5,
-                                    my: 1.5,
-                                    display: 'flex',
-                                    gap: 2,
-                                    '& > div': { flex: 1 },
-                                    zIndex: 0
-                                }}
-                            >
-                                <div>
-                                    <Typography level="body-xs" fontWeight="lg">
-                                        ชื่อโรงพยาบาล
-                                    </Typography>
-                                    <Typography fontWeight="lg">{findMe.Hospital.hospital_name ?? 'ไม่มีข้อมูล'}</Typography>
-                                </div>
-                                <div>
-                                    <Typography level="body-xs" fontWeight="lg">
-                                        เบอร์โทร
-                                    </Typography>
-                                    <Typography fontWeight="lg">{findMe.Hospital.hospital_tel ?? 'ไม่มีข้อมูล'}</Typography>
-                                </div>
-                            </Sheet>
-                    }
-                    <Box sx={{ marginTop: '8px' ,display: 'flex', gap: 1.5, '& > button': { flex: 1 }, zIndex: 0 }}>
-                        {
-                            isEdit === false ?
-                                <Button variant="outlined" color="neutral" onClick={() => setIsEdit(true)}>
-                                    แก้ไขข้อมูล
-                                </Button> :
-                                <Button variant="solid" color="primary" onClick={handlerOnUpdateUser}>
-                                    บันทึกข้อมูล
-                                </Button>
-                        }
-                        {
-                            isEdit === false ?
-                                <Button variant="solid" color="primary" endDecorator={<ExitToAppIcon />}>
-                                    ย้อนกลับ
-                                </Button> :
-                                <Button variant="outlined" color="neutral" endDecorator={<ExitToAppIcon />} onClick={async () => {
-                                    setIsEdit(false)
-                                }}>
-                                    ยกเลิก
-                                </Button>
-                        }
-                    </Box>
-                </CardContent>
-            </Card>
-        </Box>
+                            {
+                                isEdit === false ?
+                                    <Button variant="solid" color="primary" endDecorator={<ExitToAppIcon />}>
+                                        ย้อนกลับ
+                                    </Button> :
+                                    <Button variant="outlined" color="neutral" endDecorator={<ExitToAppIcon />} onClick={async () => {
+                                        setIsEdit(false)
+                                    }}>
+                                        ยกเลิก
+                                    </Button>
+                            }
+                        </Box>
+                    </CardContent>
+                </Card>
+            </Box>
+
+            {
+                load?
+                <Loadding />:
+                null
+            }
+        </>
     );
 }

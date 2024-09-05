@@ -23,6 +23,8 @@ import Loadding from '@/components/Loadding';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 
 import EditCalendarIcon from '@mui/icons-material/EditCalendar';
+import { timeOutJwt } from '@/services/timeout.service';
+import { assingPatinetToCarByCarIdAndPatientId } from '@/services/car.service';
 
 type Props = {
   patient: Patients;
@@ -34,6 +36,7 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
   const router = useRouter();
   const [isLoad, setIsLoad] = React.useState(false);
   const key = useSearchParams().get('key')
+  const vehicle_id = useSearchParams().get('vehicle_id')
 
 
   async function onClickAddPatientInOrder() {
@@ -57,10 +60,13 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
   async function handlerOnAddPatientInCar() {
     setIsLoad(true)
     try {
-      
+      if (vehicle_id) {
+        await assingPatinetToCarByCarIdAndPatientId(vehicle_id, patient.id)
+        // history.back()
+      }
     } catch (error) {
-      
-    } finally{
+      // timeOutJwt(error)
+    } finally {
       setIsLoad(false)
     }
   }

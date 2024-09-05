@@ -40,6 +40,11 @@ export function createPatient(item: Patients) {
 }
 
 export function updatePatient(patient_id: string, item: Patients) {
+  console.log({
+    pat: patient_id,
+    item: item
+  });
+  
   try {
     return endpoint.put<Patients>(
       `${enviromentDev.patient}/${patient_id}`,

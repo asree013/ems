@@ -106,12 +106,12 @@ export default function Page() {
   useEffect(() => {
     setWindowHeight(window.innerHeight);
     onCheckAutoLogin()
-    checkFindMe()
+    // checkFindMe()
 
     return () => {
-      checkFindMe
+      // checkFindMe
     }
-  }, [onCheckAutoLogin, checkFindMe]);
+  }, [onCheckAutoLogin]);
 
   return (
     <>
@@ -175,7 +175,7 @@ export default function Page() {
                   style={{ width: '100%' }}
                   onClick={() => {
                     setIsLoad(true)
-                    window.location.href = '/SAR'
+                    window.location.href = '/sar_system'
                   }}
                 >
                   ใช้งานแบบ ofline(SAR)

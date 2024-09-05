@@ -3,11 +3,10 @@ FROM node:18-slim AS builder
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
-RUN npm install -g pnpm
-RUN pnpm install
+COPY package.json package-lock.json ./
+RUN npm install --legacy-peer-deps
 COPY . .
-RUN pnpm run build
+RUN npm run build
 
 # สร้างขั้นตอนที่ 2: สร้าง production image
 FROM node:18-slim
@@ -18,11 +17,10 @@ WORKDIR /app
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/pnpm-lock.yaml ./pnpm-lock.yaml
+COPY --from=builder /app/package-lock.json ./package-lock.json
 
 # ติดตั้ง dependencies ที่จำเป็นสำหรับ production เท่านั้น
-RUN npm install -g pnpm
-RUN pnpm install --prod
+RUN npm install --legacy-peer-deps --production
 
 EXPOSE 3000
-CMD [ "pnpm", "start" ]
+CMD [ "npm", "start" ]

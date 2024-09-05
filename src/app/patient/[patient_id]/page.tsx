@@ -75,7 +75,8 @@ const Page: React.FC<Props> = ({ params }: Props) => {
           : 'หญิงไม่ทราบนามสกุล';
       // p.risk_level = patient.risk_level;
       p.tel = patient.tel;
-
+      console.log(p);
+      
       await createPatient(p);
       history.back();
     } catch (error) {

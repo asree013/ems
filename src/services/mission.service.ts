@@ -92,3 +92,24 @@ export function updateMissionByMissionId(mission_id: string, data: Missions) {
         throw error
     }
 }
+
+export function addCarToMissionByMissionIdAndCarId(mission_id: string, car_id: string) {
+    console.log({
+        MIS: mission_id,
+        CAR: car_id
+    });
+    
+    try {
+        return endpoint.put(`${enviromentDev.mission}/${mission_id}/assign-car-to-mission/${car_id}`)
+    } catch (error) {
+        throw error
+    }
+}
+
+export function unAddCarToMissionByMissionIdAndCarId(mission_id: string, car_id: string) {
+    try {
+        return endpoint.put(`${enviromentDev.mission}/${mission_id}/un-assign-car-to-mission/${car_id}`)
+    } catch (error) {
+        throw error
+    }
+}

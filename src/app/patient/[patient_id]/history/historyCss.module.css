@@ -45,6 +45,7 @@
 }
 .sheet{
     width: 500px;
+    height: auto;
 }
 
 @media only screen and (max-width: 1024px) {

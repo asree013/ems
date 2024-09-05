@@ -1,8 +1,11 @@
+import { ExanShows } from './exan.model';
 import { Patients } from './patient';
 
 export interface Historys {
   id: string;
   symptom_details: string;
+  chief_complaint: string
+  present_illness: string
   status: string;
   create_date: string;
   update_date: string;
@@ -11,5 +14,5 @@ export interface Historys {
   user_update_id: string;
   Patient: Patients;
   Diagnose: Array<any>;
-  Exan: Array<any>;
+  Exan: Array<ExanShows>;
 }

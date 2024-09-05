@@ -41,3 +41,30 @@ export function updateUserInCar(car_id: string) {
         throw error
     }
 }
+
+export function assingPatinetToCarByCarIdAndPatientId(car_id: string, patient_id: string) {
+    console.log({
+        CAR: car_id,
+        PAT: patient_id
+    });
+    
+    const data = {
+        patient_id: patient_id
+    }
+    try {
+        return endpoint.put<Cars>(enviromentDev.car + `/${car_id}/assign_patient_belong_car/${car_id}`, data)
+    } catch (error) {
+        throw error
+    }
+}
+
+export function unAssingPatinetToCarByCarIdAndPatientId(car_id: string, patient_id: string) {
+    const data = {
+        patient_id: patient_id
+    }
+    try {
+        return endpoint.put<Cars>(enviromentDev.car + `/${car_id}/un_assign_patient_belong_car/${car_id}`, data)
+    } catch (error) {
+        throw error
+    }
+}

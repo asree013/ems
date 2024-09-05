@@ -5,28 +5,28 @@ const nextConfig = {
 };
 
 export default withPWAInit({
-    dest: "public",
-    // disable: true,
-    fallbacks: {
-      document: "/~offline",
-      data: "/fallback.json",
-      image: "/fallback.webp",
-      audio: "/fallback.mp3",
-      video: "/fallback.mp4",
-      font: "/fallback-font.woff2",
-    },
-    
-    workbox: {
-      // debug: true,
-      strategies: [
-        {
-          strategyName: 'NetworkFirst',
-          options: {
-            ignoreVary: true,
-          },
+  dest: "public",
+  // Disable PWA in development mode
+  disable: process.env.NODE_ENV === 'development',
+  fallbacks: {
+    document: "/~offline",
+    data: "/fallback.json",
+    image: "/fallback.webp",
+    audio: "/fallback.mp3",
+    video: "/fallback.mp4",
+    font: "/fallback-font.woff2",
+  },
+  
+  workbox: {
+    // Enable debugging for development
+    debug: process.env.NODE_ENV === 'development',
+    strategies: [
+      {
+        strategyName: 'NetworkFirst',
+        options: {
+          ignoreVary: true,
         },
-      ],
-    },
+      },
+    ],
+  },
 })(nextConfig);
-
-// export default nextConfig

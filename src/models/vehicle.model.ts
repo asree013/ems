@@ -1,4 +1,4 @@
-export interface Cars {
+export interface Cars{
   id: string
   status: string
   type: string
@@ -10,7 +10,7 @@ export interface Cars {
   image_rigth: string
   radio: string
   calling: string
-  driver_id: string
+  driver_id: any
   mission_id: any
   create_date: string
   update_date: string
@@ -24,7 +24,16 @@ export interface Cars {
     create_date: string
     update_date: string
   }>
-  PatientBelongCar: Array<any>
+  PatientBelongCar: Array<{
+    id: string
+    car_id: string
+    patient_id: string
+    transpose_date_time: any
+    transpose_to: any
+    transpose_id: any
+    create_date: string
+    update_date: string
+  }>
   _count: {
     UserBelongCar: number
     Parking: number

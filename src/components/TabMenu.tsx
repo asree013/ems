@@ -71,7 +71,6 @@ export default function TabMenu({ children }: Props) {
             localStorage.setItem('user_id', result.data.id)
             setLoad(false);
         } catch (error: any) {
-            alert(JSON.stringify(error.message));
             timeOutJwt(error)
         }
     }, [setFindMe]);

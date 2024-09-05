@@ -4,7 +4,9 @@ function toRadians(degrees: number): number {
 
 export function haversines(lat1: number, lon1: number, lat2: number, lon2: number): number {
     // console.log(`Latitudes and Longitudes: lat1=${lat1}, lon1=${lon1}, lat2=${lat2}, lon2=${lon2}`);
-
+    if(!lat1 || !lon1){
+        return 0
+    }
     const R = 6371; // รัศมีของโลกในหน่วยกิโลเมตร
 
     const dLat = toRadians(lat2 - lat1);

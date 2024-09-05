@@ -9,6 +9,7 @@ import { timeOutJwt } from '@/services/timeout.service';
 import { Cars } from '@/models/vehicle.model';
 import { CarDetailContext } from './CarDetail.context';
 import PateintDetail from './PateintDetail';
+import { useSearchParams } from 'next/navigation';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -46,7 +47,8 @@ type Props = {
 }
 
 export default function Page({ params }: Props) {
-  const [value, setValue] = React.useState(0);
+  const key = useSearchParams().get('key')
+  const [value, setValue] = React.useState(key? key.includes('patient')? 2: 1 : 0);
   const [car, setCar] = React.useState<Cars>({} as Cars)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -80,7 +82,7 @@ export default function Page({ params }: Props) {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <CarDetailContext.Provider value={{car, setCar}} >
+        <CarDetailContext.Provider value={{ car, setCar }} >
           <CarDetail />
         </CarDetailContext.Provider>
       </CustomTabPanel>
@@ -88,7 +90,9 @@ export default function Page({ params }: Props) {
         Item Two
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        <PateintDetail />
+        <CarDetailContext.Provider value={{ car, setCar }} >
+          <PateintDetail />
+        </CarDetailContext.Provider>
       </CustomTabPanel>
     </Box>
   );
