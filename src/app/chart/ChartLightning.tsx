@@ -1,89 +1,58 @@
-'use client';
+import { lightningChart, Themes, emptyLine, AxisTickStrategies, ColorHEX, SolidFill, PointShape } from "@lightningchart/lcjs";
+import { useEffect, useId, useState } from "react";
 
-import { useCallback, useEffect, useId, useRef, useState } from 'react';
-import { lightningChart, Themes, emptyLine, AutoCursorModes, AxisTickStrategies, ColorHEX, SolidFill, PointShape, ColorRGBA } from '@lightningchart/lcjs';
-import { ecg, ecgNull } from '@/data/data.medical_result';
-import { socket } from '@/configs/socket';
-
-interface ECGDataPoint {
-  x: number;
-  y: number;
-}
-
-interface ChannelInfo {
-  name: string;
+interface ChartLightningProps {
+  data: number[];
+  lineColor: any;
   yMin: number;
   yMax: number;
+  sig_name: string;
+  rateHz: number;
+  xView: number;
 }
 
-type Props = {
-  order_id: string
-}
+export default function ChartLightling(props: ChartLightningProps): JSX.Element {
+  const { data, lineColor, yMin, yMax, sig_name, rateHz, xView } = props;
 
+  const id = useId();
+  const [maxLength] = useState({ add: yMax, delete: yMin });
 
-export default function ECG({ order_id }: Props) {
-  const id = order_id + '_ecg'
-  const chartRefEcg = useRef<HTMLDivElement | null>(null);
-  const [maxLength, setMaxLenght] = useState<{
-    add: number,
-    delete: number
-  }>({ add: 100, delete: -100 })
-  setInterval(() => {
+  const channelCount = 1;
+  const dataRateHz = rateHz;
+  const xViewMs = xView * rateHz;
+  const CHANNELS = new Array(channelCount).fill(0).map(() => ({
+    name: sig_name,
+    yMin: maxLength.delete,
+    yMax: maxLength.add,
+  }));
+  
+  const ecgData = data;
 
-  }, 5000)
-
-  async function fetchData() {
-    // const response = await fetch('http://localhost:3333/v1/ecg?page=0&limit=10');
-    // const testData = await response.json();
-    let ecgData: any[]
-    let i = 1
-    // let lengthData = testData.length | 250
-    let lengthData = 250
-    ecgData = ecgNull
-
-    setInterval(() => {
-      ecgData = ecg
-    }, 3000)
-
-    socket.emit('data-tranfer', { order_id, message: order_id });
-
-    socket.off('data-tranfer-ecg')
-    socket.on('data-tranfer-ecg', (message: any) => {
-      console.log('pleth ', JSON.parse(message).ecg);
-      ecgData = JSON.parse(message).ecg
-    })
-
+  useEffect(() => {
     const container: any = document.getElementById(id);
     if (!container) return;
-
-    const channelCount = 1;
-    const dataRateHz = 250;
-    const xViewMs = 15 * 250;
-    const CHANNELS: ChannelInfo[] = new Array(channelCount).fill(0).map((_, i) => ({ name: `ECG`, yMin: maxLength.delete, yMax: maxLength.add }));
 
     const lc = lightningChart({
       license: "0002-n3X9iO0Z5d9OhoPGWWdBxAQ6SdnSKwB0/bH5AezBWp6K2IHfmcHtrmGsuEfyKfMUywnFPEbJ/vz5wfxYNmTstcut-MEYCIQDBYzSNR+IpXP765q1bC8E4xWsWHfWS0CLLjh2DYiBi0wIhAOMmdh9c3bmnsXnk6b5Xd+ngHLhuM0pJSapgpHg21+Br",
       licenseInformation: {
         appTitle: "LightningChart JS Trial",
-        company: "LightningChart Ltd."
+        company: "LightningChart Ltd.",
       },
     });
 
     const chart = lc.ChartXY({
       theme: Themes.darkGold,
-      container
+      container,
     });
 
-    const theme = chart.getTheme();
     const ecgBackgroundFill = new SolidFill({
-      color: theme.isDark ? ColorHEX('#000000') : ColorHEX('#ffffff'),
+      color: ColorHEX('#000000'),
     });
 
     chart
       .setSeriesBackgroundFillStyle(ecgBackgroundFill)
       .setSeriesBackgroundStrokeStyle(emptyLine)
       .setMouseInteractions(false)
-      .setAutoCursorMode(AutoCursorModes.disabled)
       .setTitle('');
 
     const axisX = chart
@@ -105,17 +74,28 @@ export default function ECG({ order_id }: Props) {
         .setTitleRotation(0)
         .setMouseInteractions(false);
 
-      let seriesRight = chart
+      const seriesLeft = chart
         .addLineSeries({
-          dataPattern: { pattern: 'ProgressiveX' },
+          dataPattern: { pattern: "ProgressiveX" },
           automaticColorIndex: iCh,
           yAxis: axisY,
         })
         .setName(info.name)
-        .setStrokeStyle((stroke) => stroke.setThickness(2).setFillStyle(new SolidFill({
-          color: ColorRGBA(60, 179, 113),
-          fillType: 'solid'
-        })))
+        .setStrokeStyle((stroke) =>
+          stroke.setThickness(2).setFillStyle(new SolidFill({ color: lineColor, fillType: "solid" }))
+        )
+        .setEffect(false);
+
+      const seriesRight = chart
+        .addLineSeries({
+          dataPattern: { pattern: "ProgressiveX" },
+          automaticColorIndex: iCh,
+          yAxis: axisY,
+        })
+        .setName(info.name)
+        .setStrokeStyle((stroke) =>
+          stroke.setThickness(2).setFillStyle(new SolidFill({ color: lineColor, fillType: "solid" }))
+        )
         .setEffect(false);
 
       const seriesOverlayRight = chart.addRectangleSeries({ yAxis: axisY }).setEffect(false);
@@ -125,37 +105,11 @@ export default function ECG({ order_id }: Props) {
         .setStrokeStyle(emptyLine)
         .setMouseInteractions(false);
 
-      let seriesLeft = chart
-        .addLineSeries({
-          dataPattern: { pattern: 'ProgressiveX' },
-          automaticColorIndex: iCh,
-          yAxis: axisY,
-        })
-        .setName(info.name)
-        .setStrokeStyle((stroke) => stroke.setThickness(2).setFillStyle(new SolidFill({
-          color: ColorRGBA(60, 179, 113),
-          fillType: 'solid'
-        })))
-        .setEffect(false);
-
       const seriesHighlightLastPoints = chart
         .addPointSeries({ pointShape: PointShape.Circle, yAxis: axisY })
-        .setPointFillStyle(new SolidFill({ color: theme.examples?.highlightPointColor }))
+        .setPointFillStyle(new SolidFill({ color: chart.getTheme().examples?.highlightPointColor }))
         .setPointSize(5)
         .setEffect(false);
-
-      let isHighlightChanging = false;
-      [seriesLeft, seriesRight].forEach((series) => {
-        series.onHighlight((value) => {
-          if (isHighlightChanging) {
-            return;
-          }
-          isHighlightChanging = true;
-          seriesLeft.setHighlight(true);
-          seriesRight.setHighlight(true);
-          isHighlightChanging = false;
-        });
-      });
 
       return {
         seriesLeft,
@@ -168,7 +122,7 @@ export default function ECG({ order_id }: Props) {
     });
 
     let prevPosX = 0;
-    const handleIncomingData = (dataPointsAllChannels: ECGDataPoint[][]) => {
+    const handleIncomingData = (dataPointsAllChannels: Array<{ x: number; y: number }[]>) => {
       let posX = 0;
 
       for (let iCh = 0; iCh < CHANNELS.length; iCh += 1) {
@@ -197,8 +151,8 @@ export default function ECG({ order_id }: Props) {
           channel.seriesRight.clear();
           channel.seriesLeft.clear();
         } else if (fullSweepsCount === 1) {
-          let dataCurrentSweep: ECGDataPoint[] = [];
-          let dataNextSweep: ECGDataPoint[] = [];
+          let dataCurrentSweep: { x: number; y: number }[] = [];
+          let dataNextSweep: { x: number; y: number }[] = [];
           for (let i = 0; i < newDataPointsCount; i += 1) {
             if (newDataPointsSweeping[i].x <= prevPosX) {
               dataCurrentSweep = newDataPointsSweeping.slice(0, i);
@@ -247,7 +201,7 @@ export default function ECG({ order_id }: Props) {
       const shouldBeDataPointsCount = Math.floor((dataRateHz * (tNow - tStart)) / 1000);
       const newDataPointsCount = shouldBeDataPointsCount - pushedDataCount;
       if (newDataPointsCount > 0) {
-        const newDataPoints: ECGDataPoint[] = [];
+        const newDataPoints: any = [];
         for (let iDp = 0; iDp < newDataPointsCount; iDp++) {
           const x = (pushedDataCount + iDp) * xStep;
           const iData = (pushedDataCount + iDp) % ecgData.length;
@@ -263,12 +217,7 @@ export default function ECG({ order_id }: Props) {
       requestAnimationFrame(streamData);
     };
     streamData();
-    
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  }, [id, ecgData, lineColor, maxLength, rateHz, sig_name, xView, xViewMs]);
 
   return <div id={id} style={{ width: "100%", height: "100%" }}></div>;
-};
+}

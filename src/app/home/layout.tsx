@@ -11,7 +11,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section style={{ width: '100%' }}>
+    <section >
       {/* Include shared UI here e.g. a header or sidebar */}
       <Nav />
 

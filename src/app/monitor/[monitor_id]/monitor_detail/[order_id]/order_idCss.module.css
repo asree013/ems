@@ -1,0 +1,77 @@
+.body {
+    background: rgb(61, 61, 110);
+    padding: 8px;
+}
+
+.title {
+    background: white;
+}
+
+.accrodion {
+    height: 9.5rem;
+}
+
+.avatar {
+    height: 5rem;
+    width: 5rem;
+}
+.chartDetail{
+    height: 100%;
+}
+.monitor{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    background: black;
+}
+.chartSize{
+    height: 10rem;
+}
+
+
+@media only screen and (max-width: 450px) {
+    .accrodion {
+        height: 2rem;
+    }
+    .body{
+        height: 530px;
+    }
+
+    .avatar {
+        height: 40px;
+        width: 40px;
+    }
+    .chartSize{
+        height: 10rem;
+    }
+    .chartDetail{
+        flex-direction: column-reverse;
+    }
+}
+@media only screen and (max-width: 1024px) {
+    .accrodion {
+        height: 2rem;
+    }
+    .body{
+        height: auto;
+    }
+
+    .avatar {
+        height: 40px;
+        width: 40px;
+    }
+    .monitor{
+        width: 30%;
+        height: 14rem;
+    }
+    .chartDetail{
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+    }
+    .chartSize{
+        height: 7rem;
+    }
+}

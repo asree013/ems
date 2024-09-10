@@ -6,13 +6,13 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import order_idCss from './order_id.module.css'
+import order_idCss from './order_idCss.module.css'
 import { Avatar } from '@mui/material';
 
 export default function AccordionDetail() {
   return (
     <div>
-      <Accordion>
+      <Accordion style={{background: '#2c3e50', color: 'white', borderRadius: 0}}>
         <AccordionSummary
           expandIcon={<ArrowDownwardIcon />}
           aria-controls="panel1-content"

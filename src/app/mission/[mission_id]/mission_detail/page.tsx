@@ -86,6 +86,7 @@ export default function BasicTabs({ params }: Props) {
 
     return (
         <Box sx={{ width: '100%', marginTop: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+            <h1 style={{fontSize: '22px', fontWeight: 700}}>ภารกิจในปัจจุบัน</h1>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                     <Tab label="รายละเอียด" {...a11yProps(0)} />

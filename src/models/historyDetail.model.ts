@@ -56,10 +56,10 @@ export interface PhysicalStatus {
         dvt_risk: boolean
     }
     neuro: {
-        e: string
-        v: string
-        m: string
-        total: string
+        e: number
+        v: number
+        m: number
+        total: number
         motor_power: {
             left_arm: {
                 part: number
@@ -78,7 +78,7 @@ export interface PhysicalStatus {
                 of_part: number
             }
         }
-        pupli: {
+        pupil: {
             rt: {
                 size: number
                 react: number

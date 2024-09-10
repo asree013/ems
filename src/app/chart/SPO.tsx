@@ -1,7 +1,7 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { lightningChart, Themes, emptyLine, AutoCursorModes, AxisTickStrategies, ColorHEX, SolidFill, PointShape } from '@lightningchart/lcjs';
+import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import { lightningChart, Themes, emptyLine, AutoCursorModes, AxisTickStrategies, ColorHEX, SolidFill, PointShape, ColorRGBA } from '@lightningchart/lcjs';
 import { ecg, ecgNull, spo2 } from '@/data/data.medical_result';
 import { socket } from '@/configs/socket';
 
@@ -21,7 +21,7 @@ type Props = {
 }
 
 export default function SPO({ order_id }: Props) {
-
+  const id = order_id + '_spo'
   const chartRef = useRef<HTMLDivElement | null>(null);
 
   setInterval(() => {
@@ -38,8 +38,7 @@ export default function SPO({ order_id }: Props) {
     spoData = ecgNull
 
     const orderId = order_id
-    const joinroom = socket.emit('data-tranfer-join-room', order_id);
-    console.log(joinroom);
+    socket.emit('data-tranfer-join-room', order_id);
 
     socket.emit('data-tranfer', { orderId, message: order_id });
 
@@ -50,12 +49,14 @@ export default function SPO({ order_id }: Props) {
     })
 
     const channelCount = 1;
-    const dataRateHz = 250 /3;
+    const dataRateHz = 250 / 3;
     const xViewMs = 15 * 250;
-    const CHANNELS: ChannelInfo[] = new Array(channelCount).fill(0).map((_, i) => ({ name: `SPO-${i + 1}`, yMin: 0, yMax: 100 }));
+    const CHANNELS: ChannelInfo[] = new Array(channelCount).fill(0).map((_, i) => ({ name: `SPO`, yMin: 0, yMax: 100 }));
 
+    const container: any = document.getElementById(id);
+    if (!container) return;
     const lc = lightningChart({
-      license: "0002-n4og2qUEgC6VgJvI1q8/aqe6hqXfKwCLIOOxHIgwgZiT1g4X529OLq7Qtbgve7sJrvgeOl7HcTSHb1/Y+RjhShb/-MEQCIEa3i+fOlLW4WKbQ2wNSu0PG0mWEK0agBgFqenq8XG2BAiB6H8X14CvUnu5vd+SpvMYtJkka1/HGxZxvWDNDrQL0tw==",
+      license: "0002-n3X9iO0Z5d9OhoPGWWdBxAQ6SdnSKwB0/bH5AezBWp6K2IHfmcHtrmGsuEfyKfMUywnFPEbJ/vz5wfxYNmTstcut-MEYCIQDBYzSNR+IpXP765q1bC8E4xWsWHfWS0CLLjh2DYiBi0wIhAOMmdh9c3bmnsXnk6b5Xd+ngHLhuM0pJSapgpHg21+Br",
       licenseInformation: {
         appTitle: "LightningChart JS Trial",
         company: "LightningChart Ltd."
@@ -64,6 +65,7 @@ export default function SPO({ order_id }: Props) {
 
     const chart = lc.ChartXY({
       theme: Themes.darkGold,
+      container
     });
 
     const theme = chart.getTheme();
@@ -104,7 +106,10 @@ export default function SPO({ order_id }: Props) {
           yAxis: axisY,
         })
         .setName(info.name)
-        .setStrokeStyle((stroke) => stroke.setThickness(2))
+        .setStrokeStyle((stroke) => stroke.setThickness(2).setFillStyle(new SolidFill({
+          color: ColorRGBA(52, 152, 219),
+          fillType: 'solid'
+        })))
         .setEffect(false);
 
       const seriesOverlayRight = chart.addRectangleSeries({ yAxis: axisY }).setEffect(false);
@@ -121,7 +126,10 @@ export default function SPO({ order_id }: Props) {
           yAxis: axisY,
         })
         .setName(info.name)
-        .setStrokeStyle((stroke) => stroke.setThickness(2))
+        .setStrokeStyle((stroke) => stroke.setThickness(2).setFillStyle(new SolidFill({
+          color: ColorRGBA(52, 152, 219),
+          fillType: 'solid'
+        })))
         .setEffect(false);
 
       const seriesHighlightLastPoints = chart
@@ -249,45 +257,12 @@ export default function SPO({ order_id }: Props) {
       requestAnimationFrame(streamData);
     };
     streamData();
-    let spo = document.getElementById('spo');
-    let chart2 = document.getElementById('chart-3');
-    let chart1 = document.getElementById('chart-1');
-    let lcjs = document.getElementById('lcjs-auto-flexbox');
-    const widthInner = window.innerWidth
-    if (chart2) {
-      chart2.remove()
-    }
-    if (spo) {
-      spo.style.height = '200px'
-    }
-    // if (chart1) {
-    //   chart1.style.display = "none";
-    // }
-    if (lcjs && spo) {
-      spo.appendChild(lcjs);
-      if (widthInner <= 450) {
-        console.log('mobile');
-        
-        lcjs.style.height = '300px'
 
-      }
-      else if(widthInner <= 1024){
-        lcjs.style.height = '650px'
-      }
-      else if(widthInner > 1024){
-        lcjs.style.height = '450px'
-      }
-
-    }
   };
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  return (
-    <>
-      <div id='spo' ref={chartRef}></div>
-    </>
-  )
+  return <div id={id} style={{ width: "100%", height: "100%" }}></div>;
 };

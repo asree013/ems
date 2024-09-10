@@ -86,6 +86,7 @@ export default function Page({ params }: Props) {
       const result = await findHistoryByPatientId(params.patient_id);
       setHistory(result.data);
       setHistoryFilter(result.data);
+
     } catch (error: any) {
       console.log(error);
       if (error.response.data.statusCode === 401) {
@@ -121,7 +122,7 @@ export default function Page({ params }: Props) {
   function onChangeNumber(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault()
     const value = e.target.value;
-
+    
     // กรองให้เหลือเฉพาะตัวเลข
     const numericValue = value.replace(/[^0-9]/g, '');
     e.target.value = numericValue
@@ -132,13 +133,16 @@ export default function Page({ params }: Props) {
   return (
     <>
       <div className={historyCss.homePage}>
+        <h1>ประวัติการรักษา</h1>
         <div className={historyCss.item}>
           <Button variant='solid' color='primary' onClick={() => {
             setHistoryFrom(true);
             setCreated(false);
             setHistory_id('');
           }}>เพิ่มประวัติ</Button>
-          <HistoryTab />
+
+          {/* <HistoryTab /> */}
+
           <Divider style={{ margin: '10px 0' }} />
           <div className={historyCss.history_item}>
             {history.length > 0
