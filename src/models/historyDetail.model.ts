@@ -35,8 +35,8 @@ export interface PhysicalStatus {
         checked: string
         tube: {
             trachostomy_tobe: string
-            no: number
-            fix: number
+            no: string
+            fix: string
         }
     }
     respi: {
@@ -44,7 +44,8 @@ export interface PhysicalStatus {
         tachyypnea: boolean
         dyspnea: boolean
         wheezing: boolean
-        lmp: number
+        respi_checked: string
+        lmp: string
     }
     cvs: {
         nsf: boolean

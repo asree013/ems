@@ -5,6 +5,7 @@ export interface Historys {
   id: string;
   symptom_details: string;
   chief_complaint: string
+  chief_complaint_number: string
   present_illness: string
   status: string;
   create_date: string;

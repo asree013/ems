@@ -26,7 +26,7 @@ import Alert from '@mui/material/Alert';
 import CheckIcon from '@mui/icons-material/Check';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import StepHistory from './StepHistory';
-import { PhysicalStatusContext, StepContext, TraigeLevelContext } from './StepContext';
+import { HistoryDetailContext, PhysicalStatusContext, StepContext, TraigeLevelContext } from './StepContext';
 import { PhysicalStatus, TriageLevels } from '@/models/historyDetail.model';
 type Props = {
   params: {
@@ -36,19 +36,16 @@ type Props = {
 
 export default function Page({ params }: Props) {
 
+  const [historyDetail, setHistoryDetail] = useState<Historys>({} as Historys)
   const [isLoad, setIsLoad] = useState<boolean>(false);
   const [historyFrom, setHistoryFrom] = useState<boolean>(false);
-  const [err, setErr] = useState<boolean>(false);
 
-  const [created, setCreated] = useState<boolean>(false);
 
   const [history, setHistory] = useState<Historys[]>({} as Historys[]);
   const [historyFilter, setHistoryFilter] = useState<Historys[]>(
     {} as Historys[],
   );
 
-  const [currentStep, setCurrentStep] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-  const [symtop_detail, setSymtom_detail] = useState<string>('');
   const [history_id, setHistory_id] = useState<string>('');
 
   const [triageLevel, setTriageLevel] = useState<TriageLevels>({} as TriageLevels)
@@ -100,36 +97,6 @@ export default function Page({ params }: Props) {
     onFeedHistoryByPatientId();
   }, [onFeedHistoryByPatientId]);
 
-  async function onCreateHistory() {
-    setCreated(true);
-    setErr(false);
-    if (symtop_detail.length === 0) {
-      return setErr(true);
-    }
-    try {
-      const data = {} as Historys;
-      data.symptom_details = symtop_detail;
-      data.status = 'Draft';
-      data.patient_id = params.patient_id;
-      const result = await createHistory(data);
-      setHistory([...history, result.data]);
-      setHistory_id(result.data.id);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  function onChangeNumber(e: ChangeEvent<HTMLInputElement>) {
-    e.preventDefault()
-    const value = e.target.value;
-    
-    // กรองให้เหลือเฉพาะตัวเลข
-    const numericValue = value.replace(/[^0-9]/g, '');
-    e.target.value = numericValue
-    console.log(e.target.value);
-
-  }
-
   return (
     <>
       <div className={historyCss.homePage}>
@@ -137,7 +104,6 @@ export default function Page({ params }: Props) {
         <div className={historyCss.item}>
           <Button variant='solid' color='primary' onClick={() => {
             setHistoryFrom(true);
-            setCreated(false);
             setHistory_id('');
           }}>เพิ่มประวัติ</Button>
 
@@ -170,88 +136,15 @@ export default function Page({ params }: Props) {
               className={historyCss.sheet}
             >
               <ModalClose variant="plain" sx={{ m: 1 }} />
-              {/* <Typography
-                component="h2"
-                id="modal-title"
-                level="h4"
-                textColor="inherit"
-                fontWeight="lg"
-                mb={1}
-              >
-                Creact History
-              </Typography>
-              <Input
-                onChange={(e) => setSymtom_detail(e.target.value)}
-                placeholder="Symptom Detail"
-                startDecorator={<AssignmentIcon />}
-                error={err}
-                disabled={created}
-              />
-
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }} className='mt-2'>
-                <Input
-                  onChange={(e) => setSymtom_detail(e.target.value)}
-                  placeholder="Chief Complaint (CC.)"
-                  error={err}
-                  disabled={created}
-                />
-                <input onChange={onChangeNumber}
-                  style={{ width: '30px', border: '1px solid gray', borderRadius: '5pxe' }} maxLength={2} type='text' defaultValue={0} />
-              </div>
-              <Textarea
-                minRows={2}
-                className='mt-2'
-                onChange={(e) => setSymtom_detail(e.target.value)}
-                placeholder="Present Illness (PI.)"
-                error={err}
-                disabled={created}
-              />
-              <Button
-                sx={{ fontSize: '1.2rem', width: '100%', marginTop: '10px' }}
-                onClick={onCreateHistory}
-                loading={created}
-              >
-                เพิ่มประวัติ
-              </Button> */}
-              <div hidden={!created}>
-                <Alert
-                  sx={{ marginTop: '10px' }}
-                  icon={<CheckIcon fontSize="inherit" />}
-                  severity="success"
-                >
-                  เพิ่มประวัติสำเร็จ
-                </Alert>
-                <Box className={historyCss.buttonGroup}>
-                  <Button
-                    className={historyCss.button}
-                    onClick={() => setHistoryFrom(false)}
-                    color="neutral"
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    className={historyCss.button}
-                    onClick={() => {
-                      window.location.href = 'history/' + history_id
-                      setIsLoad(true);
-                    }}
-                    startDecorator={<AddCircleIcon />}
-                    color="success"
-                  >
-                    ถัดไป
-                  </Button>
-                </Box>
-              </div>
-
-              <StepContext.Provider value={{ currentStep, setCurrentStep }} >
+              <HistoryDetailContext.Provider value={{historyDetail, setHistoryDetail}} >
                 <TraigeLevelContext.Provider value={{ triageLevel, setTriageLevel }}>
-                  <PhysicalStatusContext.Provider value={{physicalStatus, setPhysicalStatus}} >
+                  <PhysicalStatusContext.Provider value={{ physicalStatus, setPhysicalStatus }} >
 
                     <StepHistory />
 
                   </PhysicalStatusContext.Provider>
                 </TraigeLevelContext.Provider>
-              </StepContext.Provider>
+              </HistoryDetailContext.Provider>
             </Sheet>
           </Modal>
 

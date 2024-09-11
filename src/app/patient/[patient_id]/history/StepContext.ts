@@ -1,3 +1,4 @@
+import { Historys } from "@/models/history.model"
 import {  PhysicalStatus, TriageLevels } from "@/models/historyDetail.model"
 import { createContext, Dispatch, SetStateAction } from "react"
 
@@ -18,3 +19,9 @@ export type TPhysicalStatusContext = {
     setPhysicalStatus: Dispatch<SetStateAction<PhysicalStatus>>
 }
 export const PhysicalStatusContext = createContext<TPhysicalStatusContext>({} as TPhysicalStatusContext)
+
+export type THitorysContext = {
+    historyDetail: Historys
+    setHistoryDetail: Dispatch<SetStateAction<Historys>>
+}
+export const HistoryDetailContext = createContext<THitorysContext>({} as THitorysContext)

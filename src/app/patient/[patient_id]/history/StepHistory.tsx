@@ -15,8 +15,16 @@ import TriageLevel from './stepForm/TriageLevel';
 import Vs from './stepForm/Vs';
 import Ga from './stepForm/Ga';
 import Airway from './stepForm/Airway';
+import HistoryCreate from './stepForm/HistoryCreate';
+import Respi from './stepForm/Respi';
+import Cvs from './stepForm/Cvs';
+import Neuro from './stepForm/Neuro';
 
 const steps = [
+  {
+    label: 'กรอกรายละเอียด',
+    component: <HistoryCreate />,
+  },
   {
     label: 'เลือก Triage Level',
     component: <TriageLevel />,
@@ -32,7 +40,19 @@ const steps = [
   {
     label: 'Airway',
     component: <Airway />
-  }
+  },
+  {
+    label: 'Respi',
+    component: <Respi />
+  },
+  {
+    label: 'CVS',
+    component: <Cvs />
+  },
+  {
+    label: 'Neuro / Glasgow Coma Scale (GCS)',
+    component: <Neuro />
+  },
 ];
 
 export default function StepHistory() {
@@ -43,12 +63,7 @@ export default function StepHistory() {
 
   function handleNext() {
     console.log(triageLevel)
-    if (triageLevel.triage_level_value === null || triageLevel.triage_level_value === undefined) {
-      return alert('กรุณ่ติ๊กเพื่อทำการ Triage Level')
-    }
-    else {
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    }
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleBack = () => {
@@ -68,7 +83,7 @@ export default function StepHistory() {
           bgcolor: 'background.default',
         }}
       >
-        <Typography sx={{fontSize: '1.2rem', fontWeight: 700}}>{steps[activeStep].label}</Typography>
+        <Typography sx={{ fontSize: '1.2rem', fontWeight: 700 }}>{steps[activeStep].label}</Typography>
       </Paper>
       <Divider />
 

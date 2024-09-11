@@ -20,6 +20,7 @@ import { Input } from '@mui/joy';
 
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
+import { PhysicalStatus } from '@/models/historyDetail.model';
 
 const currencies = [
   {
@@ -111,15 +112,6 @@ export default function Airway() {
   const [defaultValue, setDefaultValue] = React.useState<any>({ airway: {}, isNsf: false });
   const [isNsf, setIsNsf] = React.useState<boolean>(false);
 
-  React.useEffect(() => {
-    const savedData = JSON.parse(localStorage.getItem('airway_select') ?? '{}');
-    setDefaultValue(savedData);
-    console.log(savedData);
-
-    setIsNsf(savedData.isNsf)
-  }, []);
-
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const updatedStatus = {
       ...physicalStatus,
@@ -129,16 +121,52 @@ export default function Airway() {
       },
     };
 
-    setPhysicalStatus(updatedStatus);
-
-    if (event.target.name === 'NSF') {
+    if (event.target.name === 'nsf' && physicalStatus?.airway?.nsf !== true) {
       setIsNsf(!isNsf);
+      setPhysicalStatus({
+        ...physicalStatus, airway: {
+          ...physicalStatus.airway, nsf: physicalStatus?.airway?.nsf? physicalStatus?.airway?.nsf: true , bleeding: false, injury: false, checked: '', secretion: false, stridor: false, tube: {
+            fix: '',
+            no: '',
+            trachostomy_tobe: ''
+          }
+        }
+      })
+
+    }
+    else {
+      setPhysicalStatus({
+        ...physicalStatus, airway: {
+          ...physicalStatus.airway, nsf: false, bleeding: false, injury: false, checked: '', secretion: false, stridor: false, tube: {
+            fix: '',
+            no: '',
+            trachostomy_tobe: ''
+          }
+        }
+      })
+      setIsNsf(false)
+      setPhysicalStatus(updatedStatus);
 
     }
 
-    const newPhysicalStatus = { ...updatedStatus, isNsf: !isNsf };
-    localStorage.setItem('airway_select', JSON.stringify(newPhysicalStatus));
   };
+
+  React.useEffect(() => {
+    if (isNsf === true || physicalStatus?.airway?.nsf === true) {
+      setPhysicalStatus({
+        ...physicalStatus, airway: {
+          ...physicalStatus.airway, nsf: true, bleeding: false, injury: false, secretion: false, stridor: false, checked: '', tube: {
+            fix: '',
+            no: '',
+            trachostomy_tobe: ''
+          }
+        }
+      })
+      setIsNsf(true)
+
+    }
+
+  }, [setPhysicalStatus])
 
   return (
     <div style={{ height: '25rem', overflow: 'scroll' }}>
@@ -146,9 +174,9 @@ export default function Airway() {
         <FormControlLabel
           control={
             <Checkbox
-              checked={defaultValue?.airway?.nsf? true: false}
+              checked={physicalStatus?.airway?.nsf}
               onChange={handleChange}
-              name="NSF"
+              name="nsf"
             />
           }
           label="NSF"
@@ -156,7 +184,7 @@ export default function Airway() {
         <FormControlLabel
           control={
             <Checkbox
-              checked={defaultValue?.airway?.stridor}
+              checked={physicalStatus?.airway?.stridor}
               onChange={handleChange}
               name="stridor"
               disabled={isNsf}
@@ -167,7 +195,7 @@ export default function Airway() {
         <FormControlLabel
           control={
             <Checkbox
-              checked={defaultValue?.airway?.secretion}
+              checked={physicalStatus?.airway?.secretion}
               onChange={handleChange}
               name="secretion"
               disabled={isNsf}
@@ -178,7 +206,7 @@ export default function Airway() {
         <FormControlLabel
           control={
             <Checkbox
-              checked={defaultValue?.airway?.injury}
+              checked={physicalStatus?.airway?.injury}
               onChange={handleChange}
               name="injury"
               disabled={isNsf}
@@ -189,7 +217,7 @@ export default function Airway() {
         <FormControlLabel
           control={
             <Checkbox
-              checked={defaultValue?.airway?.bleeding}
+              checked={physicalStatus?.airway?.bleeding}
               onChange={handleChange}
               name="bleeding"
               disabled={isNsf}
@@ -199,7 +227,7 @@ export default function Airway() {
         />
       </FormGroup>
       <Divider />
-      <FormControl className='mt-2'>
+      <FormControl disabled={isNsf} className='mt-2'>
         <FormLabel id="demo-radio-buttons-group-label">Option อื่นๆ</FormLabel>
         <RadioGroup
           aria-labelledby="demo-radio-buttons-group-label"
@@ -236,6 +264,7 @@ export default function Airway() {
                 Tube:
               </Typography>
               <RadioGroupJ
+                
                 orientation="horizontal"
                 aria-labelledby="segmented-controls-example"
                 name=""
@@ -292,7 +321,39 @@ export default function Airway() {
                 select
                 label="NO."
                 helperText="กรอกขนาดท่อ"
-                sx={{width: '100%'}}
+                sx={{ width: '100%' }}
+                onChange={(e) => setPhysicalStatus({
+                  ...physicalStatus, airway: {
+                    ...physicalStatus.airway, tube: {
+                      ...physicalStatus.airway.tube, no: e.target.value
+                    }
+                  }
+                })}
+                value={physicalStatus?.airway?.tube?.no ?? null}
+              >
+                {currencies.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </div>
+            <div className='mt-3'>
+              <TextField
+                id="outlined-select-currency"
+                select
+                label="FIX."
+                helperText="กรอกขนาดท่อ"
+                sx={{ width: '100%' }}
+                onChange={(e) => setPhysicalStatus({
+                  ...physicalStatus, airway: {
+                    ...physicalStatus.airway, tube: {
+                      ...physicalStatus.airway.tube, fix: e.target.value
+                    }
+                  }
+                })}
+                value={physicalStatus?.airway?.tube?.fix ?? null}
+
               >
                 {currencies.map((option) => (
                   <MenuItem key={option.value} value={option.value}>

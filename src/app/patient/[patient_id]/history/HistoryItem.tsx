@@ -58,7 +58,7 @@ export default function HistoryItem({ value }: Props) {
               </Typography>
             </Stack>
             <Typography color="text.secondary" variant="body2">
-              {value.Patient.first_name} {value.Patient.last_name}
+              {/* {value.Patient.first_name} {value.Patient.last_name} */}
             </Typography>
             <Stack
               style={{ marginTop: '5px' }}
@@ -118,7 +118,7 @@ export default function HistoryItem({ value }: Props) {
               </Typography>
             </Stack>
             <Typography color="text.secondary" variant="body2">
-              {value.Patient.first_name} {value.Patient.last_name}
+              {/* {value.Patient.first_name} {value.Patient.last_name} */}
             </Typography>
             <Stack
               style={{ marginTop: '5px' }}
@@ -178,7 +178,7 @@ export default function HistoryItem({ value }: Props) {
               </Typography>
             </Stack>
             <Typography color="text.secondary" variant="body2">
-              {value.Patient.first_name} {value.Patient.last_name}
+              {/* {value.Patient.first_name} {value.Patient.last_name} */}
             </Typography>
             <Stack
               style={{ marginTop: '5px' }}
@@ -238,7 +238,7 @@ export default function HistoryItem({ value }: Props) {
               </Typography>
             </Stack>
             <Typography color="text.secondary" variant="body2">
-              {value.Patient.first_name} {value.Patient.last_name}
+              {/* {value.Patient.first_name} {value.Patient.last_name} */}
             </Typography>
             <Stack
               style={{ marginTop: '5px' }}
