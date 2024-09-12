@@ -12,7 +12,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import { Button, FormControlLabel, styled } from '@mui/material';
 import { Locations } from '@/models/location.model';
 import { LocateContextUser, TLocateC } from '@/contexts/locate.context';
-import homeCss from './home.module.css';
+import HomeCss from './HomeCss.module.css';
 import { Missions } from '@/models/mission.model';
 
 import Switch, { SwitchProps } from '@mui/material/Switch';
@@ -183,7 +183,7 @@ const GoogleApiMap = ({ mission }: Props) => {
                     load ?
                         <p>loading...</p> :
                         <Map
-                            className={homeCss.sizeMap}
+                            className={HomeCss.sizeMap}
                             defaultCenter={{ lng: Number(locate.long), lat: Number(locate.lat) }}
                             zoom={zoom} // ใช้ค่า zoom ที่ตั้งไว้
                             center={isSub === false ? centerLocate: {lat: parseInt(userLocate.lat), lng: parseInt(userLocate.long)}}

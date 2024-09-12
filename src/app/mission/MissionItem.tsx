@@ -66,7 +66,7 @@ export default function MissionItem({ mission, currentLo, returnLoad }: Props) {
           </Typography>
           <Divider orientation="horizontal" />
           <Typography level="body-xs" fontWeight="md" textColor="text.secondary">
-            ระยะห่างจากภารกิจ {haversines(Number(mission.lat), Number(mission.long), Number(currentLo.lat), Number(currentLo.long)).toFixed(2)} KM.
+            ระยะห่างจากภารกิจ {haversines(Number(mission.lat), Number(mission.long), Number(currentLo?.lat), Number(currentLo?.long)).toFixed(2)} KM.
           </Typography>
         </CardContent>
       </CardOverflow>

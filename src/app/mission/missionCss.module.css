@@ -1,10 +1,23 @@
+.body{
+    margin-top: 60px;
+}
 .itemCard{
     display: grid;
     grid-template-columns: repeat(4, 2fr);
     grid-gap: 20px;
 }
 
-
+@media only screen and (max-width: 1370) {
+    .body{
+        margin-top: 60px;
+    }
+    .itemCard{
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, 2fr);
+        grid-gap: 20px;
+    }
+}
 @media only screen and (max-width: 450px) {
     .itemCard{
         display: grid;
@@ -15,3 +28,4 @@
         margin-top: 60px;
     }
 }
+

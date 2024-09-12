@@ -8,6 +8,13 @@
     background: white;
     width: 100%;
 }
+.mapItem{
+    margin: 15px 0;
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    width: 100%;
+}
 
 
 .sideBar {
@@ -166,6 +173,11 @@
     grid-gap: 10px;
 }
 
+.myVehicle{
+    margin-top: 10px;
+    height: 500px;
+}
+
 .directions {
     position: absolute;
     width: 275px;
@@ -208,6 +220,14 @@
         grid-template-columns: repeat(3, 1fr);
 
     }
+    .sizeMap{
+        width: 400px;
+        height: 400px;
+    }
+    .myVehicle{
+        height: 445px;
+        width: 45%;
+    }
 
 }
 
@@ -219,5 +239,15 @@
     .sizeMap{
         width: 270px;
         height: 270px;
+    }
+    .mapItem{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .myVehicle{
+        height: 445px;
+        width: 90%;
     }
 }

@@ -1,6 +1,6 @@
 'use client'
 import React, { useContext, useState } from 'react'
-import homeCss from './home.module.css'
+import HomeCss from './HomeCss.module.css'
 
 import { Fab, Paper, ToggleButtonGroup } from '@mui/material';
 import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
@@ -16,6 +16,7 @@ import Loadding from '@/components/Loadding';
 import { FindMeContext, TFindContext } from '@/contexts/findme.context';
 import CardMissionUser from './CardMissionUser';
 import { CurrentMissionContext, TCurrentMission } from '@/contexts/currentMission.context';
+import VehicleCard from './VihecleCard';
 
 
 export default function HomeContent() {
@@ -28,7 +29,7 @@ export default function HomeContent() {
 
     return (
         <>
-            <div className={homeCss.content}>
+            <div className={HomeCss.content}>
                 {/* <div className={homeCss.contentMenu}>
                     <div className={homeCss.contentTitle}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -51,8 +52,8 @@ export default function HomeContent() {
                         </Paper>
                     </div>
                 </div> */}
-                <div className={homeCss.contentMenu}>
-                    <div className={homeCss.contentTitle}>
+                <div className={HomeCss.contentMenu}>
+                    <div className={HomeCss.contentTitle}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <WorkOutlineIcon />
                             <p style={{ marginLeft: '10px' }}>Mission</p>
@@ -71,16 +72,17 @@ export default function HomeContent() {
                         <CardMissionUser />
                     </div>
                 </div>
-                <div className={homeCss.contentMenu}>
-                    <div className={homeCss.contentTitle}>
+                <div className={HomeCss.contentMenu}>
+                    <div className={HomeCss.contentTitle}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <PlaceIcon />
                             <p style={{ marginLeft: '10px' }}>Map</p>
                         </div>
                         <div></div>
                     </div>
-                    <div style={{ margin: '15px 0' }}>
+                    <div className={HomeCss.mapItem}>
                         <GoogleApiMap mission={missionUser} />
+                        <VehicleCard />
                     </div>
                 </div>
             </div>

@@ -78,7 +78,7 @@ export default function ProfileSetting() {
             <ListItem>
               <ListItemButton>
                 <ListItemContent>iCloud+ Feature Updates</ListItemContent>
-                <KeyboardArrowRight fontSize="xl3" />
+                <KeyboardArrowRight  />
               </ListItemButton>
             </ListItem>
           </List>
@@ -166,7 +166,7 @@ export default function ProfileSetting() {
                 >
                   Mars
                 </Typography>
-                <KeyboardArrowRight fontSize="xl3" />
+                <KeyboardArrowRight  />
               </ListItemButton>
             </ListItem>
             <ListDivider inset="startContent" />
@@ -184,7 +184,7 @@ export default function ProfileSetting() {
                 >
                   On
                 </Typography>
-                <KeyboardArrowRight fontSize="xl3" />
+                <KeyboardArrowRight  />
               </ListItemButton>
             </ListItem>
             <ListDivider inset="startContent" />
@@ -196,7 +196,7 @@ export default function ProfileSetting() {
                   </Sheet>
                 </ListItemDecorator>
                 <ListItemContent>Cellular</ListItemContent>
-                <KeyboardArrowRight fontSize="xl3" />
+                <KeyboardArrowRight  />
               </ListItemButton>
             </ListItem>
           </List>
