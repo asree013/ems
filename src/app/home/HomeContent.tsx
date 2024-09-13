@@ -2,7 +2,7 @@
 import React, { useContext, useState } from 'react'
 import HomeCss from './HomeCss.module.css'
 
-import { Fab, Paper, ToggleButtonGroup } from '@mui/material';
+import { Divider, Fab, Paper, ToggleButtonGroup } from '@mui/material';
 import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
 import WorkOutlineIcon from '@mui/icons-material/WorkOutline';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
@@ -16,7 +16,9 @@ import Loadding from '@/components/Loadding';
 import { FindMeContext, TFindContext } from '@/contexts/findme.context';
 import CardMissionUser from './CardMissionUser';
 import { CurrentMissionContext, TCurrentMission } from '@/contexts/currentMission.context';
-import VehicleCard from './VihecleCard';
+import VehicleCard from './vehicle/VihecleCard';
+import { CurrentVehicleContext, TCurrentVehicles } from './CurrentVehicle.context';
+import CarPatientList from './vehicle/CarPatientList';
 
 
 export default function HomeContent() {
@@ -25,7 +27,7 @@ export default function HomeContent() {
     const [load, setLoad] = useState<boolean>(false);
     const { findMe, setFindMe } = useContext<TFindContext>(FindMeContext)
     const { missionUser, setMissionUser } = useContext<TCurrentMission>(CurrentMissionContext)
-
+    const {vehicle, setVehicle} = useContext<TCurrentVehicles>(CurrentVehicleContext)
 
     return (
         <>
@@ -60,12 +62,12 @@ export default function HomeContent() {
                         </div>
 
                         {
-                            missionUser?
-                            null:
-                            <Fab onClick={() => {
-                                setLoad(true)
-                                window.location.href = '/mission'
-                            }} size='small' color='primary'><AddIcon /></Fab>
+                            missionUser ?
+                                null :
+                                <Fab onClick={() => {
+                                    setLoad(true)
+                                    window.location.href = '/mission'
+                                }} size='small' color='primary'><AddIcon /></Fab>
                         }
                     </div>
                     <div style={{ margin: '15px 0' }}>
@@ -83,6 +85,16 @@ export default function HomeContent() {
                     <div className={HomeCss.mapItem}>
                         <GoogleApiMap mission={missionUser} />
                         <VehicleCard />
+                    </div>
+                    <div>
+                        <Divider>ข้อมูลภายในยานพาหนะ</Divider>
+                        {
+                            vehicle.car || vehicle.helicopter || vehicle.ship ?
+                            <div className='mt-4'>
+                                <CarPatientList />
+                            </div>:
+                            <p>โปรเลือกยานพาหนะ</p>
+                        }
                     </div>
                 </div>
             </div>

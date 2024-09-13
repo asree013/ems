@@ -3,12 +3,12 @@ import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import CarDetail from './CarDetail';
+import CarDetail from '../../../../../components/car/CarDetail';
 import { findCarByCarId } from '@/services/car.service';
 import { timeOutJwt } from '@/services/timeout.service';
 import { Cars } from '@/models/vehicle.model';
-import { CarDetailContext } from './CarDetail.context';
-import PateintDetail from './PateintDetail';
+import { CarDetailContext } from '../../../../../components/car/CarDetail.context';
+import PateintDetail from '../../../../../components/car/PateintDetail';
 import { useSearchParams } from 'next/navigation';
 
 interface TabPanelProps {

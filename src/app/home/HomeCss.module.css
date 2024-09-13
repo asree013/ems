@@ -8,7 +8,8 @@
     background: white;
     width: 100%;
 }
-.mapItem{
+
+.mapItem {
     margin: 15px 0;
     display: flex;
     align-items: start;
@@ -173,11 +174,6 @@
     grid-gap: 10px;
 }
 
-.myVehicle{
-    margin-top: 10px;
-    height: 500px;
-}
-
 .directions {
     position: absolute;
     width: 275px;
@@ -196,23 +192,34 @@
     width: 100%;
 }
 
-.sizeMap{
+.sizeMap {
     margin-top: 10px;
-    width: 750px;
+    width: 100%;
     height: 500px;
 }
 
+.myVehicle {
+    margin-top: 10px;
+    height: 500px;
+    width: 50%;
+}
+
+.imageCarSize {
+    max-width: 265px;
+    max-height: 265px;
+}
 
 @media only screen and (max-width: 600px) {
     .menuItem {
         display: grid;
         grid-template-columns: repeat(1, 1fr);
     }
-    .sizeMap{
+
+    .sizeMap {
         width: 750px;
         height: 500px;
     }
-    
+
 }
 
 @media only screen and (max-width: 1370px) {
@@ -220,13 +227,20 @@
         grid-template-columns: repeat(3, 1fr);
 
     }
-    .sizeMap{
+
+    .sizeMap {
         width: 400px;
         height: 400px;
     }
-    .myVehicle{
+
+    .myVehicle {
         height: 445px;
         width: 45%;
+    }
+
+    .imageCarSize {
+        max-width: 120px;
+        max-height: 120px;
     }
 
 }
@@ -236,17 +250,20 @@
         display: grid;
         grid-template-columns: repeat(1, 1fr);
     }
-    .sizeMap{
+
+    .sizeMap {
         width: 270px;
         height: 270px;
     }
-    .mapItem{
+
+    .mapItem {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
     }
-    .myVehicle{
+
+    .myVehicle {
         height: 445px;
         width: 90%;
     }

@@ -9,7 +9,7 @@ import NearMeIcon from '@mui/icons-material/NearMe';
 import carsLocate from '@/assets/icon/ambulance.png';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { Button, FormControlLabel, styled } from '@mui/material';
+import { Button, Card, FormControlLabel, styled } from '@mui/material';
 import { Locations } from '@/models/location.model';
 import { LocateContextUser, TLocateC } from '@/contexts/locate.context';
 import HomeCss from './HomeCss.module.css';
@@ -87,41 +87,13 @@ const IOSSwitch = styled((props: SwitchProps) => (
 
 
 const GoogleApiMap = ({ mission }: Props) => {
-    const [locate, setLocate] = useState<Locations>({} as Locations);
     const [centerLocate, setCenterLocate] = useState<LatLng | null>(null);
     const [icon, setIcon] = useState<IconGoogleMap | null>(null);
-    const [zoom, setZoom] = useState<number>(10);
+    const [zoom, setZoom] = useState<number>(8);
     const [load, setLoad] = useState<boolean>(false);
     const [isSub, setIsSub] = useState<boolean>(false)
     const {userLocate, setUserLocate} = useContext<TLocateC>(LocateContextUser)
-    const getLoacation = useCallback(() => {
-        setLoad(true);
-        return new Promise<void>((resolve, reject) => {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    async (position) => {
-                        const { latitude, longitude } = position.coords;
-                        const g = {} as Locations;
-                        g.lat = latitude.toString();
-                        g.long = longitude.toString();
-                        setLocate(g);
-                        setLoad(false);
-                        resolve();
-                    },
-                    (error) => {
-                        console.error("Error getting geolocation:", error);
-                        setLoad(false);
-                        reject(error);
-                    }
-                );
-            } else {
-                const error = new Error("Geolocation is not supported by this browser.");
-                console.error(error);
-                setLoad(false);
-                reject(error);
-            }
-        });
-    }, []);
+
 
     const onCheckUserLocation = useCallback(() => {
         return new Promise<void>((resolve, reject) => {
@@ -151,7 +123,6 @@ const GoogleApiMap = ({ mission }: Props) => {
     }, [setCenterLocate]);
 
     useEffect(() => {
-        getLoacation().catch((error) => console.error("Failed to get location:", error));
         setLoad(true);
         const intervalId = setInterval(() => {
             if (window.google && window.google.maps.Size) {
@@ -169,11 +140,13 @@ const GoogleApiMap = ({ mission }: Props) => {
             }
         }, 100);
 
-        return () => clearInterval(intervalId);
-    }, [getLoacation]);
+        return () => {
+            clearInterval(intervalId);
+        }
+    }, [ userLocate]);
 
     return (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center',flexDirection: 'column' }}>
+        <Card className={HomeCss.sizeMap} elevation={4} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center',flexDirection: 'column', borderRadius: '10px', marginTop: '10px' }}>
             <APIProvider apiKey={enviromentDev.keyGoogleApi}>
                 <FormControlLabel
                     control={<IOSSwitch sx={{ m: 1 }} onChange={(e) => setIsSub(e.target.checked)} checked={isSub} />}
@@ -183,10 +156,9 @@ const GoogleApiMap = ({ mission }: Props) => {
                     load ?
                         <p>loading...</p> :
                         <Map
-                            className={HomeCss.sizeMap}
-                            defaultCenter={{ lng: Number(locate.long), lat: Number(locate.lat) }}
+                            defaultCenter={{ lng: Number(userLocate.long), lat: Number(userLocate.lat) }}
                             zoom={zoom} // ใช้ค่า zoom ที่ตั้งไว้
-                            center={isSub === false ? centerLocate: {lat: parseInt(userLocate.lat), lng: parseInt(userLocate.long)}}
+                            center={isSub === false ? centerLocate : { lat: Number(userLocate.lat), lng: Number(userLocate.long) }}
                             gestureHandling={'greedy'}
                             disableDefaultUI={true}
                             onClick={(e) => console.log(e.detail.latLng)}
@@ -217,7 +189,7 @@ const GoogleApiMap = ({ mission }: Props) => {
                                 <Marker
                                     onClick={(e) => console.log(e.latLng?.toString())}
                                     icon={icon}
-                                    position={{ lng: Number(locate.long), lat: Number(locate.lat) }}
+                                    position={{ lng: Number(userLocate.long), lat: Number(userLocate.lat) }}
                                     label={'สพส.11071 CPA'}
                                     animation={centerLocate ? window.google.maps.Animation.BOUNCE : null}
                                 />
@@ -228,7 +200,7 @@ const GoogleApiMap = ({ mission }: Props) => {
                         </Map>
                 }
             </APIProvider>
-        </div>
+        </Card>
     );
 };
 

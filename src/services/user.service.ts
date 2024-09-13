@@ -43,3 +43,12 @@ export function editUserByUserCookie(data: Users) {
         throw error
     }
 }
+
+export function convertGender(gender: string) {
+    if(gender?.toLocaleLowerCase()?.includes('male')) {
+        return 'เพศชาย'
+    }
+    else{
+        return 'เพศหญิง'
+    }
+}

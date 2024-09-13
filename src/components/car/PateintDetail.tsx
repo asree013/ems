@@ -1,7 +1,7 @@
 'use client'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 
-import PDetailCss from './Pdetail.module.css'
+import PDetailCss from '../styles/Pdetail.module.css'
 import { Card, Chip, Divider } from '@mui/material'
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 
