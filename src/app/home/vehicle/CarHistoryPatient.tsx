@@ -15,7 +15,7 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import { CurrentCarsContext, CurrentVehicleContext, TCurrentCars, TCurrentVehicles } from '../CurrentVehicle.context';
 
 import AddIcon from '@mui/icons-material/Add';
-import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import HistoryIcon from '@mui/icons-material/History';
 
 import HomeCss from '../HomeCss.module.css'
 import { Paper } from '@mui/material';
@@ -26,62 +26,61 @@ import { Cars } from '@/models/vehicle.model';
 import { findCarByCarId } from '@/services/car.service';
 import { toast } from '@/services/alert.service';
 import CarDetailHome from './CarDetailHome';
+import CarPatientitem from './CarPatientItem';
+import CarHistoryItem from './CarHistoryItem';
 
-export default function VehicleCard() {
+
+export default function CarHistoryPatient() {
     const { vehicle, setVehicle } = useContext<TCurrentVehicles>(CurrentVehicleContext)
     const [load, setLoad] = useState(false)
     const {car, setCar} = useContext<TCurrentCars>(CurrentCarsContext)
 
-
     return (
         <>
             <Box
-                className={HomeCss.myVehicle}
+                className={HomeCss.myVehicle2}
             >
 
                 <Card size="lg" variant="outlined">
                     {/* <Chip size="sm" variant="outlined" color="neutral">
                     BASIC
                 </Chip> */}
-                    <Typography level="h4"><DirectionsCarIcon color='primary' /> ยานพาหนะของฉัน</Typography>
+                    <Typography level="h4"><HistoryIcon color='success' /> ประวัติผู้ป่วยในยานพาหนะ</Typography>
                     <Divider inset="none" />
                     <Box sx={{ height: '100%' }}>
                         {
                             vehicle.car || vehicle.helicopter || vehicle.ship ?
-                                <div style={{ height: '100%' }}>
-                                    <CarDetailHome car={car} setCar={setCar} />
+                                <div style={{  height: '22rem', overflow: 'scroll', }}>
+                                    {
+                                        car?.PatientBelongCar?.map((r, i) => 
+                                            <CarHistoryItem key={i} patient_id={r.patient_id} />
+                                        )
+                                    }
+                                    
                                 </div>
                                 : <div onClick={() => {
                                     setLoad(true)
                                     window.location.href = '/vehicle'
                                 }}>
-                                    <p>ไม่มียานพาหนะที่คุณใช้งานในคณะนี้ กดบวกเพื่อเลือกยานพหานะที่ต้องการใช้งาน</p>
-                                    <div style={{ width: '100%', height: '10rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                        <Paper elevation={3} style={{ width: '9rem', height: '9rem' }} >
-                                            <AddIcon style={{ width: '9rem', height: '9rem' }} />
-                                        </Paper>
-                                    </div>
+                                    <p>ไม่มียานพาหนะที่คุณใช้งานในคณะนี้ โปรดเลือกยานพหานะที่ต้องการใช้งาน</p>
+
                                 </div>
                         }
                     </Box>
                     <Divider inset="none" />
                     <CardActions>
                         <Typography level="title-lg" sx={{ mr: 'auto' }}>
-                            3.990€{' '}
-                            <Typography textColor="text.tertiary" sx={{ fontSize: 'sm' }}>
-                                / month
-                            </Typography>
+                            <Button color='success' onClick={() => {
+                                setLoad(true)
+                                window.location.href = '/patient'
+                            }}>เพิ่มประวัตผู้ป่วย</Button>
                         </Typography>
                         <Button
-                            onClick={() => {
-                                setLoad(true)
-                                window.location.href = '/vehicle/'+ car.id + '/car/detail'
-                            }}
                             variant="soft"
                             color="neutral"
                             endDecorator={<KeyboardArrowRight />}
                         >
-                            ไปที่รถ
+                            Start now
                         </Button>
                     </CardActions>
                 </Card>

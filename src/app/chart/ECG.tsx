@@ -53,7 +53,7 @@ export default function ECG({ order_id }: Props) {
       ecgData = JSON.parse(message).ecg
     })
 
-    const container: any = document.getElementById(id);
+    const container = document.getElementById(id) as HTMLDivElement;
     if (!container) return;
 
     const channelCount = 1;

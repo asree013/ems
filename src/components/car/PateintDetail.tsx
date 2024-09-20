@@ -14,6 +14,8 @@ import { findPatientById } from '@/services/paitent.service';
 import { Patients } from '@/models/patient';
 import CardPatient from './CardPatient';
 
+import car_vihecle from '../styles/car_vihecle.module.css'
+
 export default function PateintDetail() {
   const [load, setLoad] = useState<boolean>(false)
   const { car, setCar } = useContext<TCarDetailContent>(CarDetailContext)
@@ -60,11 +62,14 @@ export default function PateintDetail() {
         {
           Object.keys(car).length === 0 ?
             null :
-            car.PatientBelongCar.map((r, i) => 
-            <div key={i}>
-              <MapPatientId  patient_id={r.patient_id} />
+            <div className={car_vihecle.grid}>
+              {
+                car.PatientBelongCar.map((r, i) =>
+                  <MapPatientId key={i} patient_id={r.patient_id} />
+                )
+              }
             </div>
-          )
+
         }
 
       </div>
@@ -78,10 +83,10 @@ export default function PateintDetail() {
   )
 }
 
-function MapPatientId({patient_id}: {patient_id: string}) {
+function MapPatientId({ patient_id }: { patient_id: string }) {
   const [patient, setPatient] = useState<Patients>({} as Patients)
 
-  const feedPatientByPatientId = useCallback(async() => {
+  const feedPatientByPatientId = useCallback(async () => {
     try {
       const result = await findPatientById(patient_id)
       setPatient(result.data)
@@ -98,7 +103,7 @@ function MapPatientId({patient_id}: {patient_id: string}) {
     }
   }, [feedPatientByPatientId])
 
-  return(
+  return (
     <CardPatient patient={patient} />
   )
 }

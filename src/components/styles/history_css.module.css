@@ -1,0 +1,7 @@
+.history_card_success{
+    background: rgb(205, 239, 205);
+}
+.card{
+    width: 100%;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}

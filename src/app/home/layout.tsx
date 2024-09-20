@@ -3,7 +3,9 @@ import { metadata } from '../layout';
 import SpeedDialButton from '@/components/SpeedDialButton';
 import TabMenu from '@/components/TabMenu';
 import ChatButton from '@/components/ChatButton';
+import { Suspense } from 'react';
 metadata.title = 'Home EMS App';
+import Loadding from '@/components/Loadding'
 
 export default function DashboardLayout({
   children, // will be a page or nested layout
@@ -17,7 +19,9 @@ export default function DashboardLayout({
 
       <div style={{ marginTop: '60px' }}>
         <TabMenu>
-          {children}
+          <Suspense fallback={<Loadding/ >}>
+            {children}
+          </Suspense>
         </TabMenu>
       </div>
 

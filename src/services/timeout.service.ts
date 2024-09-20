@@ -1,10 +1,13 @@
 export function timeOutJwt(error: any) {
-    console.log('====> ', error);
-    
+
     if(!error) {
         return
     }
     else if (parseInt(error.response.status) === 401) {
+        localStorage.clear()
+        return window.location.href = '/login'
+    }
+    else if (error.response.status === '401') {
         localStorage.clear()
         return window.location.href = '/login'
     }

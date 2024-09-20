@@ -7,6 +7,8 @@ export interface Historys {
   chief_complaint: string
   chief_complaint_number: string
   present_illness: string
+  triage_lavel: string
+  physical_status: string
   status: string;
   create_date: string;
   update_date: string;

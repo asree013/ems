@@ -62,7 +62,7 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
     try {
       if (vehicle_id) {
         await assingPatinetToCarByCarIdAndPatientId(vehicle_id, patient.id)
-        // history.back()
+        history.back()
       }
     } catch (error) {
       // timeOutJwt(error)

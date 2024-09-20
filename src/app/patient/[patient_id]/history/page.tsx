@@ -1,6 +1,6 @@
 'use client';
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
-import HistoryItem from './HistoryItem';
+import HistoryItem from '../../../../components/HistoryItem';
 import { Box, Divider, Fab, SpeedDial } from '@mui/material';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 

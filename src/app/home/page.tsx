@@ -19,9 +19,10 @@ import { CurrentMissionContext } from '@/contexts/currentMission.context';
 import { LocateContextUser } from '@/contexts/locate.context';
 import { FindMeContext, TFindContext } from '@/contexts/findme.context';
 import { timeOutJwt } from '@/services/timeout.service';
-import { Vehicles } from '@/models/vehicle.model';
-import { CurrentVehicleContext } from './CurrentVehicle.context';
+import { Cars, Vehicles } from '@/models/vehicle.model';
+import { CurrentCarsContext, CurrentVehicleContext } from './CurrentVehicle.context';
 import { toast } from '@/services/alert.service';
+import { findCarByCarId } from '@/services/car.service';
 
 const drawerWidth = 240;
 
@@ -37,6 +38,7 @@ export default function Page() {
   let role = ''
   const { findMe, setFindMe } = useContext<TFindContext>(FindMeContext)
   const [vehicle, setVehicle] = useState<Vehicles>({} as Vehicles)
+  const [car, setCar] = useState<Cars>({} as Cars)
 
 
   const pushLocationUser = useCallback(async () => {
@@ -104,17 +106,40 @@ export default function Page() {
     try {
       const result = await findCurrentVehicleByUser()
       setVehicle(result.data)
+      if (Object.keys(result.data.car).length > 0) {
+        setCurrentCarByVehicleId(result.data.car.Car.id)
+      }
+      if (Object.keys(result.data.helicopter).length > 0) {
+
+      }
+      if (Object.keys(result.data.ship).length > 0) {
+
+      }
 
     } catch (error: any) {
-      toast(JSON.stringify(error.message), 'error')
+      console.log('findCurrent: ' ,error);
+      
+      // toast(JSON.stringify(error.message), 'error')
       timeOutJwt(error)
     }
   }, [setVehicle])
+
+  const setCurrentCarByVehicleId = useCallback(async (car_id: string) => {
+    try {
+      const result = await findCarByCarId(car_id)
+      setCar(result.data)
+    } catch (error: any) {
+      console.log(error);
+      timeOutJwt(error)
+      // toast(JSON.stringify(error.message), 'error')
+    }
+  }, [vehicle, setCar])
 
   useEffect(() => {
     pushLocationUser();
     findMissionByUsre()
     findCurrentVehicle()
+
 
     // const saveLo = setInterval(() => {
     //   pushLocationUser();
@@ -139,10 +164,12 @@ export default function Page() {
 
             <CurrentMissionContext.Provider value={{ missionUser, setMissionUser }} >
               <LocateContextUser.Provider value={{ userLocate, setUserLocate }} >
-                <CurrentVehicleContext.Provider value={{vehicle, setVehicle}}>
+                <CurrentVehicleContext.Provider value={{ vehicle, setVehicle }} >
+                  <CurrentCarsContext.Provider value={{ car, setCar }}>
 
-                  <HomeContent />
+                    <HomeContent />
 
+                  </CurrentCarsContext.Provider>
                 </CurrentVehicleContext.Provider>
               </LocateContextUser.Provider>
             </CurrentMissionContext.Provider>

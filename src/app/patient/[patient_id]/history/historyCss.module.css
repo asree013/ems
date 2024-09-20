@@ -46,6 +46,9 @@
 .sheet{
     width: 500px;
     height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 @media only screen and (max-width: 1024px) {

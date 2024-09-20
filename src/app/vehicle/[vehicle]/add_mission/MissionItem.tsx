@@ -27,7 +27,7 @@ export default function MissionItem({ mission, currentLo, returnLoad }: Props) {
   const vehicleId = useParams().vehicle.toString()
   const key = useSearchParams().get('key')
   const [load, setLoad] = React.useState(false)
-  console.log(vehicleId);
+  console.log("Mission ====> " ,mission);
 
 
 
@@ -49,7 +49,9 @@ export default function MissionItem({ mission, currentLo, returnLoad }: Props) {
         return
       }
     } catch (error: any) {
-      timeOutJwt(error)
+      // timeOutJwt(error)
+      console.log(error);
+      
       setLoad(false)
       toast(JSON.stringify(error.message), 'error')
 
@@ -84,11 +86,11 @@ export default function MissionItem({ mission, currentLo, returnLoad }: Props) {
           <Divider inset="context" />
           <CardContent orientation="horizontal">
             <Typography level="body-xs" fontWeight="md" textColor="text.secondary">
-              สมาชิก {mission._count.Users} คน
+              {/* สมาชิก {mission?._count.Users?? 0} คน */}
             </Typography>
             <Divider orientation="horizontal" />
-            <Typography level="body-xs" fontWeight="md" textColor="text.secondary">
-              ระยะห่างจากภารกิจ {haversines(Number(mission.lat), Number(mission.long), Number(currentLo.lat), Number(currentLo.long)).toFixed(2)} KM.
+            <Typography level="body-xs" fontWeight="md" textColor="text.secondary" sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: "60%" }}>
+              ระยะห่างจากภารกิจ <p style={{color: 'red'}}>{haversines(Number(mission?.lat), Number(mission?.long), Number(currentLo?.lat), Number(currentLo?.long)).toFixed(2)}</p> KM.
             </Typography>
           </CardContent>
         </CardOverflow>

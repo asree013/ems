@@ -38,6 +38,7 @@ export default function MissionForm({ mission_id }: Props) {
   const [src, setSrc] = useState<string>('')
 
   async function onCreateMission(e: React.MouseEvent<HTMLButtonElement | MouseEvent>) {
+    setLoad(true)
     e.preventDefault()
     setIsNull(false)
     if (!missions.title || !missions.description || !missions.lat || !missions.image) {
@@ -61,6 +62,8 @@ export default function MissionForm({ mission_id }: Props) {
       } catch (error: any) {
         console.log(error);
         toast(JSON.stringify(error.message), 'error')
+      } finally {
+        setLoad(false)
       }
     }
   }
@@ -81,6 +84,7 @@ export default function MissionForm({ mission_id }: Props) {
   }
 
   async function onUpdateMission() {
+    setLoad(true)
     try {
       const result = await updateMissionByMissionId(mission_id, missions)
       toast('แก้ไขสำเร็จ', 'success')
@@ -88,6 +92,8 @@ export default function MissionForm({ mission_id }: Props) {
     } catch (error: any) {
       toast(JSON.stringify(error.message), 'error')
       timeOutJwt(error)
+    } finally {
+      setLoad(false)
     }
   }
 
@@ -115,7 +121,7 @@ export default function MissionForm({ mission_id }: Props) {
     <>
       <Card variant="outlined" sx={{ maxWidth: '90%' }} className={missionCss.card}>
         <Box sx={{ p: 2 }} >
-          <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <Stack >
             <Typography gutterBottom variant="h5" component="div">
               {
                 mission_id.includes(NIL) ?
@@ -143,62 +149,21 @@ export default function MissionForm({ mission_id }: Props) {
                 <MapSelect />
               </MissionFromContext.Provider>
             </div>
-            <Stack style={{ padding: 2 }}>
-              <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <TextField error={isNull} value={missions.lat ? missions.lat : '0.000000'} style={{ width: '48%', marginTop: '10px' }} id="filled-basic" label="lat" variant="filled" disabled />
-                <TextField error={isNull} value={missions.long ? missions.long : '0.000000'} style={{ width: '48%', marginTop: '10px' }} id="filled-basic" label="long" variant="filled" disabled />
-              </Box>
-              <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <TextField error={isNull} value={missions.utm ? missions.utm : '0.000000'} style={{ width: '48%', marginTop: '10px' }} id="filled-basic" label="utm" variant="filled" disabled />
-                <TextField error={isNull} value={missions.mgrs ? missions.mgrs : '0.000000'} style={{ width: '48%', marginTop: '10px' }} id="filled-basic" label="mgrs" variant="filled" disabled />
-              </Box>
-              <Stack spacing={1} style={{ margin: '10px 40px' }}>
-                {
-                  src.length > 0 ?
-                    <>
-                      <Fab size='small' color='error' onClick={() => {
-                        setSrc('')
-                        setMissions({ ...missions, image: '' })
-                      }}>
-                        <CancelIcon />
-                      </Fab>
-                      <ImageListItem style={{ width: '14rem', height: '12rem' }}>
-                        <img
-                          src={src}
-                          alt={src}
-                          loading="lazy"
-                        />
-                        <ImageListItemBar
-                          title={'image mission'}
-                          subtitle={<span>by: nonuser</span>}
-                          position="below"
-                        />
-                      </ImageListItem>
-                    </> :
-                    <Typography component={'div'}
-                      style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                      color="initial" onClick={() => document.getElementById('camera')?.click()}>
-                      <Paper elevation={3} style={{ padding: '20px', cursor: 'pointer' }} >
-                        <AddAPhotoIcon style={{ fontSize: '12rem' }} />
-                      </Paper>
-                    </Typography>
 
-                }
-                <input onChange={handlerUpload} id='camera' type="file" capture accept='image/*' hidden />
-              </Stack>
-            </Stack>
-          </Box>
-        </Box>
-
-        <Divider />
-        <Box sx={{ p: 2 }}>
-          {/* <Stack spacing={1} style={{ margin: '10px 40px' }}>
+            <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <TextField error={isNull} value={missions.lat ? missions.lat : '0.000000'} style={{ width: '48%', marginTop: '10px' }} id="filled-basic" label="lat" variant="filled" disabled />
+              <TextField error={isNull} value={missions.long ? missions.long : '0.000000'} style={{ width: '48%', marginTop: '10px' }} id="filled-basic" label="long" variant="filled" disabled />
+            </Box>
+            <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <TextField error={isNull} value={missions.utm ? missions.utm : '0.000000'} style={{ width: '48%', marginTop: '10px' }} id="filled-basic" label="utm" variant="filled" disabled />
+              <TextField error={isNull} value={missions.mgrs ? missions.mgrs : '0.000000'} style={{ width: '48%', marginTop: '10px' }} id="filled-basic" label="mgrs" variant="filled" disabled />
+            </Box>
             {
               src.length > 0 ?
                 <>
                   <Fab size='small' color='error' onClick={() => {
                     setSrc('')
-                    setMission({ ...mission, image: '' })
+                    setMissions({ ...missions, image: '' })
                   }}>
                     <CancelIcon />
                   </Fab>
@@ -225,17 +190,20 @@ export default function MissionForm({ mission_id }: Props) {
 
             }
             <input onChange={handlerUpload} id='camera' type="file" capture accept='image/*' hidden />
-          </Stack> */}
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
-            <Button onClick={(e) => history.back()} style={{ width: '8rem' }} variant='contained' color='error'>ยกเลิก</Button>
+          </Box>
+           
+          <Divider />
+          <Box className='mt-4' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
+            <Button  onClick={(e) => history.back()} style={{ width: '90%', fontSize: '1.5rem' }} variant='contained' color='error'>ยกเลิก</Button>
             {
               mission_id.includes(NIL) ?
-                <Button onClick={onCreateMission} style={{ width: '8rem' }} variant='contained' color='primary'>สร้าง</Button> :
-                <Button onClick={onUpdateMission} style={{ width: '8rem' }} variant='contained' color='primary'>แก้ไก</Button>
+                <Button onClick={onCreateMission} style={{ width: '90%', fontSize: '1.5rem' }} variant='contained' color='primary'>สร้าง</Button> :
+                <Button onClick={onUpdateMission} style={{ width: '90%', fontSize: '1.5rem' }} variant='contained' color='primary'>แก้ไก</Button>
 
             }
           </Box>
         </Box>
+
       </Card>
 
       {

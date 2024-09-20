@@ -7,6 +7,6 @@ export const endpoint = axios.create({
   baseURL: isBrowser && window.location.protocol === 'http:'
     ? enviromentDev.localUrl
     : enviromentDev.baseUrl,
-  timeout: 5000,
+  timeout: 25000,
   withCredentials: true,
 });

@@ -25,7 +25,7 @@ import { Missions } from '@/models/mission.model';
 import { timeOutJwt } from '@/services/timeout.service';
 import { socket } from '@/configs/socket';
 
-import ChatToggle from './styles/ChatToggle.module.css';
+import chat_toggle from './styles/chat_toggle.module.css';
 import { Chats } from '@/models/chat.model';
 import Link from 'next/link';
 import { NIL } from 'uuid';
@@ -199,16 +199,16 @@ export default function ChatButton() {
 
     </ListItem>
 
-    <div className={ChatToggle.chat}>
+    <div className={chat_toggle.chat}>
       {
         messages.length > 0 ?
           messages.map((r, i) => {
             if (r.user_id === user_id) {
               return (
-                <div key={i} className={ChatToggle.is_user}>
+                <div key={i} className={chat_toggle.is_user}>
                   <p style={{ fontSize: '12px' }}>{r.name_send}</p>
                   <div style={{ display: 'flex' }}>
-                    <p className={ChatToggle.user}>{r.message}</p>
+                    <p className={chat_toggle.user}>{r.message}</p>
                     <Avatar style={{ marginLeft: '3px', height: '2rem', width: '2rem' }} src={r.avatar} />
                   </div>
                   <p style={{ fontSize: '10px' }}>{r.post_date}</p>
@@ -216,11 +216,11 @@ export default function ChatButton() {
               );
             } else {
               return (
-                <div key={i} className={ChatToggle.is_not_my_user}>
+                <div key={i} className={chat_toggle.is_not_my_user}>
                   <p style={{ fontSize: '12px' }}>{r.name_send}</p>
                   <div style={{ display: 'flex' }}>
                     <Avatar style={{ marginRight: '3px', height: '2rem', width: '2rem' }} src={r.avatar} />
-                    <p className={ChatToggle.not_user}>{r.message}</p>
+                    <p className={chat_toggle.not_user}>{r.message}</p>
                   </div>
                   <p style={{ fontSize: '10px' }}>{r.post_date}</p>
                 </div>
@@ -412,7 +412,7 @@ export default function ChatButton() {
   return (
     <>
       <ToggleButton
-        className={ChatToggle.positionChat}
+        className={chat_toggle.positionChat}
         value="check"
         selected={selected}
         size='large'
@@ -438,9 +438,9 @@ export default function ChatButton() {
 
       {
         open ?
-          <Paper elevation={8} className={ChatToggle.bodyCard}>
+          <Paper elevation={8} className={chat_toggle.bodyCard}>
             <Sheet
-              className={ChatToggle.chat_size}
+              className={chat_toggle.chat_size}
             >
               <Box sx={{ width: '100%' }}>
 

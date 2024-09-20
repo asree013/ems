@@ -114,15 +114,17 @@ export default function CardPatient({ patient }: Props) {
                     <Button type='button' variant='contained'>เพิ่มประวัต</Button>
 
                     {
-                        !patient.History ?
-                            <p>ยังไม่มีข้อมูล</p> :
+                          patient.History === undefined ||  patient.History === null || patient.History.length === 0?
+                            <div className='m-4'>
+                                <p>ยังไม่มีข้อมูล</p>
+                            </div> :
                             <Accordion className='mt-2' elevation={3}>
                                 <AccordionSummary
                                     expandIcon={<ExpandMoreIcon />}
                                     aria-controls="panel1-content"
                                     id="panel1-header"
                                 >
-                                    อาการ: {patient.History[0].symptom_details}
+                                    อาการ: {patient?.History[0]?.symptom_details}
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     {/* {

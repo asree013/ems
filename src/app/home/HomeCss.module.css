@@ -203,10 +203,21 @@
     height: 500px;
     width: 50%;
 }
+.myVehicle2 {
+    margin-top: 10px;
+    height: 500px;
+    width: 100%;
+}
 
 .imageCarSize {
     max-width: 265px;
     max-height: 265px;
+}
+.girdCarItem{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+    width: 100%;
 }
 
 @media only screen and (max-width: 600px) {
@@ -266,5 +277,14 @@
     .myVehicle {
         height: 445px;
         width: 90%;
+    }
+    .girdCarItem{
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        grid-gap: 100px;
+        width: 100%;
+    }
+    .mobileSetting{
+        margin-top: 10px;
     }
 }

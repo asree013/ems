@@ -1,0 +1,41 @@
+.bodyHomeChart {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    margin-top: 70px;
+}
+
+.monitorChart {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    height: 95rem;
+    grid-gap: 3px;
+    padding: 5px;
+    margin-top: 10px;
+    background: rgb(61, 61, 110);
+}
+
+@media only screen and (min-width: 1370px) {
+    .monitorChart {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        height: 100%;
+        padding: 10px;
+        background: rgb(61, 61, 110);
+    }
+}
+
+@media only screen and (max-width: 450px) {
+    .monitorChart {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        height: 100%;
+        padding: 10px;
+        background: rgb(61, 61, 110);
+    } 
+    .bodyHomeChart{
+        margin-top: 45px;
+    }
+    .modal_item_open{
+        width: 80%;
+        height: 80%;
+    }
+}

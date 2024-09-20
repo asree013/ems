@@ -23,9 +23,9 @@
     }
 }
 
-@media only screen and (max-width: 1024) {
+@media only screen and (max-width: 1025) {
     .map{
-        width: 35rem;
-        height: 40rem;
+        width: 20rem;
+        height: 20rem;
     }
 }

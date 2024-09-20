@@ -12,6 +12,7 @@ import MissionUser from './MissionUser';
 import MissionStateTag from './MissionStateTag';
 import { Button } from '@mui/material';
 import { toast } from '@/services/alert.service';
+import Loadding from '@/components/Loadding';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -51,18 +52,22 @@ type Props = {
 export default function BasicTabs({ params }: Props) {
     const [value, setValue] = React.useState(0);
     const [mission, setMission] = React.useState<Missions>({} as Missions);
+    const [load, setLoad] = React.useState(false)
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
 
     async function onLeaveMission() {
+        setLoad(true)
         try {
             await leaveMission(params.mission_id)
             toast('ออกจสกภารกิจสำเร็จ', 'success')
             // window.location.href = '/home'
         } catch (error) {
             // timeOutJwt(error)
+        } finally {
+            setLoad(true)
         }
     }
 
@@ -85,31 +90,39 @@ export default function BasicTabs({ params }: Props) {
     }
 
     return (
-        <Box sx={{ width: '100%', marginTop: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
-            <h1 style={{fontSize: '22px', fontWeight: 700}}>ภารกิจในปัจจุบัน</h1>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                    <Tab label="รายละเอียด" {...a11yProps(0)} />
-                    <Tab label="สมาชิก" {...a11yProps(1)} />
-                    <Tab label="ผู้ป่วย" {...a11yProps(2)} />
-                    <Tab label="สถาณะ" {...a11yProps(3)} />
-                </Tabs>
+        <>
+            <Box sx={{ width: '100%', marginTop: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+                <h1 style={{ fontSize: '22px', fontWeight: 700 }}>ภารกิจในปัจจุบัน</h1>
+                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                        <Tab label="รายละเอียด" {...a11yProps(0)} />
+                        <Tab label="สมาชิก" {...a11yProps(1)} />
+                        <Tab label="ผู้ป่วย" {...a11yProps(2)} />
+                        <Tab label="สถาณะ" {...a11yProps(3)} />
+                    </Tabs>
+                </Box>
+                <MissionDetailContext.Provider value={{ mission, setMission }} >
+                    <CustomTabPanel value={value} index={0}>
+                        <MissionDetail />
+                        <Button onClick={onLeaveMission} style={{ width: '100%', margin: '10px 0' }} type='button' variant='contained' color='error'>ออกจากภารกิจ</Button>
+                    </CustomTabPanel>
+                    <CustomTabPanel value={value} index={1}>
+                        <MissionUser />
+                    </CustomTabPanel>
+                    <CustomTabPanel value={value} index={2}>
+                        Item Three
+                    </CustomTabPanel>
+                    <CustomTabPanel value={value} index={3}>
+                        <MissionStateTag data={mission} />
+                    </CustomTabPanel>
+                </MissionDetailContext.Provider>
             </Box>
-            <MissionDetailContext.Provider value={{ mission, setMission }} >
-                <CustomTabPanel value={value} index={0}>
-                    <MissionDetail />
-                    <Button onClick={onLeaveMission} style={{width: '100%', margin: '10px 0'}} type='button' variant='contained' color='error'>ออกจากภารกิจ</Button>
-                </CustomTabPanel>
-                <CustomTabPanel value={value} index={1}>
-                    <MissionUser />
-                </CustomTabPanel>
-                <CustomTabPanel value={value} index={2}>
-                    Item Three
-                </CustomTabPanel>
-                <CustomTabPanel value={value} index={3}>
-                    <MissionStateTag data={mission} />
-                </CustomTabPanel>
-            </MissionDetailContext.Provider>
-        </Box>
+
+            {
+                load?
+                <Loadding />:
+                null
+            }
+        </>
     );
 }

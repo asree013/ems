@@ -19,6 +19,7 @@ import HistoryCreate from './stepForm/HistoryCreate';
 import Respi from './stepForm/Respi';
 import Cvs from './stepForm/Cvs';
 import Neuro from './stepForm/Neuro';
+import CreateHistoryFrom from './stepForm/CreateHistoryFrom';
 
 const steps = [
   {
@@ -52,6 +53,10 @@ const steps = [
   {
     label: 'Neuro / Glasgow Coma Scale (GCS)',
     component: <Neuro />
+  },
+  {
+    label: 'สร้างประวัติ',
+    component: <CreateHistoryFrom />
   },
 ];
 

@@ -31,7 +31,7 @@ export default function Page() {
     }
   }, [setMissions])
 
-  const feedLocationUser = useCallback(async() => {
+  const feedLocationUser = useCallback(async () => {
     try {
       const result = await getLocationUser()
       setLocate(result.data)
@@ -60,11 +60,11 @@ export default function Page() {
   return (
     <>
       <div className={missionCss.body}>
+        <Button type='button' className='w-full' variant='outlined' onClick={() => {
+          setLoad(true)
+          window.location.href = '/mission/' + NIL
+        }} >สร้างภารกิจ</Button>
         <div className={missionCss.itemCard}>
-          <Button type='button' variant='outlined' onClick={() => {
-            setLoad(true)
-            window.location.href = '/mission/'+ NIL
-          }} >สร้างภารกิจ</Button>
           {
             Object.keys(missions).length === 0 ?
               null :
@@ -77,9 +77,9 @@ export default function Page() {
       </div>
 
       {
-        load?
-        <Loadding />:
-        null
+        load ?
+          <Loadding /> :
+          null
       }
     </>
   )

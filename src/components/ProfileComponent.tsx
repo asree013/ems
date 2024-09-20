@@ -279,7 +279,7 @@ export default function ProfileComponent() {
                         }
                         <Divider>โรงพยาบาล</Divider>
                         {
-                            Object.keys(findMe.Hospital).length === 0 ?
+                            findMe?.Hospital ?
                                 <Button>เพื่มโรงพยาบาล</Button> :
                                 <Sheet
                                     sx={{
@@ -297,13 +297,13 @@ export default function ProfileComponent() {
                                         <Typography level="body-xs" fontWeight="lg">
                                             ชื่อโรงพยาบาล
                                         </Typography>
-                                        <Typography fontWeight="lg">{findMe.Hospital.hospital_name ?? 'ไม่มีข้อมูล'}</Typography>
+                                        <Typography fontWeight="lg">{findMe?.Hospital?.hospital_name ?? 'ไม่มีข้อมูล'}</Typography>
                                     </div>
                                     <div>
                                         <Typography level="body-xs" fontWeight="lg">
                                             เบอร์โทร
                                         </Typography>
-                                        <Typography fontWeight="lg">{findMe.Hospital.hospital_tel ?? 'ไม่มีข้อมูล'}</Typography>
+                                        <Typography fontWeight="lg">{findMe?.Hospital?.hospital_tel ?? 'ไม่มีข้อมูล'}</Typography>
                                     </div>
                                 </Sheet>
                         }

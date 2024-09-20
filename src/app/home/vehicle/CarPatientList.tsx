@@ -12,7 +12,7 @@ import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import Typography from '@mui/joy/Typography';
 import Check from '@mui/icons-material/Check';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import { CurrentVehicleContext, TCurrentVehicles } from '../CurrentVehicle.context';
+import { CurrentCarsContext, CurrentVehicleContext, TCurrentCars, TCurrentVehicles } from '../CurrentVehicle.context';
 
 import AddIcon from '@mui/icons-material/Add';
 import AirlineSeatFlatAngledIcon from '@mui/icons-material/AirlineSeatFlatAngled';
@@ -31,49 +31,25 @@ import CarPatientitem from './CarPatientItem';
 
 export default function CarPatientList() {
     const { vehicle, setVehicle } = useContext<TCurrentVehicles>(CurrentVehicleContext)
-    const [car, setCar] = useState<Cars>({} as Cars)
     const [load, setLoad] = useState(false)
-
-    const assingCarByVehicleId = useCallback(async () => {
-        setLoad(true)
-        // const interval = setInterval(async () => {
-            try {
-                const result = await findCarByCarId(vehicle?.car?.Car.id)
-                setCar(result.data)
-            } catch (error: any) {
-                toast(JSON.stringify(error.message), 'error')
-            } finally {
-                // clearInterval(interval)
-                setLoad(false)
-            }
-        // }, 2500)
-
-    }, [setCar, vehicle])
-
-    useEffect(() => {
-        assingCarByVehicleId()
-
-        return () => {
-            assingCarByVehicleId
-        }
-    }, [vehicle, assingCarByVehicleId])
+    const {car, setCar} = useContext<TCurrentCars>(CurrentCarsContext)
 
     return (
         <>
             <Box
-                className={HomeCss.myVehicle}
+                className={HomeCss.myVehicle2}
             >
 
                 <Card size="lg" variant="outlined">
                     {/* <Chip size="sm" variant="outlined" color="neutral">
                     BASIC
                 </Chip> */}
-                    <Typography level="h3"><AirlineSeatFlatAngledIcon /> ผู้ป่วยภายในยานพาหนะ</Typography>
+                    <Typography level="h4"><AirlineSeatFlatAngledIcon color='error' /> ผู้ป่วยภายในยานพาหนะ</Typography>
                     <Divider inset="none" />
                     <Box sx={{ height: '100%' }}>
                         {
                             vehicle.car || vehicle.helicopter || vehicle.ship ?
-                                <div style={{ height: '100%' }}>
+                                <div style={{ height: '100%', minHeight: '22rem', overflow: 'scroll' }}>
                                     {
                                         car?.PatientBelongCar?.map((r, i) => 
                                             <CarPatientitem key={i} patient_id={r.patient_id} />
@@ -93,10 +69,10 @@ export default function CarPatientList() {
                     <Divider inset="none" />
                     <CardActions>
                         <Typography level="title-lg" sx={{ mr: 'auto' }}>
-                            3.990€{' '}
-                            <Typography textColor="text.tertiary" sx={{ fontSize: 'sm' }}>
-                                / month
-                            </Typography>
+                            <Button color='danger' onClick={() => {
+                                setLoad(true)
+                                window.location.href = '/patient?key=add-car&vehicle_id=' + car.id
+                            }}>เพิ่มผู้ป่วยในรถ</Button>
                         </Typography>
                         <Button
                             variant="soft"
