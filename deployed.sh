@@ -3,7 +3,7 @@ set -e
 
 git add .
 git commit -m "update"
-git push origin 
+git push origin/main 
 
 echo "เริมการ build เพื่อ deploy"
 echo "กำลังลบโฟลเดอร์ public/_next ..."
