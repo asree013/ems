@@ -49,7 +49,7 @@ export default function VehicleCard() {
                         {
                             vehicle.car || vehicle.helicopter || vehicle.ship ?
                                 <div style={{ height: '100%' }}>
-                                    <CarDetailHome car={car} setCar={setCar} />
+                                    <CarDetailHome vehicles={vehicle}  />
                                 </div>
                                 : <div onClick={() => {
                                     setLoad(true)

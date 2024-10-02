@@ -13,15 +13,13 @@ type Props = {
   }
 }
 
-export default function Page({params}: Props) {
+export default function Page({ params }: Props) {
   const [open, setOpen] = useState<boolean>(false)
   return (
-    <>
+    <div className={missionCss.home}>
       <OpenModalMapContext.Provider value={{ open, setOpen }}>
-          <div className={missionCss.home}>
-            <MissionForm mission_id={params.mission_id} />
-          </div>
+        <MissionForm mission_id={params.mission_id} />
       </OpenModalMapContext.Provider>
-    </>
+    </div>
   )
 }

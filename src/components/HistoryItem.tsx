@@ -13,8 +13,9 @@ import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Loadding from '@/components/Loadding';
+import { HistoryInCar } from '@/app/home/vehicle/CarHistoryItem';
 type Props = {
-  value: Historys;
+  value: HistoryInCar;
 };
 
 export default function HistoryItem({ value }: Props) {
@@ -60,7 +61,7 @@ export default function HistoryItem({ value }: Props) {
               </Typography>
             </Stack>
             <Typography gutterBottom variant="h6" component="div">
-              CC: {value?.chief_complaint} time: {value?.chief_complaint_number ?? 0}
+              CC: {value?.chief_complaint} time: {value?.chief_complaint ?? 0}
             </Typography>
             <Typography gutterBottom variant="h6" component="div">
               PI: {value?.present_illness}

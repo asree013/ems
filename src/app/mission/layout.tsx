@@ -1,9 +1,9 @@
-import Nav from '@/components/Nav';
 import { metadata } from '../layout';
 import { useCallback, useEffect } from 'react';
 import { FindUserMe } from '@/services/authen.service';
 import TabMenu from '@/components/TabMenu';
-import ChatButton from '@/components/ChatButton';
+import ChatButton from '@/components/chats/ChatButton';
+import Nav from '@/components/nav/Nav';
 
 metadata.title = 'Monitor EMS App';
 
@@ -26,7 +26,7 @@ export default function DashboardLayout({
   //   validateLogin()
 
   return (
-    <section style={{ width: '100%' }}>
+    <section >
       {/* Include shared UI here e.g. a header or sidebar */}
       <Nav />
 

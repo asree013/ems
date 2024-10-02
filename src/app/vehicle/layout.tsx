@@ -1,8 +1,10 @@
-import Nav from '@/components/Nav';
 import { Metadata } from 'next';
 import { metadata } from '../layout';
 import TabMenu from '@/components/TabMenu';
-import ChatButton from '@/components/ChatButton';
+import Nav from '@/components/nav/Nav';
+import ChatButton from '@/components/chats/ChatButton';
+import { Suspense } from 'react';
+import Loadding from '@/components/Loadding';
 
 metadata.title = 'Viachle EMS App';
 
@@ -17,9 +19,12 @@ export default function DashboardLayout({
       <Nav />
 
       <div style={{ marginTop: '60px' }}>
-        <TabMenu>
-          {children}
-        </TabMenu>
+        <Suspense fallback={<Loadding />}>
+          <TabMenu>
+            {children}
+          </TabMenu>
+        </Suspense>
+
       </div>
 
       <ChatButton />

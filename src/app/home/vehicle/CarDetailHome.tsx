@@ -24,7 +24,7 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
-import { Cars } from '@/models/vehicle.model';
+import { Cars, Vehicles } from '@/models/vehicle.model';
 import { CarDetailContext, TCarDetailContent } from '@/components/car/CarDetail.context';
 
 import HomeCss from '../HomeCss.module.css'
@@ -32,11 +32,10 @@ import HomeCss from '../HomeCss.module.css'
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 type CarProps = {
-    car: Cars
-    setCar: React.Dispatch<React.SetStateAction<Cars>>
+    vehicles: Vehicles
 }
 
-export default function CarDetailHome({car, setCar}: CarProps) {
+export default function CarDetailHome({vehicles}: CarProps) {
   return (
     <Card
       variant="outlined"
@@ -46,40 +45,126 @@ export default function CarDetailHome({car, setCar}: CarProps) {
       }}
     >
       <CardContent orientation="horizontal" sx={{ alignItems: 'center', gap: 1 }}>
-        <Typography fontWeight="lg">{car.calling}</Typography>
+        <Typography fontWeight="lg">{vehicles?.car?.Car.calling}</Typography>
         <IconButton variant="plain" color="neutral" size="sm" sx={{ ml: 'auto' }}>
           <MoreHoriz />
         </IconButton>
       </CardContent>
       <CardOverflow>
-          <SwipeableTextMobileStepper car={car} />
+          <SwipeableTextMobileStepper car={vehicles?.car} />
       </CardOverflow>
 
     </Card>
   );
 }
 
+type CarInVehicles = {
+  Car: {
+    id: string
+    status: string
+    type: string
+    number: string
+    description: any
+    image_front: string
+    image_back: string
+    image_left: string
+    image_rigth: string
+    radio: string
+    calling: string
+    driver_id: string
+    mission_id: any
+    create_date: string
+    update_date: string
+    hospital_id: string
+    PatientBelongCar: Array<{
+      id: string
+      car_id: string
+      patient_id: string
+      transpose_date_time: any
+      transpose_to: any
+      transpose_id: any
+      create_date: string
+      update_date: string
+      Patient: {
+        id: string
+        first_name: string
+        last_name: string
+        qr_number: any
+        gender: string
+        age: any
+        birthday: any
+        id_card: any
+        tel: any
+        address: any
+        group_blood: any
+        image: string
+        image_id_card: any
+        user_create_id: any
+        user_update_id: any
+        date_time_died: any
+        date_time_go_home: any
+        create_date: string
+        update_date: string
+        mission_id: any
+        risk_level_id: any
+        History: Array<{
+          id: string
+          symptom_details: string
+          status: string
+          create_date: string
+          update_date: string
+          patient_id: string
+          chief_complaint: string
+          present_illness: string
+          user_create_id: string
+          user_update_id: string
+          physical_status: string
+          triage_lavel: string
+        }>
+      }
+      Car: {
+        id: string
+        status: string
+        type: string
+        number: string
+        description: any
+        image_front: string
+        image_back: string
+        image_left: string
+        image_rigth: string
+        radio: string
+        calling: string
+        driver_id: string
+        mission_id: any
+        create_date: string
+        update_date: string
+        hospital_id: string
+      }
+    }>
+  }
+}
+
 type Props ={
-  car: Cars
+  car: CarInVehicles
 }
 
 function SwipeableTextMobileStepper({car}: Props) {
 
     let dataImage = [
       {
-        imgPath: car.image_front,
+        imgPath: car.Car.image_front,
         label: 'หน้ารถ'
       },
       {
-        imgPath: car.image_back,
+        imgPath: car.Car.image_back,
         label: 'หลังรถ'
       },
       {
-        imgPath: car.image_left,
+        imgPath: car.Car.image_left,
         label: 'ด้านซ้านตัวรถ'
       },
       {
-        imgPath: car.image_rigth,
+        imgPath: car.Car.image_rigth,
         label: 'ด้านหลังตัวรถ'
       },
     ]

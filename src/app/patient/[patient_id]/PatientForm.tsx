@@ -39,6 +39,7 @@ import RadioGroup from '@mui/joy/RadioGroup';
 import Sheet from '@mui/joy/Sheet';
 import Done from '@mui/icons-material/Done';
 import Loadding from '@/components/Loadding';
+import { uploadImage } from '@/services/uploadImage.service';
 
 type Props = {
   returnOnCreatePatient: () => void;
@@ -209,33 +210,27 @@ export default function PatientForm({
           </AccordionDetails>
         </Accordion>
         <Box className="patientImage">
-          <input type="file" id='profileP' onChange={(e) => {
+          <input type="file" id='profileP' onChange={async(e) => {
             setLoad(true)
             if (e.target.files) {
-              const FR = new FileReader()
-              FR.onload = async (event) => {
-                if (event.target && event.target.result) {
-                  const base64 = event.target.result as string
-                  setPatient({ ...patient, image: base64 })
-                  setLoad(false)
-                }
+              if (e.target.files) {
+                const fdt = new FormData()
+                fdt.append('file', e.target.files[0])
+                const image = await uploadImage(fdt)
+                setPatient({ ...patient, image_id_card: image.data.result })
+                setLoad(false)
               }
-              FR.readAsDataURL(e.target.files[0])
             }
           }} hidden />
 
-          <input type="file" id='profileId' onChange={(e) => {
+          <input type="file" id='profileId' onChange={async (e) => {
             setLoad(true)
             if (e.target.files) {
-              const FR = new FileReader()
-              FR.onload = async (event) => {
-                if (event.target && event.target.result) {
-                  const base64 = event.target.result as string
-                  setPatient({ ...patient, image_id_card: base64 })
-                  setLoad(false)
-                }
-              }
-              FR.readAsDataURL(e.target.files[0])
+              const fdt = new FormData()
+              fdt.append('file', e.target.files[0])
+              const image = await uploadImage(fdt)
+              setPatient({ ...patient, image_id_card: image.data.result })
+              setLoad(false)
             }
           }} hidden />
 
@@ -341,9 +336,9 @@ export default function PatientForm({
       </div>
 
       {
-        load?
-        <Loadding />
-        : null
+        load ?
+          <Loadding />
+          : null
       }
     </>
   );

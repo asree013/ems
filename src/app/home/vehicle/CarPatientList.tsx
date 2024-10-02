@@ -25,14 +25,13 @@ import { CarDetailContext } from '@/components/car/CarDetail.context';
 import { Cars } from '@/models/vehicle.model';
 import { findCarByCarId } from '@/services/car.service';
 import { toast } from '@/services/alert.service';
-import CarDetailHome from './CarDetailHome';
 import CarPatientitem from './CarPatientItem';
 
 
 export default function CarPatientList() {
     const { vehicle, setVehicle } = useContext<TCurrentVehicles>(CurrentVehicleContext)
     const [load, setLoad] = useState(false)
-    const {car, setCar} = useContext<TCurrentCars>(CurrentCarsContext)
+    const { car, setCar } = useContext<TCurrentCars>(CurrentCarsContext)
 
     return (
         <>
@@ -51,11 +50,11 @@ export default function CarPatientList() {
                             vehicle.car || vehicle.helicopter || vehicle.ship ?
                                 <div style={{ height: '100%', minHeight: '22rem', overflow: 'scroll' }}>
                                     {
-                                        car?.PatientBelongCar?.map((r, i) => 
-                                            <CarPatientitem key={i} patient_id={r.patient_id} />
+                                        vehicle.car.Car.PatientBelongCar?.map((r, i) =>
+                                            <CarPatientitem key={i} patient={r} />
                                         )
                                     }
-                                    
+
                                 </div>
                                 : <div onClick={() => {
                                     setLoad(true)

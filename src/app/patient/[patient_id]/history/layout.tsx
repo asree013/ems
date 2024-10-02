@@ -1,5 +1,5 @@
 import { metadata } from '@/app/layout';
-import Nav from '@/components/Nav';
+import Nav from '@/components/nav/Nav';
 import { Metadata } from 'next';
 
 metadata.title = 'History EMS App';

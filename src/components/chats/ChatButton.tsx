@@ -1,14 +1,11 @@
 'use client';
 
 import * as React from 'react';
-import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
-import SaveIcon from '@mui/icons-material/Save';
 import MessageIcon from '@mui/icons-material/Message';
 import { Badge, BadgeProps, Box, Chip, Fab, IconButton, Paper, styled } from '@mui/material';
 
 import Input from '@mui/joy/Input';
 import Button from '@mui/joy/Button';
-import Modal from '@mui/joy/Modal';
 import ModalClose from '@mui/joy/ModalClose';
 import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
@@ -25,7 +22,7 @@ import { Missions } from '@/models/mission.model';
 import { timeOutJwt } from '@/services/timeout.service';
 import { socket } from '@/configs/socket';
 
-import chat_toggle from './styles/chat_toggle.module.css';
+import style from './chat_toggle.module.css';
 import { Chats } from '@/models/chat.model';
 import Link from 'next/link';
 import { NIL } from 'uuid';
@@ -199,16 +196,16 @@ export default function ChatButton() {
 
     </ListItem>
 
-    <div className={chat_toggle.chat}>
+    <div className={style.chat}>
       {
         messages.length > 0 ?
           messages.map((r, i) => {
             if (r.user_id === user_id) {
               return (
-                <div key={i} className={chat_toggle.is_user}>
+                <div key={i} className={style.is_user}>
                   <p style={{ fontSize: '12px' }}>{r.name_send}</p>
                   <div style={{ display: 'flex' }}>
-                    <p className={chat_toggle.user}>{r.message}</p>
+                    <p className={style.user}>{r.message}</p>
                     <Avatar style={{ marginLeft: '3px', height: '2rem', width: '2rem' }} src={r.avatar} />
                   </div>
                   <p style={{ fontSize: '10px' }}>{r.post_date}</p>
@@ -216,11 +213,11 @@ export default function ChatButton() {
               );
             } else {
               return (
-                <div key={i} className={chat_toggle.is_not_my_user}>
+                <div key={i} className={style.is_not_my_user}>
                   <p style={{ fontSize: '12px' }}>{r.name_send}</p>
                   <div style={{ display: 'flex' }}>
                     <Avatar style={{ marginRight: '3px', height: '2rem', width: '2rem' }} src={r.avatar} />
-                    <p className={chat_toggle.not_user}>{r.message}</p>
+                    <p className={style.not_user}>{r.message}</p>
                   </div>
                   <p style={{ fontSize: '10px' }}>{r.post_date}</p>
                 </div>
@@ -412,7 +409,7 @@ export default function ChatButton() {
   return (
     <>
       <ToggleButton
-        className={chat_toggle.positionChat}
+        className={style.positionChat}
         value="check"
         selected={selected}
         size='large'
@@ -438,9 +435,9 @@ export default function ChatButton() {
 
       {
         open ?
-          <Paper elevation={8} className={chat_toggle.bodyCard}>
+          <Paper elevation={8} className={style.bodyCard}>
             <Sheet
-              className={chat_toggle.chat_size}
+              className={style.chat_size}
             >
               <Box sx={{ width: '100%' }}>
 

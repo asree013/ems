@@ -52,8 +52,8 @@ export default function CarHistoryPatient() {
                             vehicle.car || vehicle.helicopter || vehicle.ship ?
                                 <div style={{  height: '22rem', overflow: 'scroll', }}>
                                     {
-                                        car?.PatientBelongCar?.map((r, i) => 
-                                            <CarHistoryItem key={i} patient_id={r.patient_id} />
+                                        vehicle.car.Car.PatientBelongCar?.map((r, i) => 
+                                            <CarHistoryItem key={i} patient_id={r.patient_id} history={r.Patient.History[0]} />
                                         )
                                     }
                                     

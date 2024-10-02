@@ -1,6 +1,6 @@
-import Nav from '@/components/Nav';
 import { Metadata } from 'next';
 import { metadata } from '../layout';
+import Nav from '@/components/nav/Nav';
 
 metadata.title = 'Select Mode EMS App';
 

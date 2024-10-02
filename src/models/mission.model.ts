@@ -67,10 +67,11 @@ export interface MissionTag{
   users_id: string
   create_date: string
   update_date: string
-  mission: Missions
   Users: {
     first_name: string
     last_name: string
     id: string
   }
+  label: string
+  description: string
 }

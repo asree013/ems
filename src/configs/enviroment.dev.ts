@@ -16,7 +16,8 @@ export const enviromentDev = {
   chat: '/chat',
   car: '/car',
   helicopter: '/helicopter',
-  noImage: 'https://us.123rf.com/450wm/koblizeek/koblizeek2208/koblizeek220800254/190563481-no-image-vector-symbol-missing-available-icon-no-gallery-for-this-moment-placeholder.jpg'
+  noImage: 'https://us.123rf.com/450wm/koblizeek/koblizeek2208/koblizeek220800254/190563481-no-image-vector-symbol-missing-available-icon-no-gallery-for-this-moment-placeholder.jpg',
+  upload_image: 'https://storage.m-mert.com/storage'
 };
 
 export const enviromentPath = {

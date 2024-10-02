@@ -1,8 +1,8 @@
-import Nav from '@/components/Nav';
 
+import Nav from '@/components/nav/Nav';
 import { metadata } from '../layout';
 import TabMenu from '@/components/TabMenu';
-import ChatButton from '@/components/ChatButton';
+import ChatButton from '@/components/chats/ChatButton';
 metadata.title = 'Device EMS App';
 
 export default function DashboardLayout({

@@ -32,6 +32,8 @@ import { createCar, findCarByCarId } from '@/services/car.service';
 import { timeOutJwt } from '@/services/timeout.service';
 import { NIL } from 'uuid';
 import { useSearchParams } from 'next/navigation';
+import { uploadImage } from '@/services/uploadImage.service';
+import Loadding from '@/components/Loadding';
 
 type Props = {
   params: {
@@ -39,50 +41,42 @@ type Props = {
   }
 }
 
-export default function Page({params}: Props) {
+export default function Page({ params }: Props) {
 
   const [car, setCar] = React.useState<Cars>({} as Cars)
   const [load, setLoad] = React.useState<boolean>(false)
 
-  function handleUploadImage(e: React.ChangeEvent<HTMLInputElement>, key: string) {
+  async function handleUploadImage(e: React.ChangeEvent<HTMLInputElement>, key: string) {
     e.preventDefault()
-    const FR = new FileReader()
+    setLoad(true)
     if (e.target.files) {
       if (key.includes('front')) {
-        FR.onload = (event) => {
-          if (event.target && event.target.result) {
-            const base64 = event.target.result as string
-            setCar({ ...car, image_front: base64 })
-          }
-        }
-        FR.readAsDataURL(e.target.files[0])
+        const file = new FormData()
+        file.append('file', e.target.files[0])
+        const image = await uploadImage(file)
+        setCar({ ...car, image_front: image.data.result })
+        setLoad(false)
       }
       else if (key.includes('back')) {
-        FR.onload = (event) => {
-          if (event.target && event.target.result) {
-            const base64 = event.target.result as string
-            setCar({ ...car, image_back: base64 })
-          }
-        }
-        FR.readAsDataURL(e.target.files[0])
+        const file = new FormData()
+        file.append('file', e.target.files[0])
+        const image = await uploadImage(file)
+        setCar({ ...car, image_back: image.data.result })
+        setLoad(false)
       }
       else if (key.includes('left')) {
-        FR.onload = (event) => {
-          if (event.target && event.target.result) {
-            const base64 = event.target.result as string
-            setCar({ ...car, image_left: base64 })
-          }
-        }
-        FR.readAsDataURL(e.target.files[0])
+        const file = new FormData()
+        file.append('file', e.target.files[0])
+        const image = await uploadImage(file)
+        setCar({ ...car, image_left: image.data.result })
+        setLoad(false)
       }
       else if (key.includes('right')) {
-        FR.onload = (event) => {
-          if (event.target && event.target.result) {
-            const base64 = event.target.result as string
-            setCar({ ...car, image_rigth: base64 })
-          }
-        }
-        FR.readAsDataURL(e.target.files[0])
+        const file = new FormData()
+        file.append('file', e.target.files[0])
+        const image = await uploadImage(file)
+        setCar({ ...car, image_rigth: image.data.result })
+        setLoad(false)
       }
     }
   }
@@ -100,11 +94,11 @@ export default function Page({params}: Props) {
       history.back()
     } catch (error) {
       timeOutJwt(error)
-    } finally{
+    } finally {
       setLoad(false)
     }
   }
-  const feedCarByCarId = React.useCallback(async() => {
+  const feedCarByCarId = React.useCallback(async () => {
     try {
       const result = await findCarByCarId(params.vehicle)
       setCar(result.data)
@@ -114,132 +108,156 @@ export default function Page({params}: Props) {
   }, [setCar])
 
   React.useEffect(() => {
-    if(params.vehicle !== NIL){
+    if (params.vehicle !== NIL) {
       feedCarByCarId()
     }
 
-    return() => {
+    return () => {
       feedCarByCarId
     }
   }, [feedCarByCarId])
   return (
-    <form onSubmit={onSubmitCreateCar}>
-      <Card
-        variant="outlined"
-        sx={{
-          maxHeight: 'max-content',
-          maxWidth: '100%',
-          mx: 'auto',
-          // to make the demo resizable
-          overflow: 'auto',
-          resize: 'horizontal',
-        }}
-      >
-        <Typography level="title-lg" startDecorator={<LocalShippingIcon color='primary' />}>
-          {params.vehicle === NIL? 'เพิ่มรถรับส่ง': 'แก้ไขรถรับส่ง'}
-        </Typography>
-        <Divider inset="none" />
-        <CardContent
+    <>
+      <form onSubmit={onSubmitCreateCar}>
+        <Card
+          variant="outlined"
           sx={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, minmax(80px, 1fr))',
-            gap: 1.5,
+            maxHeight: 'max-content',
+            maxWidth: '100%',
+            mx: 'auto',
+            // to make the demo resizable
+            overflow: 'auto',
+            resize: 'horizontal',
           }}
         >
-          <FormControl sx={{ gridColumn: '1/-1' }}>
-            <FormLabel>นามเรียกขาน</FormLabel>
-            <Input value={car.calling? car.calling: ''} onChange={(e) => {
-              setCar({ ...car, calling: e.target.value })
-            }} endDecorator={<BadgeIcon />} placeholder='ป. กุ้งเผา' required />
-          </FormControl>
-          <FormControl>
-            <FormLabel>ป้ายทะเบียน</FormLabel>
-            <Input value={car.number? car.number: ''} onChange={(e) => {
-              setCar({ ...car, number: e.target.value })
-            }} endDecorator={<CreditCardIcon />} placeholder='กก-1234' required />
-          </FormControl>
-          <FormControl>
-            <FormLabel>ช่องสัญญานวิทยุ</FormLabel>
-            <Input value={car.radio? car.radio: ''} onChange={(e) => {
-              setCar({ ...car, radio: e.target.value })
-            }} endDecorator={<RadioIcon />} placeholder='96.25' required />
-          </FormControl>
-          <FormControl sx={{ gridColumn: '1/-1' }}>
-            <FormLabel>รายละเอียดอื่นๆ</FormLabel>
-            <Input value={car.description? car.description: ''} onChange={(e) => {
-              setCar({ ...car, description: e.target.value })
-            }} placeholder="ไม่จำเป็นต้องกรอก" />
-          </FormControl>
+          <Typography level="title-lg" startDecorator={<LocalShippingIcon color='primary' />}>
+            {params.vehicle === NIL ? 'เพิ่มรถรับส่ง' : 'แก้ไขรถรับส่ง'}
+          </Typography>
+          <Divider inset="none" />
+          <CardContent
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, minmax(80px, 1fr))',
+              gap: 1.5,
+            }}
+          >
+            <FormControl sx={{ gridColumn: '1/-1' }}>
+              <FormLabel>นามเรียกขาน</FormLabel>
+              <Input value={car.calling ? car.calling : ''} onChange={(e) => {
+                setCar({ ...car, calling: e.target.value })
+              }} endDecorator={<BadgeIcon />} placeholder='ป. กุ้งเผา' required />
+            </FormControl>
+            <FormControl>
+              <FormLabel>ป้ายทะเบียน</FormLabel>
+              <Input value={car.number ? car.number : ''} onChange={(e) => {
+                setCar({ ...car, number: e.target.value })
+              }} endDecorator={<CreditCardIcon />} placeholder='กก-1234' required />
+            </FormControl>
+            <FormControl>
+              <FormLabel>ช่องสัญญานวิทยุ</FormLabel>
+              <Input value={car.radio ? car.radio : ''} onChange={(e) => {
+                setCar({ ...car, radio: e.target.value })
+              }} endDecorator={<RadioIcon />} placeholder='96.25' required />
+            </FormControl>
+            <FormControl sx={{ gridColumn: '1/-1' }}>
+              <FormLabel>รายละเอียดอื่นๆ</FormLabel>
+              <Input value={car.description ? car.description : ''} onChange={(e) => {
+                setCar({ ...car, description: e.target.value })
+              }} placeholder="ไม่จำเป็นต้องกรอก" />
+            </FormControl>
 
 
-          <FormControl sx={{ gridColumn: '1/-1' }}>
-            <Typography id="segmented-controls-example" fontWeight="lg" fontSize="sm">
-              ประเภทรถ:
-            </Typography>
-            <RadioGroup
-              orientation="horizontal"
-              aria-labelledby="segmented-controls-example"
-              name="Fr"
-              value={car.type ? car.type : ''}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                setCar({ ...car, type: event.target.value })
-              }
-              sx={{
-                minHeight: 48,
-                padding: '4px',
-                borderRadius: '12px',
-                bgcolor: 'neutral.softBg',
-                '--RadioGroup-gap': '4px',
-                '--Radio-actionRadius': '8px',
-              }}
-            >
-              {['Fr', 'Basic', 'Advance'].map((item) => (
-                <Radio
-                  key={item}
-                  color="neutral"
-                  value={item}
-                  disableIcon
-                  label={item}
-                  variant="plain"
-                  sx={{
-                    px: 2,
-                    alignItems: 'center',
-                  }}
-                  slotProps={{
-                    action: ({ checked }) => ({
-                      sx: {
-                        ...(checked && {
-                          bgcolor: 'background.surface',
-                          boxShadow: 'sm',
-                          '&:hover': {
+            <FormControl sx={{ gridColumn: '1/-1' }}>
+              <Typography id="segmented-controls-example" fontWeight="lg" fontSize="sm">
+                ประเภทรถ:
+              </Typography>
+              <RadioGroup
+                orientation="horizontal"
+                aria-labelledby="segmented-controls-example"
+                name="Fr"
+                value={car.type ? car.type : ''}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                  setCar({ ...car, type: event.target.value })
+                }
+                sx={{
+                  minHeight: 48,
+                  padding: '4px',
+                  borderRadius: '12px',
+                  bgcolor: 'neutral.softBg',
+                  '--RadioGroup-gap': '4px',
+                  '--Radio-actionRadius': '8px',
+                }}
+              >
+                {['Fr', 'Basic', 'Advance'].map((item) => (
+                  <Radio
+                    key={item}
+                    color="neutral"
+                    value={item}
+                    disableIcon
+                    label={item}
+                    variant="plain"
+                    sx={{
+                      px: 2,
+                      alignItems: 'center',
+                    }}
+                    slotProps={{
+                      action: ({ checked }) => ({
+                        sx: {
+                          ...(checked && {
                             bgcolor: 'background.surface',
-                          },
-                        }),
-                      },
-                    }),
-                  }}
-                />
-              ))}
-            </RadioGroup>
-          </FormControl>
-          <div className={carCss.bodyImage}>
-            <input type="file" id='front' onChange={(e) => handleUploadImage(e, 'front')} hidden />
-            {
-              !car.image_front ?
-                <div onClick={() => document.getElementById('front')?.click()}>
-                  <ImageListItem className={carCss.imageCars}  >
+                            boxShadow: 'sm',
+                            '&:hover': {
+                              bgcolor: 'background.surface',
+                            },
+                          }),
+                        },
+                      }),
+                    }}
+                  />
+                ))}
+              </RadioGroup>
+            </FormControl>
+            <div className={carCss.bodyImage}>
+              <input type="file" id='front' onChange={(e) => handleUploadImage(e, 'front')} hidden />
+              {
+                !car.image_front ?
+                  <div onClick={() => document.getElementById('front')?.click()}>
+                    <ImageListItem className={carCss.imageCars}  >
+                      <img
+
+                        srcSet={AddIcon.src}
+                        src={AddIcon.src}
+                        alt={'item.title'}
+                        loading="lazy"
+                      />
+                      <ImageListItemBar
+                        title={'คลิกเพื่อ upload หน้ารถ'}
+                        subtitle={'item.author'}
+                        actionIcon={
+                          <IconButton
+                            sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                            aria-label={`info about `}
+                          >
+                            <ClearIcon />
+                          </IconButton>
+                        }
+                      />
+                    </ImageListItem>
+                  </div> :
+                  <ImageListItem className={carCss.imageCars} >
                     <img
 
-                      srcSet={AddIcon.src}
-                      src={AddIcon.src}
+                      srcSet={car.image_front}
+                      src={car.image_front}
                       alt={'item.title'}
                       loading="lazy"
                     />
                     <ImageListItemBar
-                      title={'คลิกเพื่อ upload หน้ารถ'}
+                      title={'หน้ารถ'}
                       subtitle={'item.author'}
                       actionIcon={
                         <IconButton
+                          onClick={() => setCar({ ...car, image_front: '' })}
                           sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
                           aria-label={`info about `}
                         >
@@ -248,48 +266,48 @@ export default function Page({params}: Props) {
                       }
                     />
                   </ImageListItem>
-                </div> :
-                <ImageListItem className={carCss.imageCars} >
-                  <img
+              }
 
-                    srcSet={car.image_front}
-                    src={car.image_front}
-                    alt={'item.title'}
-                    loading="lazy"
-                  />
-                  <ImageListItemBar
-                    title={'หน้ารถ'}
-                    subtitle={'item.author'}
-                    actionIcon={
-                      <IconButton
-                        onClick={() => setCar({ ...car, image_front: '' })}
-                        sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                        aria-label={`info about `}
-                      >
-                        <ClearIcon />
-                      </IconButton>
-                    }
-                  />
-                </ImageListItem>
-            }
+              <input type="file" id='back' onChange={(e) => handleUploadImage(e, 'back')} hidden />
+              {
+                !car.image_back ?
+                  <div onClick={() => document.getElementById('back')?.click()}>
+                    <ImageListItem className={carCss.imageCars}  >
+                      <img
 
-            <input type="file" id='back' onChange={(e) => handleUploadImage(e, 'back')} hidden />
-            {
-              !car.image_back ?
-                <div onClick={() => document.getElementById('back')?.click()}>
-                  <ImageListItem className={carCss.imageCars}  >
+                        srcSet={AddIcon.src}
+                        src={AddIcon.src}
+                        alt={'item.title'}
+                        loading="lazy"
+                      />
+                      <ImageListItemBar
+                        title={'คลิกเพื่อ upload หลังนชรถ'}
+                        subtitle={'item.author'}
+                        actionIcon={
+                          <IconButton
+                            sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                            aria-label={`info about `}
+                          >
+                            <ClearIcon />
+                          </IconButton>
+                        }
+                      />
+                    </ImageListItem>
+                  </div> :
+                  <ImageListItem className={carCss.imageCars} >
                     <img
 
-                      srcSet={AddIcon.src}
-                      src={AddIcon.src}
+                      srcSet={car.image_back}
+                      src={car.image_back}
                       alt={'item.title'}
                       loading="lazy"
                     />
                     <ImageListItemBar
-                      title={'คลิกเพื่อ upload หลังนชรถ'}
+                      title={'หน้ารถ'}
                       subtitle={'item.author'}
                       actionIcon={
                         <IconButton
+                          onClick={() => setCar({ ...car, image_back: '' })}
                           sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
                           aria-label={`info about `}
                         >
@@ -298,47 +316,47 @@ export default function Page({params}: Props) {
                       }
                     />
                   </ImageListItem>
-                </div> :
-                <ImageListItem className={carCss.imageCars} >
-                  <img
+              }
+              <input type="file" id='left' onChange={(e) => handleUploadImage(e, 'left')} hidden />
+              {
+                !car.image_left ?
+                  <div onClick={() => document.getElementById('left')?.click()}>
+                    <ImageListItem className={carCss.imageCars}  >
+                      <img
 
-                    srcSet={car.image_back}
-                    src={car.image_back}
-                    alt={'item.title'}
-                    loading="lazy"
-                  />
-                  <ImageListItemBar
-                    title={'หน้ารถ'}
-                    subtitle={'item.author'}
-                    actionIcon={
-                      <IconButton
-                        onClick={() => setCar({ ...car, image_back: '' })}
-                        sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                        aria-label={`info about `}
-                      >
-                        <ClearIcon />
-                      </IconButton>
-                    }
-                  />
-                </ImageListItem>
-            }
-            <input type="file" id='left' onChange={(e) => handleUploadImage(e, 'left')} hidden />
-            {
-              !car.image_left ?
-                <div onClick={() => document.getElementById('left')?.click()}>
-                  <ImageListItem className={carCss.imageCars}  >
+                        srcSet={AddIcon.src}
+                        src={AddIcon.src}
+                        alt={'item.title'}
+                        loading="lazy"
+                      />
+                      <ImageListItemBar
+                        title={'คลิกเพื่อ upload ซ้ายรถ'}
+                        subtitle={'item.author'}
+                        actionIcon={
+                          <IconButton
+                            sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                            aria-label={`info about `}
+                          >
+                            <ClearIcon />
+                          </IconButton>
+                        }
+                      />
+                    </ImageListItem>
+                  </div> :
+                  <ImageListItem className={carCss.imageCars} >
                     <img
 
-                      srcSet={AddIcon.src}
-                      src={AddIcon.src}
+                      srcSet={car.image_left}
+                      src={car.image_left}
                       alt={'item.title'}
                       loading="lazy"
                     />
                     <ImageListItemBar
-                      title={'คลิกเพื่อ upload ซ้ายรถ'}
+                      title={'หน้ารถ'}
                       subtitle={'item.author'}
                       actionIcon={
                         <IconButton
+                          onClick={() => setCar({ ...car, image_left: '' })}
                           sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
                           aria-label={`info about `}
                         >
@@ -347,48 +365,48 @@ export default function Page({params}: Props) {
                       }
                     />
                   </ImageListItem>
-                </div> :
-                <ImageListItem className={carCss.imageCars} >
-                  <img
+              }
 
-                    srcSet={car.image_left}
-                    src={car.image_left}
-                    alt={'item.title'}
-                    loading="lazy"
-                  />
-                  <ImageListItemBar
-                    title={'หน้ารถ'}
-                    subtitle={'item.author'}
-                    actionIcon={
-                      <IconButton
-                        onClick={() => setCar({ ...car, image_left: '' })}
-                        sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                        aria-label={`info about `}
-                      >
-                        <ClearIcon />
-                      </IconButton>
-                    }
-                  />
-                </ImageListItem>
-            }
+              <input type="file" id='right' onChange={(e) => handleUploadImage(e, 'right')} hidden />
+              {
+                !car.image_rigth ?
+                  <div onClick={() => document.getElementById('right')?.click()}>
+                    <ImageListItem className={carCss.imageCars}  >
+                      <img
 
-            <input type="file" id='right' onChange={(e) => handleUploadImage(e, 'right')} hidden />
-            {
-              !car.image_rigth ?
-                <div onClick={() => document.getElementById('right')?.click()}>
-                  <ImageListItem className={carCss.imageCars}  >
+                        srcSet={AddIcon.src}
+                        src={AddIcon.src}
+                        alt={'item.title'}
+                        loading="lazy"
+                      />
+                      <ImageListItemBar
+                        title={'คลิกเพื่อ upload ขวารถ'}
+                        subtitle={'item.author'}
+                        actionIcon={
+                          <IconButton
+                            sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                            aria-label={`info about `}
+                          >
+                            <ClearIcon />
+                          </IconButton>
+                        }
+                      />
+                    </ImageListItem>
+                  </div> :
+                  <ImageListItem className={carCss.imageCars} >
                     <img
 
-                      srcSet={AddIcon.src}
-                      src={AddIcon.src}
+                      srcSet={car.image_rigth}
+                      src={car.image_rigth}
                       alt={'item.title'}
                       loading="lazy"
                     />
                     <ImageListItemBar
-                      title={'คลิกเพื่อ upload ขวารถ'}
+                      title={'หน้ารถ'}
                       subtitle={'item.author'}
                       actionIcon={
                         <IconButton
+                          onClick={() => setCar({ ...car, image_rigth: '' })}
                           sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
                           aria-label={`info about `}
                         >
@@ -397,41 +415,26 @@ export default function Page({params}: Props) {
                       }
                     />
                   </ImageListItem>
-                </div> :
-                <ImageListItem className={carCss.imageCars} >
-                  <img
-
-                    srcSet={car.image_rigth}
-                    src={car.image_rigth}
-                    alt={'item.title'}
-                    loading="lazy"
-                  />
-                  <ImageListItemBar
-                    title={'หน้ารถ'}
-                    subtitle={'item.author'}
-                    actionIcon={
-                      <IconButton
-                        onClick={() => setCar({ ...car, image_rigth: '' })}
-                        sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                        aria-label={`info about `}
-                      >
-                        <ClearIcon />
-                      </IconButton>
-                    }
-                  />
-                </ImageListItem>
-            }
-          </div>
+              }
+            </div>
 
 
-          {/* <Checkbox label="Save card" sx={{ gridColumn: '1/-1', my: 1 }} /> */}
-          <CardActions sx={{ gridColumn: '1/-1' }}>
-            <Button variant="solid" color="primary" type='submit'>
-              เพิ่มรถรับส่ง
-            </Button>
-          </CardActions>
-        </CardContent>
-      </Card>
-    </form>
+            {/* <Checkbox label="Save card" sx={{ gridColumn: '1/-1', my: 1 }} /> */}
+            <CardActions sx={{ gridColumn: '1/-1' }}>
+              <Button variant="solid" color="primary" type='submit'>
+                เพิ่มรถรับส่ง
+              </Button>
+            </CardActions>
+          </CardContent>
+        </Card>
+        
+      </form>
+
+      {
+        load?
+        <Loadding />
+        : null
+      }
+    </>
   );
 }

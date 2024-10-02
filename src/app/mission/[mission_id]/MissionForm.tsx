@@ -25,6 +25,7 @@ import MapSelect from './MapSelect';
 import { MissionFromContext, TMissionFromContext } from '@/contexts/mission.from.context'
 
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import { uploadImage } from '@/services/uploadImage.service';
 
 type Props = {
   mission_id: string
@@ -68,18 +69,14 @@ export default function MissionForm({ mission_id }: Props) {
     }
   }
 
-  function handlerUpload(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handlerUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    setLoad(true)
     if (e.target.files) {
-      const FR = new FileReader()
-      FR.onload = async (event) => {
-        if (event.target && event.target.result) {
-          const base64 = event.target.result as string
-          setSrc(base64)
-          setMissions({ ...missions, image: base64 })
-        }
-      }
-
-      FR.readAsDataURL(e.target.files[0])
+      const file = new FormData()
+      file.append('file', e.target.files[0])
+      const image = await uploadImage(file)
+      setMissions({ ...missions, image: image.data.result })
+      setLoad(false)
     }
   }
 
@@ -89,6 +86,7 @@ export default function MissionForm({ mission_id }: Props) {
       const result = await updateMissionByMissionId(mission_id, missions)
       toast('แก้ไขสำเร็จ', 'success')
       setMissions(result.data)
+      history.back()
     } catch (error: any) {
       toast(JSON.stringify(error.message), 'error')
       timeOutJwt(error)

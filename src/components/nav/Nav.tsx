@@ -17,9 +17,11 @@ import Button from '@mui/material/Button';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { logout } from '@/services/authen.service';
 import { useRouter } from 'next/navigation';
-import Loadding from './Loadding';
 
-import style from './styles/Nav.module.css';
+import style from './Nav.module.css';
+import Loadding from '../Loadding';
+
+import styled from 'styled-components';
 
 interface Props {
   /**
@@ -95,7 +97,7 @@ export default function Nav(props: Props) {
     <>
       <Box sx={{ display: 'flex' }} >
         <CssBaseline />
-        <AppBar component="nav" style={{ background: '#2c387e' }}>
+        <AppBar component="nav" className={style.themeBag}>
           <Toolbar>
             <IconButton
               color="inherit"

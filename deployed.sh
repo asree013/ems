@@ -1,28 +1,38 @@
-# set -e ใช้สำหรับเช็ค ให้หยุดทำงานเมื่อมี err
-set -e
+#!/bin/bash
 
-git add .
-git commit -m "update"
-git push origin/main 
+set -e  # หยุดทำงานเมื่อเกิดข้อผิดพลาด
 
-echo "เริมการ build เพื่อ deploy"
-echo "กำลังลบโฟลเดอร์ public/_next ..."
-echo ""
-echo ""
-# rm -rf public/_next สั่งให้ลบ folder public/_next
+# git add .
+# git commit -m "update"
+# git push origin/main 
+
+echo "เริ่มการ build เพื่อ deploy"
+echo "กำลังลบโฟลเดอร์ public/_next ที่ใช้ generate ใหม่..."
 rm -rf public/_next
-echo ""
-echo "กำลังสร้าง Docker image ..."
-echo ""
-# สั่ง build docker docker.compose.build.yml
-docker compose -f docker.compose.build.yml build 
 
 echo ""
-echo "build เสร็จสิ้น.... กำลัง push Docker image ขึ้น hub ..."
-echo ""
-# สั่ง push docker docker.compose.build.yml ขึ้น hub
+echo "ลบ container, network ที่ไม่จำเป็น..."
+# ลบ container และ network ที่ไม่ได้ใช้งาน
+docker system prune --volumes -f  # ลบ volumes ด้วยเพื่อเคลียร์พื้นที่
 
-docker compose -f docker.compose.build.yml push 
+echo ""
+echo "ลบเฉพาะ dangling images ที่ไม่ได้ใช้งาน..."
+# ลบ image ที่ไม่มี tag (dangling images)
+docker image prune -f
+
+echo ""
+echo "สร้าง Docker image โดยใช้ cache เพื่อลดเวลา..."
+# ใช้ cache ในการ build docker image เพื่อลดเวลา
+docker compose -f docker.compose.build.yml build --pull --no-cache=false
+
+echo ""
+echo "build เสร็จสิ้น.... กำลัง push Docker image ถ้าจำเป็น..."
+# ตรวจสอบว่ามีการเปลี่ยนแปลง image หรือไม่ ก่อนทำการ push
+if [ "$(docker images -q your_image_name:your_tag)" ]; then
+  docker compose -f docker.compose.build.yml push
+else
+  echo "ไม่มีการเปลี่ยนแปลง image, ข้ามขั้นตอน push"
+fi
+
 echo ""
 echo "ดำเนินการเสร็จสิ้น!"
-echo ""

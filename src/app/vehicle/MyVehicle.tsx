@@ -11,31 +11,14 @@ import { findCurrentVehicleByUser } from '@/services/user.service'
 import { timeOutJwt } from '@/services/timeout.service'
 import TabPanel from '@mui/joy/TabPanel';
 import Typography from '@mui/joy/Typography';
+import { TVehicleHomeContext, VehiclesHomeContext } from './vehicle_home.context'
+import StatusVehicle from './StatusVehicle'
 
 export default function MyVehicle() {
-    const [currentMission, setCurrentMission] = useState({})
     const [load, setLoad] = useState<boolean>(false)
     const { value, setValue } = useContext<TtabvalueC>(TabValueVehicleContext)
-    const [vehicle, setVehicle] = useState<Vehicles>({} as Vehicles)
-
-    const findVehicleByUserId = useCallback(async () => {
-        try {
-            const result = await findCurrentVehicleByUser()
-            setVehicle(result.data)
-            console.log(result.data);
-
-        } catch (error) {
-            timeOutJwt(error)
-        }
-    }, [setVehicle])
-
-    useEffect(() => {
-        findVehicleByUserId()
-
-        return () => {
-            findVehicleByUserId
-        }
-    }, [findVehicleByUserId])
+    const {vehicle, setVehicle} = useContext<TVehicleHomeContext>(VehiclesHomeContext)
+   
     return (
         <>
             {
@@ -72,35 +55,14 @@ export default function MyVehicle() {
                 !vehicle.car ?
                     null :
                     <div>
-                        <Button sx={{ width: '100%' }} onClick={() => {
-                            setLoad(true)
-                            window.location.href = '/vehicle/' + vehicle.car.car_id + '/add_mission?key=car'
-                        }} type='button' variant='contained' color='success'>นำยานพาหนะเข้าร่วมภารกิจ</Button>
-                        <Typography
-                            textColor="text.secondary"
-                            sx={{ fontSize: 'sm', fontWeight: 'md' }}
-                            className='m-4'
-                        >
-                            สถาณะของคุณคือ
-                            {
-                                vehicle.car.is_driver ?
-                                    <Typography
-                                        textColor="warning.400"
-                                        className='ml-3'
-                                        sx={{ fontSize: 'xl2', fontWeight: 'xl', mt: 1 }}
-                                    >
-                                        ผลขับรถ
-                                    </Typography>
-                                    : <Typography
-                                        className='ml-3'
-                                        textColor="warning.400"
-                                        sx={{ fontSize: 'xl2', fontWeight: 'xl', mt: 1 }}
-                                    >
-                                        เจ้าหน้าที่รถ
-                                    </Typography>
-                            }
-
-                        </Typography>
+                        {
+                            vehicle.car.Car.mission_id.length === 0?
+                            <Button sx={{ width: '100%' }} onClick={() => {
+                                setLoad(true)
+                                window.location.href = '/vehicle/' + vehicle.car.car_id + '/add_mission?key=car'
+                            }} type='button' variant='contained' color='success'>นำยานพาหนะเข้าร่วมภารกิจ</Button>:
+                            <StatusVehicle isDriver={vehicle.car.is_driver} mission_id={vehicle.car.Car.mission_id} statusbol={true} />
+                        }
                         <CarCard data={{} as Cars} car_id={vehicle.car.car_id} />
                     </div>
             }

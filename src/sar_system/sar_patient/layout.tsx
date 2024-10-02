@@ -1,8 +1,8 @@
 'use client';
 
-import Nav from '@/components/Nav';
 import { useEffect, useState } from 'react';
 import Loadding from '@/components/Loadding';
+import Nav from '@/components/nav/Nav';
 
 export default function DashboardLayout({
     children, 

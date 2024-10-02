@@ -73,28 +73,7 @@ export default function HomeContent() {
     return (
         <>
             <div className={HomeCss.content}>
-                {/* <div className={homeCss.contentMenu}>
-                    <div className={homeCss.contentTitle}>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <SpaceDashboardIcon />
-                            <p style={{ marginLeft: '10px' }}>Dashbord</p>
-                        </div>
-                        <div></div>
-                    </div>
-                    <div className={homeCss.contentItem}>
-                        <Paper className={homeCss.paperMenu} elevation={3} >
-                            <ThumbUpIcon />
-                            <p>success case</p>
-                            <p style={{ fontSize: '2rem' }}>23</p>
-                        </Paper>
-                        <Paper className={homeCss.paperMenu} elevation={3} >
-                            <p>2</p>
-                        </Paper>
-                        <Paper className={homeCss.paperMenu} elevation={3} >
-                            <p>3</p>
-                        </Paper>
-                    </div>
-                </div> */}
+                
                 <div className={HomeCss.contentMenu}>
                     <div className={HomeCss.contentTitle}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

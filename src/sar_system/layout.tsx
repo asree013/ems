@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import Nav from '@/components/Nav';
 import { db, remoteDB } from '@/configs/pouchDb.config';
+import Nav from '@/components/nav/Nav';
 
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {

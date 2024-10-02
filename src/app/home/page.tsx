@@ -38,7 +38,6 @@ export default function Page() {
   let role = ''
   const { findMe, setFindMe } = useContext<TFindContext>(FindMeContext)
   const [vehicle, setVehicle] = useState<Vehicles>({} as Vehicles)
-  const [car, setCar] = useState<Cars>({} as Cars)
 
 
   const pushLocationUser = useCallback(async () => {
@@ -96,44 +95,27 @@ export default function Page() {
       localStorage.setItem('mission_id', result.data.id)
     } catch (error) {
       console.log(error);
-      timeOutJwt(error)
+      // timeOutJwt(error)
     } finally {
       setLoad(false)
     }
   }, [setMissionUser])
 
   const findCurrentVehicle = useCallback(async () => {
+    setLoad(true)
     try {
       const result = await findCurrentVehicleByUser()
       setVehicle(result.data)
-      if (Object.keys(result.data.car).length > 0) {
-        setCurrentCarByVehicleId(result.data.car.Car.id)
-      }
-      if (Object.keys(result.data.helicopter).length > 0) {
-
-      }
-      if (Object.keys(result.data.ship).length > 0) {
-
-      }
 
     } catch (error: any) {
       console.log('findCurrent: ' ,error);
       
       // toast(JSON.stringify(error.message), 'error')
-      timeOutJwt(error)
+      // timeOutJwt(error)
+    } finally {
+      setLoad(false)
     }
   }, [setVehicle])
-
-  const setCurrentCarByVehicleId = useCallback(async (car_id: string) => {
-    try {
-      const result = await findCarByCarId(car_id)
-      setCar(result.data)
-    } catch (error: any) {
-      console.log(error);
-      timeOutJwt(error)
-      // toast(JSON.stringify(error.message), 'error')
-    }
-  }, [vehicle, setCar])
 
   useEffect(() => {
     pushLocationUser();
@@ -165,11 +147,10 @@ export default function Page() {
             <CurrentMissionContext.Provider value={{ missionUser, setMissionUser }} >
               <LocateContextUser.Provider value={{ userLocate, setUserLocate }} >
                 <CurrentVehicleContext.Provider value={{ vehicle, setVehicle }} >
-                  <CurrentCarsContext.Provider value={{ car, setCar }}>
+
 
                     <HomeContent />
 
-                  </CurrentCarsContext.Provider>
                 </CurrentVehicleContext.Provider>
               </LocateContextUser.Provider>
             </CurrentMissionContext.Provider>

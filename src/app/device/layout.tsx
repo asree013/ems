@@ -1,8 +1,8 @@
-import Nav from '@/components/Nav';
 
 import { metadata } from '../layout';
 import TabMenu from '@/components/TabMenu';
-import ChatButton from '@/components/ChatButton';
+import ChatButton from '@/components/chats/ChatButton';
+import Nav from '@/components/nav/Nav';
 metadata.title = 'Device EMS App';
 
 export default function DashboardLayout({
@@ -11,7 +11,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section style={{ width: '100%' }}>
+    <section>
       {/* Include shared UI here e.g. a header or sidebar */}
       <Nav />
 

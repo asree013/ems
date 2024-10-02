@@ -6,31 +6,30 @@ import { findHistoryByPatientId } from '@/services/history.service'
 import { Button, Card } from '@mui/material'
 import React, { useCallback, useEffect, useState } from 'react'
 
+export type HistoryInCar = {
+    id: string
+    symptom_details: string
+    status: string
+    create_date: string
+    update_date: string
+    patient_id: string
+    chief_complaint: string
+    present_illness: string
+    user_create_id: string
+    user_update_id: string
+    physical_status: string
+    triage_lavel: string
+}
 type Props = {
+    history: HistoryInCar
     patient_id: string
 }
 
-export default function CarHistoryItem({ patient_id }: Props) {
+export default function CarHistoryItem({ history, patient_id }: Props) {
 
-    const [history, setHistory] = useState<Historys>({} as Historys)
     const [load, setLoad] = React.useState<boolean>(false);
 
-    const feedHistoryByPatientId = useCallback(async () => {
-        try {
-            const result = await findHistoryByPatientId(patient_id)
-            setHistory(result.data[0])
-        } catch (error: any) {
-            toast(JSON.stringify(error.message), 'error')
-        }
-    }, [setHistory])
 
-    useEffect(() => {
-        feedHistoryByPatientId()
-
-        return () => {
-            feedHistoryByPatientId
-        }
-    }, [feedHistoryByPatientId])
     return (
         <div className='mt-1'>
             {

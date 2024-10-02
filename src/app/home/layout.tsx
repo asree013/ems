@@ -1,11 +1,12 @@
-import Nav from '@/components/Nav';
 import { metadata } from '../layout';
 import SpeedDialButton from '@/components/SpeedDialButton';
 import TabMenu from '@/components/TabMenu';
-import ChatButton from '@/components/ChatButton';
+
 import { Suspense } from 'react';
 metadata.title = 'Home EMS App';
 import Loadding from '@/components/Loadding'
+import ChatButton from '@/components/chats/ChatButton';
+import Nav from '@/components/nav/Nav';
 
 export default function DashboardLayout({
   children, // will be a page or nested layout

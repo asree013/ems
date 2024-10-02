@@ -24,6 +24,9 @@ import { toast } from '@/services/alert.service';
 import { timeOutJwt } from '@/services/timeout.service';
 import Divider from '@mui/material/Divider';
 import Loadding from './Loadding';
+import { uploadImage } from '@/services/uploadImage.service';
+
+import style from './styles/Profile.module.css'
 
 export default function ProfileComponent() {
 
@@ -31,20 +34,18 @@ export default function ProfileComponent() {
     const [isEdit, setIsEdit] = React.useState<boolean>(false)
     const [load, setLoad] = React.useState<boolean>(false)
 
-    function handlerUploadImage(e: React.ChangeEvent<HTMLInputElement>) {
+    async function handlerUploadImage(e: React.ChangeEvent<HTMLInputElement>) {
         setLoad(true)
         e.preventDefault()
         if (e.target.files) {
-            const FR = new FileReader()
-            FR.onload = async (event) => {
-                const base64 = event.target?.result as string
-                const u = {} as Users
-                u.image = base64
-                const result = await editUserByUserCookie(u)
-                setFindMe({ ...findMe, image: result.data.image })
-                setLoad(false)
-            }
-            FR.readAsDataURL(e.target.files[0])
+            const file = new FormData()
+            file.append('file', e.target.files[0])
+            const image = await uploadImage(file)
+            const u = {} as Users
+            u.image = image.data.result
+            const result = await editUserByUserCookie(u)
+            setFindMe({ ...findMe, image: result.data.image })
+            setLoad(false)
         }
     }
 
@@ -72,37 +73,37 @@ export default function ProfileComponent() {
                 <Box
                 />
                 <Card
-                    orientation="horizontal"
+                    // orientation="horizontal"
                     sx={{
                         width: '100%',
-                        flexWrap: 'wrap',
-                        [`& > *`]: {
-                            '--stack-point': '500px',
-                            minWidth:
-                                'clamp(0px, (calc(var(--stack-point) - 2 * var(--Card-padding) - 2 * var(--variant-borderWidth, 0px)) + 1px - 100%) * 999, 100%)',
-                        },
-                        // make the card resizable for demo
+                        // flexWrap: 'wrap',
+                        // [`& > *`]: {
+                        //     '--stack-point': '500px',
+                        //     minWidth:
+                        //         'clamp(0px, (calc(var(--stack-point) - 2 * var(--Card-padding) - 2 * var(--variant-borderWidth, 0px)) + 1px - 100%) * 999, 100%)',
+                        // },
+                        // // make the card resizable for demo
                         overflow: 'auto',
                         resize: 'horizontal',
                     }}
                 >
-                    <AspectRatio flex ratio="1" >
+                    <AspectRatio flex ratio={'1'} >
                         <ImageListItem >
                             <input type="file" id='img_profile' hidden onChange={handlerUploadImage} />
                             <img
-                                srcSet={`${findMe.image ?? enviromentDev.noImage}`}
                                 src={`${findMe.image ?? enviromentDev.noImage}`}
                                 alt={findMe.image}
                                 loading="lazy"
+                                style={{ width: '18rem', height: '18rem', objectFit: 'cover' }}
                             />
                             <ImageListItemBar
-                                title={'item.title'}
-                                subtitle={'item.author'}
+                                title={'คลิก'}
+                                subtitle={'เพื้อแก้ไข'}
+                                onClick={() => document.getElementById('img_profile')?.click()}
                                 actionIcon={
                                     <IconButton
                                         sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
                                         aria-label={`info about`}
-                                        onClick={() => document.getElementById('img_profile')?.click()}
                                     >
                                         <CameraAltIcon />
                                     </IconButton>
@@ -334,9 +335,9 @@ export default function ProfileComponent() {
             </Box>
 
             {
-                load?
-                <Loadding />:
-                null
+                load ?
+                    <Loadding /> :
+                    null
             }
         </>
     );
