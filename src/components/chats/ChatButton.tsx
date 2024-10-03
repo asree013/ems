@@ -22,7 +22,7 @@ import { Missions } from '@/models/mission.model';
 import { timeOutJwt } from '@/services/timeout.service';
 import { socket } from '@/configs/socket';
 
-import style from './chat_toggle.module.css';
+// import style from './chat_toggle.module.css';
 import { Chats } from '@/models/chat.model';
 import Link from 'next/link';
 import { NIL } from 'uuid';
@@ -33,6 +33,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ToggleButton from '@mui/material/ToggleButton';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import styledComponent from 'styled-components';
 
 
 type CurrenChat = {
@@ -79,6 +80,119 @@ function a11yProps(index: number) {
     'aria-controls': `simple-tabpanel-${index}`,
   };
 }
+
+const PopupButton = styledComponent.div`
+    .positionChat{
+      position: fixed;
+      top: 32.5rem;
+      right: 40px;
+      z-index: 1;
+    }
+    .chat {
+        width: 270px;
+        height: 220px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: end;
+        padding: 5px;
+        overflow-y: scroll;
+    }
+
+    .is_not_my_user {
+        display: flex;
+        justify-content: start;
+        align-items: start;
+        width: 100%; 
+        margin-top: 10px;
+        flex-direction: column;
+    }
+    .is_user{
+        display: flex;
+        justify-content: end;
+        align-items: end;
+        width: 100%; 
+        margin-top: 10px;
+        flex-direction: column;
+    }
+    .not_user{
+        background: #e5e3e3;
+        color: rgb(0, 0, 0);
+        padding: 2px 8px;
+        border-radius: 8px;
+    }
+
+    .user{
+        background: #1769aa;
+        color: aliceblue;
+        padding: 2px 8px;
+        border-radius: 8px;
+    }
+
+    @media only screen and (min-width: 350px) {
+        .positionChat{
+            right: 15px;
+        }
+        .chat_size {
+            height: 25rem;
+            width: 20rem;
+        }
+        .bodyCard{
+            position: fixed;
+            top: 6.5rem;
+            right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 5px;
+            overflow: scroll;
+            z-index: 1;
+        }
+    }
+
+    @media only screen and (min-width: 768px) {
+      .positionChat{
+          right: 3rem;
+      }
+      .chat_size {
+          height: 25rem;
+          width: 20rem;
+      }
+      .bodyCard{
+          top: 23.5rem;
+          right: 3rem;
+  }
+
+  @media only screen and (min-width: 768px) {
+      .positionChat{
+          top: 58rem;
+          right: 3rem;
+      }
+      .chat_size {
+          height: 25rem;
+          width: 20rem;
+      }
+      .bodyCard{
+          top: 31.5rem;
+          right: 3rem;
+  }
+
+  @media only screen and (min-width: 1025px) {
+      .positionChat{
+          top: 48rem;
+          right: 5rem;
+      }
+      .chat_size {
+          height: 25rem;
+          width: 20rem;
+      }
+      .bodyCard{
+          top: 22rem;
+          right: 5rem;
+  }
+  `
+  
 
 export default function ChatButton() {
   const [open, setOpen] = React.useState<boolean>(false);
@@ -179,11 +293,11 @@ export default function ChatButton() {
       <ListItemAvatar>
         {currentChat.is_online ? (
           <StyledBadge badgeContent=" " color="success">
-            <Avatar alt="Cindy Baker" sx={{width: '2rem', height: '2rem'}} src={currentChat.image_chat} />
+            <Avatar alt="Cindy Baker" sx={{ width: '2rem', height: '2rem' }} src={currentChat.image_chat} />
           </StyledBadge>
         ) : (
           <StyledBadge badgeContent=" " color="error">
-            <Avatar alt="Cindy Baker" sx={{width: '2rem', height: '2rem'}} src={currentChat.image_chat} />
+            <Avatar alt="Cindy Baker" sx={{ width: '2rem', height: '2rem' }} src={currentChat.image_chat} />
           </StyledBadge>
         )}
       </ListItemAvatar>
@@ -196,16 +310,16 @@ export default function ChatButton() {
 
     </ListItem>
 
-    <div className={style.chat}>
+    <div className={'chat'}>
       {
         messages.length > 0 ?
           messages.map((r, i) => {
             if (r.user_id === user_id) {
               return (
-                <div key={i} className={style.is_user}>
+                <div key={i} className={'is_user'}>
                   <p style={{ fontSize: '12px' }}>{r.name_send}</p>
                   <div style={{ display: 'flex' }}>
-                    <p className={style.user}>{r.message}</p>
+                    <p className={'user'}>{r.message}</p>
                     <Avatar style={{ marginLeft: '3px', height: '2rem', width: '2rem' }} src={r.avatar} />
                   </div>
                   <p style={{ fontSize: '10px' }}>{r.post_date}</p>
@@ -213,11 +327,11 @@ export default function ChatButton() {
               );
             } else {
               return (
-                <div key={i} className={style.is_not_my_user}>
+                <div key={i} className={'is_not_my_user'}>
                   <p style={{ fontSize: '12px' }}>{r.name_send}</p>
                   <div style={{ display: 'flex' }}>
                     <Avatar style={{ marginRight: '3px', height: '2rem', width: '2rem' }} src={r.avatar} />
-                    <p className={style.not_user}>{r.message}</p>
+                    <p className={'not_user'}>{r.message}</p>
                   </div>
                   <p style={{ fontSize: '10px' }}>{r.post_date}</p>
                 </div>
@@ -230,7 +344,7 @@ export default function ChatButton() {
     </div>
     <form onSubmit={onSendMessage}>
 
-      <Input type='text' value={message} autoFocus onChange={handleChangeMessage} ref={inputRef}  endDecorator={
+      <Input type='text' value={message} autoFocus onChange={handleChangeMessage} ref={inputRef} endDecorator={
         <Button
           variant="solid"
           color="primary"
@@ -405,84 +519,89 @@ export default function ChatButton() {
       </>
     )
   }
+  
 
   return (
     <>
-      <ToggleButton
-        className={style.positionChat}
-        value="check"
-        selected={selected}
-        size='large'
-        onChange={(e) => {
-          setSelected(!selected)
-          if (e.currentTarget.ariaPressed === 'true') {
-            setOpen(true)
+      <PopupButton>
+        <ToggleButton
+          className={'positionChat'}
+          value="check"
+          selected={selected}
+          size='large'
+          onChange={(e) => {
+            setSelected(!selected)
+            if (e.currentTarget.ariaPressed === 'true') {
+              setOpen(true)
+            }
+            else {
+              setOpen(false);
+              setMessage('')
+            }
+          }}
+          color='warning'
+        >
+          {
+            open ?
+              <ArrowUpwardIcon fontSize='large' color='inherit' /> :
+              <MessageIcon fontSize='large' color='inherit' />
           }
-          else {
-            setOpen(false);
-            setMessage('')
-          }
-        }}
-        color='warning'
-      >
-        {
-          open ?
-            <ArrowUpwardIcon fontSize='large' color='inherit' /> :
-            <MessageIcon fontSize='large' color='inherit' />
-        }
-      </ToggleButton>
-
+        </ToggleButton>
+      </PopupButton>
 
       {
         open ?
-          <Paper elevation={8} className={style.bodyCard}>
-            <Sheet
-              className={style.chat_size}
-            >
-              <Box sx={{ width: '100%' }}>
+          <PopupButton>
+            <Paper elevation={8} className={'bodyCard'}>
+              <Sheet
+                className={'chat_size'}
+              >
+                <Box sx={{ width: '100%' }}>
 
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <Typography
-                    component="h2"
-                    id="modal-title"
-                    level="h4"
-                    textColor="inherit"
-                    fontWeight="lg"
-                    mb={1}
-                  >
-                    Chat mobile
-                  </Typography>
-                  <div
-                    style={{ cursor: 'pointer', borderRadius: '50%', backgroundColor: 'transparent' }}
-                    onClick={() => {
-                      setSelected(!selected);
-                      setOpen(false);
-                      setMessage('');
-                    }}
-                  >
-                    <ModalClose variant='outlined' color='neutral' />
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <Typography
+                      component="h2"
+                      id="modal-title"
+                      level="h4"
+                      textColor="inherit"
+                      fontWeight="lg"
+                      mb={1}
+                    >
+                      Chat mobile
+                    </Typography>
+                    <div
+                      style={{ cursor: 'pointer', borderRadius: '50%', backgroundColor: 'transparent' }}
+                      onClick={() => {
+                        setSelected(!selected);
+                        setOpen(false);
+                        setMessage('');
+                      }}
+                    >
+                      <ModalClose variant='outlined' color='neutral' />
+                    </div>
                   </div>
-                </div>
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                  {
-                    openChat === false ?
-                      <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                        <Tab label="การพูดคุย" {...a11yProps(0)} />
-                        <Tab label="รายชื่อติดต่อ" {...a11yProps(1)} />
-                      </Tabs> :
-                      null
-                  }
+                  <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                    {
+                      openChat === false ?
+                        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                          <Tab label="การพูดคุย" {...a11yProps(0)} />
+                          <Tab label="รายชื่อติดต่อ" {...a11yProps(1)} />
+                        </Tabs> :
+                        null
+                    }
+                  </Box>
+                  <CustomTabPanel value={value} index={0}>
+                    <ChatTab />
+                  </CustomTabPanel>
+                  <CustomTabPanel value={value} index={1}>
+                    <PersonalTab />
+                  </CustomTabPanel>
                 </Box>
-                <CustomTabPanel value={value} index={0}>
-                  <ChatTab />
-                </CustomTabPanel>
-                <CustomTabPanel value={value} index={1}>
-                  <PersonalTab />
-                </CustomTabPanel>
-              </Box>
 
-            </Sheet>
-          </Paper> :
+              </Sheet>
+            </Paper>
+          </PopupButton>
+          :
           null
       }
 

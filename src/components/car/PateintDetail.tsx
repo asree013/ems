@@ -20,14 +20,6 @@ export default function PateintDetail() {
   const [load, setLoad] = useState<boolean>(false)
   const { car, setCar } = useContext<TCarDetailContent>(CarDetailContext)
 
-  async function feedPatientByPatientId() {
-    try {
-
-
-    } catch (error: any) {
-      return <p>{error.message}</p>
-    }
-  }
   return (
     <>
       <div className={PDetailCss.home}>
@@ -65,7 +57,7 @@ export default function PateintDetail() {
             <div className={car_vihecle.grid}>
               {
                 car.PatientBelongCar.map((r, i) =>
-                  <MapPatientId key={i} patient_id={r.patient_id} />
+                  <MapPatientId key={i} patient_id={r.patient_id} car_id={car.id} />
                 )
               }
             </div>
@@ -83,7 +75,7 @@ export default function PateintDetail() {
   )
 }
 
-function MapPatientId({ patient_id }: { patient_id: string }) {
+function MapPatientId({ patient_id, car_id }: { patient_id: string, car_id : string }) {
   const [patient, setPatient] = useState<Patients>({} as Patients)
 
   const feedPatientByPatientId = useCallback(async () => {
@@ -104,6 +96,6 @@ function MapPatientId({ patient_id }: { patient_id: string }) {
   }, [feedPatientByPatientId])
 
   return (
-    <CardPatient patient={patient} />
+    <CardPatient patient={patient} car_id={car_id} />
   )
 }

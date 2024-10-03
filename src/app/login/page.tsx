@@ -19,6 +19,9 @@ import { useEffect, useState } from 'react';
 import { toast } from '@/services/alert.service'
 import { escape } from 'querystring';
 import { socket } from '@/configs/socket';
+import styled from 'styled-components';
+
+
 
 export default function Page() {
   const [login, setLogin] = useState<Logins>({} as Logins);
@@ -103,6 +106,8 @@ export default function Page() {
     }
   }, [])
 
+  
+
   useEffect(() => {
     setWindowHeight(window.innerHeight);
     onCheckAutoLogin()
@@ -113,79 +118,80 @@ export default function Page() {
     }
   }, [onCheckAutoLogin]);
 
+
   return (
     <>
-      <div id='page' style={{
-        background: '#2c387e', width: '100%', height: windowHeight,
-        display: 'flex', alignItems: 'center', justifyContent: 'center'
-      }}>
-        <div className="homeLogin">
-          <form onSubmit={(e) => onSubmitLogin(e)}>
-            <Card sx={{ maxWidth: 345 }}>
-              <CardMedia
-                sx={{ height: 190 }}
-                image={logoImage.src}
-                title="green iguana"
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  Login EMS system New Api
-                </Typography>
-                <TextField
-                  error={errUser}
-                  onChange={(e) =>
-                    setLogin({ ...login, username: e.target.value.toLocaleLowerCase() })
-                  }
-                  id="filled-basic"
-                  label="Username"
-                  variant="filled"
-                  style={{ width: '100%' }}
-                  required
+        <div id='page' className='themesLogin' style={{
+          width: '100%', height: windowHeight,
+          display: 'flex', alignItems: 'center', justifyContent: 'center'
+        }}>
+          <div className="homeLogin">
+            <form onSubmit={(e) => onSubmitLogin(e)}>
+              <Card sx={{ maxWidth: 345 }}>
+                <CardMedia
+                  sx={{ height: 190 }}
+                  image={logoImage.src}
+                  title="green iguana"
                 />
-                <TextField
-                  error={errPass}
-                  type="password"
-                  onChange={(e) =>
-                    setLogin({ ...login, password: e.target.value })
-                  }
-                  id="filled-basic"
-                  label="password"
-                  variant="filled"
-                  style={{ width: '100%', marginTop: '10px' }}
-                  required
-                />
-                <FormControlLabel control={<Checkbox checked={auto} onChange={() => setAuto(!auto)} />} label="auto Login" />
-              </CardContent>
-              <CardActions>
-                <Button
-                  type="submit"
-                  size="large"
-                  variant="contained"
-                  style={{ width: '100%' }}
-                >
-                  Login
-                </Button>
-              </CardActions>
-              <CardActions>
-                <Button
-                  type="button"
-                  size="large"
-                  color='success'
-                  variant="contained"
-                  style={{ width: '100%' }}
-                  onClick={() => {
-                    setIsLoad(true)
-                    window.location.href = '/sar_system'
-                  }}
-                >
-                  ใช้งานแบบ ofline(SAR)
-                </Button>
-              </CardActions>
-            </Card>
-          </form>
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    Login EMS system New Api
+                  </Typography>
+                  <TextField
+                    error={errUser}
+                    onChange={(e) =>
+                      setLogin({ ...login, username: e.target.value.toLocaleLowerCase() })
+                    }
+                    id="filled-basic"
+                    label="Username"
+                    variant="filled"
+                    style={{ width: '100%' }}
+                    required
+                  />
+                  <TextField
+                    error={errPass}
+                    type="password"
+                    onChange={(e) =>
+                      setLogin({ ...login, password: e.target.value })
+                    }
+                    id="filled-basic"
+                    label="password"
+                    variant="filled"
+                    style={{ width: '100%', marginTop: '10px' }}
+                    required
+                  />
+                  <FormControlLabel control={<Checkbox checked={auto} onChange={() => setAuto(!auto)} />} label="auto Login" />
+                </CardContent>
+                <CardActions>
+                  <Button
+                    type="submit"
+                    size="large"
+                    variant="contained"
+                    style={{ width: '100%' }}
+                  >
+                    Login
+                  </Button>
+                </CardActions>
+                <CardActions>
+                  <Button
+                    type="button"
+                    size="large"
+                    color='success'
+                    variant="contained"
+                    style={{ width: '100%' }}
+                    onClick={() => {
+                      setIsLoad(true)
+                      window.location.href = '/sar_system'
+                    }}
+                  >
+                    ใช้งานแบบ ofline(SAR)
+                  </Button>
+                </CardActions>
+              </Card>
+            </form>
+          </div>
+          {isLoad ? <Loadding /> : null}
         </div>
-        {isLoad ? <Loadding /> : null}
-      </div>
     </>
   );
 }

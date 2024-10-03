@@ -254,9 +254,10 @@ export default function SPO({ order_id }: Props) {
         pushedDataCount += newDataPointsCount;
       }
 
-      requestAnimationFrame(streamData);
     };
-    streamData();
+    // streamData();
+    requestAnimationFrame(streamData);
+
 
   };
 

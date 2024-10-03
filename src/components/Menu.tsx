@@ -129,7 +129,7 @@ export default function MenuItem() {
                         }} className={menuCss.menuItem}>
                             <img src={Ambulance.src} style={{ height: '4rem', width: '4rem' }} alt="" />
                             <div className={menuCss.menuDetail}>
-                                <h3>ยานภาหณะ</h3>
+                                <h3>ยานพาหนะ</h3>
                                 <p>detail</p>
                             </div>
                         </div>

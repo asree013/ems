@@ -40,13 +40,15 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
 import { Exans, ExanShows } from '@/models/exan.model';
+import LocalAirportIcon from '@mui/icons-material/LocalAirport';
 
 type Props = {
     patient: Patients;
     order_tranfer_id?: string;
+    car_id: string
 };
 
-export default function CardPatient({ patient }: Props) {
+export default function CardPatient({ patient, car_id }: Props) {
     const pathName = usePathname().includes('patient');
     const router = useRouter();
     const [isLoad, setIsLoad] = React.useState(false);
@@ -114,7 +116,7 @@ export default function CardPatient({ patient }: Props) {
                     <Button type='button' variant='contained'>เพิ่มประวัต</Button>
 
                     {
-                          patient.History === undefined ||  patient.History === null || patient.History.length === 0?
+                        patient.History === undefined || patient.History === null || patient.History.length === 0 ?
                             <div className='m-4'>
                                 <p>ยังไม่มีข้อมูล</p>
                             </div> :
@@ -136,8 +138,8 @@ export default function CardPatient({ patient }: Props) {
                     }
                 </Box>
                 <Divider />
-                <Box sx={{ p: 2 }}>
-                    <Stack direction="row" spacing={1}>
+                <Box sx={{ p: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+                    <Stack className='m-1' direction="row" spacing={1}>
                         <Chip
                             label="เพื่มจอแสดงข้อมูล"
                             icon={<DirectionsCarIcon />}
@@ -146,7 +148,21 @@ export default function CardPatient({ patient }: Props) {
                             color='success'
                         />
                     </Stack>
+                    <Stack className='m-1'  direction="row" spacing={1}>
+                        <Chip
+                            label="ย้ายผู้ป่วยขึ้น ฮ."
+                            icon={<LocalAirportIcon />}
+                            onClick={() => {
+                                setIsLoad(true)
+                                window.location.href = `/vehicle?tranfrom=helicopter&car_id=${car_id}&patient_id=${patient.id}` 
+                                
+                            }}
+                            variant="outlined"
+                            color='warning'
+                        />
+                    </Stack>
                 </Box>
+
             </Card>
 
             {isLoad ?

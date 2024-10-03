@@ -28,11 +28,8 @@ docker compose -f docker.compose.build.yml build --pull --no-cache=false
 echo ""
 echo "build เสร็จสิ้น.... กำลัง push Docker image ถ้าจำเป็น..."
 # ตรวจสอบว่ามีการเปลี่ยนแปลง image หรือไม่ ก่อนทำการ push
-if [ "$(docker images -q your_image_name:your_tag)" ]; then
-  docker compose -f docker.compose.build.yml push
-else
-  echo "ไม่มีการเปลี่ยนแปลง image, ข้ามขั้นตอน push"
-fi
+docker compose -f docker.compose.build.yml push
+
 
 echo ""
 echo "ดำเนินการเสร็จสิ้น!"

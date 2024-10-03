@@ -9,3 +9,20 @@ export function createHelicopter(data: Helicopters) {
         throw error
     }
 }
+
+export function findHalecopterAll() {
+    try {
+        return endpoint.get<Helicopters[]>(enviromentDev.helicopter)
+    } catch (error) {
+        throw error
+    }
+}
+
+export function tranformPatientHelicopterToCar(helicopter_id: string, data: {patient_id: string, car_id: string}) {
+
+    try {
+        return endpoint.put(enviromentDev.helicopter + `/${helicopter_id}/tranform_patient_to_car`, data)
+    } catch (error) {
+        throw error
+    }
+}

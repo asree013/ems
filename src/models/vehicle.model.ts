@@ -54,6 +54,7 @@ export interface Helicopters {
     image_rigth: string
     radio: string
     calling: string
+    driver_id: string
     mission_id: string
     hospital_id: string
     create_date: string

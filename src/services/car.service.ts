@@ -68,3 +68,11 @@ export function unAssingPatinetToCarByCarIdAndPatientId(car_id: string, patient_
         throw error
     }
 }
+
+export function tranfromPatientCarToHelicopter(car_id: string, data: {patient_id: string, helicopter_id: string}) {
+    try {
+        return endpoint.put(`${enviromentDev.car}/${car_id}/tranform_patient_to_helicopter`, data)
+    } catch (error) {
+        throw error
+    }
+}

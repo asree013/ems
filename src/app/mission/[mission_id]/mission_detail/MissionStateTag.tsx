@@ -188,7 +188,7 @@ function generateFixIcon(index: number, currentIndex: number, step: MissionTag) 
                 <StepLabel StepIconComponent={StepIconCheck} data-last="true">
                     <div style={{ display: 'flex', alignItems: 'start', justifyContent: 'center', flexDirection: 'column' }}>
                         <p style={{ width: '100%' }}>{step.label}</p>
-                        <p> เวลา: {new Date(step.create_date).toLocaleString('th-TH')} </p>
+                        <div style={{display:'flex', alignItems:'center'}}> เมื่อ: <p style={{color: 'green'}}>{new Date(step.update_date).toLocaleString('th-TH')}</p> </div>
                     </div>
 
                 </StepLabel>
@@ -206,7 +206,7 @@ function generateFixIcon(index: number, currentIndex: number, step: MissionTag) 
                 <StepLabel StepIconComponent={StepIconCheck}>
                     <div style={{ display: 'flex', alignItems: 'start', justifyContent: 'center', flexDirection: 'column' }}>
                         <p style={{ width: '100%' }}>{step.label}</p>
-                        <p> เวลา: {new Date(step.create_date).toLocaleString('th-TH')} </p>
+                        <div style={{display:'flex', alignItems:'center'}}> เมื่อ: <p style={{color: 'green'}}>{new Date(step.update_date).toLocaleString('th-TH')}</p> </div>
                     </div>
                 </StepLabel>
             );

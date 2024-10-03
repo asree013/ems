@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
+import AppBar, { AppBarProps } from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
@@ -21,7 +21,7 @@ import { useRouter } from 'next/navigation';
 import style from './Nav.module.css';
 import Loadding from '../Loadding';
 
-import styled from 'styled-components';
+import { styled } from '@mui/material/styles';
 
 interface Props {
   /**
@@ -43,6 +43,7 @@ export default function Nav(props: Props) {
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
+
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -93,11 +94,16 @@ export default function Nav(props: Props) {
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
+    const Themes = styled(AppBar)<AppBarProps>(({ theme }) => ({
+      background: 'linear-gradient(125deg, #1e3c72, #2a5298)',
+    }));
+
   return (
     <>
+
       <Box sx={{ display: 'flex' }} >
         <CssBaseline />
-        <AppBar component="nav" className={style.themeBag}>
+        <Themes component="nav">
           <Toolbar>
             <IconButton
               color="inherit"
@@ -141,7 +147,8 @@ export default function Nav(props: Props) {
               </Button>
             </Box>
           </Toolbar>
-        </AppBar>
+        </Themes>
+
         <nav>
           <Drawer
             container={container}
@@ -163,6 +170,7 @@ export default function Nav(props: Props) {
           </Drawer>
         </nav>
       </Box>
+
 
       {isLoad ? <Loadding /> : null}
     </>

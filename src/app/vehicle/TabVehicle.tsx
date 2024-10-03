@@ -7,6 +7,7 @@ import CarComponet from './CarComponet';
 import { TabValueVehicleContext } from './tabValue.context';
 import MyVehicle from './MyVehicle';
 import HelicopterComponent from './HalicopterComponent';
+import { useSearchParams } from 'next/navigation';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -39,11 +40,18 @@ function a11yProps(index: number) {
 
 export default function TabVehicle() {
   const [value, setValue] = React.useState(0);
+  const tranfrom = useSearchParams().get('tranfrom')
+  
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
+  React.useEffect(() => {
+    if(tranfrom === 'helicopter') {
+      setValue(2)
+    }
+  }, [tranfrom]) 
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
