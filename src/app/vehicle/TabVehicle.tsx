@@ -59,6 +59,8 @@ export default function TabVehicle() {
           <Tab label="ยานพาหนะของฉัน" {...a11yProps(0)} />
           <Tab label="รถยนต์" {...a11yProps(1)} />
           <Tab label="แฮลิคอปเตอร์" {...a11yProps(2)} />
+          <Tab label="เรือ" {...a11yProps(2)} />
+          <Tab label="หน่วยเดินเท้า" {...a11yProps(2)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>

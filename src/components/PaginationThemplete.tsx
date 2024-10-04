@@ -34,7 +34,7 @@ export default function PaginationThemplete({ returnCurrent }: Props) {
         }
     };
     return (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' , minWidth: 430, marginTop: 20, width: '100%'}}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' , minWidth: 230, marginTop: 20, width: '100%', padding: 20}}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <p>หน้า:{page}</p>
                 <Select className='ml-1' defaultValue="5" onChange={handleChange}>

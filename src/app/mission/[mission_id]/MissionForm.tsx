@@ -76,6 +76,7 @@ export default function MissionForm({ mission_id }: Props) {
       file.append('file', e.target.files[0])
       const image = await uploadImage(file)
       setMissions({ ...missions, image: image.data.result })
+      setSrc(image.data.result)
       setLoad(false)
     }
   }

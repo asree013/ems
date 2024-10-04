@@ -23,9 +23,10 @@ export type HistoryInCar = {
 type Props = {
     history: HistoryInCar
     patient_id: string
+    name: {first_name: string, last_name: string}
 }
 
-export default function CarHistoryItem({ history, patient_id }: Props) {
+export default function CarHistoryItem({ history, patient_id, name }: Props) {
 
     const [load, setLoad] = React.useState<boolean>(false);
 
@@ -34,12 +35,13 @@ export default function CarHistoryItem({ history, patient_id }: Props) {
         <div className='mt-1'>
             {
                 history ?
-                    <HistoryItem value={history} />
+                    <HistoryItem value={history} name={{first_name: name.first_name, last_name: name.last_name}} />
                     : <Card elevation={3} style={{ margin: '10px 5px', padding: '10px' }}>
                         <p>ยังไม่มีประวัติ</p>
                         <div style={{ display: 'flex', alignContent: 'center', justifyContent: 'space-around' }}>
-                            <p>asree</p>
-                            <p>hayeema</p>
+                            <p>ชื่อ-สกุล </p>
+                            <p>{name.first_name}</p>
+                            <p>{name.last_name}</p>
                         </div>
                         <Button onClick={() => {
                             setLoad(true)

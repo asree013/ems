@@ -112,7 +112,7 @@ export default function Page({ params }: Props) {
           <Divider style={{ margin: '10px 0' }} />
           <div className={historyCss.history_item}>
             {history.length > 0
-              ? historyFilter.map((r, i) => <HistoryItem value={r} key={i} />)
+              ? historyFilter.map((r, i) => <HistoryItem name={{first_name: r.Patient.first_name, last_name: r.Patient.last_name}} value={r} key={i} />)
               : null}
           </div>
         </div>

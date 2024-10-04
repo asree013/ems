@@ -112,7 +112,7 @@ export default function CarCard({ data, car_id }: Props) {
 
     return (
         <>
-            <Card sx={{ maxWidth: 345, marginTop: '15px' }} elevation={8}>
+            <Card sx={{ minWidth: 245, marginTop: '15px', width: '100%' }} elevation={8}>
                 <CardHeader
                     action={
                         car.status === 'NotInUse' ?
@@ -122,7 +122,7 @@ export default function CarCard({ data, car_id }: Props) {
                     title={car.calling}
                     subheader={car.driver_id ? car.driver_id : 'ยังไม่มีผลขับรถ'}
                 />
-                <ImageList sx={{ maxWidth: 500, maxHeight: 450 }}>
+                <ImageList sx={{ minWidth: 205, minHeight: 200, width: '100%' }}>
                     <ImageListItem key="Subheader" cols={2}>
                         <ListSubheader component="div">ป้ายทะเบียน: {car.number}</ListSubheader>
                     </ImageListItem>

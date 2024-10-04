@@ -23,7 +23,7 @@ import { timeOutJwt } from '@/services/timeout.service';
 import { socket } from '@/configs/socket';
 
 // import style from './chat_toggle.module.css';
-import { Chats } from '@/models/chat.model';
+import { ChatRooms, Chats } from '@/models/chat.model';
 import Link from 'next/link';
 import { NIL } from 'uuid';
 
@@ -35,6 +35,10 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import styledComponent from 'styled-components';
 
+import { feedMessageChatByRoomId, findChatRoomAll } from '@/services/chat.service';
+import { enviromentDev } from '@/configs/enviroment.dev';
+import { toast } from '@/services/alert.service';
+import CircularProgress from '@mui/joy/CircularProgress';
 
 type CurrenChat = {
   chat_id: string,
@@ -88,13 +92,9 @@ const PopupButton = styledComponent.div`
       right: 40px;
       z-index: 1;
     }
-    .chat {
+    .chatModal {
         width: 270px;
         height: 220px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: end;
         padding: 5px;
         overflow-y: scroll;
     }
@@ -146,7 +146,6 @@ const PopupButton = styledComponent.div`
             justify-content: center;
             flex-direction: column;
             padding: 5px;
-            overflow: scroll;
             z-index: 1;
         }
     }
@@ -180,7 +179,7 @@ const PopupButton = styledComponent.div`
 
   @media only screen and (min-width: 1025px) {
       .positionChat{
-          top: 48rem;
+          top: 40rem;
           right: 5rem;
       }
       .chat_size {
@@ -188,11 +187,11 @@ const PopupButton = styledComponent.div`
           width: 20rem;
       }
       .bodyCard{
-          top: 22rem;
+          top: 14rem;
           right: 5rem;
   }
   `
-  
+
 
 export default function ChatButton() {
   const [open, setOpen] = React.useState<boolean>(false);
@@ -204,11 +203,19 @@ export default function ChatButton() {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [messages, setMessages] = React.useState<Chats[]>([]);
   const [room_id, setRoomId] = React.useState<string>('');
+  const [chatRoom, setChatRoom] = React.useState<ChatRooms[]>({} as ChatRooms[])
+  const [loadMessage, setLoadMessage] = React.useState<boolean>(false)
 
   const [value, setValue] = React.useState(0);
   const [selected, setSelected] = React.useState(true);
 
   const [mission, setMission] = React.useState<Missions>({} as Missions);
+
+  const messagesEndRef = React.useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView();
+  };
 
   const getMissionIdBylocalstorage = React.useCallback(async () => {
     const missId = localStorage.getItem('mission_id');
@@ -235,12 +242,31 @@ export default function ChatButton() {
     }
   }, []);
 
-  function onOpenChatAndChatId(chat_id: string, key: string) {
+  async function onOpenChatAndChatId(chat_id: string, key: string) {
+    setLoadMessage(true)
     setOpenChat(true);
     setRoomId(chat_id);
     socket.emit('join-room', { room_id: chat_id, user_id: user_id });
     if (key === 'mis') {
       setCurrentChat({ ...currentChat, chat_id: room_id, title: mission.title, is_online: true, image_chat: mission.image })
+    }
+    try {
+      const result = await feedMessageChatByRoomId(chat_id, 1, 10)
+      const c = {} as Chats
+      const mapMessage: Chats[] = result.data.map((r) => {
+        c.avatar = r.Sender.image
+        c.message = r.message
+        c.client_id = r.Sender.id
+        c.name_send = r.Sender.first_name
+        c.post_date = r.create_date
+        c.user_id = r.Sender.id
+        return c
+      })
+      setMessages(mapMessage)
+    } catch (error: any) {
+      toast(JSON.stringify(error.message), 'error')
+    } finally {
+      setLoadMessage(false)
     }
   }
 
@@ -248,6 +274,16 @@ export default function ChatButton() {
     setMessage(event.target.value);
     inputRef.current?.focus();
   };
+
+  async function feedChatRoom() {
+    try {
+      const result = await findChatRoomAll()
+      console.log(result.data);
+      setChatRoom(result.data)
+    } catch (error) {
+      // timeOutJwt(error)
+    }
+  }
 
   function onSendMessage(e: React.ChangeEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -310,57 +346,67 @@ export default function ChatButton() {
 
     </ListItem>
 
-    <div className={'chat'}>
-      {
-        messages.length > 0 ?
-          messages.map((r, i) => {
-            if (r.user_id === user_id) {
-              return (
-                <div key={i} className={'is_user'}>
-                  <p style={{ fontSize: '12px' }}>{r.name_send}</p>
-                  <div style={{ display: 'flex' }}>
-                    <p className={'user'}>{r.message}</p>
-                    <Avatar style={{ marginLeft: '3px', height: '2rem', width: '2rem' }} src={r.avatar} />
+    <div>
+      <div className='chatModal'>
+        {
+          messages.length > 0 ?
+            messages.map((r, i) => {
+              if (r.user_id === user_id) {
+                return (
+                  <div key={i} className={'is_user'}>
+                    <p style={{ fontSize: '12px' }}>{r.name_send}</p>
+                    <div style={{ display: 'flex' }}>
+                      <p className={'user'}>{r.message}</p>
+                    </div>
+                    <p style={{ fontSize: '10px' }}>{r.post_date}</p>
                   </div>
-                  <p style={{ fontSize: '10px' }}>{r.post_date}</p>
-                </div>
-              );
-            } else {
-              return (
-                <div key={i} className={'is_not_my_user'}>
-                  <p style={{ fontSize: '12px' }}>{r.name_send}</p>
-                  <div style={{ display: 'flex' }}>
-                    <Avatar style={{ marginRight: '3px', height: '2rem', width: '2rem' }} src={r.avatar} />
-                    <p className={'not_user'}>{r.message}</p>
+                );
+              } else {
+                return (
+                  <div key={i} className={'is_not_my_user'}>
+                    <p style={{ fontSize: '12px' }}>{r.name_send}</p>
+                    <div style={{ display: 'flex' }}>
+                      <Avatar style={{ marginRight: '3px', height: '2rem', width: '2rem' }} src={r.avatar} />
+                      <p className={'not_user'}>{r.message}</p>
+                    </div>
+                    <p style={{ fontSize: '10px' }}>{r.post_date}</p>
                   </div>
-                  <p style={{ fontSize: '10px' }}>{r.post_date}</p>
-                </div>
-              );
-            }
-          })
-          :
-          null
-      }
+                );
+              }
+            })
+            :
+            null
+        }
+        {
+          loadMessage ?
+            <div className='w-full h-full' style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <p style={{ fontWeight: 700 }}>โหลดข้อความ</p>
+                <CircularProgress size="sm" sx={{ marginLeft: '10px' }} />
+              </div>
+            </div> :
+            null
+        }
+        <div ref={messagesEndRef} />
+      </div>
+      <form onSubmit={onSendMessage} className='mt-2'>
+        <Input type='text' value={message} autoFocus onChange={handleChangeMessage} ref={inputRef} endDecorator={
+          <Button
+            variant="solid"
+            color="primary"
+            type="submit"
+            sx={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
+          >
+            ส่ง
+          </Button>
+        } />
+      </form>
     </div>
-    <form onSubmit={onSendMessage}>
-
-      <Input type='text' value={message} autoFocus onChange={handleChangeMessage} ref={inputRef} endDecorator={
-        <Button
-          variant="solid"
-          color="primary"
-          type="submit"
-          sx={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
-        >
-          ส่ง
-        </Button>
-      } />
-    </form>
   </div>
 
   function ChatTab() {
     return (
       <>
-
         {
           openChat === false ?
             <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper', cursor: 'pointer' }}>
@@ -427,99 +473,92 @@ export default function ChatButton() {
 
         {
           openChat === false ?
-            <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper', cursor: 'pointer' }}>
+            <div style={{overflow: 'scroll', height: 270, width: 270}}>
+              <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper', cursor: 'pointer' }}>
 
-              <Divider>
-                <Chip label="แชทศูนย์ AOC" size="small" />
-              </Divider>
+                <Divider>
+                  <Chip label="แชทศูนย์ AOC" size="small" />
+                </Divider>
 
-              <ListItem alignItems="flex-start">
-                <ListItemAvatar>
-                  <Avatar alt="Remy Sharp" src="" />
-                </ListItemAvatar>
-                <ListItemText
-                  primary="ผู้ดูแล/ควบคุม/ศูนย์ AOC"
-                />
-              </ListItem>
+                <ListItem alignItems="flex-start">
+                  <ListItemAvatar>
+                    <Avatar alt="Remy Sharp" src="" />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary="ผู้ดูแล/ควบคุม/ศูนย์ AOC"
+                  />
+                </ListItem>
 
-              <Divider>
-                <Chip label="แชทกลุ่มภารกิจ" size="small" />
-              </Divider>
+                <Divider>
+                  <Chip label="แชทกลุ่มภารกิจ" size="small" />
+                </Divider>
 
-              {
-                Object.keys(mission).length === 0 ?
-                  <Box>
-                    <Typography>ยังไม่มีภารกิจ</Typography>
-                    <Link href={'/mission/' + NIL}>
-                      <p>คลิกเพื่อเลือกภารกิจ</p>
-                    </Link>
-                  </Box> :
-                  <ListItem alignItems="flex-start" onClick={() => onOpenChatAndChatId(mission.id, 'mis')}>
-                    <ListItemAvatar>
-                      <Avatar alt="Remy Sharp" src={mission.image} />
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={mission.title}
-                    />
-                  </ListItem>
-              }
+                {
+                  Object.keys(mission).length === 0 ?
+                    <Box>
+                      <Typography>ยังไม่มีภารกิจ</Typography>
+                      <Link href={'/mission/' + NIL}>
+                        <p>คลิกเพื่อเลือกภารกิจ</p>
+                      </Link>
+                    </Box> :
+                    <ListItem alignItems="flex-start" onClick={() => onOpenChatAndChatId(mission.id, 'mis')}>
+                      <ListItemAvatar>
+                        <Avatar alt="Remy Sharp" src={mission.image} />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={mission.title}
+                      />
+                    </ListItem>
+                }
 
-              <Divider>
-                <Chip label="แชทส่วนตัว" size="small" />
-              </Divider>
+                <Divider>
+                  <Chip label="แชทส่วนตัว" size="small" />
+                </Divider>
 
-              <ListItem alignItems="flex-start">
-                <ListItemAvatar>
-                  <Avatar alt="Travis Howard" src="" />
-                </ListItemAvatar>
-                <ListItemText
-                  primary="Summer BBQ"
-                  secondary={
-                    <React.Fragment>
-                      <TypographyM
-                        sx={{ display: 'inline' }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                      >
-                        to Scott, Alex, Jennifer
-                      </TypographyM>
-                      {" — Wish I could come, but I'm out of town this…"}
-                    </React.Fragment>
-                  }
-                />
-              </ListItem>
+                {
+                  Object.keys(chatRoom).length === 0 ?
+                    <p>ไม่มีคนออนไลน์</p> :
+                    chatRoom.map((r, i) =>
+                      <div key={i}>
+                        <ListItem alignItems="flex-start" onClick={() => onOpenChatAndChatId(r.room_id, 'mis')}>
+                          <ListItemAvatar>
+                            <Avatar alt="Travis Howard" src={enviromentDev.noImage} />
+                          </ListItemAvatar>
+                          <ListItemText
+                            primary={r.room_name}
+                            secondary={
+                              <React.Fragment>
+                                <TypographyM
+                                  sx={{ display: 'inline' }}
+                                  component="span"
+                                  variant="body2"
+                                  color="text.primary"
+                                >
+                                  {r.room_name}
+                                </TypographyM>
+                                {" — Wish I could come, but I'm out of town this…"}
+                              </React.Fragment>
+                            }
+                          />
+                        </ListItem>
 
-              <Divider variant="inset" component="li" />
+                        <Divider variant="inset" component="li" />
+                      </div>
+                    )
+                }
 
-              <ListItem alignItems="flex-start">
-                <ListItemAvatar>
-                  <Avatar alt="Cindy Baker" src="" />
-                </ListItemAvatar>
-                <ListItemText
-                  primary="Oui Oui"
-                  secondary={
-                    <React.Fragment>
-                      <TypographyM
-                        sx={{ display: 'inline' }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                      >
-                        Sandra Adams
-                      </TypographyM>
-                      {' — Do you have Paris recommendations? Have you ever…'}
-                    </React.Fragment>
-                  }
-                />
-              </ListItem>
-            </List> :
+              </List>
+            </div> :
             <WindowChat />
         }
       </>
     )
   }
-  
+
+  React.useEffect(() => {
+    scrollToBottom()
+
+  }, [messages])
 
   return (
     <>
@@ -533,6 +572,7 @@ export default function ChatButton() {
             setSelected(!selected)
             if (e.currentTarget.ariaPressed === 'true') {
               setOpen(true)
+              feedChatRoom()
             }
             else {
               setOpen(false);

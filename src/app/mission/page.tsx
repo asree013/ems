@@ -72,8 +72,8 @@ export default function Page() {
                 <MissionItem returnLoad={onSetLoad} key={r.id} mission={r} currentLo={locate[0]} />
               )
           }
-          <PaginationThemplete returnCurrent={onUpdatePage} />
         </div>
+        <PaginationThemplete returnCurrent={onUpdatePage} />
       </div>
 
       {

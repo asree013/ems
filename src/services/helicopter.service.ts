@@ -18,10 +18,34 @@ export function findHalecopterAll() {
     }
 }
 
+export function findHelicopterById(ho_id: string) {
+    try {
+        return endpoint.get<Helicopters>(enviromentDev.helicopter+ `/${ho_id}`)
+    } catch (error) {
+        throw error
+    }
+}
+
 export function tranformPatientHelicopterToCar(helicopter_id: string, data: {patient_id: string, car_id: string}) {
 
     try {
         return endpoint.put(enviromentDev.helicopter + `/${helicopter_id}/tranform_patient_to_car`, data)
+    } catch (error) {
+        throw error
+    }
+}
+
+export function updateDriverInHelicopter(ho_id: string, user_id: string){
+    try {
+        return endpoint.put<Helicopters>(enviromentDev.helicopter+ `/${ho_id}/assign_driver/${user_id}`)
+    } catch (error) {
+        throw error
+    }
+}
+
+export function updateUserInHelicpter(ho_id: string) {
+    try {
+        return endpoint.put<Helicopters>(enviromentDev.helicopter + `/${ho_id}/belong_helicopter`)
     } catch (error) {
         throw error
     }

@@ -151,9 +151,34 @@ export interface Vehicles {
           hospital_id: string
         }
       }>
-    }
+    },
     is_driver: boolean
   }
   ship: any
-  helicopter: any
+  helicopter: {
+    id: string
+    user_id: string
+    helicopter_id: string
+    time_un_belong: any
+    create_date: string
+    update_date: string
+    Helicopter: {
+      id: string
+      number: string
+      description: any
+      image_front: string
+      image_back: string
+      image_left: string
+      image_rigth: string
+      radio: string
+      calling: string
+      driver_id: string
+      mission_id: any
+      hospital_id: string
+      create_date: string
+      update_date: string
+      PatientBelongHelicopter: Array<any>
+    }
+    is_driver: boolean
+  }
 }

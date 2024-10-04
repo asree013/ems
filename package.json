@@ -61,6 +61,7 @@
     "socket.io-client": "^4.7.5",
     "styled-components": "^6.1.13",
     "sweetalert2": "^11.12.4",
+    "talkjs": "^0.27.0",
     "utm-latlng": "^1.0.8",
     "uuid": "^10.0.0",
     "webpack": "^5.94.0",

@@ -34,6 +34,7 @@ import EmployeIcon from '@/assets/icon/employees.png'
 import vehicleCss from './vehicle.module.css'
 import { useSearchParams } from 'next/navigation';
 import { toast } from '@/services/alert.service';
+import { findHelicopterById, updateDriverInHelicopter, updateUserInHelicpter } from '@/services/helicopter.service';
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -68,7 +69,7 @@ export default function CardHelicopter({ data, ho_id }: Props) {
         setExpanded(!expanded);
     };
 
-    async function hanlerAddDriver() {
+    async function hanlerAddHelicopter() {
         setLoad(true)
         const user_id = localStorage.getItem('user_id')
         if (!user_id) {
@@ -77,7 +78,7 @@ export default function CardHelicopter({ data, ho_id }: Props) {
         }
         else {
             try {
-                await updateDriverInCar(helicopter.id, user_id)
+                await updateDriverInHelicopter(helicopter.id, user_id)
                 setValue(0)
             } catch (error) {
                 timeOutJwt(error)
@@ -90,7 +91,9 @@ export default function CardHelicopter({ data, ho_id }: Props) {
     const feedHelicopter = React.useCallback(async (hId: string) => {
         setLoad(true)
         try {
-            const result = await findCarByCarId(hId)
+            const result = await findHelicopterById(hId)
+            console.log(result.data);
+            
             setHelicopter(result.data)
         } catch (error) {
             timeOutJwt(error)
@@ -99,9 +102,9 @@ export default function CardHelicopter({ data, ho_id }: Props) {
         }
     }, [ho_id])
 
-    async function handlerAddUserInCar() {
+    async function handlerAddUserInHelicopter() {
         try {
-            await updateUserInCar(helicopter.id)
+            await updateUserInHelicpter(helicopter.id)
             setValue(0)
         } catch (error) {
             timeOutJwt(error)
@@ -121,17 +124,12 @@ export default function CardHelicopter({ data, ho_id }: Props) {
 
     return (
         <>
-            <Card sx={{ maxWidth: 345, marginTop: '15px' }} elevation={8}>
+            <Card sx={{ minWidth: 245, marginTop: '15px', width: '100%' }} elevation={8}>
                 <CardHeader
-                    // action={
-                    //     helicopter.status === 'NotInUse' ?
-                    //         <Chip color='error' label="ออฟไลน์" /> :
-                    //         <Chip color='success' label="ออนไลน์" />
-                    // }
                     title={helicopter.calling}
                     subheader={helicopter.driver_id ? helicopter.driver_id : 'ยังไม่มีผลขับรถ'}
                 />
-                <ImageList sx={{ maxWidth: 500, maxHeight: 450 }}>
+                <ImageList sx={{ minWidth: 205, minHeight: 200, width: '100%' }}>
                     <ImageListItem key="Subheader" cols={2}>
                         <ListSubheader component="div">ป้ายทะเบียน: {helicopter.number}</ListSubheader>
                     </ImageListItem>
@@ -228,9 +226,9 @@ export default function CardHelicopter({ data, ho_id }: Props) {
                                     {
                                         helicopter.driver_id ?
                                             null :
-                                            <Button type='button' onClick={hanlerAddDriver}>ขับรถ</Button>
+                                            <Button type='button' onClick={hanlerAddHelicopter}>ขับ ฮ.</Button>
                                     }
-                                    <Button type='button' onClick={handlerAddUserInCar}>เข้ามร่วมรถ</Button>
+                                    <Button type='button' onClick={handlerAddUserInHelicopter}>เข้ามร่วม ฮ.</Button>
                                 </div>
                             :
                             car_id ?

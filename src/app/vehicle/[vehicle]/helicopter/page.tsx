@@ -31,51 +31,39 @@ import { createCar } from '@/services/car.service';
 import { timeOutJwt } from '@/services/timeout.service';
 import { createHelicopter } from '@/services/helicopter.service';
 import Loadding from '@/components/Loadding';
+import { uploadImage } from '@/services/uploadImage.service';
 
 export default function Page() {
 
   const [helicopter, setHelicopter] = React.useState<Helicopters>({} as Helicopters)
   const [load, setLoad] = React.useState<boolean>(false)
 
-  function handleUploadImage(e: React.ChangeEvent<HTMLInputElement>, key: string) {
+  async function handleUploadImage(e: React.ChangeEvent<HTMLInputElement>, key: string) {
     e.preventDefault()
     const FR = new FileReader()
     if (e.target.files) {
+      const file = e.target.files[0]
+      const image = new FormData()
+      image.append('file', file)
+
       if (key.includes('front')) {
-        FR.onload = (event) => {
-          if (event.target && event.target.result) {
-            const base64 = event.target.result as string
-            setHelicopter({ ...helicopter, image_front: base64 })
-          }
-        }
-        FR.readAsDataURL(e.target.files[0])
+        const upload = await uploadImage(image)
+        setHelicopter({ ...helicopter, image_front: upload.data.result })
       }
       else if (key.includes('back')) {
-        FR.onload = (event) => {
-          if (event.target && event.target.result) {
-            const base64 = event.target.result as string
-            setHelicopter({ ...helicopter, image_back: base64 })
-          }
-        }
-        FR.readAsDataURL(e.target.files[0])
+        const upload = await uploadImage(image)      
+        setHelicopter({ ...helicopter, image_back: upload.data.result })
+
       }
       else if (key.includes('left')) {
-        FR.onload = (event) => {
-          if (event.target && event.target.result) {
-            const base64 = event.target.result as string
-            setHelicopter({ ...helicopter, image_left: base64 })
-          }
-        }
-        FR.readAsDataURL(e.target.files[0])
+        const upload = await uploadImage(image)   
+        setHelicopter({ ...helicopter, image_left: upload.data.result })
+
       }
       else if (key.includes('right')) {
-        FR.onload = (event) => {
-          if (event.target && event.target.result) {
-            const base64 = event.target.result as string
-            setHelicopter({ ...helicopter, image_rigth: base64 })
-          }
-        }
-        FR.readAsDataURL(e.target.files[0])
+        const upload = await uploadImage(image)
+        setHelicopter({ ...helicopter, image_rigth: upload.data.result })
+
       }
     }
   }
