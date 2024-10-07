@@ -43,10 +43,6 @@ export function updateUserInCar(car_id: string) {
 }
 
 export function assingPatinetToCarByCarIdAndPatientId(car_id: string, patient_id: string) {
-    console.log({
-        CAR: car_id,
-        PAT: patient_id
-    });
     
     const data = {
         patient_id: patient_id

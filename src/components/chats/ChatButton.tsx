@@ -35,7 +35,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import styledComponent from 'styled-components';
 
-import { feedMessageChatByRoomId, findChatRoomAll } from '@/services/chat.service';
+import { feedMessageChatByRoomId, findChatRoomAll, mapDataHistoryToChat } from '@/services/chat.service';
 import { enviromentDev } from '@/configs/enviroment.dev';
 import { toast } from '@/services/alert.service';
 import CircularProgress from '@mui/joy/CircularProgress';
@@ -213,6 +213,12 @@ export default function ChatButton() {
 
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
 
+  const chatBox = React.useRef<HTMLDivElement | null>(null);
+  const messagePage = React.useRef<number>(1)
+  const [loadingOlderMessages, setLoadingOlderMessages] = React.useState(false);
+  const [onloadOld, setOnloadOld] = React.useState(false);
+
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView();
   };
@@ -251,17 +257,8 @@ export default function ChatButton() {
       setCurrentChat({ ...currentChat, chat_id: room_id, title: mission.title, is_online: true, image_chat: mission.image })
     }
     try {
-      const result = await feedMessageChatByRoomId(chat_id, 1, 10)
-      const c = {} as Chats
-      const mapMessage: Chats[] = result.data.map((r) => {
-        c.avatar = r.Sender.image
-        c.message = r.message
-        c.client_id = r.Sender.id
-        c.name_send = r.Sender.first_name
-        c.post_date = r.create_date
-        c.user_id = r.Sender.id
-        return c
-      })
+      const result = await feedMessageChatByRoomId(chat_id, 1, 10);
+      const mapMessage = await mapDataHistoryToChat(result.data)
       setMessages(mapMessage)
     } catch (error: any) {
       toast(JSON.stringify(error.message), 'error')
@@ -310,14 +307,22 @@ export default function ChatButton() {
       const arr = arrmessage
       arr.post_date = new Date().toLocaleString('th-TH')
       setMessages((prevMessages) => [...prevMessages, arrmessage]);
-      console.log(messages);
 
     });
 
     // return () => {
     //   socket.off('receive-message');
     // };
+
+
   }, [getMissionIdBylocalstorage]);
+
+  React.useEffect(() => {
+    if (openChat && !loadingOlderMessages) {
+      scrollToBottom();
+    }
+  }, [openChat, onSendMessage]);
+
 
   const WindowChat = () => <div>
     <ListItem sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
@@ -325,6 +330,7 @@ export default function ChatButton() {
         setOpenChat(false)
         setMessages([])
         setCurrentChat({} as CurrenChat)
+        setLoadingOlderMessages(false)
       }} variant='plain' color='neutral'><ArrowBackIosIcon /></Button>
       <ListItemAvatar>
         {currentChat.is_online ? (
@@ -347,7 +353,36 @@ export default function ChatButton() {
     </ListItem>
 
     <div>
-      <div className='chatModal'>
+      <div className='chatModal' ref={chatBox} onScroll={async (e) => {
+        if (chatBox.current?.scrollTop === 0) {
+          const scrollHeightBefore = chatBox.current.scrollHeight; // เก็บความสูงก่อน
+          setLoadingOlderMessages(true)
+          setOnloadOld(true)
+          messagePage.current = messagePage.current === 1 ? 2 : messagePage.current + 1; // เพิ่ม page
+
+          try {
+            const newMessage = await feedMessageChatByRoomId(room_id, messagePage.current, 10);
+            const mapMessage = await mapDataHistoryToChat(newMessage.data);
+
+            setMessages((prev) => [...mapMessage, ...prev]);
+            // setLoadingOlderMessages(false)
+
+          } catch (error) {
+            console.log(error);
+            
+          } finally {
+            setOnloadOld(false)
+          }
+
+          // ให้ scroll กลับไปที่ตำแหน่งเดิม
+          chatBox.current.scrollTop = chatBox.current.scrollHeight - scrollHeightBefore;
+        }
+      }}>
+        {
+          onloadOld?
+          <Divider textAlign="center">กำลังโหลดข้อความเก่า</Divider>:
+          null
+        }
         {
           messages.length > 0 ?
             messages.map((r, i) => {
@@ -473,7 +508,7 @@ export default function ChatButton() {
 
         {
           openChat === false ?
-            <div style={{overflow: 'scroll', height: 270, width: 270}}>
+            <div style={{ overflow: 'scroll', height: 270, width: 270 }}>
               <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper', cursor: 'pointer' }}>
 
                 <Divider>
@@ -554,11 +589,6 @@ export default function ChatButton() {
       </>
     )
   }
-
-  React.useEffect(() => {
-    scrollToBottom()
-
-  }, [messages])
 
   return (
     <>

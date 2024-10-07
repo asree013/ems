@@ -31,7 +31,6 @@ import CarPatientitem from './CarPatientItem';
 export default function CarPatientList() {
     const { vehicle, setVehicle } = useContext<TCurrentVehicles>(CurrentVehicleContext)
     const [load, setLoad] = useState(false)
-    const { car, setCar } = useContext<TCurrentCars>(CurrentCarsContext)
 
     return (
         <>
@@ -50,10 +49,28 @@ export default function CarPatientList() {
                             vehicle.car || vehicle.helicopter || vehicle.ship ?
                                 <div style={{ height: '100%', minHeight: '22rem', overflow: 'scroll' }}>
                                     {
-                                        vehicle.car.Car.PatientBelongCar?.map((r, i) =>
-                                            <CarPatientitem key={i} patient={r} />
-                                        )
+                                        !vehicle.car ?
+                                            null :
+                                            vehicle.car.Car.PatientBelongCar?.map((r, i) =>
+                                                <CarPatientitem key={i} patient={r} />
+                                            )
                                     }
+
+                                    {
+                                        !vehicle.helicopter ?
+                                            null :
+                                            vehicle.helicopter.Helicopter.PatientBelongHelicopter?.map((r, i) =>
+                                                <CarPatientitem key={i} patient={r} />
+                                            )
+                                    }
+
+                                    {/* {
+                                        !vehicle.ship ?
+                                            null :
+                                            vehicle.ship?.map((r, i) =>
+                                                <CarPatientitem key={i} patient={r} />
+                                            )
+                                    } */}
 
                                 </div>
                                 : <div onClick={() => {
@@ -70,8 +87,26 @@ export default function CarPatientList() {
                         <Typography level="title-lg" sx={{ mr: 'auto' }}>
                             <Button color='danger' onClick={() => {
                                 setLoad(true)
-                                window.location.href = '/patient?key=add-car&vehicle_id=' + car.id
-                            }}>เพิ่มผู้ป่วยในรถ</Button>
+                                if (vehicle.car) {
+                                    window.location.href = '/patient?key=add-car&vehicle_id=' + vehicle.car.Car.id
+                                }
+                                if (vehicle.helicopter) {
+                                    window.location.href = '/patient?key=add-helicopter&vehicle_id=' + vehicle.helicopter.Helicopter.id
+                                }
+                            }}>
+                                {
+                                    vehicle.car?
+                                    'เพิ่มผู้ป่วยในรถ': null
+                                }
+                                {
+                                    vehicle.helicopter?
+                                    'เพิ่มผู้ป่วยใน ฮ.': null
+                                }
+                                {
+                                    vehicle.ship?
+                                    'เพิ่มผู้ป่วยในเรือ': null
+                                }
+                            </Button>
                         </Typography>
                         <Button
                             variant="soft"

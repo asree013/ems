@@ -82,7 +82,7 @@ export default function Page({ params }: Props) {
     try {
       const result = await findHistoryByPatientId(params.patient_id);
       setHistory(result.data);
-      setHistoryFilter(result.data);
+      // setHistoryFilter(result.data);
 
     } catch (error: any) {
       console.log(error);
@@ -91,7 +91,7 @@ export default function Page({ params }: Props) {
         window.location.href = '/login';
       }
     }
-  }, [setHistory, setHistoryFilter, setIsLoad]);
+  }, [setHistory, setIsLoad]);
 
   useEffect(() => {
     onFeedHistoryByPatientId();
@@ -111,8 +111,8 @@ export default function Page({ params }: Props) {
 
           <Divider style={{ margin: '10px 0' }} />
           <div className={historyCss.history_item}>
-            {history.length > 0
-              ? historyFilter.map((r, i) => <HistoryItem name={{first_name: r.Patient.first_name, last_name: r.Patient.last_name}} value={r} key={i} />)
+            {Object.keys(history).length > 0
+              ? history.map((r, i) => <HistoryItem name={{ first_name: r.Patient.first_name, last_name: r.Patient.last_name }} value={r} key={i} />)
               : null}
           </div>
         </div>
@@ -136,7 +136,7 @@ export default function Page({ params }: Props) {
               className={historyCss.sheet}
             >
               <ModalClose variant="plain" sx={{ m: 1 }} />
-              <HistoryDetailContext.Provider value={{historyDetail, setHistoryDetail}} >
+              <HistoryDetailContext.Provider value={{ historyDetail, setHistoryDetail }} >
                 <TraigeLevelContext.Provider value={{ triageLevel, setTriageLevel }}>
                   <PhysicalStatusContext.Provider value={{ physicalStatus, setPhysicalStatus }} >
 

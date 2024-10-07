@@ -25,6 +25,7 @@ import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import EditCalendarIcon from '@mui/icons-material/EditCalendar';
 import { timeOutJwt } from '@/services/timeout.service';
 import { assingPatinetToCarByCarIdAndPatientId } from '@/services/car.service';
+import { assingPatientInHelicopter } from '@/services/helicopter.service';
 
 type Props = {
   patient: Patients;
@@ -61,13 +62,23 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
     setIsLoad(true)
     try {
       if (vehicle_id) {
-        await assingPatinetToCarByCarIdAndPatientId(vehicle_id, patient.id)
-        history.back()
+        if (key === 'add-helicopter') {
+          await assingPatientInHelicopter(vehicle_id, patient.id)
+          history.back()
+        }
+        if (key === 'add-car') {
+          await assingPatinetToCarByCarIdAndPatientId(vehicle_id, patient.id)
+          history.back()
+        }
+        if(key === 'add-ship') {
+
+        }
       }
     } catch (error) {
       // timeOutJwt(error)
     } finally {
       setIsLoad(false)
+
     }
   }
   return (

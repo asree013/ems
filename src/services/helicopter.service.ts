@@ -50,3 +50,11 @@ export function updateUserInHelicpter(ho_id: string) {
         throw error
     }
 }
+
+export function assingPatientInHelicopter(helicopter_id: string, patient_id: string) {
+    try {
+        return endpoint.put<Helicopters>(enviromentDev.helicopter + `/${helicopter_id}/assign_user_belong_in_helicopter/${patient_id}`)
+    } catch (error) {
+        throw error
+    }
+}

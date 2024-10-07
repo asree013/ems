@@ -217,7 +217,7 @@ export default function PatientForm({
                 const fdt = new FormData()
                 fdt.append('file', e.target.files[0])
                 const image = await uploadImage(fdt)
-                setPatient({ ...patient, image_id_card: image.data.result })
+                setPatient({ ...patient, image: image.data.result })
                 setLoad(false)
               }
             }

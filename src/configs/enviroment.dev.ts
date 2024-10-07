@@ -2,6 +2,7 @@ export const enviromentDev = {
   myUrl: 'http://localhost:3000',
   baseUrl: 'https://api-ems.m-mert.com/v1',
   baseUrl_base: 'http://localhost:3333',
+  baseUrl_base_onLine: 'https://api-ems.m-mert.com',
   localUrl: 'http://localhost:3333/v1',
   patient: '/patient',
   login: '/login',

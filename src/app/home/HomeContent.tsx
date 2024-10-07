@@ -25,6 +25,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import MainMonitor from './monitor/MainMonitor';
+import CurrentMissionTah from './CurrentMissionTag';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -73,7 +74,7 @@ export default function HomeContent() {
     return (
         <>
             <div className={HomeCss.content}>
-                
+
                 <div className={HomeCss.contentMenu}>
                     <div className={HomeCss.contentTitle}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -92,6 +93,9 @@ export default function HomeContent() {
                     </div>
                     <div style={{ margin: '15px 0' }}>
                         <CardMissionUser />
+                    </div>
+                    <div className='mt-2'>
+                        <CurrentMissionTah />
                     </div>
                 </div>
                 <div className={HomeCss.contentMenu}>

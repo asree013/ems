@@ -67,9 +67,14 @@ export default function VehicleCard() {
                     <Divider inset="none" />
                     <CardActions>
                         <Typography level="title-lg" sx={{ mr: 'auto' }}>
-                            3.990€{' '}
                             <Typography textColor="text.tertiary" sx={{ fontSize: 'sm' }}>
-                                / month
+                                เลขทะเบียน
+                                {
+                                    vehicle.car?.Car.number?? null
+                                }
+                                {
+                                    vehicle.helicopter?.Helicopter.number?? null
+                                }
                             </Typography>
                         </Typography>
                         <Button

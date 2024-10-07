@@ -52,7 +52,17 @@ export default function CarHistoryPatient() {
                             vehicle.car || vehicle.helicopter || vehicle.ship ?
                                 <div style={{  height: '22rem', overflow: 'scroll', }}>
                                     {
+                                        !vehicle.car?
+                                        null:
                                         vehicle.car.Car.PatientBelongCar?.map((r, i) => 
+                                            <CarHistoryItem key={i} name={{first_name: r.Patient.first_name, last_name: r.Patient.last_name}} patient_id={r.patient_id} history={r.Patient.History[0]} />
+                                        )
+                                    }
+
+{
+                                        !vehicle.helicopter?
+                                        null:
+                                        vehicle.helicopter.Helicopter.PatientBelongHelicopter?.map((r, i) => 
                                             <CarHistoryItem key={i} name={{first_name: r.Patient.first_name, last_name: r.Patient.last_name}} patient_id={r.patient_id} history={r.Patient.History[0]} />
                                         )
                                     }
@@ -69,12 +79,6 @@ export default function CarHistoryPatient() {
                     </Box>
                     <Divider inset="none" />
                     <CardActions>
-                        <Typography level="title-lg" sx={{ mr: 'auto' }}>
-                            <Button color='success' onClick={() => {
-                                setLoad(true)
-                                window.location.href = '/patient'
-                            }}>เพิ่มประวัตผู้ป่วย</Button>
-                        </Typography>
                         <Button
                             variant="soft"
                             color="neutral"
