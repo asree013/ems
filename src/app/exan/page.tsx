@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import exan from './exan.module.css';
-import BodyHuman from '../../components/BodyHuman';
+import BodyHuman from '../patient/[patient_id]/history/[history_id]/exan/BodyHuman';
 export default function Page() {
   const [value, setValue] = useState<string[]>([
     'head',

@@ -4,13 +4,28 @@ import { BodyComponent } from 'reactjs-human-body';
 import { useRouter } from 'next/navigation';
 import { BodyHumans } from '@/models/body.human.model';
 
-import bodyHumanCss from './styles/BodyHuman.module.css';
 import { TypeOpenExanContext, OpenExanImage } from '@/contexts/openExanImage.context';
+import styled from 'styled-components';
+import { NIL } from 'uuid';
 
 interface ChildProps {
   onChangeData: (data: string) => void;
   organ: string[];
 }
+
+const Styled = styled.div`
+//   .bodyHuman{
+//     position: absolute;
+//     top: 30%;
+// }
+
+// @media only screen and (max-width: 1025px) {
+//     .bodyHuman{
+//         position: fixed;
+//         top: 20%;
+//     }
+// }
+`
 
 export default function BodyHuman({ onChangeData, organ }: ChildProps) {
   const router = useRouter();
@@ -74,16 +89,18 @@ export default function BodyHuman({ onChangeData, organ }: ChildProps) {
   };
 
   function showBodyPart(element_id: string) {
-    // router.push('');
+    router.push('exan/'+ NIL+ '?el_id='+ element_id);
     onChangeData(element_id);
     // router.refresh();
   }
   return (
-    <div className={bodyHumanCss.body}>
-      <BodyComponent
-        partsInput={organResult}
-        onClick={(e: string) => showBodyPart(e)}
-      />
-    </div>
+    <Styled>
+      <div className={'bodyHuman'} style={{zIndex: 0, position: 'relative', cursor: 'pointer'}}>
+        <BodyComponent
+          partsInput={organResult}
+          onClick={(e: string) => showBodyPart(e)}
+        />
+      </div>
+    </Styled>
   );
 }

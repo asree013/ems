@@ -1,8 +1,7 @@
 'use client';
-import BodyHuman from '@/components/BodyHuman';
+import BodyHuman from '@/app/patient/[patient_id]/history/[history_id]/exan/BodyHuman';
 import React, { Dispatch, SetStateAction, createContext, useCallback, useEffect, useState } from 'react';
 import exanCss from './exan.module.css';
-import ExanElement from './ExanElement';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import FormHelperText from '@mui/joy/FormHelperText';
@@ -17,6 +16,7 @@ import { ExanShows, Exans } from '@/models/exan.model';
 import { ExanContextBody } from '@/contexts/exan.context';
 import { ElIdExanImage } from '@/contexts/elIdExanImage.context';
 import { OpenExanImage } from '@/contexts/openExanImage.context';
+import ExanElement from './ExanElement';
 
 type Props = {
   params: {
@@ -89,9 +89,12 @@ export default function Page({ params }: Props) {
                   </Button>
                 </Box>
               </FormControl>
-              <ExanElement organ={value} exan={exan} />
-              <ExanDetail />
+              {/* <ExanDetail /> */}
+              <div className={exanCss.cardEelement}>
+                <ExanElement organ={value} exan={exan} />
+              </div>
             </div>
+
           </ExanContextBody.Provider>
         </ElIdExanImage.Provider>
       </OpenExanImage.Provider>

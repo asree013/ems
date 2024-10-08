@@ -14,17 +14,22 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Loadding from '@/components/Loadding';
 import { HistoryInCar } from '@/app/home/vehicle/CarHistoryItem';
+import Modal from '@mui/material/Modal';
+import PhysicalStatusModal from './PhysicalstatusModal';
+
 type Props = {
   value: HistoryInCar;
   name: {
     first_name: string,
-    last_name: string
+    last_name: string,
+    patient_id: string
   }
 };
 
-export default function HistoryItem({ value, name }: Props) {
+export default function HistoryItem({ value, name, }: Props) {
   const router = useRouter();
   const [load, setLoad] = React.useState<boolean>(false);
+  const [open, setOpen] = React.useState<boolean>(false);
 
   function pipeTime(time: string) {
     if (time) {
@@ -36,7 +41,7 @@ export default function HistoryItem({ value, name }: Props) {
 
   function onRedirect(historyId: string) {
     setLoad(true);
-    router.push('history/' + historyId);
+    router.push('/patient/'+ name.patient_id + '/history/' + historyId);
   }
   return (
     <>
@@ -52,7 +57,7 @@ export default function HistoryItem({ value, name }: Props) {
             </Typography>
             <Typography
               sx={{ cursor: 'pointer' }}
-              onClick={() => onRedirect(value?.id)}
+              onClick={() => onRedirect(value?.id, )}
               gutterBottom
               component="div"
               style={{
@@ -98,8 +103,8 @@ export default function HistoryItem({ value, name }: Props) {
         </Box>
         <Divider />
         <Box sx={{ margin: '15px 0', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
-          <Button variant='outlined' color='warning'>Triage Level</Button>
-          <Button variant='outlined' color='inherit'>Physical Status</Button>
+          <Button variant='outlined' onClick={() => setOpen(true)} color='warning'>Triage Level</Button>
+          <Button variant='outlined' onClick={() => setOpen(true)} color='inherit'>Physical Status</Button>
         </Box>
         <Divider />
         <Box sx={{ p: 2 }}>
@@ -157,6 +162,24 @@ export default function HistoryItem({ value, name }: Props) {
           : null
       }
 
+      {
+        <PhysicalStatusModal 
+          name={{first_name: name.first_name, last_name: name.last_name}}
+          historys={value}
+          triageLevel={JSON.parse(value.triage_lavel)} 
+          physicalStatus={JSON.parse(value.physical_status)}
+          open={open} setOpen={setOpen} 
+        />
+      }
+
     </>
   );
+
+
+
+
 }
+
+
+
+

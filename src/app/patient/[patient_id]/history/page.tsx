@@ -37,10 +37,9 @@ type Props = {
 export default function Page({ params }: Props) {
 
   const [historyDetail, setHistoryDetail] = useState<Historys>({} as Historys)
-  const [isLoad, setIsLoad] = useState<boolean>(false);
   const [historyFrom, setHistoryFrom] = useState<boolean>(false);
 
-
+  const [load, setLoad] = useState(false)
   const [history, setHistory] = useState<Historys[]>({} as Historys[]);
   const [historyFilter, setHistoryFilter] = useState<Historys[]>(
     {} as Historys[],
@@ -79,6 +78,7 @@ export default function Page({ params }: Props) {
   }
 
   const onFeedHistoryByPatientId = useCallback(async () => {
+    setLoad(true)
     try {
       const result = await findHistoryByPatientId(params.patient_id);
       setHistory(result.data);
@@ -87,11 +87,12 @@ export default function Page({ params }: Props) {
     } catch (error: any) {
       console.log(error);
       if (error.response.data.statusCode === 401) {
-        setIsLoad(true);
         window.location.href = '/login';
       }
+    } finally {
+      setLoad(false)
     }
-  }, [setHistory, setIsLoad]);
+  }, [setHistory]);
 
   useEffect(() => {
     onFeedHistoryByPatientId();
@@ -111,8 +112,16 @@ export default function Page({ params }: Props) {
 
           <Divider style={{ margin: '10px 0' }} />
           <div className={historyCss.history_item}>
-            {Object.keys(history).length > 0
-              ? history.map((r, i) => <HistoryItem name={{ first_name: r.Patient.first_name, last_name: r.Patient.last_name }} value={r} key={i} />)
+            {history.length > 0
+              ? history.map((r, i) => (
+                r.Patient ? (
+                  <HistoryItem
+                    name={{ first_name: r.Patient.first_name, last_name: r.Patient.last_name, patient_id: r.Patient.id }}
+                    value={r}
+                    key={i}
+                  />
+                ) : null
+              ))
               : null}
           </div>
         </div>
@@ -152,7 +161,7 @@ export default function Page({ params }: Props) {
       }
 
 
-      {isLoad ? <Loadding /> : null}
+      {load ? <Loadding /> : null}
     </>
   );
 }

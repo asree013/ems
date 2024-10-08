@@ -4,16 +4,16 @@
     justify-content: center;
 }
 .homeHistoryId{
-    margin: 80px;
     padding: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    height: 100%;
+    width: 100%;
 }
 .formControl{
-    width: 550px;
+    width: 300px;
+    
 }
 .boxButton{
     display: flex;
@@ -25,8 +25,8 @@
     align-items: center;
     justify-content: center;
     position: absolute;
-    top: 36%;
-    right: 40%;
+    top: 250px;
+    right: 20px;
 }
 .rightShoulder{
     display: flex;
@@ -148,101 +148,236 @@
     width: 220px;
 }
 @media only screen and (max-width: 1025px) {
+
+    .formControl{
+        width: 550px;
+        
+    }
     .head{
         display: flex;
         align-items: center;
         justify-content: center;
         position: absolute;
-        top: 24%;
-        right: 32%;
+        top: 250px;
+        right: 260px;
     }
     .rightShoulder{
         display: flex;
         align-items: center;
         justify-content: center;
         position: absolute;
-        top: 28.5%;
-        right: 27%; 
+        top: 310px;
+        right: 220px; 
     }
     .leftShoulder{
         display: flex;
         align-items: center;
         justify-content: center;
         position: absolute;
-        top: 28%;
-        left: 28%; ; 
+        top: 310px;
+        left: 220px; ; 
     }
     .rightArm{
         display: flex;
         align-items: center;
         justify-content: center;
         position: absolute;
-        top: 34%;
-        right: 25%; 
+        top: 400px;
+        right: 210px; 
     }
     .leftArm{
         display: flex;
         align-items: center;
         justify-content: center;
         position: absolute;
-        top: 35%;
-        left: 25%; 
+        top: 400px;
+        left: 210px; 
     }
     .rightHand{
         display: flex;
         align-items: center;
         justify-content: center;
         position: absolute;
-        top: 41%;
-        right: 22%; 
+        top: 460px;
+        right: 180px; 
     }
     .leftHand{
         display: flex;
         align-items: center;
         justify-content: center;
         position: absolute;
-        top: 41%;
-        left: 22%; 
+        top: 460px;
+        left: 180px; 
     }
     .rightLeg{
         display: flex;
         align-items: center;
         justify-content: center;
         position: absolute;
-        top: 48%;
-        right: 31%;  
+        top: 550px;
+        right: 240px;  
     }
     .leftLeg{
         display: flex;
         align-items: center;
         justify-content: center;
         position: absolute;
-        top: 48%;
-        left: 31%; 
+        top: 550px;
+        left: 240px; 
     }
     .rightFoot{
         display: flex;
         align-items: center;
         justify-content: center;
         position: absolute;
-        top: 61%;
-        right: 30%; 
+        top: 690px;
+        right: 240px; 
     }
     .leftFoot{
         display: flex;
         align-items: center;
         justify-content: center;
         position: absolute;
-        top: 61%;
-        left: 30%; 
+        top: 690px;
+        left: 240px; 
     }
     .chest{
         display: flex;
         align-items: center;
         justify-content: center;
         position: absolute;
-        top: 31%;
-        left: 16%; 
+        top: 340px;
+        left: 160px; 
+    }
+    .stomach{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 380px;
+        right: 160px;
+    }
+    .line{
+        border: 1px solid red;
+        width: 80px;
+    }
+    .line_value{
+        border: 1px solid red;
+        padding: 5px 20px;
+        border-radius: 50%;
+        font-size: 2rem;
+        background-color: red;
+        color: aliceblue;
+    }
+    .line_second{
+        border: 1px solid red;
+        width: 180px;
+    }
+    
+
+}
+
+@media only screen and (max-width: 450px) {
+
+    .formControl{
+        width: 300px;
+        
+    }
+    .head{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 250px;
+        right: 70px;
+    }
+    .rightShoulder{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 315px;
+        right: 20px; 
+    }
+    .leftShoulder{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 315px;
+        left: 20px; ; 
+    }
+    .rightArm{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 400px;
+        right: 15px; 
+    }
+    .leftArm{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 400px;
+        left: 15px; 
+    }
+    .rightHand{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 465px;
+        right: 5px; 
+    }
+    .leftHand{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 465px;
+        left: 5px; 
+    }
+    .rightLeg{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 560px;
+        right: 38px;  
+    }
+    .leftLeg{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 560px;
+        left: 38px; 
+    }
+    .rightFoot{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 695px;
+        right: 45px; 
+    }
+    .leftFoot{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 695px;
+        left: 45px; 
+    }
+    .chest{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 340px;
+        left: 16px; 
     }
     .stomach{
         display: flex;
@@ -266,7 +401,7 @@
     }
     .line_second{
         border: 1px solid red;
-        width: 220px;
+        width: 130px;
     }
     
 

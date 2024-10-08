@@ -22,7 +22,6 @@ import { Missions } from '@/models/mission.model';
 import { timeOutJwt } from '@/services/timeout.service';
 import { socket } from '@/configs/socket';
 
-// import style from './chat_toggle.module.css';
 import { ChatRooms, Chats } from '@/models/chat.model';
 import Link from 'next/link';
 import { NIL } from 'uuid';
@@ -331,6 +330,7 @@ export default function ChatButton() {
         setMessages([])
         setCurrentChat({} as CurrenChat)
         setLoadingOlderMessages(false)
+        messagePage.current = 1
       }} variant='plain' color='neutral'><ArrowBackIosIcon /></Button>
       <ListItemAvatar>
         {currentChat.is_online ? (

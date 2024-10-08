@@ -35,7 +35,7 @@ export default function CarHistoryItem({ history, patient_id, name }: Props) {
         <div className='mt-1'>
             {
                 history ?
-                    <HistoryItem value={history} name={{first_name: name.first_name, last_name: name.last_name}} />
+                    <HistoryItem value={history} name={{first_name: name.first_name, last_name: name.last_name, patient_id: patient_id}} />
                     : <Card elevation={3} style={{ margin: '10px 5px', padding: '10px' }}>
                         <p>ยังไม่มีประวัติ</p>
                         <div style={{ display: 'flex', alignContent: 'center', justifyContent: 'space-around' }}>
