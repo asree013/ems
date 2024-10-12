@@ -159,7 +159,7 @@
         justify-content: center;
         position: absolute;
         top: 250px;
-        right: 260px;
+        right: 250px;
     }
     .rightShoulder{
         display: flex;
@@ -167,7 +167,7 @@
         justify-content: center;
         position: absolute;
         top: 310px;
-        right: 220px; 
+        right: 210px; 
     }
     .leftShoulder{
         display: flex;
@@ -175,7 +175,7 @@
         justify-content: center;
         position: absolute;
         top: 310px;
-        left: 220px; ; 
+        left: 210px; ; 
     }
     .rightArm{
         display: flex;
@@ -183,7 +183,7 @@
         justify-content: center;
         position: absolute;
         top: 400px;
-        right: 210px; 
+        right: 200px; 
     }
     .leftArm{
         display: flex;
@@ -191,7 +191,7 @@
         justify-content: center;
         position: absolute;
         top: 400px;
-        left: 210px; 
+        left: 200px; 
     }
     .rightHand{
         display: flex;
@@ -199,7 +199,7 @@
         justify-content: center;
         position: absolute;
         top: 460px;
-        right: 180px; 
+        right: 170px; 
     }
     .leftHand{
         display: flex;
@@ -207,7 +207,7 @@
         justify-content: center;
         position: absolute;
         top: 460px;
-        left: 180px; 
+        left: 170px; 
     }
     .rightLeg{
         display: flex;
@@ -215,7 +215,7 @@
         justify-content: center;
         position: absolute;
         top: 550px;
-        right: 240px;  
+        right: 230px;  
     }
     .leftLeg{
         display: flex;
@@ -223,7 +223,7 @@
         justify-content: center;
         position: absolute;
         top: 550px;
-        left: 240px; 
+        left: 230px; 
     }
     .rightFoot{
         display: flex;
@@ -231,7 +231,7 @@
         justify-content: center;
         position: absolute;
         top: 690px;
-        right: 240px; 
+        right: 230px; 
     }
     .leftFoot{
         display: flex;
@@ -239,7 +239,7 @@
         justify-content: center;
         position: absolute;
         top: 690px;
-        left: 240px; 
+        left: 230px; 
     }
     .chest{
         display: flex;
@@ -247,7 +247,7 @@
         justify-content: center;
         position: absolute;
         top: 340px;
-        left: 160px; 
+        left: 150px; 
     }
     .stomach{
         display: flex;
@@ -255,11 +255,11 @@
         justify-content: center;
         position: absolute;
         top: 380px;
-        right: 160px;
+        right: 150px;
     }
     .line{
         border: 1px solid red;
-        width: 80px;
+        width: 100px;
     }
     .line_value{
         border: 1px solid red;
@@ -289,7 +289,7 @@
         justify-content: center;
         position: absolute;
         top: 250px;
-        right: 70px;
+        right: 90px;
     }
     .rightShoulder{
         display: flex;
@@ -297,7 +297,7 @@
         justify-content: center;
         position: absolute;
         top: 315px;
-        right: 20px; 
+        right: 10px; 
     }
     .leftShoulder{
         display: flex;
@@ -305,7 +305,7 @@
         justify-content: center;
         position: absolute;
         top: 315px;
-        left: 20px; ; 
+        left: 10px; ; 
     }
     .rightArm{
         display: flex;
@@ -313,7 +313,7 @@
         justify-content: center;
         position: absolute;
         top: 400px;
-        right: 15px; 
+        right: 5px; 
     }
     .leftArm{
         display: flex;
@@ -321,7 +321,7 @@
         justify-content: center;
         position: absolute;
         top: 400px;
-        left: 15px; 
+        left: 5px; 
     }
     .rightHand{
         display: flex;
@@ -345,7 +345,7 @@
         justify-content: center;
         position: absolute;
         top: 560px;
-        right: 38px;  
+        right: 28px;  
     }
     .leftLeg{
         display: flex;
@@ -353,7 +353,7 @@
         justify-content: center;
         position: absolute;
         top: 560px;
-        left: 38px; 
+        left: 28px; 
     }
     .rightFoot{
         display: flex;
@@ -361,7 +361,7 @@
         justify-content: center;
         position: absolute;
         top: 695px;
-        right: 45px; 
+        right: 35px; 
     }
     .leftFoot{
         display: flex;
@@ -369,7 +369,7 @@
         justify-content: center;
         position: absolute;
         top: 695px;
-        left: 45px; 
+        left: 35px; 
     }
     .chest{
         display: flex;
@@ -377,7 +377,7 @@
         justify-content: center;
         position: absolute;
         top: 340px;
-        left: 16px; 
+        left: 6px; 
     }
     .stomach{
         display: flex;
@@ -385,17 +385,18 @@
         justify-content: center;
         position: absolute;
         top: 37%;
-        right: 16%;
+        right: 6%;
     }
     .line{
         border: 1px solid red;
-        width: 80px;
+        width: 50px;
     }
     .line_value{
         border: 1px solid red;
         padding: 5px 20px;
         border-radius: 50%;
-        font-size: 2rem;
+        font-size: 1rem;
+        font-weight: 700;
         background-color: red;
         color: aliceblue;
     }

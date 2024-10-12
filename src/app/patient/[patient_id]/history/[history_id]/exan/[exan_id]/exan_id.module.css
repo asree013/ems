@@ -46,6 +46,11 @@
     width: 600px;
 }
 
+.imageUploadSize{
+    width: 400px;
+    height: 280px;
+}
+
 .loopImage {
     overflow: scroll;
     max-height: 300px;

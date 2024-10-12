@@ -248,23 +248,28 @@ export default function ChatButton() {
   }, []);
 
   async function onOpenChatAndChatId(chat_id: string, key: string) {
-    setLoadMessage(true)
+    setLoadMessage(true);
     setOpenChat(true);
     setRoomId(chat_id);
+  
+    // ส่ง event 'join-room' ไปที่ server เพื่อให้ user เข้าร่วมห้องแชท
     socket.emit('join-room', { room_id: chat_id, user_id: user_id });
+  
     if (key === 'mis') {
-      setCurrentChat({ ...currentChat, chat_id: room_id, title: mission.title, is_online: true, image_chat: mission.image })
+      setCurrentChat({ ...currentChat, chat_id: room_id, title: mission.title, is_online: true, image_chat: mission.image });
     }
+  
     try {
       const result = await feedMessageChatByRoomId(chat_id, 1, 10);
-      const mapMessage = await mapDataHistoryToChat(result.data)
-      setMessages(mapMessage)
+      const mapMessage = await mapDataHistoryToChat(result.data);
+      setMessages(mapMessage);
     } catch (error: any) {
-      toast(JSON.stringify(error.message), 'error')
+      toast(JSON.stringify(error.message), 'error');
     } finally {
-      setLoadMessage(false)
+      setLoadMessage(false);
     }
   }
+  
 
   const handleChangeMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(event.target.value);

@@ -1,3 +1,5 @@
+import { ChangeEvent } from "react";
+
 function toRadians(degrees: number): number {
     return degrees * (Math.PI / 180);
 }
@@ -48,4 +50,9 @@ export async function getLatLng(): Promise<{ lat: number; long: number } | undef
         alert('It seems like Geolocation, which is required for this page, is not enabled in your browser. Please use a browser which supports it.');
         return undefined;
     }
+}
+
+export function tranformStringToNumber(value: ChangeEvent<HTMLInputElement>) {
+    const numericValue = value.target.value.replace(/[^0-9.]/g, '');
+    return numericValue
 }

@@ -84,7 +84,7 @@ export default function CarPatientList() {
                     </Box>
                     <Divider inset="none" />
                     <CardActions>
-                        <Typography level="title-lg" sx={{ mr: 'auto' }}>
+                        {/* <Typography level="title-lg" sx={{ mr: 'auto' }}> */}
                             <Button color='danger' onClick={() => {
                                 setLoad(true)
                                 if (vehicle.car) {
@@ -107,14 +107,14 @@ export default function CarPatientList() {
                                     'เพิ่มผู้ป่วยในเรือ': null
                                 }
                             </Button>
-                        </Typography>
-                        <Button
+                        {/* </Typography> */}
+                        {/* <Button
                             variant="soft"
                             color="neutral"
                             endDecorator={<KeyboardArrowRight />}
                         >
                             Start now
-                        </Button>
+                        </Button> */}
                     </CardActions>
                 </Card>
             </Box>

@@ -30,7 +30,6 @@ import CarDetailHome from './CarDetailHome';
 export default function VehicleCard() {
     const { vehicle, setVehicle } = useContext<TCurrentVehicles>(CurrentVehicleContext)
     const [load, setLoad] = useState(false)
-    const {car, setCar} = useContext<TCurrentCars>(CurrentCarsContext)
 
 
     return (
@@ -49,7 +48,7 @@ export default function VehicleCard() {
                         {
                             vehicle.car || vehicle.helicopter || vehicle.ship ?
                                 <div style={{ height: '100%' }}>
-                                    <CarDetailHome vehicles={vehicle}  />
+                                    <CarDetailHome vehicles={vehicle} />
                                 </div>
                                 : <div onClick={() => {
                                     setLoad(true)
@@ -70,17 +69,22 @@ export default function VehicleCard() {
                             <Typography textColor="text.tertiary" sx={{ fontSize: 'sm' }}>
                                 เลขทะเบียน
                                 {
-                                    vehicle.car?.Car.number?? null
+                                    vehicle.car?.Car.number ?? null
                                 }
                                 {
-                                    vehicle.helicopter?.Helicopter.number?? null
+                                    vehicle.helicopter?.Helicopter.number ?? null
                                 }
                             </Typography>
                         </Typography>
                         <Button
                             onClick={() => {
                                 setLoad(true)
-                                window.location.href = '/vehicle/'+ car.id + '/car/detail'
+                                if (vehicle.car.Car) {
+                                    window.location.href = '/vehicle/' + vehicle.car.Car.id + '/car/detail'
+                                }
+                                if (vehicle.helicopter.Helicopter.id) {
+                                    window.location.href = '/vehicle/'+ vehicle.helicopter.Helicopter.id + '/helicopter/detail'
+                                }
                             }}
                             variant="soft"
                             color="neutral"

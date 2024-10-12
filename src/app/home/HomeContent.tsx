@@ -94,9 +94,9 @@ export default function HomeContent() {
                     <div style={{ margin: '15px 0' }}>
                         <CardMissionUser />
                     </div>
-                    <div className='mt-2'>
+                    {/* <div className='mt-2'>
                         <CurrentMissionTah />
-                    </div>
+                    </div> */}
                 </div>
                 <div className={HomeCss.contentMenu}>
                     <div className={HomeCss.contentTitle}>

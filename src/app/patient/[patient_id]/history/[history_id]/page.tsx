@@ -8,7 +8,6 @@ import FormHelperText from '@mui/joy/FormHelperText';
 import Input from '@mui/joy/Input';
 import { Textarea } from '@mui/joy';
 import { Box, Button } from '@mui/material';
-import ExanDetail from './ExanDetail';
 import { Historys } from '@/models/history.model';
 import { findHistoryByPatientIdById } from '@/services/history.service';
 import { findExanByHistoryId } from '@/services/exan.service';
@@ -17,6 +16,7 @@ import { ExanContextBody } from '@/contexts/exan.context';
 import { ElIdExanImage } from '@/contexts/elIdExanImage.context';
 import { OpenExanImage } from '@/contexts/openExanImage.context';
 import ExanElement from './ExanElement';
+import ExamDetailModal from './ExamDetailModal';
 
 type Props = {
   params: {
@@ -26,7 +26,6 @@ type Props = {
 };
 
 export default function Page({ params }: Props) {
-  const [open, setOpen] = useState<boolean>(false);
   const [el_id, setEl_id] = useState<string>('');
 
   const [history, setHistory] = useState<Historys>({} as Historys);
@@ -34,7 +33,6 @@ export default function Page({ params }: Props) {
   const [exan, setExan] = useState<ExanShows[]>({} as ExanShows[]);
 
   const [value, setValue] = useState<string[]>([]);
-
   const onFeedHistoryByHistoryId = useCallback(async () => {
     try {
       const result = await findHistoryByPatientIdById(
@@ -42,34 +40,39 @@ export default function Page({ params }: Props) {
         params.history_id,
       );
       setHistory(result.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }, [setHistory]);
+      // console.log(result.data);
+      setExan(result.data.Exan)
 
-  const onFeedExanByHistoyrId = useCallback(async () => {
-    try {
-      const result = await findExanByHistoryId(params.history_id);
-      const arr = result.data.map((r) => r.element_id);
+      const arr = result.data.Exan.map((r) => r.element_id);
       setValue(arr);
-      setExan(result.data);
+      
     } catch (error) {
       console.log(error);
     }
-  }, [setExan, setValue]);
+  }, [setHistory, setValue, setExan]);
+
+  // const onFeedExan= useCallback(async () => {
+  //   try {
+  //     const result = await findExanByHistoryId(params.history_id);
+  //     const arr = result.data.map((r) => r.element_id);
+  //     setValue(arr);
+  //     // setExan(result.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }, [setExan, setValue]);
 
   useEffect(() => {
     onFeedHistoryByHistoryId();
-    onFeedExanByHistoyrId();
+    // onFeedExan();
     return () => {
-      onFeedHistoryByHistoryId();
-      onFeedExanByHistoyrId();
+      onFeedHistoryByHistoryId;
+      // onFeedExan;
     }
-  }, [onFeedHistoryByHistoryId, onFeedExanByHistoyrId]);
+  }, [onFeedHistoryByHistoryId]);
 
   return (
     <>
-      <OpenExanImage.Provider value={{ open, setOpen }}>
         <ElIdExanImage.Provider value={{ el_id, setEl_id }}>
           <ExanContextBody.Provider value={{ exan, setExan }}>
             <div className={exanCss.homeHistoryId}>
@@ -91,13 +94,12 @@ export default function Page({ params }: Props) {
               </FormControl>
               {/* <ExanDetail /> */}
               <div className={exanCss.cardEelement}>
-                <ExanElement organ={value} exan={exan} />
+                <ExanElement organ={value} exan={exan}/>
               </div>
             </div>
 
           </ExanContextBody.Provider>
         </ElIdExanImage.Provider>
-      </OpenExanImage.Provider>
     </>
   );
 

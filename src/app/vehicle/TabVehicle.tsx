@@ -8,6 +8,7 @@ import { TabValueVehicleContext } from './tabValue.context';
 import MyVehicle from './MyVehicle';
 import HelicopterComponent from './HalicopterComponent';
 import { useSearchParams } from 'next/navigation';
+import ShipComponent from './ShipComponent';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -76,6 +77,11 @@ export default function TabVehicle() {
       <CustomTabPanel value={value} index={2}>
         <TabValueVehicleContext.Provider value={{ value, setValue }} >
           <HelicopterComponent />
+        </TabValueVehicleContext.Provider>
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={3}>
+        <TabValueVehicleContext.Provider value={{ value, setValue }} >
+          <ShipComponent />
         </TabValueVehicleContext.Provider>
       </CustomTabPanel>
     </Box>

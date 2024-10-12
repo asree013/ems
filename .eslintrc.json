@@ -1,15 +1,14 @@
 {
   "extends": ["next", "prettier"],
   "rules": {
-    // ปิดการใช้งานกฎที่ทำให้เกิดข้อผิดพลาดทั้งหมด
-    "quotes": "off", // ปิดการใช้งานกฎการใช้เครื่องหมายอัญประกาศ
-    "comma-dangle": "off" // ปิดการใช้งานกฎการใช้ comma ที่อยู่ท้ายรายการ
+    "quotes": "off", 
+    "comma-dangle": "off" 
   },
   "overrides": [
     {
       "files": ["src/sar_system/**"],
       "rules": {
-        // ปิดการใช้งานกฎเฉพาะในโฟลเดอร์ sar_system
+        
         "quotes": "off",
         "comma-dangle": "off"
       }

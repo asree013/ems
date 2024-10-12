@@ -2,17 +2,15 @@
 import { Input } from '@mui/joy'
 import React, { ChangeEvent, useContext, useState } from 'react'
 import { TraigeLevelContext, TTriageLvelContext } from '../StepContext';
+import { tranformStringToNumber } from '@/services/sum_lat_long.service';
 
 export default function Vs() {
     const [load, setLoad] = useState<boolean>(false)
-    function tranformStringToNumber(value: ChangeEvent<HTMLInputElement>) {
-        const numericValue = value.target.value.replace(/[^0-9.]/g, '');
-        return numericValue
-    }
+    
     const { setTriageLevel, triageLevel } = useContext<TTriageLvelContext>(TraigeLevelContext)
 
     return (
-        <div>
+        <div style={{width: 280}}>
             <div>
                 <label htmlFor="T">Temp(T)</label>
                 <Input value={triageLevel.v_s ? triageLevel.v_s.t ?? '' : ''} onChange={(e) => {

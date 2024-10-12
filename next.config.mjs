@@ -71,3 +71,7 @@ export default withPWAInit({
     ],
   },
 })(nextConfig);
+
+// export default {
+//   dest: "public",
+// }

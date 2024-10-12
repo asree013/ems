@@ -47,3 +47,36 @@ export function updateExanByExanId(
     throw error;
   }
 }
+
+export function convertStringToThai(str: string) {
+  switch (true) {
+    case !str:
+      return;
+    case str.includes('head'):
+      return 'หัว';
+    case str.includes('leftShoulder'):
+      return 'ไหลขวา';
+    case str.includes('rightShoulder'):
+      return 'ไหลซ้าย';
+    case str.includes('leftArm'):
+      return 'มือซ้าย';
+    case str.includes('rightArm'):
+      return 'มือขวา';
+    case str.includes('chest'):
+      return 'หน้าอก';
+    case str.includes('stomach'):
+      return 'ท้อง';
+    case str.includes("leftLeg"):
+      return 'ขาซ้าย';
+    case str.includes("rightLeg"):
+      return 'ขาขวา';
+    case str.includes("rightHand"):
+      return 'แขนขา';
+    case str.includes("leftHand"):
+      return 'แขนซ้าย';
+    case str.includes("leftFoot"):
+      return 'ท้าวซ้าย';
+    case str.includes("rightFoot"):
+      return 'ท้าวขวา';
+  }
+}

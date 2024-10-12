@@ -20,6 +20,7 @@ import Respi from './stepForm/Respi';
 import Cvs from './stepForm/Cvs';
 import Neuro from './stepForm/Neuro';
 import CreateHistoryFrom from './stepForm/CreateHistoryFrom';
+import MotorPower from './stepForm/MotorPower';
 
 const steps = [
   {
@@ -55,9 +56,14 @@ const steps = [
     component: <Neuro />
   },
   {
+    label: 'Motor Power',
+    component: <MotorPower />
+  },
+  {
     label: 'สร้างประวัติ',
     component: <CreateHistoryFrom />
   },
+  
 ];
 
 export default function StepHistory() {

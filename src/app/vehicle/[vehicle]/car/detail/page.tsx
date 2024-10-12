@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import CarDetail from '../../../../../components/car/CarDetail';
 import { findCarByCarId } from '@/services/car.service';
 import { timeOutJwt } from '@/services/timeout.service';
-import { Cars } from '@/models/vehicle.model';
+import { CarByCarId, Cars } from '@/models/vehicle.model';
 import { CarDetailContext } from '../../../../../components/car/CarDetail.context';
 import PateintDetail from '../../../../../components/car/PateintDetail';
 import { useSearchParams } from 'next/navigation';
@@ -48,8 +48,8 @@ type Props = {
 
 export default function Page({ params }: Props) {
   const key = useSearchParams().get('key')
-  const [value, setValue] = React.useState(key? key.includes('patient')? 2: 1 : 0);
-  const [car, setCar] = React.useState<Cars>({} as Cars)
+  const [value, setValue] = React.useState(key ? key.includes('patient') ? 2 : 1 : 0);
+  const [carByid, setCarById] = React.useState<CarByCarId>({} as CarByCarId)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -58,11 +58,11 @@ export default function Page({ params }: Props) {
   const feedCarById = React.useCallback(async () => {
     try {
       const result = await findCarByCarId(params.vehicle)
-      setCar(result.data)
+      setCarById(result.data)
     } catch (error) {
       timeOutJwt(error)
     }
-  }, [setCar])
+  }, [setCarById])
 
   React.useEffect(() => {
     feedCarById()
@@ -81,19 +81,19 @@ export default function Page({ params }: Props) {
           <Tab label="ผู้ป่วย" {...a11yProps(2)} />
         </Tabs>
       </Box>
-      <CustomTabPanel value={value} index={0}>
-        <CarDetailContext.Provider value={{ car, setCar }} >
+      <CarDetailContext.Provider value={{ carByid, setCarById }} >
+        <CustomTabPanel value={value} index={0}>
           <CarDetail />
-        </CarDetailContext.Provider>
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        Item Two
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
-        <CarDetailContext.Provider value={{ car, setCar }} >
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          Item Two
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={2}>
           <PateintDetail />
-        </CarDetailContext.Provider>
-      </CustomTabPanel>
+        </CustomTabPanel>
+      </CarDetailContext.Provider>
+
     </Box>
+
   );
 }

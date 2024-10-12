@@ -1,4 +1,4 @@
-import { Cars } from "@/models/vehicle.model";
+import { CarByCarId, Cars } from "@/models/vehicle.model";
 import { endpoint } from "./endpoint.service";
 import { enviromentDev } from "@/configs/enviroment.dev";
 
@@ -20,7 +20,7 @@ export function findCarAll(page?:number, limit?: number){
 
 export function findCarByCarId(car_id: string){
     try {
-        return endpoint.get<Cars>(enviromentDev.car+ `/${car_id}`)
+        return endpoint.get<CarByCarId>(enviromentDev.car+ `/${car_id}`)
     } catch (error) {
         throw error
     }

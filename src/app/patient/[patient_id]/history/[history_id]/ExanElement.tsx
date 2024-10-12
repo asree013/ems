@@ -1,13 +1,13 @@
 'use client';
-import React, { useContext, useState } from 'react';
+import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
 import exanCss from './exan.module.css';
 import { useParams, useRouter } from 'next/navigation';
 import { NIL } from 'uuid';
 import { ExanShows, Exans } from '@/models/exan.model';
 import Loadding from '@/components/Loadding';
 import { TypeElIDContext, ElIdExanImage } from '@/contexts/elIdExanImage.context';
-import { TypeOpenExanContext, OpenExanImage } from '@/contexts/openExanImage.context';
 import BodyHuman from './exan/BodyHuman';
+import ExamDetailModal from './ExamDetailModal';
 
 type Props = {
   organ: string[];
@@ -19,9 +19,8 @@ export default function ExanElement({ organ, exan }: Props) {
   const patient_id = useParams().patient_id;
   const history_id = useParams().history_id;
   const [load, setLoad] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
 
-  const { open, setOpen } =
-    useContext<TypeOpenExanContext>(OpenExanImage);
   const { el_id, setEl_id } = useContext<TypeElIDContext>(ElIdExanImage);
   async function setParamBody(txt: string) {
     if (txt) {
@@ -64,8 +63,7 @@ export default function ExanElement({ organ, exan }: Props) {
               onClick={() => onOpenImage('head')}
             >
               {
-                exan?.find((r) => r.element_id.includes('head'))?._count
-                  .ImageExan
+                exan?.filter((r) => r.element_id.includes('head')).length
               }
             </div>
           </div>
@@ -78,8 +76,7 @@ export default function ExanElement({ organ, exan }: Props) {
               onClick={() => onOpenImage('rightShoulder')}
             >
               {
-                exan?.find((r) => r.element_id.includes('rightShoulder'))?._count
-                  .ImageExan
+                exan?.filter((r) => r.element_id.includes('rightShoulder')).length
               }
             </div>
           </div>
@@ -92,8 +89,7 @@ export default function ExanElement({ organ, exan }: Props) {
               onClick={() => onOpenImage('rightArm')}
             >
                {
-                exan?.find((r) => r.element_id.includes('rightArm'))?._count
-                  .ImageExan
+                exan?.filter((r) => r.element_id.includes('rightArm')).length
               } 
             </div>
           </div>
@@ -106,8 +102,7 @@ export default function ExanElement({ organ, exan }: Props) {
               onClick={() => onOpenImage('rightHand')}
             >
                {
-                exan?.find((r) => r.element_id.includes('rightHand'))?._count
-                  .ImageExan
+                exan?.filter((r) => r.element_id.includes('rightHand')).length
               } 
             </div>
           </div>
@@ -120,8 +115,7 @@ export default function ExanElement({ organ, exan }: Props) {
               onClick={() => onOpenImage('rightLeg')}
             >
                {
-                exan?.find((r) => r.element_id.includes('rightLeg'))?._count
-                  .ImageExan
+                exan?.filter((r) => r.element_id.includes('rightLeg')).length
               } 
             </div>
           </div>
@@ -134,8 +128,7 @@ export default function ExanElement({ organ, exan }: Props) {
               onClick={() => onOpenImage('rightFoot')}
             >
                {
-                exan?.find((r) => r.element_id.includes('rightFoot'))?._count
-                  .ImageExan
+                exan?.filter((r) => r.element_id.includes('rightFoot')).length
               } 
             </div>
           </div>
@@ -147,8 +140,7 @@ export default function ExanElement({ organ, exan }: Props) {
               onClick={() => onOpenImage('leftShoulder')}
             >
                {
-                exan?.find((r) => r.element_id.includes('leftShoulder'))?._count
-                  .ImageExan
+                exan?.filter((r) => r.element_id.includes('leftShoulder')).length
               } 
             </div>
             <div className={exanCss.line}></div>
@@ -161,8 +153,7 @@ export default function ExanElement({ organ, exan }: Props) {
               onClick={() => onOpenImage('leftArm')}
             >
                {
-                exan?.find((r) => r.element_id.includes('leftArm'))?._count
-                  .ImageExan
+                exan?.filter((r) => r.element_id.includes('leftArm')).length
               } 
             </div>
             <div className={exanCss.line}></div>
@@ -175,8 +166,7 @@ export default function ExanElement({ organ, exan }: Props) {
               onClick={() => onOpenImage('leftHand')}
             >
                {
-                exan?.find((r) => r.element_id.includes('leftHand'))?._count
-                  .ImageExan
+                exan?.filter((r) => r.element_id.includes('leftHand')).length
               } 
             </div>
             <div className={exanCss.line}></div>
@@ -189,8 +179,7 @@ export default function ExanElement({ organ, exan }: Props) {
               onClick={() => onOpenImage('leftLeg')}
             >
                {
-                exan?.find((r) => r.element_id.includes('leftLeg'))?._count
-                  .ImageExan
+                exan?.filter((r) => r.element_id.includes('leftLeg')).length
               } 
             </div>
             <div className={exanCss.line}></div>
@@ -203,8 +192,7 @@ export default function ExanElement({ organ, exan }: Props) {
               onClick={() => onOpenImage('leftFoot')}
             >
                {
-                exan?.find((r) => r.element_id.includes('leftFoot'))?._count
-                  .ImageExan
+                exan?.filter((r) => r.element_id.includes('leftFoot')).length
               } 
             </div>
             <div className={exanCss.line}></div>
@@ -217,8 +205,7 @@ export default function ExanElement({ organ, exan }: Props) {
               onClick={() => onOpenImage('chest')}
             >
                {
-                exan?.find((r) => r.element_id.includes('chest'))?._count
-                  .ImageExan
+                exan?.filter((r) => r.element_id.includes('chest')).length
               } 
             </div>
             <div className={exanCss.line_second}></div>
@@ -232,13 +219,15 @@ export default function ExanElement({ organ, exan }: Props) {
               onClick={() => onOpenImage('stomach')}
             >
                {
-                exan?.find((r) => r.element_id.includes('stomach'))?._count
-                  .ImageExan
+                exan?.filter((r) => r.element_id.includes('stomach')).length
               } 
             </div>
           </div>
          ) : null} 
       </div>
+
+      <ExamDetailModal el_id={el_id} open={open} setOpen={setOpen} exam={exan} />
+
 
       {load ? <Loadding /> : null}
     </>

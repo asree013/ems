@@ -31,7 +31,8 @@ const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 
 export default function CarDetail() {
-    const {car, setCar} = React.useContext<TCarDetailContent>(CarDetailContext)
+    const {carByid, setCarById} = React.useContext<TCarDetailContent>(CarDetailContext)
+    
   return (
     <Card
       variant="outlined"
@@ -41,13 +42,13 @@ export default function CarDetail() {
       }}
     >
       <CardContent orientation="horizontal" sx={{ alignItems: 'center', gap: 1 }}>
-        <Typography fontWeight="lg">{car.calling}</Typography>
+        <Typography fontWeight="lg">{carByid.calling}</Typography>
         <IconButton variant="plain" color="neutral" size="sm" sx={{ ml: 'auto' }}>
           <MoreHoriz />
         </IconButton>
       </CardContent>
       <CardOverflow>
-          <SwipeableTextMobileStepper car={car} />
+          <SwipeableTextMobileStepper car={carByid} />
       </CardOverflow>
 
       <CardContent>

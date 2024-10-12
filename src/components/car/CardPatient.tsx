@@ -10,14 +10,7 @@ import { Patients } from '@/models/patient';
 import { Button, CardMedia, Fab, IconButton } from '@mui/material';
 import { enviromentDev, enviromentPath } from '@/configs/enviroment.dev';
 import HistoryIcon from '@mui/icons-material/History';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
-import {
-    editOrderTranferByOrderId,
-    findOrderTranferByOrderId,
-} from '@/services/order_tranfer.service';
-import { OrderTranfer } from '@/models/order_tranfer.model';
-import { toast } from '@/services/alert.service';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';;
 import Loadding from '@/components/Loadding';
 
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
@@ -39,11 +32,61 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
-import { Exans, ExanShows } from '@/models/exan.model';
+import { Examinations, Exans, ExanShows } from '@/models/exan.model';
 import LocalAirportIcon from '@mui/icons-material/LocalAirport';
+import { CurrentVehicleContext, TCurrentVehicles } from '@/app/home/CurrentVehicle.context';
+import { TVehicleHomeContext, VehiclesHomeContext } from '@/app/vehicle/vehicle_home.context';
 
 type Props = {
-    patient: Patients;
+    patient: {
+        id: string
+        first_name: string
+        last_name: string
+        qr_number: any
+        gender: string
+        age: any
+        birthday: any
+        id_card: any
+        tel: any
+        address: any
+        group_blood: any
+        image: string
+        image_id_card: any
+        user_create_id: any
+        user_update_id: any
+        date_time_died: any
+        date_time_go_home: any
+        create_date: string
+        update_date: string
+        mission_id: any
+        risk_level_id: any
+        History: Array<{
+            id: string
+            symptom_details: string
+            status: string
+            create_date: string
+            update_date: string
+            patient_id: string
+            chief_complaint: string
+            present_illness: string
+            user_create_id: string
+            user_update_id: string
+            physical_status: string
+            triage_lavel: string
+            Exan: Array<{
+                id: string
+                element_id: string
+                text: string
+                image: string
+                create_date: string
+                update_date: string
+                history_id: string
+                user_create_id: string
+                user_update_id: string
+            }>
+        }>
+        Risklevel: any
+    };
     order_tranfer_id?: string;
     car_id: string
 };
@@ -54,6 +97,8 @@ export default function CardPatient({ patient, car_id }: Props) {
     const [isLoad, setIsLoad] = React.useState(false);
     const key = useSearchParams().get('key')
     const vehicle_id = useSearchParams().get('vehicle_id')
+    const { vehicle, setVehicle } = React.useContext<TVehicleHomeContext>(VehiclesHomeContext)
+
 
     async function handlerOnAddPatientInCar() {
         setIsLoad(true)
@@ -85,7 +130,7 @@ export default function CardPatient({ patient, car_id }: Props) {
                                 component="div"
                                 style={{ fontWeight: 700 }}
                             >
-                                {patient.first_name}
+                                {patient?.first_name ?? 'ไม่ทราบชื่อ'}
                             </Typography>
                             <Typography
                                 gutterBottom
@@ -93,7 +138,7 @@ export default function CardPatient({ patient, car_id }: Props) {
                                 component="div"
                                 style={{ fontWeight: 700 }}
                             >
-                                {patient.last_name}
+                                {patient?.last_name?? 'ไม่ทราบสกุล'}
                             </Typography>
                             <Divider />
                             <Typography color="text.secondary" variant="body2">
@@ -113,7 +158,15 @@ export default function CardPatient({ patient, car_id }: Props) {
                 </Box>
                 <Divider textAlign="left"><Chip label="ประวัติ" size="small" /></Divider>
                 <Box sx={{ p: 2 }}>
-                    <Button type='button' variant='contained'>เพิ่มประวัต</Button>
+                    {
+                        patient?.History?.find(r => r.patient_id === patient.id) ?
+                        null:
+                        <Button onClick={() => {
+                            setIsLoad(true)
+                            window.location.href = '/patient/'+ patient.id + '/history'
+                        }} type='button' variant='contained'>เพิ่มประวัติ</Button>
+
+                    }
 
                     {
                         patient.History === undefined || patient.History === null || patient.History.length === 0 ?
@@ -126,12 +179,15 @@ export default function CardPatient({ patient, car_id }: Props) {
                                     aria-controls="panel1-content"
                                     id="panel1-header"
                                 >
-                                    อาการ: {patient?.History[0]?.symptom_details}
+                                    อาการ: {patient?.History?.find((r) => r.patient_id.includes(patient?.id))?.symptom_details}
                                 </AccordionSummary>
                                 <AccordionDetails>
-                                    {/* {
-                                        <SwipeableTextMobileStepper history_id={patient.History[0].id} />
-                                    } */}
+                                    {
+                                        patient?.History?.find((r, i) => r.patient_id === patient.id)?.Exan?
+                                        <SwipeableImage exam={patient?.History?.find((r, i) => r.patient_id === patient.id)?.Exan as any} />:
+                                        null
+                                        // )
+                                    }
                                     <p>อัพเดท เร็วๆนี้</p>
                                 </AccordionDetails>
                             </Accordion>
@@ -148,14 +204,14 @@ export default function CardPatient({ patient, car_id }: Props) {
                             color='success'
                         />
                     </Stack>
-                    <Stack className='m-1'  direction="row" spacing={1}>
+                    <Stack className='m-1' direction="row" spacing={1}>
                         <Chip
                             label="ย้ายผู้ป่วยขึ้น ฮ."
                             icon={<LocalAirportIcon />}
                             onClick={() => {
                                 setIsLoad(true)
-                                window.location.href = `/vehicle?tranfrom=helicopter&car_id=${car_id}&patient_id=${patient.id}` 
-                                
+                                window.location.href = `/vehicle?tranfrom=helicopter&car_id=${car_id}&patient_id=${patient.id}`
+
                             }}
                             variant="outlined"
                             color='warning'
@@ -176,13 +232,35 @@ export default function CardPatient({ patient, car_id }: Props) {
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
+type PropSwipeabl = {
+    exam:
+    {
+        id: string;
+        element_id: string;
+        text: string;
+        image: string;
+        create_date: string;
+        update_date: string;
+        history_id: string;
+        user_create_id: string;
+        user_update_id: string;
 
-function SwipeableTextMobileStepper({ history_id }: { history_id: string }) {
+    }[]
+}
 
-    const [history, setHistory] = React.useState<History>()
+
+function SwipeableImage({ exam }: PropSwipeabl) {
+    // Fallback to an empty array if exam is undefined
+    const dataImage: Array<{ imgPath: string; label: string }> = exam
+        ? exam.map((r) => ({
+              imgPath: r.image ?? enviromentDev.noImage,
+              label: r.text,
+          }))
+        : [];
+
     const theme = useTheme();
     const [activeStep, setActiveStep] = React.useState(0);
-    // const maxSteps = exan?.length;
+    const maxSteps = dataImage.length;
 
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -196,77 +274,82 @@ function SwipeableTextMobileStepper({ history_id }: { history_id: string }) {
         setActiveStep(step);
     };
 
-    // if (exan) {
-    //     return (
-    //         <Box sx={{ maxWidth: 400, flexGrow: 1 }}>
-    //             <Paper
-    //                 square
-    //                 elevation={0}
-    //                 sx={{
-    //                     display: 'flex',
-    //                     alignItems: 'center',
-    //                     height: 50,
-    //                     pl: 2,
-    //                     bgcolor: 'background.default',
-    //                 }}
-    //             >
-    //                 <Typography>{exan[activeStep].text}</Typography>
-    //             </Paper>
-    //             <AutoPlaySwipeableViews
-    //                 axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-    //                 index={activeStep}
-    //                 onChangeIndex={handleStepChange}
-    //                 enableMouseEvents
-    //             >
-    //                 {exan.map((step, index) => (
-    //                     <div key={step.id}>
-    //                         {Math.abs(activeStep - index) <= 2 ? (
-    //                             <Box
-    //                                 component="img"
-    //                                 sx={{
-    //                                     height: 'auto',
-    //                                     display: 'block',
-    //                                     maxWidth: 400,
-    //                                     overflow: 'hidden',
-    //                                     width: '100%',
-    //                                 }}
-    //                                 src={step.ImageExan[0] ? step.ImageExan[0].src : enviromentDev.noImage}
-    //                                 alt={step.text}
-    //                             />
-    //                         ) : null}
-    //                     </div>
-    //                 ))}
-    //             </AutoPlaySwipeableViews>
-    //             <MobileStepper
-    //                 steps={maxSteps}
-    //                 position="static"
-    //                 activeStep={activeStep}
-    //                 nextButton={
-    //                     <Button
-    //                         size="small"
-    //                         onClick={handleNext}
-    //                         disabled={activeStep === maxSteps - 1}
-    //                     >
-    //                         Next
-    //                         {theme.direction === 'rtl' ? (
-    //                             <KeyboardArrowLeft />
-    //                         ) : (
-    //                             <KeyboardArrowRight />
-    //                         )}
-    //                     </Button>
-    //                 }
-    //                 backButton={
-    //                     <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
-    //                         {theme.direction === 'rtl' ? (
-    //                             <KeyboardArrowRight />
-    //                         ) : (
-    //                             <KeyboardArrowLeft />
-    //                         )}
-    //                         Back
-    //                     </Button>
-    //                 }
-    //             />
-    //         </Box>
-    //     );
-    // }
+    return (
+        <Box sx={{ maxWidth: 400, flexGrow: 1 }}>
+            {dataImage.length > 0 ? (
+                <>
+                    <Paper
+                        square
+                        elevation={0}
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            height: 30,
+                            pl: 2,
+                            bgcolor: 'background.default',
+                        }}
+                    >
+                        <Typography>{dataImage[activeStep].label}</Typography>
+                    </Paper>
+                    <AutoPlaySwipeableViews
+                        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                        index={activeStep}
+                        onChangeIndex={handleStepChange}
+                        enableMouseEvents
+                    >
+                        {dataImage.map((step, index) => (
+                            <div key={step.label}>
+                                {Math.abs(activeStep - index) <= 2 ? (
+                                    <Box
+                                        component="img"
+                                        sx={{
+                                            height: 'auto',
+                                            display: 'block',
+                                            overflow: 'hidden',
+                                            maxWidth: 280,
+                                            maxHeight: 200
+                                        }}
+                                        src={step.imgPath}
+                                        alt={step.label}
+                                    />
+                                ) : null}
+                            </div>
+                        ))}
+                    </AutoPlaySwipeableViews>
+                    <MobileStepper
+                        steps={maxSteps}
+                        position="static"
+                        activeStep={activeStep}
+                        nextButton={
+                            <Button
+                                size="small"
+                                onClick={handleNext}
+                                disabled={activeStep === maxSteps - 1}
+                            >
+                                Next
+                                {theme.direction === 'rtl' ? (
+                                    <KeyboardArrowLeft />
+                                ) : (
+                                    <KeyboardArrowRight />
+                                )}
+                            </Button>
+                        }
+                        backButton={
+                            <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+                                {theme.direction === 'rtl' ? (
+                                    <KeyboardArrowRight />
+                                ) : (
+                                    <KeyboardArrowLeft />
+                                )}
+                                Back
+                            </Button>
+                        }
+                    />
+                </>
+            ) : (
+                <Typography>No images available</Typography>
+            )}
+        </Box>
+    );
 }
+

@@ -18,7 +18,9 @@ import car_vihecle from '../styles/car_vihecle.module.css'
 
 export default function PateintDetail() {
   const [load, setLoad] = useState<boolean>(false)
-  const { car, setCar } = useContext<TCarDetailContent>(CarDetailContext)
+  const { carByid, setCarById } = useContext<TCarDetailContent>(CarDetailContext)
+  console.log(carByid);
+  
 
   return (
     <>
@@ -27,7 +29,7 @@ export default function PateintDetail() {
           <Card elevation={3}>
             <div onClick={() => {
               setLoad(true)
-              window.location.href = '/patient?key=add-car&vehicle_id=' + car.id
+              window.location.href = '/patient?key=add-car&vehicle_id=' + carByid.id
             }} className={PDetailCss.menuItem}>
               <img src={PatinetIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
               <div className={PDetailCss.menuDetail}>
@@ -52,12 +54,12 @@ export default function PateintDetail() {
         </div>
         <Divider className='mt-4' ><Chip label="ผู้ป่วยในรถ" size="small" color='primary' /></Divider>
         {
-          Object.keys(car).length === 0 ?
+          Object.keys(carByid).length === 0 ?
             null :
             <div className={car_vihecle.grid}>
               {
-                car.PatientBelongCar.map((r, i) =>
-                  <MapPatientId key={i} patient_id={r.patient_id} car_id={car.id} />
+                carByid.PatientBelongCar.map((r, i) =>
+                  <CardPatient patient={r.Patient} car_id={r.car_id} key={i} />
                 )
               }
             </div>

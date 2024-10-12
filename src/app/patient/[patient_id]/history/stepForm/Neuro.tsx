@@ -16,10 +16,9 @@ export default function Neuro() {
     return (
         <Box sx={{ minWidth: 120 }}>
             <FormControl className='mt-2' fullWidth>
-                <InputLabel id="demo-simple-select-label">E (Eye Response)</InputLabel>
+                <InputLabel >E (Eye Response)</InputLabel>
                 <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
+                    
                     value={String(physicalStatus?.neuro?.e) ?? ''}
                     label="Age"
                     onChange={(e) => {
@@ -38,10 +37,9 @@ export default function Neuro() {
             </FormControl>
             <Divider />
             <FormControl className='mt-3' fullWidth>
-                <InputLabel id="demo-simple-select-label">V (Verbal Response)</InputLabel>
+                <InputLabel >V (Verbal Response)</InputLabel>
                 <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
+                    
                     value={physicalStatus?.neuro?.v?.toString() ?? ''}
                     label="Age"
                     onChange={(e) => {
@@ -61,10 +59,9 @@ export default function Neuro() {
             </FormControl>
             <Divider />
             <FormControl className='mt-3' fullWidth>
-                <InputLabel id="demo-simple-select-label">M (Motor Response)</InputLabel>
+                <InputLabel >M (Motor Response)</InputLabel>
                 <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
+                    
                     value={physicalStatus?.neuro?.m?.toString() ?? ''}
                     label="Age"
                     onChange={(e) => {

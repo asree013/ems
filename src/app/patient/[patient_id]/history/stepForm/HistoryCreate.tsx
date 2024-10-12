@@ -22,7 +22,7 @@ export default function HistoryCreate() {
         // กรองให้เหลือเฉพาะตัวเลข
         const numericValue = value.replace(/[^0-9.]/g, '');
         e.target.value = numericValue
-        setHistoryDetail({ ...historyDetail, chief_complaint_number: e.target.value.toString() })
+        setHistoryDetail({ ...historyDetail, chief_complaint: historyDetail.chief_complaint + e.target.value.toString() })
 
     }
 
@@ -76,7 +76,7 @@ export default function HistoryCreate() {
                     error={err}
                 />
                 <input
-                    value={historyDetail?.chief_complaint_number ?? 0}
+                    value={historyDetail?.chief_complaint ?? 0}
                     onChange={onChangeNumber}
                     style={{ width: '40px', border: '1px solid gray', borderRadius: '5pxe' }} maxLength={4} type='text' defaultValue={0} />
             </div>

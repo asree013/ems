@@ -33,7 +33,6 @@ import CarHistoryItem from './CarHistoryItem';
 export default function CarHistoryPatient() {
     const { vehicle, setVehicle } = useContext<TCurrentVehicles>(CurrentVehicleContext)
     const [load, setLoad] = useState(false)
-    const {car, setCar} = useContext<TCurrentCars>(CurrentCarsContext)
 
     return (
         <>
@@ -82,9 +81,12 @@ export default function CarHistoryPatient() {
                         <Button
                             variant="soft"
                             color="neutral"
-                            endDecorator={<KeyboardArrowRight />}
+                            // endDecorator={<KeyboardArrowRight />}
                         >
-                            Start now
+                                จำนวนผู้ป่วย
+                            {vehicle.helicopter?.Helicopter.PatientBelongHelicopter.length}
+                            {vehicle.car?.Car.PatientBelongCar.length}
+                            {/* {vehicle.ship?.PatientBelongCar.length} */}
                         </Button>
                     </CardActions>
                 </Card>

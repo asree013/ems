@@ -234,7 +234,7 @@ export default function CardPhysicalStatus({ physical }: Props) {
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }} >
                             <p>=</p>
-                            <p style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }}>....{physical.neuro?.e ?? '...'}....</p>
+                            <p style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }}>....{(Number(physical.neuro?.e) + Number(physical.neuro?.v) +  Number(physical?.neuro?.m)).toString()?? '....' }....</p>
                         </div>
                     </div>
                     <div className={'broderLineHeigh'}></div>
