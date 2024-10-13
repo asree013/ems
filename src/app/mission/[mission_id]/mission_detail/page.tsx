@@ -63,9 +63,9 @@ export default function BasicTabs({ params }: Props) {
         try {
             await leaveMission(params.mission_id)
             toast('ออกจสกภารกิจสำเร็จ', 'success')
-            // window.location.href = '/home'
-        } catch (error) {
-            // timeOutJwt(error)
+            window.location.href = '/home'
+        } catch (error: any) {
+            toast(error.message, 'error')
         } finally {
             setLoad(true)
         }

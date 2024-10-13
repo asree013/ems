@@ -11,6 +11,7 @@ import { Patients } from '@/models/patient';
 import { findPatientAll } from '@/services/paitent.service';
 import PaginationThemplete from '@/components/PaginationThemplete';
 import { timeOutJwt } from '@/services/timeout.service';
+import QRScannerComponent from '@/components/QrcodeScan';
 
 export default function Page() {
   const [load, setLoad] = useState<boolean>(false)
@@ -46,6 +47,16 @@ export default function Page() {
     }
   }, [setPatients]);
 
+  function onScan(str: string) {
+    console.log(str);
+    
+  }
+
+  function onClickSear(str: string) {
+    console.log(str);
+    
+  }
+
   useEffect(() => {
     feedPateint();
   }, [feedPateint]);
@@ -54,6 +65,7 @@ export default function Page() {
     <>
       {/* <PatientList patient={{} as Patient}/> */}
       <PatientContextsArr.Provider value={{ patients, setPatients }} >
+        <QRScannerComponent onSendResult={onScan} onClickSearch={onClickSear} />
         <Button style={{width: '100%'}} variant='outlined' type='button' onClick={() => {
           setLoad(true)
           window.location.href = '/patient/' + NIL

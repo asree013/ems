@@ -11,6 +11,7 @@ import { Locations } from '@/models/location.model';
 import { Button } from '@mui/material';
 import { NIL } from 'uuid';
 import Loadding from '@/components/Loadding';
+import { toast } from '@/services/alert.service';
 
 export default function Page() {
   const [missions, setMissions] = useState<Missions[]>({} as Missions[])
@@ -24,8 +25,8 @@ export default function Page() {
       setMissions(result.data)
       console.log(result.data);
 
-    } catch (error) {
-      timeOutJwt(error)
+    } catch (error: any) {
+      toast(error.message, 'error')
     } finally {
       setLoad(false)
     }

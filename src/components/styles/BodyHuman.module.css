@@ -7,5 +7,6 @@
     .body{
         position: fixed;
         top: 20%;
+        flex-direction: column;
     }
 }

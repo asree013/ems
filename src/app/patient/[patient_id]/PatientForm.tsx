@@ -58,7 +58,7 @@ export default function PatientForm({
   return (
     <>
       <div className={pateintIdCss.patient_toggle}>
-        <Accordion>
+        <Accordion elevation={4}>
           <AccordionSummary
             expandIcon={'v'}
             aria-controls="panel1-content"
@@ -249,6 +249,8 @@ export default function PatientForm({
                   bgcolor: 'background.surface',
                   borderRadius: 0,
                   mb: 1,
+                  cursor: 'pointer'
+
                 }}
 
               >
@@ -288,6 +290,7 @@ export default function PatientForm({
                   bgcolor: 'background.surface',
                   borderRadius: 0,
                   mb: 1,
+                  cursor: 'pointer'
                 }}
               >
                 <CardOverflow>

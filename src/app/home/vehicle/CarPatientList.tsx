@@ -47,7 +47,7 @@ export default function CarPatientList() {
                     <Box sx={{ height: '100%' }}>
                         {
                             vehicle.car || vehicle.helicopter || vehicle.ship ?
-                                <div style={{ height: '100%', minHeight: '22rem', overflow: 'scroll' }}>
+                                <div style={{ height: '22rem', overflow: 'scroll',}}>
                                     {
                                         !vehicle.car ?
                                             null :

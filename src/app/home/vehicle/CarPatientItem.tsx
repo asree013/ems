@@ -104,22 +104,21 @@ export default function CarPatientitem({ patient }: { patient: PatientInCar }) {
 
     return (
         <>
-            <div>
-                <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                    <ListItem alignItems="flex-start">
-                        <ListItemAvatar style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'sp' }}>
-                            <Avatar alt="Remy Sharp" src={patient.Patient.image ?? enviromentDev.noImage} />
-                            <p>{convertGender(patient.Patient.gender)}</p>
-                        </ListItemAvatar>
-                        <ListItemText className='ml-4'>
-                            <p>{patient.Patient.first_name}</p>
-                            <p>{patient.Patient.last_name}</p>
-                        </ListItemText>
-                    </ListItem>
-                </List>
+            <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                <ListItem alignItems="flex-start">
+                    <ListItemAvatar style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'sp' }}>
+                        <Avatar alt="Remy Sharp" src={patient.Patient.image ?? enviromentDev.noImage} />
+                        <p>{convertGender(patient.Patient.gender)}</p>
+                    </ListItemAvatar>
+                    <ListItemText className='ml-4'>
+                        <p>{patient.Patient.first_name}</p>
+                        <p>{patient.Patient.last_name}</p>
+                    </ListItemText>
+                </ListItem>
                 <Button onClick={onLeafPatientOnCar} variant='outlined' color='error' className='w-full'>เอาผู้ป่วยออก</Button>
                 <Divider className='mt-2' />
-            </div>
+            </List>
+
 
             {
                 load ?

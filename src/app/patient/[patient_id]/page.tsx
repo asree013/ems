@@ -6,7 +6,7 @@ import { NIL } from 'uuid';
 import WcIcon from '@mui/icons-material/Wc';
 import Typography from '@mui/joy/Typography';
 import { Patients } from '@/models/patient';
-import { Box, Card } from '@mui/material';
+import { Box, Card, Input, TextField } from '@mui/material';
 import {
   createPatient,
   findPatientById,
@@ -75,8 +75,9 @@ const Page: React.FC<Props> = ({ params }: Props) => {
           : 'หญิงไม่ทราบนามสกุล';
       // p.risk_level = patient.risk_level;
       p.tel = patient.tel;
+      p.qr_number = patient.qr_number
       console.log(p);
-      
+
       await createPatient(p);
       history.back();
     } catch (error) {
@@ -132,7 +133,7 @@ const Page: React.FC<Props> = ({ params }: Props) => {
 
   return (
     <>
-      <PatientContext.Provider value={{patient, setPatient}} >
+      <PatientContext.Provider value={{ patient, setPatient }} >
         <div className={pateintIdCss.patient_id_flex}>
           <div className={pateintIdCss.patient_id_home}>
             <Box
@@ -162,32 +163,21 @@ const Page: React.FC<Props> = ({ params }: Props) => {
                   {patient.gender ? patient.gender : 'กรุณาเลือกเพศ'}
                 </Typography>
                 <Divider />
-                {/* <Typography
-                  sx={{ margin: '10px' }}
-                  level="title-lg"
-                  startDecorator={<CheckCircleOutlineIcon color="success" />}
-                  onClick={() => {
-                    setOpenRisk(true);
-                  }}
-                >
-                  Risk Level:{' '}
-                  {patient.risk_level ? null : 'กรุณาเลือกระดับความอันตรา'}
-                  {patient.risk_level === 'W'
-                    ? 'W (บาดเจ็ยเล็กน้อย/ไม่อันราย)'
-                    : null}
-                  {patient.risk_level === 'G' ? 'G (ปลอดภัย)' : null}
-                  {patient.risk_level === 'Y'
-                    ? 'Y (บาดเจ็ยเล็กน้อย/อันราย)'
-                    : null}
-                  {patient.risk_level === 'R' ? 'R (บาดเจ็บสาหัส)' : null}
-                  {patient.risk_level === 'B' ? 'B (เสียชีวิต)' : null}
-                </Typography> */}
               </Box>
             </Card>
+
+            <Card style={{width: '92%', padding: '10px', margin: '10px 0'}} elevation={4}>
+              <label style={{margin: '5px 0'}}>กรอกเลข Qr-Number </label>
+              <TextField onChange={(e) => {
+                setPatient({...patient, qr_number: e.target.value})
+              }} id="Qe" label="Qr Number" variant="filled" style={{width: '100%'}} />
+            </Card>
+            
             <PatientForm
               returnOnCreatePatient={onCreatePatient}
               returnOnUpdatePatient={onUpdatePatient}
             />
+
           </div>
           <PatientGenModel
             returnStateOpen={onReturnStateOpen}

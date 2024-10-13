@@ -26,6 +26,7 @@ import EditCalendarIcon from '@mui/icons-material/EditCalendar';
 import { timeOutJwt } from '@/services/timeout.service';
 import { assingPatinetToCarByCarIdAndPatientId } from '@/services/car.service';
 import { assingPatientInHelicopter } from '@/services/helicopter.service';
+import QrCode2Icon from '@mui/icons-material/QrCode2';
 
 type Props = {
   patient: Patients;
@@ -70,7 +71,7 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
           await assingPatinetToCarByCarIdAndPatientId(vehicle_id, patient.id)
           history.back()
         }
-        if(key === 'add-ship') {
+        if (key === 'add-ship') {
 
         }
       }
@@ -87,6 +88,7 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
       <Card variant="outlined" sx={{ maxWidth: 360 }}>
         <Box sx={{ p: 2 }}>
           <Stack
+            width={'100%'}
             direction="row"
             justifyContent="space-between"
             alignItems="center"
@@ -98,15 +100,23 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
                 component="div"
                 style={{ fontWeight: 700 }}
               >
-                {patient.first_name}
+                QR_Number: {patient.qr_number?? "ไม่มีเลข"}
               </Typography>
               <Typography
                 gutterBottom
                 variant="body1"
                 component="div"
-                style={{ fontWeight: 700 }}
+                style={{ fontWeight: 500 }}
               >
-                {patient.last_name}
+                ชื่อ: {patient.first_name}
+              </Typography>
+              <Typography
+                gutterBottom
+                variant="body1"
+                component="div"
+                style={{ fontWeight: 500 }}
+              >
+                สกุล: {patient.last_name}
               </Typography>
               <Typography color="text.secondary" variant="body2">
                 G:{patient.gender}, Age:
@@ -116,7 +126,7 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
             </div>
             <CardMedia
               component="img"
-              sx={{ width: 151 }}
+              sx={{ width: 121, height: 100, objectFit: 'fill' }}
               image={patient.image ? patient.image : enviromentPath.noImage}
               alt="Live from space album cover"
             />
@@ -155,6 +165,13 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
                   >
                     <HistoryIcon color="inherit" />
                   </IconButton>
+                  <IconButton
+                    size="small"
+                    color="primary"
+
+                  >
+                    <QrCode2Icon color="inherit" />
+                  </IconButton>
                 </Stack>
               ) : (
                 <Stack direction="row" spacing={1}>
@@ -166,6 +183,7 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
                 </Stack>
               )
           }
+
         </Box>
       </Card>
 
