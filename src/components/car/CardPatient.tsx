@@ -14,7 +14,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';;
 import Loadding from '@/components/Loadding';
 
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
-
+import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
 import EditCalendarIcon from '@mui/icons-material/EditCalendar';
 import { timeOutJwt } from '@/services/timeout.service';
 import { assingPatinetToCarByCarIdAndPatientId } from '@/services/car.service';
@@ -36,6 +36,7 @@ import { Examinations, Exans, ExanShows } from '@/models/exan.model';
 import LocalAirportIcon from '@mui/icons-material/LocalAirport';
 import { CurrentVehicleContext, TCurrentVehicles } from '@/app/home/CurrentVehicle.context';
 import { TVehicleHomeContext, VehiclesHomeContext } from '@/app/vehicle/vehicle_home.context';
+import MonitorItem from '@/app/monitor/MonitorItem';
 
 type Props = {
     patient: {
@@ -85,6 +86,14 @@ type Props = {
                 user_update_id: string
             }>
         }>
+        OrderTransfer: Array<{
+            id: string
+            status_order: string
+            element_seq: number
+            create_date: string
+            hospital_id: any
+            patient_id: string
+        }>
         Risklevel: any
     };
     order_tranfer_id?: string;
@@ -97,7 +106,6 @@ export default function CardPatient({ patient, car_id }: Props) {
     const [isLoad, setIsLoad] = React.useState(false);
     const key = useSearchParams().get('key')
     const vehicle_id = useSearchParams().get('vehicle_id')
-    const { vehicle, setVehicle } = React.useContext<TVehicleHomeContext>(VehiclesHomeContext)
 
 
     async function handlerOnAddPatientInCar() {
@@ -112,6 +120,11 @@ export default function CardPatient({ patient, car_id }: Props) {
         } finally {
             setIsLoad(false)
         }
+    }
+
+    function handleAddMonitorInPatient() {
+        setIsLoad(true)
+        window.location.href = '/vehicle/' + car_id + '/car/detail/add_monitor?patient_add_id=' + patient.id
     }
     return (
         <>
@@ -138,7 +151,7 @@ export default function CardPatient({ patient, car_id }: Props) {
                                 component="div"
                                 style={{ fontWeight: 700 }}
                             >
-                                {patient?.last_name?? 'ไม่ทราบสกุล'}
+                                {patient?.last_name ?? 'ไม่ทราบสกุล'}
                             </Typography>
                             <Divider />
                             <Typography color="text.secondary" variant="body2">
@@ -160,18 +173,18 @@ export default function CardPatient({ patient, car_id }: Props) {
                 <Box sx={{ p: 2 }}>
                     {
                         patient?.History?.find(r => r.patient_id === patient.id) ?
-                        null:
-                        <Button onClick={() => {
-                            setIsLoad(true)
-                            window.location.href = '/patient/'+ patient.id + '/history'
-                        }} type='button' variant='contained'>เพิ่มประวัติ</Button>
+                            null :
+                            <Button onClick={() => {
+                                setIsLoad(true)
+                                window.location.href = '/patient/' + patient.id + '/history'
+                            }} type='button' variant='contained'>เพิ่มประวัติ</Button>
 
                     }
 
                     {
                         patient.History === undefined || patient.History === null || patient.History.length === 0 ?
                             <div className='m-4'>
-                                <p>ยังไม่มีข้อมูล</p>
+                                <p>ยังไม่มีข้อมูลประวัติ</p>
                             </div> :
                             <Accordion className='mt-2' elevation={3}>
                                 <AccordionSummary
@@ -183,27 +196,70 @@ export default function CardPatient({ patient, car_id }: Props) {
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     {
-                                        patient?.History?.find((r, i) => r.patient_id === patient.id)?.Exan?
-                                        <SwipeableImage exam={patient?.History?.find((r, i) => r.patient_id === patient.id)?.Exan as any} />:
-                                        null
+                                        patient?.History?.find((r, i) => r.patient_id === patient.id)?.Exan ?
+                                            <SwipeableImage exam={patient?.History?.find((r, i) => r.patient_id === patient.id)?.Exan as any} /> :
+                                            null
                                         // )
                                     }
                                     <p>อัพเดท เร็วๆนี้</p>
                                 </AccordionDetails>
                             </Accordion>
                     }
+
+                    {
+                        patient.OrderTransfer === undefined || patient.OrderTransfer === null || patient.OrderTransfer.length === 0 ?
+                            <div className='m-4'>
+                                <p>ยังไม่มีข้อมูลจอแแสดงกราฟ</p>
+                            </div> :
+                            <Accordion className='mt-2' elevation={3}>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    aria-controls="panel1-content"
+                                    id="panel1-header"
+                                >
+                                    หน้าจอแสดงกราฟ: {patient?.OrderTransfer.find(r => r.status_order.includes('Transfer'))?.status_order}
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    {
+                                        patient?.OrderTransfer?.find(r => r.status_order.includes('Transfer'))?.id ?
+                                            <MonitorItem
+                                                el_id={patient?.OrderTransfer?.find(r => r.status_order.includes('Transfer'))?.element_seq}
+                                                order_id={patient.OrderTransfer.find(r => r.status_order.includes('Transfer'))?.id}
+                                            /> :
+                                            null
+                                    }
+                                </AccordionDetails>
+                            </Accordion>
+                    }
                 </Box>
                 <Divider />
                 <Box sx={{ p: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
-                    <Stack className='m-1' direction="row" spacing={1}>
-                        <Chip
-                            label="เพื่มจอแสดงข้อมูล"
-                            icon={<DirectionsCarIcon />}
-                            onClick={handlerOnAddPatientInCar}
-                            variant="outlined"
-                            color='success'
-                        />
-                    </Stack>
+                    {
+                        patient?.History[0]?.id.length > 0 ?
+                            null :
+                            <Stack className='m-1' direction="row" spacing={1}>
+                                <Chip
+                                    label="เพิ่มประวัติ"
+                                    icon={<HistoryIcon />}
+                                    onClick={handleAddMonitorInPatient}
+                                    variant="outlined"
+                                    color='success'
+                                />
+                            </Stack>
+                    }
+                    {
+                        patient?.OrderTransfer.find(r => r.status_order.includes('Transfer'))?.id ?
+                            null :
+                            <Stack className='m-1' direction="row" spacing={1}>
+                                <Chip
+                                    label="เพิ่มจอแสดงข้อมูล"
+                                    icon={<MonitorHeartIcon />}
+                                    onClick={handleAddMonitorInPatient}
+                                    variant="outlined"
+                                    color='primary'
+                                />
+                            </Stack>
+                    }
                     <Stack className='m-1' direction="row" spacing={1}>
                         <Chip
                             label="ย้ายผู้ป่วยขึ้น ฮ."
@@ -253,9 +309,9 @@ function SwipeableImage({ exam }: PropSwipeabl) {
     // Fallback to an empty array if exam is undefined
     const dataImage: Array<{ imgPath: string; label: string }> = exam
         ? exam.map((r) => ({
-              imgPath: r.image ?? enviromentDev.noImage,
-              label: r.text,
-          }))
+            imgPath: r.image ?? enviromentDev.noImage,
+            label: r.text,
+        }))
         : [];
 
     const theme = useTheme();

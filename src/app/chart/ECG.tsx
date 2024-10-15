@@ -32,6 +32,8 @@ export default function ECG({ order_id }: Props) {
 
   }, 5000)
 
+  let newDataEcg = []
+
   async function fetchData() {
     // const response = await fetch('http://localhost:3333/v1/ecg?page=0&limit=10');
     // const testData = await response.json();
@@ -39,18 +41,17 @@ export default function ECG({ order_id }: Props) {
     let i = 1
     // let lengthData = testData.length | 250
     let lengthData = 250
-    ecgData = ecgNull
+    ecgData = ecg
 
-    setInterval(() => {
-      ecgData = ecg
-    }, 3000)
+    // setInterval(() => {
+    //   ecgData = ecgNull
+    // }, 3000)
 
     socket.emit('data-tranfer', { order_id, message: order_id });
-
     socket.off('data-tranfer-ecg')
     socket.on('data-tranfer-ecg', (message: any) => {
       console.log('pleth ', JSON.parse(message).ecg);
-      ecgData = JSON.parse(message).ecg
+      newDataEcg = JSON.parse(message).ecg
     })
 
     const container = document.getElementById(id) as HTMLDivElement;
@@ -62,12 +63,12 @@ export default function ECG({ order_id }: Props) {
     const CHANNELS: ChannelInfo[] = new Array(channelCount).fill(0).map((_, i) => ({ name: `ECG`, yMin: maxLength.delete, yMax: maxLength.add }));
 
     const lc = lightningChart({
-      license: "0002-n3X9iO0Z5d9OhoPGWWdBxAQ6SdnSKwB0/bH5AezBWp6K2IHfmcHtrmGsuEfyKfMUywnFPEbJ/vz5wfxYNmTstcut-MEYCIQDBYzSNR+IpXP765q1bC8E4xWsWHfWS0CLLjh2DYiBi0wIhAOMmdh9c3bmnsXnk6b5Xd+ngHLhuM0pJSapgpHg21+Br",
+      license: "0002-n96ucKX1C700BOZwz7IAGHHjEuT4KwDfrkmx7QCyIBztfxcK2B2YdzqRkuyh0bv4JWu/viN/aCm4HYmBbVnGHphV-MEUCIQCoAbM5nVG3lu6EAeoZcsrvewNpdn+DEGKL6UpNeDXEbAIgCV8gVBAZ3XKPAkbuQDarCfg/BnBK4sN+L00cqoYMu5E=",
       licenseInformation: {
         appTitle: "LightningChart JS Trial",
         company: "LightningChart Ltd."
       },
-    });
+    })
 
     const chart = lc.ChartXY({
       theme: Themes.darkGold,
@@ -241,7 +242,7 @@ export default function ECG({ order_id }: Props) {
     let tStart = window.performance.now();
     let pushedDataCount = 0;
     const xStep = 1000 / dataRateHz;
-
+    let index = 0
     const streamData = () => {
       const tNow = window.performance.now();
       const shouldBeDataPointsCount = Math.floor((dataRateHz * (tNow - tStart)) / 1000);
@@ -260,10 +261,15 @@ export default function ECG({ order_id }: Props) {
         pushedDataCount += newDataPointsCount;
       }
 
-      requestAnimationFrame(streamData);
+      if (index < ecgData.length) {
+        index++
+        requestAnimationFrame(streamData);
+        console.log('++');
+
+      }
     };
     streamData();
-    
+
   };
 
   useEffect(() => {

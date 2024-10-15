@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from 'react';
 import QrScanner from 'qr-scanner';
 import Modal from '@mui/joy/Modal';
@@ -18,13 +19,16 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import DirectionsIcon from '@mui/icons-material/Directions';
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
+import ClearIcon from '@mui/icons-material/Clear';
+import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 
 type Props = {
   onSendResult: (key: string) => void
   onClickSearch: (txt: string) => void
+  onSetDefault: () => void
 }
 
-export default function QRScannerComponent({ onSendResult, onClickSearch }: Props) {
+export default function QRScannerComponent({ onSendResult, onClickSearch, onSetDefault }: Props) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const qrScannerRef = useRef<QrScanner | null>(null); // เก็บ instance ของ QrScanner
   const [scanResult, setScanResult] = useState<string | null>(null);
@@ -62,13 +66,7 @@ export default function QRScannerComponent({ onSendResult, onClickSearch }: Prop
               },
             }
           );
-
-          const data = await QrScanner.listCameras()
-          console.log(data);
-          setCameraCount(data)
-          setCurrentCamera(data[0])
-          qrScannerRef.current.setCamera(data[0].id)
-          qrScannerRef.current.start();
+          await qrScannerRef.current.start();
 
         }
       }
@@ -77,9 +75,32 @@ export default function QRScannerComponent({ onSendResult, onClickSearch }: Prop
     }, 500)
   };
 
+  async function autoSelectCamera() {
+    const data = await QrScanner.listCameras()
+    const newData = data.filter(r => r.label.includes('ด้านหลัง'))
+    if (!newData) {
+      setCameraCount(data)
+      setCurrentCamera(data[0])
+      qrScannerRef.current?.setCamera(data[0].id)
+    }
+    else {
+      setCameraCount(data)
+      setCurrentCamera(newData[0])
+      qrScannerRef.current?.setCamera(newData[0].id)
+    }
+  }
+
+  const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const result = await QrScanner.scanImage(file);
+      setScanResult(result);
+      onSendResult(result);
+    }
+  };
 
   useEffect(() => {
-
+    autoSelectCamera()
     // Cleanup when the component unmounts
     return () => {
       qrScannerRef.current?.stop();
@@ -91,7 +112,7 @@ export default function QRScannerComponent({ onSendResult, onClickSearch }: Prop
   return (
     <>
       <React.Fragment>
-        <div style={{display: 'flex' ,alignItems: 'center', justifyContent: 'center', width: '100%', margin: '20px 0'}}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', margin: '20px 0' }}>
           <Paper
             component="form"
             sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: '100%' }}
@@ -107,18 +128,35 @@ export default function QRScannerComponent({ onSendResult, onClickSearch }: Prop
               onChange={(e) => {
                 setStr(e.target.value)
               }}
+              value={str}
             />
+            {
+              str.length >0 ?
+              <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={() => {
+                setStr('')
+                onSetDefault()
+              }} >
+                <ClearIcon />
+              </IconButton>: null
+            }
             <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={() => {
               onClickSearch(str)
-            }}>
+            }} >
               <SearchIcon />
             </IconButton>
+
             <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
             <IconButton color="primary" sx={{ p: '10px' }} aria-label="directions" onClick={toggleCamera}>
               <DocumentScannerIcon />
             </IconButton>
+
+            <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+            <IconButton color="primary" sx={{ p: '10px' }} aria-label="directions" onClick={() => document.getElementById('uploadBarcode')?.click()}>
+              <DriveFolderUploadIcon color='success' />
+            </IconButton>
           </Paper>
         </div>
+        <input id='uploadBarcode' onChange={handleUpload} type="file" hidden />
         <Modal
           aria-labelledby="modal-title"
           aria-describedby="modal-desc"
@@ -147,12 +185,15 @@ export default function QRScannerComponent({ onSendResult, onClickSearch }: Prop
             </Typography>
             <FormControl >
               <FormLabel>จำนวนกล้องของคุณมี {cameraCount.length}</FormLabel>
-              <RadioGroup onChange={(e) => {
+              <RadioGroup onChange={async (e) => {
                 const device = JSON.parse(e.target.value) as { id: string, label: string }
-                setCurrentCamera(device)
-                qrScannerRef?.current?.stop();
-                qrScannerRef?.current?.setCamera(device.id)
-                qrScannerRef?.current?.start()
+                if (qrScannerRef.current) {
+                  setCurrentCamera(device)
+                  alert('change cam' + device.label)
+                  qrScannerRef.current.stop();
+                  qrScannerRef.current.setCamera(device.id)
+                  qrScannerRef.current.start()
+                }
 
               }} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                 name="radio-buttons-group" defaultValue={JSON.stringify(currentCamera)} value={JSON.stringify(currentCamera)}>
@@ -174,7 +215,7 @@ export default function QRScannerComponent({ onSendResult, onClickSearch }: Prop
             </div>
           </Sheet>
         </Modal>
-      </React.Fragment>
+      </React.Fragment >
     </>
   );
 };

@@ -10,6 +10,7 @@ import { CarByCarId, Cars } from '@/models/vehicle.model';
 import { CarDetailContext } from '../../../../../components/car/CarDetail.context';
 import PateintDetail from '../../../../../components/car/PateintDetail';
 import { useSearchParams } from 'next/navigation';
+import { CarByIdContext } from './CarById.context';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -74,24 +75,26 @@ export default function Page({ params }: Props) {
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="รายละเอียดรถ" {...a11yProps(0)} />
-          <Tab label="สมาชิก" {...a11yProps(1)} />
-          <Tab label="ผู้ป่วย" {...a11yProps(2)} />
-        </Tabs>
-      </Box>
-      <CarDetailContext.Provider value={{ carByid, setCarById }} >
-        <CustomTabPanel value={value} index={0}>
-          <CarDetail />
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={1}>
-          Item Two
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={2}>
-          <PateintDetail />
-        </CustomTabPanel>
-      </CarDetailContext.Provider>
+      <CarByIdContext.Provider value={{carByid, setCarById}} >
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+            <Tab label="รายละเอียดรถ" {...a11yProps(0)} />
+            <Tab label="สมาชิก" {...a11yProps(1)} />
+            <Tab label="ผู้ป่วย" {...a11yProps(2)} />
+          </Tabs>
+        </Box>
+        <CarDetailContext.Provider value={{ carByid, setCarById }} >
+          <CustomTabPanel value={value} index={0}>
+            <CarDetail />
+          </CustomTabPanel>
+          <CustomTabPanel value={value} index={1}>
+            Item Two
+          </CustomTabPanel>
+          <CustomTabPanel value={value} index={2}>
+            <PateintDetail />
+          </CustomTabPanel>
+        </CarDetailContext.Provider>
+      </CarByIdContext.Provider>
 
     </Box>
 

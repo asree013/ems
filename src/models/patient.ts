@@ -40,7 +40,14 @@ export interface Patients {
   CongenitalDisease: Array<{}>
   History: Array<Historys>
   DiscoveredPatient: {}
-  OrderTransfer: Array<{}>
+  OrderTransfer: Array<{
+    id: string
+    status_order: string
+    element_seq: number
+    create_date: string
+    hospital_id: any
+    patient_id: string
+  }>
   ParkingHistory: {}
   _count: {
     OrderTransfer: number

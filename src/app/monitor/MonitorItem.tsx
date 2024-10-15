@@ -15,8 +15,8 @@ import AccordionDetail from './[monitor_id]/monitor_detail/[order_id]/AccrodionD
 
 
 type Props = {
-  el_id: number
-  order_id: string
+  el_id: number | undefined
+  order_id: string | undefined
 }
 
 export default function MonitorItem({ el_id, order_id }: Props) {
@@ -28,7 +28,7 @@ export default function MonitorItem({ el_id, order_id }: Props) {
   return (
     <div className={MonitorItemCss.body}>
       <div className={MonitorItemCss.title}>
-        <AccordionDetail />
+        {/* <AccordionDetail /> */}
       </div>
       <div className={MonitorItemCss.chartDetail}>
         
@@ -53,10 +53,10 @@ export default function MonitorItem({ el_id, order_id }: Props) {
 
         <div style={{width: '100%'}}>
           <div className={MonitorItemCss.chartSize}>
-            <ECG order_id={order_id} />
+            <ECG order_id={String(order_id)} />
           </div>
           <div className={MonitorItemCss.chartSize}>
-            <SPO order_id={order_id} />
+            <SPO order_id={String(order_id)} />
           </div>
         </div>
 

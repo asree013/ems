@@ -17,13 +17,15 @@ export default function PaginationThemplete({ returnCurrent }: Props) {
     const [page, setPage] = useState<number>(1)
     const [limits, setLimits] = useState<number>(5)
     function handlerUpdatePage(e: React.MouseEvent<HTMLButtonElement | MouseEvent>) {
-        setPage(page + 1)
-        returnCurrent(page, limits)
+        const p = page +1
+        setPage(p)
+        returnCurrent(p, limits)
         
     }
     function handlerBackPage(e: React.MouseEvent<HTMLButtonElement | MouseEvent>) {
-        setPage(page === 1 ? page : page - 1)
-        returnCurrent(page, limits)
+        const p = page === 1 ? page : page - 1
+        setPage(p)
+        returnCurrent(p, limits)
     }
 
     function handleChange(event: React.SyntheticEvent | null, newValue: string | null,) {

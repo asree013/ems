@@ -25,7 +25,7 @@ export default function ChartLightling(props: ChartLightningProps): JSX.Element 
     yMin: maxLength.delete,
     yMax: maxLength.add,
   }));
-  
+
   const ecgData = data;
 
   useEffect(() => {
@@ -33,12 +33,12 @@ export default function ChartLightling(props: ChartLightningProps): JSX.Element 
     if (!container) return;
 
     const lc = lightningChart({
-      license: "0002-n3X9iO0Z5d9OhoPGWWdBxAQ6SdnSKwB0/bH5AezBWp6K2IHfmcHtrmGsuEfyKfMUywnFPEbJ/vz5wfxYNmTstcut-MEYCIQDBYzSNR+IpXP765q1bC8E4xWsWHfWS0CLLjh2DYiBi0wIhAOMmdh9c3bmnsXnk6b5Xd+ngHLhuM0pJSapgpHg21+Br",
+      license: "0002-n96ucKX1C700BOZwz7IAGHHjEuT4KwDfrkmx7QCyIBztfxcK2B2YdzqRkuyh0bv4JWu/viN/aCm4HYmBbVnGHphV-MEUCIQCoAbM5nVG3lu6EAeoZcsrvewNpdn+DEGKL6UpNeDXEbAIgCV8gVBAZ3XKPAkbuQDarCfg/BnBK4sN+L00cqoYMu5E=",
       licenseInformation: {
         appTitle: "LightningChart JS Trial",
-        company: "LightningChart Ltd.",
+        company: "LightningChart Ltd."
       },
-    });
+    })
 
     const chart = lc.ChartXY({
       theme: Themes.darkGold,

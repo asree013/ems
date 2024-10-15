@@ -171,17 +171,17 @@ const GoogleApiMap = ({ mission }: Props) => {
                                 </svg>
                             </MapControl>
                             <MapControl position={ControlPosition.RIGHT}>
-                                <Button type='button' onClick={onCheckUserLocation} variant='contained' className='m-2'>
+                                <Button type='button' onClick={onCheckUserLocation} variant='contained' style={{margin: 5}}>
                                     <NearMeIcon />
                                 </Button>
                             </MapControl>
                             <MapControl position={ControlPosition.RIGHT}>
-                                <Button type='button' onClick={() => setZoom(zoom + 1)} variant='contained' className='m-2'>
+                                <Button type='button' onClick={() => setZoom(zoom + 1)} variant='contained' style={{margin: 5}}>
                                     <AddIcon />
                                 </Button>
                             </MapControl>
                             <MapControl position={ControlPosition.RIGHT}>
-                                <Button type='button' onClick={() => setZoom(zoom - 1)} variant='contained' className='m-2'>
+                                <Button type='button' onClick={() => setZoom(zoom - 1)} variant='contained' style={{margin: 5}}>
                                     <RemoveIcon />
                                 </Button>
                             </MapControl>

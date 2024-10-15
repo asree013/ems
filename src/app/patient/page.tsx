@@ -8,19 +8,19 @@ import Loadding from '@/components/Loadding';
 import { NIL } from 'uuid';
 import { PatientContextsArr } from '@/contexts/patient.context';
 import { Patients } from '@/models/patient';
-import { findPatientAll } from '@/services/paitent.service';
+import { findPatientAll, findPatientById, findPatientByQrNumber } from '@/services/paitent.service';
 import PaginationThemplete from '@/components/PaginationThemplete';
 import { timeOutJwt } from '@/services/timeout.service';
 import QRScannerComponent from '@/components/QrcodeScan';
+import { toast } from '@/services/alert.service';
 
 export default function Page() {
   const [load, setLoad] = useState<boolean>(false)
   const [patients, setPatients] = useState<Patients[]>([]);
 
   async function onUpdatePage(page: number, limit: number) {
-    if(page=== 1){
-      page = 2
-    }
+    console.log('page' ,page);
+    
     setLoad(true)
     try {
       const result = await findPatientAll(page, limit)
@@ -47,13 +47,50 @@ export default function Page() {
     }
   }, [setPatients]);
 
-  function onScan(str: string) {
-    console.log(str);
+  async function onScan(str: string) {
+    setLoad(true)
+    try {
+      const result = await findPatientByQrNumber(str)
+      const data = []
+      data.push(result.data)
+      setPatients(data)
+    } catch (error: any) {
+      toast(error.message, 'error')
+    } finally{
+      setLoad(false)
+    }
     
   }
 
-  function onClickSear(str: string) {
-    console.log(str);
+  async function onClickSear(str: string) {
+    setLoad(true)
+    try {
+      const result = await findPatientByQrNumber(str)
+      let dataP: any[] = []
+      dataP.push(result.data)
+      setPatients(dataP)
+      console.log(dataP);
+      
+    } catch (error: any) {
+      toast(error.message, 'error')
+    } finally{
+      setLoad(false)
+    }
+    
+  }
+
+  async function onFeedPatientAgain() {
+    setLoad(true);
+    try {
+      const result = await findPatientAll(1, 5);
+      // const data = await result.json<Patients[]>()
+      setPatients(result.data);
+    } catch (error) {
+      console.log(error);
+      timeOutJwt(error)
+    } finally {
+      setLoad(false);
+    }
     
   }
 
@@ -65,7 +102,7 @@ export default function Page() {
     <>
       {/* <PatientList patient={{} as Patient}/> */}
       <PatientContextsArr.Provider value={{ patients, setPatients }} >
-        <QRScannerComponent onSendResult={onScan} onClickSearch={onClickSear} />
+        <QRScannerComponent onSendResult={onScan} onClickSearch={onClickSear} onSetDefault={onFeedPatientAgain} />
         <Button style={{width: '100%'}} variant='outlined' type='button' onClick={() => {
           setLoad(true)
           window.location.href = '/patient/' + NIL

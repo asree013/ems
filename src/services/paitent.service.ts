@@ -29,6 +29,14 @@ export async function findPatientById(id: string) {
   }
 }
 
+export async function findPatientByQrNumber(qunumber: string) {
+  try {
+    return endpoint.get<Patients>(`${enviromentDev.patient}/get-by-qr-number/${qunumber}`);
+  } catch (error) {
+    throw error;
+  }
+}
+
 export function createPatient(item: Patients) {
   try {
     return endpoint.post<Patients>(`${enviromentDev.patient}`, item, {

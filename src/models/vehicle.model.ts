@@ -1,4 +1,4 @@
-export interface Cars{
+export interface Cars {
   id: string
   status: string
   type: string
@@ -126,6 +126,14 @@ export interface CarByCarId {
           user_update_id: string
         }>
       }>
+      OrderTransfer: Array<{
+        id: string
+        status_order: string
+        element_seq: number
+        create_date: string
+        hospital_id: any
+        patient_id: string
+      }>
       Risklevel: any
     }
   }>
@@ -215,20 +223,20 @@ export interface CarByCarId {
 
 
 export interface Helicopters {
-    id: string
-    number: string
-    description: string
-    image_front: string
-    image_back: string
-    image_left: string
-    image_rigth: string
-    radio: string
-    calling: string
-    driver_id: string
-    mission_id: string
-    hospital_id: string
-    create_date: string
-    update_date: string
+  id: string
+  number: string
+  description: string
+  image_front: string
+  image_back: string
+  image_left: string
+  image_rigth: string
+  radio: string
+  calling: string
+  driver_id: string
+  mission_id: string
+  hospital_id: string
+  create_date: string
+  update_date: string
 }
 
 export interface Vehicles {
