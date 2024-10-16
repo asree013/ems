@@ -261,12 +261,14 @@ export default function ECG({ order_id }: Props) {
         pushedDataCount += newDataPointsCount;
       }
 
-      if (index < ecgData.length) {
-        index++
-        requestAnimationFrame(streamData);
-        console.log('++');
+      // if (index < ecgData.length) {
+      //   index++
+      //   console.log('++');
+      //   requestAnimationFrame(streamData);
 
-      }
+      // }
+      requestAnimationFrame(streamData);
+
     };
     streamData();
 

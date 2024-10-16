@@ -133,13 +133,9 @@ export default function HomeContent() {
                                         <p>โปรเลือกยานพาหนะ</p>
                                 }
                             </CustomTabPanel>
-                            {/* <CustomTabPanel value={value} index={1}>
-                                {
-                                    value !== 1?
-                                    null:
-                                    <MainMonitor />
-                                }
-                            </CustomTabPanel> */}
+                            <CustomTabPanel value={value} index={1}>
+                                <MainMonitor vehicle={vehicle} />
+                            </CustomTabPanel>
                         </Box>
                     </div>
                 </div>
