@@ -11,6 +11,7 @@ import { CarDetailContext } from '../../../../../components/car/CarDetail.contex
 import PateintDetail from '../../../../../components/car/PateintDetail';
 import { useSearchParams } from 'next/navigation';
 import { CarByIdContext } from './CarById.context';
+import CarUser from '@/components/car/CarUser';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -88,7 +89,7 @@ export default function Page({ params }: Props) {
             <CarDetail />
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
-            Item Two
+            <CarUser />
           </CustomTabPanel>
           <CustomTabPanel value={value} index={2}>
             <PateintDetail />

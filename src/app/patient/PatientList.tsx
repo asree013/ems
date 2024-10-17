@@ -28,6 +28,9 @@ import { assingPatinetToCarByCarIdAndPatientId } from '@/services/car.service';
 import { assingPatientInHelicopter } from '@/services/helicopter.service';
 import QrCode2Icon from '@mui/icons-material/QrCode2';
 
+import AirplanemodeActiveIcon from '@mui/icons-material/AirplanemodeActive';
+import DirectionsBoatIcon from '@mui/icons-material/DirectionsBoat';
+
 type Props = {
   patient: Patients;
   order_tranfer_id?: string;
@@ -59,7 +62,7 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
     }
   }
 
-  async function handlerOnAddPatientInCar() {
+  async function handlerOnAddPatientInVehicles() {
     setIsLoad(true)
     try {
       if (vehicle_id) {
@@ -75,7 +78,8 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
 
         }
       }
-    } catch (error) {
+    } catch (error: any) {
+      toast(error.message, 'error')
       // timeOutJwt(error)
     } finally {
       setIsLoad(false)
@@ -136,13 +140,15 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
         <Box sx={{ p: 2 }}>
           {
             key ?
+              
               <Chip
-                label="เพื่มผู้ป่วยในรถรับส่ง"
-                icon={<DirectionsCarIcon />}
-                onClick={handlerOnAddPatientInCar}
+                label={onConvertStr(key)}
+                icon={onConvertIcon(key)}
+                onClick={handlerOnAddPatientInVehicles}
                 variant="outlined"
                 color='success'
-              /> :
+              /> 
+              :
               pathName ? (
                 <Stack direction="row" spacing={1}>
                   <IconButton
@@ -194,4 +200,28 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
 
     </>
   );
+
+  function onConvertStr(str: string) {
+    if(str.includes('add-car')) {
+      return "เพื่มผู้ป่วยในรถรับส่ง"
+    }
+    if(str.includes('add-helicopter')) {
+      return "เพื่มผู้ป่วยใน ฮ. รับส่ง"
+    }
+    if(str.includes('add-ship')) {
+      return "เพื่มผู้ป่วยใน เรื่อ รับส่ง"
+    }
+  }
+
+  function onConvertIcon(str: string) {
+    if(str.includes('add-car')) {
+      return <DirectionsCarIcon />
+    }
+    if(str.includes('add-helicopter')) {
+      return <AirplanemodeActiveIcon />
+    }
+    if(str.includes('add-ship')) {
+      return <DirectionsBoatIcon />
+    }
+  }
 }

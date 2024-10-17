@@ -1,0 +1,109 @@
+'use client'
+import * as React from 'react';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
+import CarDetail from '../../../../../components/car/CarDetail';
+import { findCarByCarId } from '@/services/car.service';
+import { timeOutJwt } from '@/services/timeout.service';
+import { CarByCarId, Cars, HelicopterById, Helicopters } from '@/models/vehicle.model';
+import { CarDetailContext } from '../../../../../components/car/CarDetail.context';
+import PateintDetail from '../../../../../components/car/PateintDetail';
+import { useSearchParams } from 'next/navigation';
+import { findHelicopterById } from '@/services/helicopter.service';
+import { HelicopterByIdContext } from './HelicopterById.context';
+import HelicopterDetail from '@/components/helicopter/HelicopterDetail';
+import { HelicopterByIdDetailContext } from '@/components/helicopter/helicopterDetail.context';
+import HelicopterPatientDetail from '@/components/helicopter/HelicopterPatientDetail';
+
+interface TabPanelProps {
+    children?: React.ReactNode;
+    index: number;
+    value: number;
+}
+
+function CustomTabPanel(props: TabPanelProps) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+        </div>
+    );
+}
+
+function a11yProps(index: number) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
+
+type Props = {
+    params: {
+        vehicle: string
+    }
+}
+
+export default function Page({ params }: Props) {
+    const key = useSearchParams().get('key')
+    const [value, setValue] = React.useState(key ? key.includes('patient') ? 2 : 1 : 0);
+    const [halicoptorById, setHelicopterById] = React.useState<HelicopterById>({} as HelicopterById)
+
+    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+        setValue(newValue);
+    };
+
+    const feedHelicopterById = React.useCallback(async () => {
+        try {
+            const result = await findHelicopterById(params.vehicle)
+            setHelicopterById(result.data)
+            //   setHelicopterById(result.data)
+        } catch (error) {
+            timeOutJwt(error)
+        }
+    }, [setHelicopterById])
+
+    React.useEffect(() => {
+        feedHelicopterById()
+
+        return () => {
+            feedHelicopterById
+        }
+    }, [feedHelicopterById])
+
+    return (
+        <Box sx={{ width: '100%' }}>
+            <HelicopterByIdContext.Provider value={{ halicoptorById, setHelicopterById }} >
+                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                        <Tab label="รายละเอียดรถ" {...a11yProps(0)} />
+                        <Tab label="สมาชิก" {...a11yProps(1)} />
+                        <Tab label="ผู้ป่วย" {...a11yProps(2)} />
+                    </Tabs>
+                </Box>
+                <HelicopterByIdDetailContext.Provider value={{ halicoptorById, setHelicopterById }}>
+                    <CustomTabPanel value={value} index={0}>
+                        <HelicopterDetail />
+                    </CustomTabPanel>
+                    <CustomTabPanel value={value} index={1}>
+                        Item Two
+                    </CustomTabPanel>
+                    <CustomTabPanel value={value} index={2}>
+                        <HelicopterPatientDetail />
+                    </CustomTabPanel>
+                </HelicopterByIdDetailContext.Provider>
+
+
+            </HelicopterByIdContext.Provider>
+
+        </Box>
+
+    );
+}

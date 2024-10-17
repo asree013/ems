@@ -72,3 +72,13 @@ export function tranfromPatientCarToHelicopter(car_id: string, data: {patient_id
         throw error
     }
 }
+
+export function unJoinCar(car_id: string) {
+    try {
+        return endpoint.put(`${enviromentDev.car}/${car_id}/un_belong_car`)
+    } catch (error) {
+        throw error
+    }
+}
+
+

@@ -1,4 +1,4 @@
-import { Helicopters } from "@/models/vehicle.model"
+import { HelicopterById, Helicopters } from "@/models/vehicle.model"
 import { endpoint } from "./endpoint.service"
 import { enviromentDev } from "@/configs/enviroment.dev"
 
@@ -20,7 +20,7 @@ export function findHalecopterAll() {
 
 export function findHelicopterById(ho_id: string) {
     try {
-        return endpoint.get<Helicopters>(enviromentDev.helicopter+ `/${ho_id}`)
+        return endpoint.get<HelicopterById>(enviromentDev.helicopter+ `/${ho_id}`)
     } catch (error) {
         throw error
     }
@@ -52,8 +52,11 @@ export function updateUserInHelicpter(ho_id: string) {
 }
 
 export function assingPatientInHelicopter(helicopter_id: string, patient_id: string) {
+    const data = {
+        patient_id: patient_id
+    }
     try {
-        return endpoint.put<Helicopters>(enviromentDev.helicopter + `/${helicopter_id}/assign_user_belong_in_helicopter/${patient_id}`)
+        return endpoint.put<Helicopters>(enviromentDev.helicopter + `/${helicopter_id}/assign_patient_belong_helicopter/${helicopter_id}`, data)
     } catch (error) {
         throw error
     }

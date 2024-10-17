@@ -15,6 +15,9 @@ import Typography from '@mui/joy/Typography';
 import { TVehicleHomeContext, VehiclesHomeContext } from './vehicle_home.context'
 import StatusVehicle from './StatusVehicle'
 import CardHelicopter from './CardHelicopter'
+import Loadding from '@/components/Loadding'
+import { unJoinCar } from '@/services/car.service'
+import { toast } from '@/services/alert.service'
 
 export default function MyVehicle() {
     const [load, setLoad] = useState<boolean>(false)
@@ -28,6 +31,17 @@ export default function MyVehicle() {
                 !vehicle.car ?
                     null :
                     <div>
+                        <Button onClick={ async () => {
+                            setLoad(true)
+                            try {
+                                await unJoinCar(vehicle.car.car_id)
+                                setVehicle({} as Vehicles)
+                            } catch (error: any) {
+                                toast(error.message, 'error')
+                            } finally{
+                                setLoad(false)
+                            }
+                        }} style={{width: '100%'}} variant='outlined' color='error'>ออกจากรถ</Button>
                         <StatusVehicle isDriver={vehicle.car.is_driver} mission_id={vehicle.car.Car?.mission_id} statusbol={!vehicle.car.Car?.mission_id ? true : false} vehicle={vehicle} />
                         <CarCard data={{} as Cars} car_id={vehicle.car.car_id} />
                     </div>
@@ -37,6 +51,17 @@ export default function MyVehicle() {
                 !vehicle.helicopter ?
                     null :
                     <div>
+                        <Button onClick={ async () => {
+                            setLoad(true)
+                            try {
+                                await unJoinCar(vehicle.car.car_id)
+                                setVehicle({} as Vehicles)
+                            } catch (error: any) {
+                                toast(error.message, 'error')
+                            } finally{
+                                setLoad(false)
+                            }
+                        }} style={{width: '100%'}} variant='outlined' color='error'>ออกจาก ฮ.</Button>
                         <StatusVehicle isDriver={vehicle.helicopter.is_driver} mission_id={vehicle.helicopter.Helicopter?.mission_id} statusbol={!vehicle.helicopter.Helicopter.mission_id ? true : false} vehicle={vehicle} />
                         <CardHelicopter data={{} as Helicopters} ho_id={vehicle.helicopter.Helicopter.id} />
                     </div>
@@ -54,6 +79,12 @@ export default function MyVehicle() {
             {/* <CarCard data={{} as Cars} /> */}
 
             {/* <Button sx={{ width: '100%' }} type='button' variant='contained' color='success'>นำยานพาหนะเข้าร่วมภารกิจ</Button> */}
+            
+            {
+                load?
+                <Loadding />:
+                null
+            }
         </>
     )
 

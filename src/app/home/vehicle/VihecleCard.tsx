@@ -79,18 +79,21 @@ export default function VehicleCard() {
                         <Button
                             onClick={() => {
                                 setLoad(true)
-                                if (vehicle.car.Car) {
+                                if (vehicle.car) {
                                     window.location.href = '/vehicle/' + vehicle.car.Car.id + '/car/detail'
                                 }
-                                if (vehicle.helicopter.Helicopter.id) {
-                                    window.location.href = '/vehicle/'+ vehicle.helicopter.Helicopter.id + '/helicopter/detail'
+                                if (vehicle.helicopter) {
+                                    window.location.href = '/vehicle/' + vehicle.helicopter.Helicopter.id + '/helicopter/detail'
                                 }
                             }}
                             variant="soft"
                             color="neutral"
                             endDecorator={<KeyboardArrowRight />}
                         >
-                            ไปที่รถ
+
+                            {vehicle.car ? "ไปที่รถ" : null}
+                            {vehicle.helicopter ? "ไปที่ ฮ." : null}
+                            {vehicle.ship ? "ไปที่ เรื่อ" : null}
                         </Button>
                     </CardActions>
                 </Card>

@@ -3,7 +3,7 @@
 import * as React from 'react';
 import MessageIcon from '@mui/icons-material/Message';
 import { Badge, BadgeProps, Box, Chip, Fab, IconButton, Paper } from '@mui/material';
-import {styled as styleMui} from '@mui/material/styles'
+import { styled as styleMui } from '@mui/material/styles'
 
 import Input from '@mui/joy/Input';
 import Button from '@mui/joy/Button';
@@ -152,6 +152,7 @@ const PopupButton = styled.div`
 
     @media only screen and (min-width: 768px) {
       .positionChat{
+          top: 900px;
           right: 3rem;
       }
       .chat_size {
@@ -159,7 +160,7 @@ const PopupButton = styled.div`
           width: 20rem;
       }
       .bodyCard{
-          top: 23.5rem;
+          top: 480px;
           right: 3rem;
       }
     }
@@ -241,14 +242,14 @@ export default function ChatButton() {
     setLoadMessage(true);
     setOpenChat(true);
     setRoomId(chat_id);
-  
+
     // ส่ง event 'join-room' ไปที่ server เพื่อให้ user เข้าร่วมห้องแชท
     socket.emit('join-room', { room_id: chat_id, user_id: user_id });
-  
+
     if (key === 'mis') {
       setCurrentChat({ ...currentChat, chat_id: room_id, title: mission.title, is_online: true, image_chat: mission.image });
     }
-  
+
     try {
       const result = await feedMessageChatByRoomId(chat_id, 1, 10);
       const mapMessage = await mapDataHistoryToChat(result.data);
@@ -259,7 +260,7 @@ export default function ChatButton() {
       setLoadMessage(false);
     }
   }
-  
+
 
   const handleChangeMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(event.target.value);
@@ -364,7 +365,7 @@ export default function ChatButton() {
 
           } catch (error) {
             console.log(error);
-            
+
           } finally {
             setOnloadOld(false)
           }
@@ -374,9 +375,9 @@ export default function ChatButton() {
         }
       }}>
         {
-          onloadOld?
-          <Divider textAlign="center">กำลังโหลดข้อความเก่า</Divider>:
-          null
+          onloadOld ?
+            <Divider textAlign="center">กำลังโหลดข้อความเก่า</Divider> :
+            null
         }
         {
           messages.length > 0 ?

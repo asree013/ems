@@ -175,6 +175,43 @@ export interface Helicopters {
   update_date: string
 }
 
+export interface HelicopterById {
+  id: string
+  number: string
+  description: any
+  image_front: string
+  image_back: string
+  image_left: string
+  image_rigth: string
+  radio: string
+  calling: string
+  driver_id: any
+  mission_id: any
+  hospital_id: string
+  create_date: string
+  update_date: string
+  HelicopterLocation: Array<any>
+  Mission: any
+  HistoryPatientBelongHelicopter: PatientBelongCar[]
+  UserBelongHelicopter: Array<{
+    id: string
+    user_id: string
+    helicopter_id: string
+    time_un_belong: any
+    create_date: string
+    update_date: string
+  }>
+  PatientBelongHelicopter: Array<any>
+  _count: {
+    HelicopterLocation: number
+    UserHistoryDriveHelicopter: number
+    UserBelongHelicopter: number
+    PatientBelongHelicopter: number
+    HistoryPatientBelongHelicopter: number
+  }
+}
+
+
 export interface Vehicles {
   car: {
     id: string

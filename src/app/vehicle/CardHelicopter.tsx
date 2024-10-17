@@ -79,6 +79,7 @@ export default function CardHelicopter({ data, ho_id }: Props) {
         else {
             try {
                 await updateDriverInHelicopter(helicopter.id, user_id)
+                window.location.reload()
                 setValue(0)
             } catch (error) {
                 timeOutJwt(error)
@@ -92,8 +93,6 @@ export default function CardHelicopter({ data, ho_id }: Props) {
         setLoad(true)
         try {
             const result = await findHelicopterById(hId)
-            console.log(result.data);
-            
             setHelicopter(result.data)
         } catch (error) {
             timeOutJwt(error)
@@ -103,11 +102,14 @@ export default function CardHelicopter({ data, ho_id }: Props) {
     }, [ho_id])
 
     async function handlerAddUserInHelicopter() {
+        setLoad(true)
         try {
             await updateUserInHelicpter(helicopter.id)
             setValue(0)
         } catch (error) {
             timeOutJwt(error)
+        } finally {
+            setLoad(false)
         }
     }
 
@@ -245,7 +247,7 @@ export default function CardHelicopter({ data, ho_id }: Props) {
                                             throw error
                                         }
                                     }
-                                    else{
+                                    else {
                                         setLoad(false)
                                         toast('เกิดข้อผิดพลาด', 'warning')
                                     }
