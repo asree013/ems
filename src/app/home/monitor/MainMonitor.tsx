@@ -23,25 +23,27 @@ type Props = {
 }
 
 export default function MainMonitor({ vehicle }: Props) {
-  const [carId, setCarId] = useState<CarByCarId>({} as CarByCarId)
-  const feedCarByCarId = useCallback(async () => {
-    try {
-      const car_id = await vehicle.car.car_id
-      const result = await findCarByCarId(car_id)
-      setCarId(result.data)
-    } catch (error: any) {
-      toast(error.message, 'error')
-      timeOutJwt(error)
-    }
-  }, [setCarId, vehicle])
+  console.log(vehicle);
+  
+  // const [carId, setCarId] = useState<CarByCarId>({} as CarByCarId)
+  // const feedCarByCarId = useCallback(async () => {
+  //   try {
+  //     const car_id = await vehicle.car.car_id
+  //     const result = await findCarByCarId(car_id)
+  //     setCarId(result.data)
+  //   } catch (error: any) {
+  //     toast(error.message, 'error')
+  //     timeOutJwt(error)
+  //   }
+  // }, [setCarId, vehicle])
 
-  useEffect(() => {
-    feedCarByCarId()
+  // useEffect(() => {
+  //   feedCarByCarId()
 
-    return () => {
-      feedCarByCarId
-    }
-  }, [feedCarByCarId])
+  //   return () => {
+  //     feedCarByCarId
+  //   }
+  // }, [feedCarByCarId])
 
   const Headers = styled.div`
     padding: 10px;
@@ -49,30 +51,44 @@ export default function MainMonitor({ vehicle }: Props) {
     align-items: center;
     justify-content: space-between;
   `
+
+  const HeadDetail = styled.div`
+     display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 30% ;
+
+    @media only screen and (max-width: 450px) {
+      display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 30% ;
+    flex-direction: column;
+    }
+  `
   return (
     <>
       <div>
         {
-          !carId.PatientBelongCar ?
-            null :
-            carId.PatientBelongCar.map((r, i) => {
+          vehicle.car.Car.PatientBelongCar ?
+            vehicle.car.Car.PatientBelongCar.map((r, i) => {
               if (!r.Patient.OrderTransfer) {
                 return null
               }
               return (
                 <div key={i}>
                   <Headers>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '30%' }}>
+                    <HeadDetail>
                       <Avatar src={r.Patient.image} />
                       <p>{r.Patient.first_name}</p>
                       <p>{r.Patient.last_name}</p>
-                    </div>
+                    </HeadDetail>
                     {convertGender(r)}
                   </Headers>
                   <MonitorItem el_id={i} order_id={r.Patient.OrderTransfer[0]?.id} />
                 </div>
               )
-            })
+            }): null
         }
       </div>
     </>
@@ -80,18 +96,18 @@ export default function MainMonitor({ vehicle }: Props) {
 
   function convertGender(patient: PatientBelongCar) {
     if (patient.Patient?.gender.toLocaleLowerCase().includes('male')) {
-      return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', width: '10rem', marginTop: '15px'}}>
+      return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', width: '10rem', marginTop: '15px' }}>
         <p>เพศ: ชาย</p>
-        <Card elevation={4} sx={{background: '#1e88e5', marginLeft: '10px'}}>
-          <ManIcon style={{width: '2.5rem', height: '2.5rem', color: 'white'}}  />
+        <Card elevation={4} sx={{ background: '#1e88e5', marginLeft: '10px' }}>
+          <ManIcon style={{ width: '2.5rem', height: '2.5rem', color: 'white' }} />
         </Card>
       </div>
     }
     else {
-      return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', width: '10rem', marginTop: '15px'}}>
+      return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', width: '10rem', marginTop: '15px' }}>
         <p>เพศ: หญิง</p>
-        <Card elevation={4} sx={{background: '#f73378', marginLeft: '10px'}}>
-          <Woman2Icon style={{width: '2.5rem', height: '2.5rem', color: 'white'}}  />
+        <Card elevation={4} sx={{ background: '#f73378', marginLeft: '10px' }}>
+          <Woman2Icon style={{ width: '2.5rem', height: '2.5rem', color: 'white' }} />
         </Card>
       </div>
     }

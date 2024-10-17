@@ -5,4 +5,5 @@ interface Device {
   branch_id?: any;
   is_active: boolean;
   create_date: string;
+  type: string;
 }

@@ -26,7 +26,6 @@ import { Cars } from '@/models/vehicle.model';
 import { findCarByCarId } from '@/services/car.service';
 import { toast } from '@/services/alert.service';
 import CarDetailHome from './CarDetailHome';
-import CarPatientitem from './CarPatientItem';
 import CarHistoryItem from './CarHistoryItem';
 
 

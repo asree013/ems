@@ -15,6 +15,18 @@ import { useRouter } from 'next/navigation';
 import style from './Device_id.module.css';
 import Loadding from '../../../components/Loadding';
 import { createDevice, editDeviceById } from '../../../services/device.service';
+import List from '@mui/joy/List';
+import ListItem from '@mui/joy/ListItem';
+import ListItemDecorator from '@mui/joy/ListItemDecorator';
+import Radio from '@mui/joy/Radio';
+import RadioGroup from '@mui/joy/RadioGroup';
+import Person from '@mui/icons-material/Person';
+import People from '@mui/icons-material/People';
+import Apartment from '@mui/icons-material/Apartment';
+import { FormLabel } from '@mui/joy';
+import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
+import MonitorWeightIcon from '@mui/icons-material/MonitorWeight';
+import ScaleIcon from '@mui/icons-material/Scale';
 
 type Props = {
   result?: Device;
@@ -24,6 +36,7 @@ export default function FromDevice({ result }: Props) {
   const router = useRouter();
   const [str, setStr] = React.useState<string>('');
   const [brand, setBrand] = React.useState<string>('');
+  const [type, setType] = React.useState<string>('');
   const [isLoad, setIsLoad] = React.useState<boolean>(false);
 
   async function onSubmitCreateDevice(e: React.FormEvent<HTMLElement>) {
@@ -33,6 +46,7 @@ export default function FromDevice({ result }: Props) {
       const d = {} as Device;
       d.device_id = str;
       d.brand = brand
+      d.type = type
       await createDevice(d);
       router.back();
     } catch (error) {
@@ -154,7 +168,50 @@ export default function FromDevice({ result }: Props) {
                   </Select>
                 </FormControl>
               </Box>
-              <Divider />
+
+              <FormControl style={{margin: '10px 20px'}}>
+                <FormLabel>Type Device</FormLabel>
+                <RadioGroup sx={{width: '100%'}} aria-label="Your plan" name="people" defaultValue="Individual" onChange={(e) => {
+                  setType(e.target.value)
+                }}>
+                  <List
+                    sx={{
+                      minWidth: 240,
+                      '--List-gap': '0.5rem',
+                      '--ListItem-paddingY': '1rem',
+                      '--ListItem-radius': '8px',
+                      '--ListItemDecorator-size': '32px',
+                    }}
+                  >
+                    {['MONITOR', 'PUMP', 'VENTILATOR'].map((item, index) => (
+                      <ListItem variant="outlined" key={item} sx={{ boxShadow: 'sm' }}>
+                        <ListItemDecorator>
+                          {[<MonitorHeartIcon />, <MonitorWeightIcon />, <ScaleIcon />][index]}
+                        </ListItemDecorator>
+                        <Radio
+                          overlay
+                          value={item}
+                          label={item}
+                          sx={{ flexGrow: 1, flexDirection: 'row-reverse' }}
+                          slotProps={{
+                            action: ({ checked }) => ({
+                              sx: (theme) => ({
+                                ...(checked && {
+                                  inset: -1,
+                                  border: '2px solid',
+                                  borderColor: theme.vars.palette.primary[500],
+                                }),
+                              }),
+                            }),
+                          }}
+                        />
+                      </ListItem>
+                    ))}
+                  </List>
+                </RadioGroup>
+              </FormControl>
+
+              <Divider sx={{ marginTop: '10px' }} />
               <Box sx={{ p: 2 }}>
                 <Button
                   type="submit"

@@ -2,7 +2,8 @@
 
 import * as React from 'react';
 import MessageIcon from '@mui/icons-material/Message';
-import { Badge, BadgeProps, Box, Chip, Fab, IconButton, Paper, styled } from '@mui/material';
+import { Badge, BadgeProps, Box, Chip, Fab, IconButton, Paper } from '@mui/material';
+import {styled as styleMui} from '@mui/material/styles'
 
 import Input from '@mui/joy/Input';
 import Button from '@mui/joy/Button';
@@ -32,12 +33,12 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ToggleButton from '@mui/material/ToggleButton';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import styledComponent from 'styled-components';
 
 import { feedMessageChatByRoomId, findChatRoomAll, mapDataHistoryToChat } from '@/services/chat.service';
 import { enviromentDev } from '@/configs/enviroment.dev';
 import { toast } from '@/services/alert.service';
 import CircularProgress from '@mui/joy/CircularProgress';
+import styled from 'styled-components';
 
 type CurrenChat = {
   chat_id: string,
@@ -46,7 +47,7 @@ type CurrenChat = {
   image_chat: string
 }
 
-const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
+const StyledBadge = styleMui(Badge)<BadgeProps>(({ theme }) => ({
   '& .MuiBadge-badge': {
     right: 0,
     top: 5,
@@ -84,7 +85,7 @@ function a11yProps(index: number) {
   };
 }
 
-const PopupButton = styledComponent.div`
+const PopupButton = styled.div`
     .positionChat{
       position: fixed;
       top: 32.5rem;
@@ -160,21 +161,9 @@ const PopupButton = styledComponent.div`
       .bodyCard{
           top: 23.5rem;
           right: 3rem;
-  }
+      }
+    }
 
-  @media only screen and (min-width: 768px) {
-      .positionChat{
-          top: 58rem;
-          right: 3rem;
-      }
-      .chat_size {
-          height: 25rem;
-          width: 20rem;
-      }
-      .bodyCard{
-          top: 31.5rem;
-          right: 3rem;
-  }
 
   @media only screen and (min-width: 1025px) {
       .positionChat{
@@ -188,7 +177,8 @@ const PopupButton = styledComponent.div`
       .bodyCard{
           top: 14rem;
           right: 5rem;
-  }
+      }
+    }
   `
 
 
