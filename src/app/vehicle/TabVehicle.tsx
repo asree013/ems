@@ -52,6 +52,9 @@ export default function TabVehicle() {
     if(tranfrom === 'helicopter') {
       setValue(2)
     }
+    if(tranfrom === 'car') {
+      setValue(1)
+    }
   }, [tranfrom]) 
   return (
     <Box sx={{ width: '100%' }}>

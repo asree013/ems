@@ -6,7 +6,7 @@ import ChatButton from '@/components/chats/ChatButton';
 import { Suspense } from 'react';
 import Loadding from '@/components/Loadding';
 
-metadata.title = 'Viachle EMS App';
+metadata.title = 'Vehicle EMS App';
 
 export default function DashboardLayout({
   children, // will be a page or nested layout

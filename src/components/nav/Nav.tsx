@@ -24,14 +24,14 @@ import style from './Nav.module.css';
 import Loadding from '../Loadding';
 
 import { styled } from '@mui/material/styles';
-import { Avatar } from '@mui/material';
+import { Avatar, useMediaQuery } from '@mui/material';
 
 interface Props {
   /**
    * Injected by the documentation to work in an iframe.
    * You won't need it on your project.
    */
-  window?: () => Window;
+  windows?: () => Window;
 }
 
 const drawerWidth = 240;
@@ -39,7 +39,7 @@ const navItems = ['Home', 'Patient', 'Device', 'Monitor', 'Select_Mode'];
 
 export default function Nav(props: Props) {
   const router = useRouter();
-  const { window } = props;
+  const { windows } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isLoad, setIsLoad] = React.useState(false);
 
@@ -47,13 +47,14 @@ export default function Nav(props: Props) {
     setMobileOpen((prevState) => !prevState);
   };
 
+  const maxWidth = useMediaQuery('(max-width: 450px)')
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Typography variant="h6" sx={{ my: 2 }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
           <Avatar src={LogoEms.src} />
-          <p style={{ marginLeft: '10px', fontSize: '1.4rem', fontWeight: 700 }}>EMSink App</p>
+          <span style={{ marginLeft: '10px', fontSize: '1.4rem', fontWeight: 700 }}>EMSink App</span>
         </div>
       </Typography>
       <Divider />
@@ -98,16 +99,18 @@ export default function Nav(props: Props) {
   );
 
   const container =
-    window !== undefined ? () => window().document.body : undefined;
+    windows !== undefined ? () => windows().document.body : undefined;
 
   const Themes = styled(AppBar)<AppBarProps>(({ theme }) => ({
     background: 'linear-gradient(125deg, #1e3c72, #2a5298)',
   }));
 
+
+
   return (
     <>
 
-      <Box sx={{ display: 'flex' }} >
+      <Box sx={{ display: 'flex', zIndex: 1 }} >
         <CssBaseline />
         <Themes component="nav">
           <Toolbar>
@@ -120,16 +123,19 @@ export default function Nav(props: Props) {
             >
               <MenuIcon />
             </IconButton> */}
-            <Typography
-              className={style.logo}
-              variant="body1"
-              color="ButtonHighlight"
-            >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
-                <Avatar src={LogoEms.src} />
-                <p style={{ marginLeft: '10px', fontSize: '1.4rem', fontWeight: 700 }}>EMSink App</p>
-              </div>
-            </Typography>
+            {
+               maxWidth?
+                <Typography
+                  className={style.logo}
+                  variant="body1"
+                  color="ButtonHighlight"
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
+                    <Avatar src={LogoEms.src} />
+                    <span style={{ marginLeft: '10px', fontSize: '1.4rem', fontWeight: 700 }}>EMSink App</span>
+                  </div>
+                </Typography>: null
+            }
             <Typography
               variant="h6"
               component="div"
@@ -137,7 +143,7 @@ export default function Nav(props: Props) {
             >
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
                 <Avatar src={LogoEms.src} />
-                <p style={{ marginLeft: '10px', fontSize: '1.4rem', fontWeight: 700 }}>EMSink App</p>
+                <span style={{ marginLeft: '10px', fontSize: '1.4rem', fontWeight: 700 }}>EMSink App</span>
               </div>
             </Typography>
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>

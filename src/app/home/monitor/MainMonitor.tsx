@@ -5,7 +5,6 @@ import React, { useCallback, useEffect, useState } from 'react'
 import main_css from './main_css.module.css'
 
 import MonitorItem from '@/app/monitor/MonitorItem'
-import SubMainMonitor from './SubManinMonitor'
 import { Monitorchart } from '@/data/monitor.data'
 import { CarByCarId, Vehicles } from '@/models/vehicle.model'
 import { findCarByCarId } from '@/services/car.service'

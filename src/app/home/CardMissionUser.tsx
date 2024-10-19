@@ -26,6 +26,7 @@ export default function CardMissionUser() {
                             orientation="horizontal"
                             
                             sx={{
+                                cursor: 'pointer',
                                 width: '100%',
                                 '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder' },
                             }}

@@ -113,6 +113,26 @@ export default function CardHelicopter({ data, ho_id }: Props) {
         }
     }
 
+    async function tranfromCatToHelicopter ()  {
+        setLoad(true)
+        if (patient_id && car_id) {
+            try {
+                const data = {
+                    patient_id: patient_id,
+                    helicopter_id: helicopter.id
+                }
+                const result = await tranfromPatientCarToHelicopter(car_id, data)
+                console.log(result.data);
+                history.back()
+            } catch (error: any) {
+                toast(error.message, 'error')
+            }
+        }
+        else {
+            setLoad(false)
+            toast('เกิดข้อผิดพลาด', 'warning')
+        }
+    }
     React.useEffect(() => {
         if (ho_id) {
             feedHelicopter(ho_id)
@@ -234,26 +254,7 @@ export default function CardHelicopter({ data, ho_id }: Props) {
                                 </div>
                             :
                             car_id ?
-                                <Button style={{ width: '100%' }} color='success' variant='outlined' onClick={async () => {
-                                    setLoad(true)
-                                    if (patient_id && car_id) {
-                                        try {
-                                            const data = {
-                                                patient_id: patient_id,
-                                                helicopter_id: helicopter.id
-                                            }
-                                            const result = await tranfromPatientCarToHelicopter(car_id, data)
-                                            console.log(result.data);
-                                            history.back()
-                                        } catch (error: any) {
-                                            toast(error.message, 'error')
-                                        }
-                                    }
-                                    else {
-                                        setLoad(false)
-                                        toast('เกิดข้อผิดพลาด', 'warning')
-                                    }
-                                }}>ย้ายจากรถไป ฮ.</Button> : null
+                                <Button style={{ width: '100%' }} color='success' variant='outlined' onClick={tranfromCatToHelicopter}>ย้ายจากรถไป ฮ.</Button> : null
                     }
                 </CardContent>
                 {

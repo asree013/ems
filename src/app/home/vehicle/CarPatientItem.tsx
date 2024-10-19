@@ -42,10 +42,10 @@ export default function CarPatientitem({ patient, vehicle }: { patient: PatientB
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     if (vehicle.car) {
-                        const result = await unAssingPatinetToCarByCarIdAndPatientId(patient.id, vehicle.car.car_id)
+                        const result = await unAssingPatinetToCarByCarIdAndPatientId(vehicle.car.Car.id, patient.Patient.id)
                         toast(`เอาผู้ป่วย ${patient.Patient.first_name} ${patient.Patient.last_name} ออกจากรถแล้ว`, 'success')
                     }
-                    if(vehicle.helicopter) {
+                    if (vehicle.helicopter) {
                         toast(`เอาผู้ป่วย ${patient.Patient.first_name} ${patient.Patient.last_name} ออกจาก ฮ. แล้ว`, 'success')
 
                     }
@@ -61,6 +61,11 @@ export default function CarPatientitem({ patient, vehicle }: { patient: PatientB
         }
     }
 
+    function navigateToTronformCar() {
+        setLoad(true)
+        window.location.href = `vehicle?tranfrom=car&heliopter_id=${vehicle.helicopter.helicopter_id}0&patient_id=${patient.Patient.id}`
+    }
+
     function navigateToTranformToHalicopter() {
         setLoad(true)
         window.location.href = `vehicle?tranfrom=helicopter&car_id=${vehicle.car.car_id}0&patient_id=${patient.Patient.id}`
@@ -68,7 +73,7 @@ export default function CarPatientitem({ patient, vehicle }: { patient: PatientB
 
     return (
         <>
-            <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+            <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
                 <ListItem alignItems="flex-start">
                     <ListItemAvatar style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'sp' }}>
                         <Avatar alt="Remy Sharp" src={patient.Patient.image ?? enviromentDev.noImage} />
@@ -106,7 +111,7 @@ export default function CarPatientitem({ patient, vehicle }: { patient: PatientB
                         vehicle.helicopter ?
                             <div>
                                 <Button variant='outlined' color='warning' style={{ width: '50%', margin: '5px 0' }} >ย้ายผู้ป่วยขึ้น เรือ</Button>
-                                <Button variant='outlined' color='primary' style={{ width: '50%', margin: '5px 0' }} >ย้ายผู้ป่วยขึ้น รถ</Button>
+                                <Button onClick={navigateToTronformCar} variant='outlined' color='primary' style={{ width: '50%', margin: '5px 0' }} >ย้ายผู้ป่วยขึ้น รถ</Button>
                                 <Button onClick={onLeafPatientOnCar} variant='contained' color='error' style={{ width: '100%', margin: '10px 0' }} >เอาผู้ป่วยออก</Button>
                             </div> : null
                     }
@@ -114,7 +119,7 @@ export default function CarPatientitem({ patient, vehicle }: { patient: PatientB
                         vehicle.ship ?
                             <div>
                                 <Button onClick={navigateToTranformToHalicopter} variant='outlined' color='secondary' style={{ width: '50%', margin: '5px 0' }} >ย้ายผู้ป่วยขึ้น ฮ.</Button>
-                                <Button variant='outlined' color='primary' style={{ width: '50%', margin: '5px 0' }} >ย้ายผู้ป่วยขึ้น รถ</Button>
+                                <Button onClick={navigateToTronformCar} variant='outlined' color='primary' style={{ width: '50%', margin: '5px 0' }} >ย้ายผู้ป่วยขึ้น รถ</Button>
                                 <Button onClick={onLeafPatientOnCar} variant='contained' color='error' style={{ width: '100%', margin: '10px 0' }} >เอาผู้ป่วยออก</Button>
                             </div> : null
                     }

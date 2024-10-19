@@ -1,4 +1,5 @@
 import { Confirm } from 'notiflix';
+import styled from 'styled-components';
 import Swal from 'sweetalert2';
 
 export function toast(txt: string, icons: any, time?: number) {
@@ -7,7 +8,7 @@ export function toast(txt: string, icons: any, time?: number) {
   }
   const Toast = Swal.mixin({
     toast: true,
-    position: 'top-right',
+    position: 'bottom',
     showConfirmButton: false,
     timer: time,
     timerProgressBar: true,

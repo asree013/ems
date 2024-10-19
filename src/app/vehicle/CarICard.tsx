@@ -32,6 +32,9 @@ import PatientIcon from '@/assets/icon/patient_menu.png'
 import EmployeIcon from '@/assets/icon/employees.png'
 
 import vehicleCss from './vehicle.module.css'
+import { useSearchParams } from 'next/navigation';
+import { tranformPatientHelicopterToCar } from '@/services/helicopter.service';
+import { toast } from '@/services/alert.service';
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -58,6 +61,11 @@ export default function CarCard({ data, car_id }: Props) {
     const [expanded, setExpanded] = React.useState(false);
     const [load, setLoad] = React.useState<boolean>(false);
     const { value, setValue } = React.useContext<TtabvalueC>(TabValueVehicleContext)
+
+    const tranfrom = useSearchParams().get('tranfrom')
+    
+    const helicopter_id = useSearchParams().get('heliopter_id')
+    const patient_id = useSearchParams().get('patient_id')
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -93,6 +101,27 @@ export default function CarCard({ data, car_id }: Props) {
             setLoad(false)
         }
     }, [car_id])
+
+    async function tranfromHeliocpterToCar ()  {
+        setLoad(true)
+        if (patient_id && car.id) {
+            try {
+                const data = {
+                    patient_id: patient_id,
+                    car_id: car.id
+                } 
+                const result = await tranformPatientHelicopterToCar(String(helicopter_id), data)
+                console.log(data);
+                // history.back()
+            } catch (error: any) {
+                toast(error.message, 'error')
+            }
+        }
+        else {
+            setLoad(false)
+            toast('เกิดข้อผิดพลาด', 'warning')
+        }
+    }
 
     async function handlerAddUserInCar() {
         try {
@@ -211,87 +240,97 @@ export default function CarCard({ data, car_id }: Props) {
                     </ImageListItem>
                 </ImageList>
                 <CardContent>
-                    {
-                        car_id ?
-                            null :
-                            <div>
-                                {
-                                    car.driver_id ?
-                                        null :
-                                        <Button type='button' onClick={hanlerAddDriver}>ขับรถ</Button>
-                                }
-                                <Button type='button' onClick={handlerAddUserInCar}>เข้ามร่วมรถ</Button>
-                            </div>
+                {
+                        !tranfrom ?
+                            helicopter_id ?
+                                null :
+                                <div>
+                                    {
+                                        car.driver_id ?
+                                            null :
+                                            <Button type='button' onClick={hanlerAddDriver}>ขับรถ</Button>
+                                    }
+                                    <Button type='button' onClick={handlerAddUserInCar}>เข้ามร่วม รถ</Button>
+                                </div>
+                            :
+                            helicopter_id ? <Button style={{ width: '100%' }} color='success' variant='outlined' onClick={tranfromHeliocpterToCar}>ย้ายจาก ฮ. ไปรถ</Button> : null
                     }
                 </CardContent>
-                <CardActions disableSpacing onClick={handleExpandClick}>
-                    <IconButton aria-label="add to favorites">
-                        <ExpandMoreIcon />
-                    </IconButton>
-                    <IconButton aria-label="share">
-                        <ShareIcon />
-                    </IconButton>
-                    <ExpandMore
-                        expand={expanded}
-                        aria-expanded={expanded}
-                        aria-label="show more"
-                    >
-                    </ExpandMore>
-                </CardActions>
-                <Collapse in={expanded} timeout="auto" unmountOnExit>
-                    <CardContent>
+
+                {
+                    tranfrom ?
+                        null :
                         <div>
-                            <Card elevation={5}>
-                                <div onClick={() => {
-                                    setLoad(true)
-                                    window.location.href = '/vehicle/' + car.id + '/car/detail'
-                                }} className={vehicleCss.menuItem} style={{cursor: 'pointer'}}>
-                                    <img src={DetailIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
-                                    <div className={vehicleCss.menuDetail}>
-                                        <h3>รายละเอียดรถ</h3>
-                                        <p>detail</p>
+                            <CardActions disableSpacing onClick={handleExpandClick}>
+                                <IconButton aria-label="add to favorites">
+                                    <ExpandMoreIcon />
+                                </IconButton>
+                                <IconButton aria-label="share">
+                                    <ShareIcon />
+                                </IconButton>
+                                <ExpandMore
+                                    expand={expanded}
+                                    aria-expanded={expanded}
+                                    aria-label="show more"
+                                >
+                                </ExpandMore>
+                            </CardActions>
+                            <Collapse in={expanded} timeout="auto" unmountOnExit>
+                                <CardContent>
+                                    <div>
+                                        <Card elevation={5}>
+                                            <div onClick={() => {
+                                                setLoad(true)
+                                                window.location.href = '/vehicle/' + car.id + '/car/detail'
+                                            }} className={vehicleCss.menuItem} style={{ cursor: 'pointer' }}>
+                                                <img src={DetailIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
+                                                <div className={vehicleCss.menuDetail}>
+                                                    <h3>รายละเอียดรถ</h3>
+                                                    <p>detail</p>
+                                                </div>
+                                            </div>
+                                        </Card>
+                                        <Card elevation={5} className='mt-4'>
+                                            <div onClick={() => {
+                                                setLoad(true)
+                                                window.location.href = '/vehicle/' + car.id + '/car'
+                                            }} className={vehicleCss.menuItem} style={{ cursor: 'pointer' }}>
+                                                <img src={EditIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
+                                                <div className={vehicleCss.menuDetail}>
+                                                    <h3>แก้ไขรถ</h3>
+                                                    <p>detail</p>
+                                                </div>
+                                            </div>
+                                        </Card>
+                                        <Card elevation={5} className='mt-4'>
+                                            <div onClick={() => {
+                                                setLoad(true)
+                                                window.location.href = '/vehicle/' + car.id + '/car/detail?key=patient'
+                                            }} className={vehicleCss.menuItem} style={{ cursor: 'pointer' }}>
+                                                <img src={PatientIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
+                                                <div className={vehicleCss.menuDetail}>
+                                                    <h3>ผู้ป่วย</h3>
+                                                    <p>detail</p>
+                                                </div>
+                                            </div>
+                                        </Card>
+                                        <Card elevation={5} className='mt-4'>
+                                            <div onClick={() => {
+                                                setLoad(true)
+                                                window.location.href = '/vehicle/' + car.id + '/car/detail?key=employes'
+                                            }} className={vehicleCss.menuItem} style={{ cursor: 'pointer' }}>
+                                                <img src={EmployeIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
+                                                <div className={vehicleCss.menuDetail}>
+                                                    <h3>สมาชิกยานพาหนะ</h3>
+                                                    <p>detail</p>
+                                                </div>
+                                            </div>
+                                        </Card>
                                     </div>
-                                </div>
-                            </Card>
-                            <Card elevation={5} className='mt-4'>
-                                <div onClick={() => {
-                                    setLoad(true)
-                                    window.location.href = '/vehicle/' + car.id + '/car'
-                                }} className={vehicleCss.menuItem} style={{cursor: 'pointer'}}>
-                                    <img src={EditIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
-                                    <div className={vehicleCss.menuDetail}>
-                                        <h3>แก้ไขรถ</h3>
-                                        <p>detail</p>
-                                    </div>
-                                </div>
-                            </Card>
-                            <Card elevation={5} className='mt-4'>
-                                <div onClick={() => {
-                                    setLoad(true)
-                                    window.location.href = '/vehicle/' + car.id + '/car/detail?key=patient'
-                                }} className={vehicleCss.menuItem} style={{cursor: 'pointer'}}>
-                                    <img src={PatientIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
-                                    <div className={vehicleCss.menuDetail}>
-                                        <h3>ผู้ป่วย</h3>
-                                        <p>detail</p>
-                                    </div>
-                                </div>
-                            </Card>
-                            <Card elevation={5} className='mt-4'>
-                                <div onClick={() => {
-                                    setLoad(true)
-                                    window.location.href = '/vehicle/' + car.id + '/car/detail?key=employes'
-                                }} className={vehicleCss.menuItem} style={{cursor: 'pointer'}}>
-                                    <img src={EmployeIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
-                                    <div className={vehicleCss.menuDetail}>
-                                        <h3>สมาชิกยานพาหนะ</h3>
-                                        <p>detail</p>
-                                    </div>
-                                </div>
-                            </Card>
+                                </CardContent>
+                            </Collapse>
                         </div>
-                    </CardContent>
-                </Collapse>
+                }
             </Card>
 
             {
