@@ -10,6 +10,8 @@ import { TextField } from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox'
 import logoImage from '@/assets/icon/user_6543039.png';
+import newLogo from '@/assets/image/icon_menu/logo1.png'
+import newLogo2 from '@/assets/image/icon_menu/logo1.png'
 import 'react-toastify/dist/ReactToastify.css';
 import './login.css';
 import Loadding from '../../components/Loadding';
@@ -83,7 +85,7 @@ export default function Page() {
           if (Object.keys(findMe.data.Responsibilities).length === 0 && findMe.data.role.toLocaleLowerCase().includes('user')) {
             window.location.href = '/forbidden'
           }
-          if (findMe.data.role.toLocaleLowerCase().includes('admin' || 'rootadmin')) {
+          if (findMe.data.role.toLocaleLowerCase() === 'admin' || 'rootadmin') {
             window.location.href = '/home'
 
           }
@@ -130,12 +132,12 @@ export default function Page() {
               <Card sx={{ maxWidth: 345 }}>
                 <CardMedia
                   sx={{ height: 190 }}
-                  image={logoImage.src}
+                  image={newLogo.src}
                   title="green iguana"
                 />
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
-                    Login EMS system New Api
+                    Login EMSink
                   </Typography>
                   <TextField
                     error={errUser}

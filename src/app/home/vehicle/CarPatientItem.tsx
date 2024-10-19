@@ -19,18 +19,39 @@ import Loadding from '@/components/Loadding';
 
 import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
 import QueuePlayNextIcon from '@mui/icons-material/QueuePlayNext';
+import { Vehicles } from '@/models/vehicle.model';
+import Swal from 'sweetalert2';
+import PateintDetail from '@/components/car/PateintDetail';
 
 
-export default function CarPatientitem({ patient }: { patient: PatientBelongCar }) {
+export default function CarPatientitem({ patient, vehicle }: { patient: PatientBelongCar, vehicle: Vehicles }) {
     const [load, setLoad] = React.useState(false)
 
 
     async function onLeafPatientOnCar() {
         setLoad(true)
         try {
-            const cars = await findCurrentVehicleByUser()
-            const result = await unAssingPatinetToCarByCarIdAndPatientId(patient.id, cars.data.car.Car.id)
-            toast('เอาผู้ป่วยออกจากรถแล้ว', 'success')
+            Swal.fire({
+                title: "คุณต้องการเอา ผู้ป่วยออก?",
+                text: "หากคลิ้กยืนยัน ผู้ป่วยจะออกจากยานพาหนะ",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "ยืนยัน"
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    if (vehicle.car) {
+                        const result = await unAssingPatinetToCarByCarIdAndPatientId(patient.id, vehicle.car.car_id)
+                        toast(`เอาผู้ป่วย ${patient.Patient.first_name} ${patient.Patient.last_name} ออกจากรถแล้ว`, 'success')
+                    }
+                    if(vehicle.helicopter) {
+                        toast(`เอาผู้ป่วย ${patient.Patient.first_name} ${patient.Patient.last_name} ออกจาก ฮ. แล้ว`, 'success')
+
+                    }
+                }
+            });
+
         } catch (error: any) {
             console.log(error);
             toast(JSON.stringify(error.message), 'error')
@@ -38,6 +59,11 @@ export default function CarPatientitem({ patient }: { patient: PatientBelongCar 
         } finally {
             setLoad(false)
         }
+    }
+
+    function navigateToTranformToHalicopter() {
+        setLoad(true)
+        window.location.href = `vehicle?tranfrom=helicopter&car_id=${vehicle.car.car_id}0&patient_id=${patient.Patient.id}`
     }
 
     return (
@@ -67,7 +93,32 @@ export default function CarPatientitem({ patient }: { patient: PatientBelongCar 
                             </ListItemText>
                     }
                 </ListItem>
-                <Button onClick={onLeafPatientOnCar} variant='outlined' color='error' className='w-full'>เอาผู้ป่วยออก</Button>
+                <div >
+                    {
+                        vehicle.car ?
+                            <div>
+                                <Button variant='outlined' color='warning' style={{ width: '50%', margin: '5px 0' }} >ย้ายผู้ป่วยขึ้น เรือ</Button>
+                                <Button onClick={navigateToTranformToHalicopter} variant='outlined' color='secondary' style={{ width: '50%', margin: '5px 0' }} >ย้ายผู้ป่วยขึ้น ฮ.</Button>
+                                <Button onClick={onLeafPatientOnCar} variant='contained' color='error' style={{ width: '100%', margin: '10px 0' }} >เอาผู้ป่วยออก</Button>
+                            </div> : null
+                    }
+                    {
+                        vehicle.helicopter ?
+                            <div>
+                                <Button variant='outlined' color='warning' style={{ width: '50%', margin: '5px 0' }} >ย้ายผู้ป่วยขึ้น เรือ</Button>
+                                <Button variant='outlined' color='primary' style={{ width: '50%', margin: '5px 0' }} >ย้ายผู้ป่วยขึ้น รถ</Button>
+                                <Button onClick={onLeafPatientOnCar} variant='contained' color='error' style={{ width: '100%', margin: '10px 0' }} >เอาผู้ป่วยออก</Button>
+                            </div> : null
+                    }
+                    {
+                        vehicle.ship ?
+                            <div>
+                                <Button onClick={navigateToTranformToHalicopter} variant='outlined' color='secondary' style={{ width: '50%', margin: '5px 0' }} >ย้ายผู้ป่วยขึ้น ฮ.</Button>
+                                <Button variant='outlined' color='primary' style={{ width: '50%', margin: '5px 0' }} >ย้ายผู้ป่วยขึ้น รถ</Button>
+                                <Button onClick={onLeafPatientOnCar} variant='contained' color='error' style={{ width: '100%', margin: '10px 0' }} >เอาผู้ป่วยออก</Button>
+                            </div> : null
+                    }
+                </div>
                 <Divider className='mt-2' />
             </List>
 

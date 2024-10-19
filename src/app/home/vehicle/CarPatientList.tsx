@@ -52,7 +52,7 @@ export default function CarPatientList() {
                                         !vehicle.car ?
                                             null :
                                             vehicle.car.Car.PatientBelongCar?.map((r, i) =>
-                                                <CarPatientitem key={i} patient={r} />
+                                                <CarPatientitem key={i} patient={r} vehicle={vehicle} />
                                             )
                                     }
 
@@ -60,7 +60,7 @@ export default function CarPatientList() {
                                         !vehicle.helicopter ?
                                             null :
                                             vehicle.helicopter.Helicopter.PatientBelongHelicopter?.map((r, i) =>
-                                                <CarPatientitem key={i} patient={r} />
+                                                <CarPatientitem key={i} patient={r} vehicle={vehicle} />
                                             )
                                     }
 
@@ -85,7 +85,7 @@ export default function CarPatientList() {
                     <Divider inset="none" />
                     <CardActions>
                         {/* <Typography level="title-lg" sx={{ mr: 'auto' }}> */}
-                            <Button color='danger' onClick={() => {
+                            <Button color='danger' variant='soft' onClick={() => {
                                 setLoad(true)
                                 if (vehicle.car) {
                                     window.location.href = '/patient?key=add-car&vehicle_id=' + vehicle.car.Car.id

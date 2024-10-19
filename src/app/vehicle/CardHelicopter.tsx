@@ -243,8 +243,10 @@ export default function CardHelicopter({ data, ho_id }: Props) {
                                                 helicopter_id: helicopter.id
                                             }
                                             const result = await tranfromPatientCarToHelicopter(car_id, data)
-                                        } catch (error) {
-                                            throw error
+                                            console.log(result.data);
+                                            history.back()
+                                        } catch (error: any) {
+                                            toast(error.message, 'error')
                                         }
                                     }
                                     else {

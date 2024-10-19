@@ -8,19 +8,45 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Divider } from '@mui/material';
 import { PhysicalStatusContext, TPhysicalStatusContext } from '../StepContext';
 
+import Rating from '@mui/material/Rating';
+import StarIcon from '@mui/icons-material/Star';
+
+const labels: { [index: string]: string } = {
+    1: '1 / 15',
+    2: '2 / 15',
+    3: '3 / 15',
+    4: '4 / 15',
+    5: '5 / 15',
+    6: '6 / 15',
+    7: '7 / 15',
+    8: '8 / 15',
+    9: '9 / 15',
+    10: '10 / 15',
+    11: '11 / 15',
+    12: '12 / 15',
+    13: '13 / 15',
+    14: '14 / 15',
+    15: '15 / 15'
+};
+
+function getLabelText(value: number) {
+    return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
+}
+
 export default function Neuro() {
+    const [hover, setHover] = React.useState(-1);
 
     const { physicalStatus, setPhysicalStatus } = useContext<TPhysicalStatusContext>(PhysicalStatusContext)
-    const handleChange = (event: SelectChangeEvent) => {
-    };
+
+    // คำนวณผลรวมของคะแนน E, V, M
+    const totalScore = (physicalStatus?.neuro?.e ?? 0) + (physicalStatus?.neuro?.v ?? 0) + (physicalStatus?.neuro?.m ?? 0);
+
     return (
         <Box sx={{ minWidth: 120 }}>
             <FormControl className='mt-2' fullWidth>
                 <InputLabel >E (Eye Response)</InputLabel>
                 <Select
-                    
                     value={String(physicalStatus?.neuro?.e) ?? ''}
-                    label="Age"
                     onChange={(e) => {
                         setPhysicalStatus({
                             ...physicalStatus, neuro: {
@@ -39,9 +65,7 @@ export default function Neuro() {
             <FormControl className='mt-3' fullWidth>
                 <InputLabel >V (Verbal Response)</InputLabel>
                 <Select
-                    
                     value={physicalStatus?.neuro?.v?.toString() ?? ''}
-                    label="Age"
                     onChange={(e) => {
                         setPhysicalStatus({
                             ...physicalStatus, neuro: {
@@ -61,9 +85,7 @@ export default function Neuro() {
             <FormControl className='mt-3' fullWidth>
                 <InputLabel >M (Motor Response)</InputLabel>
                 <Select
-                    
                     value={physicalStatus?.neuro?.m?.toString() ?? ''}
-                    label="Age"
                     onChange={(e) => {
                         setPhysicalStatus({
                             ...physicalStatus, neuro: {
@@ -81,6 +103,20 @@ export default function Neuro() {
                 </Select>
             </FormControl>
 
+            <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', margin: '15px 0', flexDirection: 'column', justifyContent: 'center' }}>
+                <Box sx={{ ml: 2 }}>ผลรวมคะแนน: {labels[hover !== -1 ? hover : totalScore]}</Box>
+                <Rating
+                    name="total-feedback"
+                    value={totalScore}
+                    max={15}  // ปรับจำนวนดาวให้สูงสุด 15
+                    precision={1}  // กำหนดความแม่นยำให้แต่ละดาวมีค่า 1 หน่วย
+                    getLabelText={getLabelText}
+                    // onChangeActive={(event, newHover) => {
+                    //     setHover(newHover);
+                    // }}
+                    emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+                />
+            </Box>
         </Box>
     )
 }

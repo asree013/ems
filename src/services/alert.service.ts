@@ -7,7 +7,7 @@ export function toast(txt: string, icons: any, time?: number) {
   }
   const Toast = Swal.mixin({
     toast: true,
-    position: 'center',
+    position: 'top-right',
     showConfirmButton: false,
     timer: time,
     timerProgressBar: true,

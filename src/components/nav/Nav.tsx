@@ -18,10 +18,13 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { logout } from '@/services/authen.service';
 import { useRouter } from 'next/navigation';
 
+import LogoEms from '@/assets/image/icon_menu/logo4.png'
+
 import style from './Nav.module.css';
 import Loadding from '../Loadding';
 
 import { styled } from '@mui/material/styles';
+import { Avatar } from '@mui/material';
 
 interface Props {
   /**
@@ -48,7 +51,10 @@ export default function Nav(props: Props) {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Typography variant="h6" sx={{ my: 2 }}>
-        EMSink App
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
+          <Avatar src={LogoEms.src} />
+          <p style={{ marginLeft: '10px', fontSize: '1.4rem', fontWeight: 700 }}>EMSink App</p>
+        </div>
       </Typography>
       <Divider />
       <List>
@@ -94,9 +100,9 @@ export default function Nav(props: Props) {
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
-    const Themes = styled(AppBar)<AppBarProps>(({ theme }) => ({
-      background: 'linear-gradient(125deg, #1e3c72, #2a5298)',
-    }));
+  const Themes = styled(AppBar)<AppBarProps>(({ theme }) => ({
+    background: 'linear-gradient(125deg, #1e3c72, #2a5298)',
+  }));
 
   return (
     <>
@@ -105,7 +111,7 @@ export default function Nav(props: Props) {
         <CssBaseline />
         <Themes component="nav">
           <Toolbar>
-            <IconButton
+            {/* <IconButton
               color="inherit"
               aria-label="open drawer"
               edge="start"
@@ -113,20 +119,26 @@ export default function Nav(props: Props) {
               sx={{ mr: 2, display: { sm: 'none' } }}
             >
               <MenuIcon />
-            </IconButton>
+            </IconButton> */}
             <Typography
               className={style.logo}
               variant="body1"
               color="ButtonHighlight"
             >
-              EMSink App
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
+                <Avatar src={LogoEms.src} />
+                <p style={{ marginLeft: '10px', fontSize: '1.4rem', fontWeight: 700 }}>EMSink App</p>
+              </div>
             </Typography>
             <Typography
               variant="h6"
               component="div"
               sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
             >
-              EMSink App
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
+                <Avatar src={LogoEms.src} />
+                <p style={{ marginLeft: '10px', fontSize: '1.4rem', fontWeight: 700 }}>EMSink App</p>
+              </div>
             </Typography>
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
 
