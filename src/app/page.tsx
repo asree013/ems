@@ -3,6 +3,7 @@ import Loadding from '@/components/Loadding'
 import { Users } from '@/models/users.model'
 import { FindUserMe } from '@/services/authen.service'
 import React, { useCallback, useEffect, useState } from 'react'
+import './globals.css';
 
 export default function App() {
 
@@ -24,6 +25,8 @@ export default function App() {
     }
   }, [checkFindMe])
   return (
-    <Loadding />
+    <div>
+      <Loadding />
+    </div>
   )
 }

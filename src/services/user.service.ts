@@ -1,7 +1,7 @@
 import { enviromentDev } from "@/configs/enviroment.dev"
 import { endpoint } from "./endpoint.service"
 import { Locations } from "@/models/location.model"
-import { Users } from "@/models/users.model"
+import { UserRegister, Users } from "@/models/users.model"
 import { Vehicles } from "@/models/vehicle.model"
 
 export function saveLocation(locate: Locations) {
@@ -50,5 +50,13 @@ export function convertGender(gender: string) {
     }
     else{
         return 'เพศหญิง'
+    }
+}
+
+export function registerByUser(data: Users) {
+    try {
+        return endpoint.post<UserRegister>(`${enviromentDev.auth}/sign-up/user-register`, data)
+    } catch (error) {
+        throw error
     }
 }

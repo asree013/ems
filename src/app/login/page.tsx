@@ -4,14 +4,13 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import { Button } from '@mui/material';
+import { Button, Divider, FormControl } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { TextField } from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox'
 import logoImage from '@/assets/icon/user_6543039.png';
-import newLogo from '@/assets/image/icon_menu/logo1.png'
-import newLogo2 from '@/assets/image/icon_menu/logo1.png'
+import newLogo from '@/assets/image/icon_menu/logo4.png'
 import 'react-toastify/dist/ReactToastify.css';
 import './login.css';
 import Loadding from '../../components/Loadding';
@@ -23,6 +22,10 @@ import { escape } from 'querystring';
 import { socket } from '@/configs/socket';
 import styled from 'styled-components';
 
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import HttpsIcon from '@mui/icons-material/Https';
+import { TStyleButton } from '@/configs/themes';
+// import { useSearchParams } from 'next/navigation';
 
 
 export default function Page() {
@@ -30,6 +33,8 @@ export default function Page() {
   const [isLoad, setIsLoad] = useState(false);
   const [errUser, setErrUser] = useState(false);
   const [errPass, setErrPass] = useState(false);
+  // const usernamePath = useSearchParams().get('username')
+  
 
   async function onSubmitLogin(e: any) {
     e.preventDefault();
@@ -108,11 +113,15 @@ export default function Page() {
     }
   }, [])
 
-  
+
 
   useEffect(() => {
     setWindowHeight(window.innerHeight);
     onCheckAutoLogin()
+    // if(usernamePath){
+    //   setLogin({...login, username: usernamePath.toLocaleLowerCase()})
+    //   return
+    // }
     // checkFindMe()
 
     return () => {
@@ -120,25 +129,41 @@ export default function Page() {
     }
   }, [onCheckAutoLogin]);
 
+  const HoverParagraph = styled.p`
+    color: white;
+    transition: color 0.3s;
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.1);
+      transition: 0.4s;
+    }
+  `;
 
   return (
     <>
-        <div id='page' className='themesLogin' style={{
-          width: '100%', height: windowHeight,
-          display: 'flex', alignItems: 'center', justifyContent: 'center'
-        }}>
-          <div className="homeLogin">
-            <form onSubmit={(e) => onSubmitLogin(e)}>
-              <Card sx={{ maxWidth: 345 }}>
-                <CardMedia
-                  sx={{ height: 190 }}
-                  image={newLogo.src}
-                  title="green iguana"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    Login EMSink
-                  </Typography>
+      <div id='page' className='themesLogin' style={{
+        width: '100%', height: windowHeight,
+      }}>
+
+        <div className="homeLogin">
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <img style={{ width: '4.2rem' }} src={newLogo.src} alt="" />
+            <p style={{ marginLeft: '10px', color: 'white', fontSize: '4.5rem', fontWeight: 700 }}>Emsink</p>
+          </div>
+          <form onSubmit={(e) => onSubmitLogin(e)}>
+            <Card sx={{ width: 345 }}>
+              {/* <CardMedia
+                sx={{ height: 190 }}
+                image={newLogo.src}
+                title="green iguana"
+              /> */}
+              <CardContent>
+                {/* <Typography gutterBottom variant="h5" component="div">
+                  Login EMSink
+                </Typography> */}
+                <FormControl style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row' }}>
+                  <AccountCircleIcon />
                   <TextField
                     error={errUser}
                     onChange={(e) =>
@@ -146,10 +171,19 @@ export default function Page() {
                     }
                     id="filled-basic"
                     label="Username"
-                    variant="filled"
-                    style={{ width: '100%' }}
+                    variant="standard"
+                    style={{ width: '100%', textAlign: 'center', marginBottom: '15px', marginLeft: '15px' }}
+                    InputProps={{
+                      disableUnderline: true,
+                    }}
                     required
                   />
+                </FormControl>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Divider sx={{ height: '1px', background: 'black', width: '250px' }} />
+                </div>
+                <FormControl style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row' }}>
+                  <HttpsIcon />
                   <TextField
                     error={errPass}
                     type="password"
@@ -158,42 +192,60 @@ export default function Page() {
                     }
                     id="filled-basic"
                     label="password"
-                    variant="filled"
-                    style={{ width: '100%', marginTop: '10px' }}
+                    variant="standard"
+                    style={{ width: '100%', textAlign: 'center', marginBottom: '15px', marginLeft: '15px' }}
+                    InputProps={{
+                      disableUnderline: true,
+                    }}
                     required
                   />
-                  <FormControlLabel control={<Checkbox checked={auto} onChange={() => setAuto(!auto)} />} label="auto Login" />
-                </CardContent>
-                <CardActions>
-                  <Button
-                    type="submit"
-                    size="large"
-                    variant="contained"
-                    style={{ width: '100%' }}
-                  >
-                    Login
-                  </Button>
-                </CardActions>
-                <CardActions>
-                  <Button
-                    type="button"
-                    size="large"
-                    color='success'
-                    variant="contained"
-                    style={{ width: '100%' }}
-                    onClick={() => {
-                      setIsLoad(true)
-                      window.location.href = '/sar_system'
-                    }}
-                  >
-                    ใช้งานแบบ ofline(SAR)
-                  </Button>
-                </CardActions>
-              </Card>
-            </form>
+                </FormControl>
+
+                <FormControlLabel control={<Checkbox checked={auto} onChange={() => setAuto(!auto)} />} label="auto Login" />
+              </CardContent>
+              <CardActions style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <TStyleButton
+                  type="submit"
+                  style={{ width: '85%', height: '3rem' }}
+                >
+                  Login
+                </TStyleButton>
+              </CardActions>
+              {/* <CardActions>
+                <Button
+                  type="button"
+                  size="large"
+                  color='success'
+                  variant="contained"
+                  style={{ width: '100%' }}
+                  onClick={() => {
+                    setIsLoad(true)
+                    window.location.href = '/sar_system'
+                  }}
+                >
+                  ใช้งานแบบ ofline(SAR)
+                </Button>
+              </CardActions> */}
+            </Card>
+          </form>
+
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <HoverParagraph onClick={() => toast('อัพเดทเร็วๆนี้', 'warning')} style={{ fontSize: '18px', color: 'white' }}>ลืมรหัสผ่าน</HoverParagraph>
+
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '15px' }}>
+              <div style={{ border: '0.8px solid white', width: 70 }} />
+              <p style={{ margin: '0 10px', color: 'white', textAlign: 'center', fontSize: '14px' }}>หรือ</p>
+              <div style={{ border: '0.8px solid white', width: 70 }} />
+            </div>
+
+            <HoverParagraph onClick={() => {
+              window.location.href = '/register'
+              setIsLoad(true)
+            }} style={{ fontSize: '22px', fontWeight: 500, marginTop: '15px' }}>สมัครสมาชิก</HoverParagraph>
           </div>
-          {isLoad ? <Loadding /> : null}
         </div>
+        {isLoad ? <Loadding /> : null}
+      </div>
     </>
   );
 }

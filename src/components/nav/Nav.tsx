@@ -25,6 +25,7 @@ import Loadding from '../Loadding';
 
 import { styled } from '@mui/material/styles';
 import { Avatar, useMediaQuery } from '@mui/material';
+import { ThemLinear } from '@/configs/themes';
 
 interface Props {
   /**
@@ -112,7 +113,7 @@ export default function Nav(props: Props) {
 
       <Box sx={{ display: 'flex', zIndex: 1 }} >
         <CssBaseline />
-        <Themes component="nav">
+        <ThemLinear >
           <Toolbar>
             {/* <IconButton
               color="inherit"
@@ -165,7 +166,7 @@ export default function Nav(props: Props) {
               </Button>
             </Box>
           </Toolbar>
-        </Themes>
+        </ThemLinear>
 
         <nav>
           <Drawer

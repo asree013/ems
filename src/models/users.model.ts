@@ -37,3 +37,27 @@ export type LocationActive = {
   create_date: string
   users_id: string
 }
+
+export interface UserRegister {
+  id: string
+  username: string
+  first_name: string
+  last_name: string
+  status: string
+  role: string
+  email: string
+  address: any
+  phone_number: string
+  career: string
+  id_card: string
+  image: string
+  create_date: string
+  update_date: string
+  hospital_branch_id: any
+  refresh_token: any
+  hospital_id: any
+  doctorsId: any
+  squad_id: string
+  team_id: any
+  mission_id: any
+}

@@ -1,8 +1,21 @@
 .themesLogin {
-  background: linear-gradient(125deg, #1e3c72, #2a5298);
-
+  background: linear-gradient(125deg, #021B79, #0575E6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
-
+.themesBtn{
+  background: linear-gradient(125deg, #021B79, #0575E6);
+  color: white;
+}
+.homeLogin{
+  height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+}
 @media only screen and (max-width: 1024px) {
   
     
