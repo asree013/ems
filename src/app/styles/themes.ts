@@ -17,6 +17,7 @@ export const ThemLinear = styled.nav`
     background: linear-gradient(125deg, #021B79, #0575E6);
     color: white;
     width: 100%;
+    
 `
 
 export const TStyleThemAuto = styled.div`

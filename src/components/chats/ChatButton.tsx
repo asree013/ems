@@ -420,7 +420,7 @@ export default function ChatButton() {
         }
         <div ref={messagesEndRef} />
       </div>
-      <form onSubmit={onSendMessage} className='mt-2'>
+      <form onSubmit={onSendMessage} style={{marginTop: '10px'}}>
         <Input type='text' value={message} autoFocus onChange={handleChangeMessage} ref={inputRef} endDecorator={
           <Button
             variant="solid"

@@ -1,6 +1,6 @@
 'use client';
 
-import { TStyleButton, TStyleThem } from '@/configs/themes';
+import { TStyleButton, TStyleThem } from '@/app/styles/themes';
 import React, { useEffect, useRef, useState } from 'react';
 import newLogo from '@/assets/image/icon_menu/logo4.png'
 import { Avatar, Badge, Card, Divider, FormControl, TextField } from '@mui/material';
@@ -61,6 +61,7 @@ type ErrorMessage = {
 }
 
 export default function Page() {
+
     const [hw, setHw] = useState(0)
     const [formUser, setFormUser] = useState<Users>({} as Users)
     const [load, setLoad] = useState<boolean>(false)
@@ -136,7 +137,7 @@ export default function Page() {
 
                                 if (e.target.value.length < 8) setErr({ ...err, username: true })
                                 else setFormUser({ ...formUser, username: e.target.value.toLocaleLowerCase() })
-                            }} type='text' style={{ width: '100%', marginLeft: '10px' }} label="ยูเซอร์เนม" variant="standard" />
+                            }} type='text' style={{ width: '90%', marginLeft: '10px' }} label="ยูเซอร์เนม" variant="standard" />
                             {err.username ? <p style={{ color: 'red' }}>*ยูเซอร์เนมน้อยกว่า 8 ตัวอักษร</p> : null}
                         </FormControlInputStyle>
 
@@ -150,7 +151,7 @@ export default function Page() {
                                 if (e.target.value.length < 8) setErr({ ...err, password: true })
                                 else setCkPass(e.target.value)
 
-                            }} type='password' style={{ width: '100%', marginLeft: '10px' }} label="พาสเวิร์ด" variant="standard" />
+                            }} type='password' style={{ width: '90%', marginLeft: '10px' }} label="พาสเวิร์ด" variant="standard" />
                             {err?.password ? <p style={{ color: 'red' }}>*พาสเวิร์ดน้อยกว่า 7 ตัวอักษร</p> : null}
                         </FormControlInputStyle>
 
@@ -170,7 +171,7 @@ export default function Page() {
 
                                 }
                                 // setFormUser({...formUser, phone_number: e.target.value})
-                            }} type='password' style={{ width: '100%', marginLeft: '10px' }} label="เช็ค พาสเวิร์ด" variant="standard" />
+                            }} type='password' style={{ width: '90%', marginLeft: '10px' }} label="เช็ค พาสเวิร์ด" variant="standard" />
                             {err.ck_passowrd ? <p style={{ color: 'red' }}>*พาสเวิร์ดไม่ตรงกัน</p> : null}
                         </FormControlInputStyle>
 
@@ -183,7 +184,7 @@ export default function Page() {
 
                                 if (e.target.value.length < 5) setErr({ ...err, first_name: true })
                                 else setFormUser({ ...formUser, first_name: e.target.value })
-                            }} type='text' style={{ width: '100%', marginLeft: '10px' }} label="ชื่อ" variant="standard" />
+                            }} type='text' style={{ width: '90%', marginLeft: '10px' }} label="ชื่อ" variant="standard" />
                             {err.first_name ? <p style={{ color: 'red' }}>*ชื่อสั้นเกินไป</p> : null}
                         </FormControlInputStyle>
 
@@ -196,7 +197,7 @@ export default function Page() {
 
                                 if (e.target.value.length < 5) setErr({ ...err, last_name: true })
                                 else setFormUser({ ...formUser, last_name: e.target.value })
-                            }} type='text' style={{ width: '100%', marginLeft: '10px' }} label="นามสกุล" variant="standard" />
+                            }} type='text' style={{ width: '90%', marginLeft: '10px' }} label="นามสกุล" variant="standard" />
                             {err.last_name ? <p style={{ color: 'red' }}>*นามสกุลสั้นเกินไป</p> : null}
                         </FormControlInputStyle>
 
@@ -209,7 +210,7 @@ export default function Page() {
 
                                 if (e.target.value.includes('@')) setFormUser({ ...formUser, email: e.target.value })
                                 else setErr({ ...err, email: true })
-                            }} type='text' style={{ width: '100%', marginLeft: '10px' }} label="อีเมล" variant="standard" />
+                            }} type='text' style={{ width: '90%', marginLeft: '10px' }} label="อีเมล" variant="standard" />
                             {err.email ? <p style={{ color: 'red' }}>*อีเมลไม่ถูกต้อง</p> : null}
                         </FormControlInputStyle>
 
@@ -252,7 +253,7 @@ export default function Page() {
                                     }
                                 }}
                                 type='text'
-                                style={{ width: '100%', marginLeft: '10px' }}
+                                style={{ width: '90%', marginLeft: '10px' }}
                                 inputProps={{ maxLength: 16 }} // จำกัดจำนวนตัวอักษรสูงสุด (รวมขีด)
                                 label="บัตรประชาชน"
                                 variant="standard"
@@ -287,7 +288,7 @@ export default function Page() {
                                     }
                                 }}
                                 type='text'
-                                style={{ width: '100%', marginLeft: '10px' }}
+                                style={{ width: '90%', marginLeft: '10px' }}
                                 label="เบอร์"
                                 variant="standard"
                             />

@@ -24,7 +24,7 @@ import styled from 'styled-components';
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import HttpsIcon from '@mui/icons-material/Https';
-import { TStyleButton } from '@/configs/themes';
+import { TStyleButton } from '@/app/styles/themes';
 // import { useSearchParams } from 'next/navigation';
 
 

@@ -110,11 +110,12 @@ export default function CarCard({ data, car_id }: Props) {
                     patient_id: patient_id,
                     car_id: car.id
                 } 
-                const result = await tranformPatientHelicopterToCar(String(helicopter_id), data)
-                console.log(data);
-                // history.back()
+                await tranformPatientHelicopterToCar(String(helicopter_id), data)
+                history.back()
             } catch (error: any) {
                 toast(error.message, 'error')
+            } finally{
+                setLoad(false)
             }
         }
         else {

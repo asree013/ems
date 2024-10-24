@@ -20,12 +20,10 @@ import { useRouter } from 'next/navigation';
 
 import LogoEms from '@/assets/image/icon_menu/logo4.png'
 
-import style from './Nav.module.css';
 import Loadding from '../Loadding';
 
-import { styled } from '@mui/material/styles';
-import { Avatar, useMediaQuery } from '@mui/material';
-import { ThemLinear } from '@/configs/themes';
+import { Avatar, styled, useMediaQuery } from '@mui/material';
+// import styled from 'styled-components';
 
 interface Props {
   /**
@@ -34,6 +32,26 @@ interface Props {
    */
   windows?: () => Window;
 }
+
+// const ThemLinear = styled.nav`
+//     background: linear-gradient(125deg, #021B79, #0575E6);
+//     color: white;
+//     width: 100%;
+//     .logo {
+//     opacity: 0;
+//     }
+//     .logo {
+//         opacity: 0;
+//     }
+
+//     @media only screen and (max-width: 450px) {
+//         .logo{
+//             opacity: 1;
+//         }
+//     }
+
+
+// `
 
 const drawerWidth = 240;
 const navItems = ['Home', 'Patient', 'Device', 'Monitor', 'Select_Mode'];
@@ -103,17 +121,16 @@ export default function Nav(props: Props) {
     windows !== undefined ? () => windows().document.body : undefined;
 
   const Themes = styled(AppBar)<AppBarProps>(({ theme }) => ({
-    background: 'linear-gradient(125deg, #1e3c72, #2a5298)',
+    background: 'linear-gradient(125deg, #021B79, #0575E6)',
+    
   }));
-
-
 
   return (
     <>
 
       <Box sx={{ display: 'flex', zIndex: 1 }} >
         <CssBaseline />
-        <ThemLinear >
+        <Themes >
           <Toolbar>
             {/* <IconButton
               color="inherit"
@@ -125,9 +142,9 @@ export default function Nav(props: Props) {
               <MenuIcon />
             </IconButton> */}
             {
-               maxWidth?
+              maxWidth ?
                 <Typography
-                  className={style.logo}
+                  sx={{opacity: 1}}
                   variant="body1"
                   color="ButtonHighlight"
                 >
@@ -135,7 +152,8 @@ export default function Nav(props: Props) {
                     <Avatar src={LogoEms.src} />
                     <span style={{ marginLeft: '10px', fontSize: '1.4rem', fontWeight: 700 }}>EMSink App</span>
                   </div>
-                </Typography>: null
+                </Typography>
+                : null
             }
             <Typography
               variant="h6"
@@ -166,7 +184,7 @@ export default function Nav(props: Props) {
               </Button>
             </Box>
           </Toolbar>
-        </ThemLinear>
+        </Themes>
 
         <nav>
           <Drawer

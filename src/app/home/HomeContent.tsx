@@ -3,15 +3,10 @@ import React, { useContext, useState } from 'react'
 import HomeCss from './HomeCss.module.css'
 
 import { Divider, Fab, Paper, ToggleButtonGroup } from '@mui/material';
-import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
 import WorkOutlineIcon from '@mui/icons-material/WorkOutline';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import TableMissioon from './TableMission';
-import { Missions } from '@/models/mission.model';
 import AddIcon from '@mui/icons-material/Add';
 import PlaceIcon from '@mui/icons-material/Place';
 import GoogleApiMap from './GoogleApiMap';
-import { NIL } from 'uuid';
 import Loadding from '@/components/Loadding';
 import { FindMeContext, TFindContext } from '@/contexts/findme.context';
 import CardMissionUser from './CardMissionUser';
@@ -123,7 +118,7 @@ export default function HomeContent() {
                                 {
                                     vehicle.car || vehicle.helicopter || vehicle.ship ?
                                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                            <div className={`mt-4 ${HomeCss.girdCarItem}`}>
+                                            <div style={{marginTop: '15px'}} className={`${HomeCss.girdCarItem}`}>
                                                 <CarPatientList />
                                                 <div className={HomeCss.mobileSetting}>
                                                     <CarHistoryPatient />
