@@ -7,26 +7,30 @@ metadata.title = 'Home EMS App';
 import Loadding from '@/components/Loadding'
 import ChatButton from '@/components/chats/ChatButton';
 import Nav from '@/components/nav/Nav';
+import { IconVehicleProvider } from './IconVehicleContext';
 
 export default function DashboardLayout({
   children, // will be a page or nested layout
 }: {
   children: React.ReactNode;
 }) {
+  const constData = "";
+
   return (
     <section >
-      {/* Include shared UI here e.g. a header or sidebar */}
-      <Nav />
+      <IconVehicleProvider>
+        <Nav />
 
-      <div style={{ marginTop: '60px' }}>
-        <TabMenu>
-          <Suspense fallback={<Loadding/ >}>
-            {children}
-          </Suspense>
-        </TabMenu>
-      </div>
+        <div style={{ marginTop: '60px' }}>
+          <TabMenu>
+            <Suspense fallback={<Loadding />}>
+              {children}
+            </Suspense>
+          </TabMenu>
+        </div>
+        <ChatButton />
 
-      <ChatButton />
+      </IconVehicleProvider>
     </section>
   );
 }

@@ -6,11 +6,6 @@ export const TStyleThem = styled.div<{ h: number }>`
     height: ${({ h }) => h}px;
     width: 100%;
     padding: 10px;
-    .btn_back{
-        position: absolute;
-        margin-bottom: 650px;
-        margin-right: 270px;
-    }
 `
 
 export const ThemLinear = styled.nav`
@@ -23,9 +18,17 @@ export const ThemLinear = styled.nav`
 export const TStyleThemAuto = styled.div`
     background: linear-gradient(125deg, #021B79, #0575E6);
     color: white;
-    height: 100%;
+    height: 100vh;
     width: 100%;
     padding: 10px;
+    .btn_back{
+        position: absolute;
+        margin-bottom: 650px;
+        margin-right: 280px;
+    }
+    @media only screen and (max-width: 450px) {
+        height: 125vh;     
+    }
 `
 
 export const TStyleButton = styled.button`

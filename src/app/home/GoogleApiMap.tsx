@@ -6,7 +6,6 @@ import {
 } from '@vis.gl/react-google-maps';
 import { enviromentDev } from '@/configs/enviroment.dev';
 import NearMeIcon from '@mui/icons-material/NearMe';
-import carsLocate from '@/assets/icon/ambulance.png';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { Button, Card, FormControlLabel, styled } from '@mui/material';
@@ -16,6 +15,14 @@ import HomeCss from './HomeCss.module.css';
 import { Missions } from '@/models/mission.model';
 
 import Switch, { SwitchProps } from '@mui/material/Switch';
+import { CurrentVehicleContext, TCurrentVehicles } from './CurrentVehicle.context';
+
+import HelitopterIcon from '@/assets/image/icon_menu/helicopter_5768628.png';
+import ShipIcon from '@/assets/image/icon_menu/ship_3469160.png'
+import AmbulanceIcon from '@/assets/icon/ambulance.png';
+import UserIcon from '@/assets/image/icon_menu/placeholder_3207670.png';
+import { Vehicles } from '@/models/vehicle.model';
+
 
 type LatLng = {
     lat: number;
@@ -92,8 +99,8 @@ const GoogleApiMap = ({ mission }: Props) => {
     const [zoom, setZoom] = useState<number>(8);
     const [load, setLoad] = useState<boolean>(false);
     const [isSub, setIsSub] = useState<boolean>(false)
-    const {userLocate, setUserLocate} = useContext<TLocateC>(LocateContextUser)
-
+    const { userLocate, setUserLocate } = useContext<TLocateC>(LocateContextUser)
+    const { vehicle } = useContext<TCurrentVehicles>(CurrentVehicleContext)
 
     const onCheckUserLocation = useCallback(() => {
         return new Promise<void>((resolve, reject) => {
@@ -122,19 +129,61 @@ const GoogleApiMap = ({ mission }: Props) => {
         });
     }, [setCenterLocate]);
 
+    function convertIconByVehicle() {
+        if (vehicle.car) {
+            return {
+                url: AmbulanceIcon.src,
+                scaledSize: new window.google.maps.Size(35, 35),
+                origin: new window.google.maps.Point(0, 0),
+                anchor: new window.google.maps.Point(20, 20),
+                labelOrigin: new window.google.maps.Point(20, -30),
+            };
+        }
+        if (vehicle.helicopter) {
+            return {
+                url: HelitopterIcon.src,
+                scaledSize: new window.google.maps.Size(35, 35),
+                origin: new window.google.maps.Point(0, 0),
+                anchor: new window.google.maps.Point(20, 20),
+                labelOrigin: new window.google.maps.Point(20, -30),
+            };
+        }
+        if (vehicle.ship) {
+            alert('shipt')
+            return {
+                url: ShipIcon.src,
+                scaledSize: new window.google.maps.Size(35, 35),
+                origin: new window.google.maps.Point(0, 0),
+                anchor: new window.google.maps.Point(20, 20),
+                labelOrigin: new window.google.maps.Point(20, -30),
+            };
+        }
+        if (!vehicle) {
+            return {
+                url: UserIcon.src,
+                scaledSize: new window.google.maps.Size(35, 35),
+                origin: new window.google.maps.Point(0, 0),
+                anchor: new window.google.maps.Point(20, 20),
+                labelOrigin: new window.google.maps.Point(20, -30),
+
+            };
+        }
+    }
+
+
     useEffect(() => {
+
         setLoad(true);
-        const intervalId = setInterval(() => {
+        const intervalId = setInterval(async () => {
             if (window.google && window.google.maps.Size) {
-                const newIcon = {
-                    url: carsLocate.src,
-                    scaledSize: new window.google.maps.Size(45, 45),
+
+                setIcon(convertIconByVehicle() ?? {
+                    url: UserIcon.src,
+                    scaledSize: new window.google.maps.Size(35, 35),
                     origin: new window.google.maps.Point(0, 0),
                     anchor: new window.google.maps.Point(20, 20),
-                    labelOrigin: new window.google.maps.Point(20, -5),
-                };
-
-                setIcon(newIcon);
+                    labelOrigin: new window.google.maps.Point(20, -30) ,
+                });
                 clearInterval(intervalId);
                 setLoad(false);
             }
@@ -143,10 +192,10 @@ const GoogleApiMap = ({ mission }: Props) => {
         return () => {
             clearInterval(intervalId);
         }
-    }, [ userLocate]);
+    }, [userLocate]);
 
     return (
-        <Card className={HomeCss.sizeMap} elevation={4} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center',flexDirection: 'column', borderRadius: '10px', marginTop: '10px' }}>
+        <Card className={HomeCss.sizeMap} elevation={4} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', borderRadius: '10px', marginTop: '10px' }}>
             <APIProvider apiKey={enviromentDev.keyGoogleApi}>
                 <FormControlLabel
                     control={<IOSSwitch sx={{ m: 1 }} onChange={(e) => setIsSub(e.target.checked)} checked={isSub} />}
@@ -171,26 +220,27 @@ const GoogleApiMap = ({ mission }: Props) => {
                                 </svg>
                             </MapControl>
                             <MapControl position={ControlPosition.RIGHT}>
-                                <Button type='button' onClick={onCheckUserLocation} variant='contained' style={{margin: 5}}>
+                                <Button type='button' onClick={onCheckUserLocation} variant='contained' style={{ margin: 5 }}>
                                     <NearMeIcon />
                                 </Button>
                             </MapControl>
                             <MapControl position={ControlPosition.RIGHT}>
-                                <Button type='button' onClick={() => setZoom(zoom + 1)} variant='contained' style={{margin: 5}}>
+                                <Button type='button' onClick={() => setZoom(zoom + 1)} variant='contained' style={{ margin: 5 }}>
                                     <AddIcon />
                                 </Button>
                             </MapControl>
                             <MapControl position={ControlPosition.RIGHT}>
-                                <Button type='button' onClick={() => setZoom(zoom - 1)} variant='contained' style={{margin: 5}}>
+                                <Button type='button' onClick={() => setZoom(zoom - 1)} variant='contained' style={{ margin: 5 }}>
                                     <RemoveIcon />
                                 </Button>
                             </MapControl>
                             {icon &&
                                 <Marker
+                                    zIndex={50}
                                     onClick={(e) => console.log(e.latLng?.toString())}
                                     icon={icon}
                                     position={{ lng: Number(userLocate.long), lat: Number(userLocate.lat) }}
-                                    label={'สพส.11071 CPA'}
+                                    label={convertNameVehicle()}
                                     animation={centerLocate ? window.google.maps.Animation.BOUNCE : null}
                                 />
                             }
@@ -202,6 +252,21 @@ const GoogleApiMap = ({ mission }: Props) => {
             </APIProvider>
         </Card>
     );
+
+    function convertNameVehicle() {
+        if (vehicle.car) {
+            return vehicle.car.Car.calling
+        }
+        if (vehicle.ship) {
+            return vehicle.ship
+        }
+        if (vehicle.helicopter) {
+            return vehicle.helicopter.Helicopter.calling
+        }
+        if (!vehicle) {
+            return 'ตำแหน่งของคุณ'
+        }
+    }
 };
 
 function Directions({ lat, lng }: { lat: number, lng: number }) {

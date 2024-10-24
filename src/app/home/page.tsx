@@ -1,5 +1,5 @@
 'use client'
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { Component, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 import { Missions } from '@/models/mission.model';
 import { findMission, findMissionCurrent } from '@/services/mission.service';
@@ -23,6 +23,7 @@ import { Cars, Vehicles } from '@/models/vehicle.model';
 import { CurrentCarsContext, CurrentVehicleContext } from './CurrentVehicle.context';
 import { toast } from '@/services/alert.service';
 import { findCarByCarId } from '@/services/car.service';
+import { IconVehicleContext, TIconVehicleC } from './IconVehicleContext';
 
 const drawerWidth = 240;
 
@@ -35,10 +36,9 @@ export default function Page() {
   const [userLocate, setUserLocate] = useState<Locations>({} as Locations);
   const [users, setUsers] = useState<Users[]>([]);
   const [load, setLoad] = useState<boolean>(false)
-  let role = ''
   const { findMe, setFindMe } = useContext<TFindContext>(FindMeContext)
   const [vehicle, setVehicle] = useState<Vehicles>({} as Vehicles)
-
+  const {setIcon} = useContext<TIconVehicleC>(IconVehicleContext)
 
   const pushLocationUser = useCallback(async () => {
     try {
@@ -106,7 +106,9 @@ export default function Page() {
     try {
       const result = await findCurrentVehicleByUser()
       setVehicle(result.data)
-
+      if(result.data.car) return setIcon('car')
+      if(result.data.helicopter) return setIcon('helicopter')
+        if(result.data.ship) return setIcon('ship')
     } catch (error: any) {
       console.log('findCurrent: ' ,error);
       
@@ -168,5 +170,7 @@ export default function Page() {
       }
     </>
   );
+
 }
+
 

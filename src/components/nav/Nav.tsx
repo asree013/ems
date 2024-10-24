@@ -5,25 +5,23 @@ import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { logout } from '@/services/authen.service';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import LogoEms from '@/assets/image/icon_menu/logo4.png'
 
 import Loadding from '../Loadding';
 
 import { Avatar, styled, useMediaQuery } from '@mui/material';
-// import styled from 'styled-components';
+import { IconVehicleContext, TIconVehicleC } from '@/app/home/IconVehicleContext';
 
 interface Props {
   /**
@@ -33,26 +31,6 @@ interface Props {
   windows?: () => Window;
 }
 
-// const ThemLinear = styled.nav`
-//     background: linear-gradient(125deg, #021B79, #0575E6);
-//     color: white;
-//     width: 100%;
-//     .logo {
-//     opacity: 0;
-//     }
-//     .logo {
-//         opacity: 0;
-//     }
-
-//     @media only screen and (max-width: 450px) {
-//         .logo{
-//             opacity: 1;
-//         }
-//     }
-
-
-// `
-
 const drawerWidth = 240;
 const navItems = ['Home', 'Patient', 'Device', 'Monitor', 'Select_Mode'];
 
@@ -61,7 +39,9 @@ export default function Nav(props: Props) {
   const { windows } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isLoad, setIsLoad] = React.useState(false);
-
+  const { icon } = React.useContext<TIconVehicleC>(IconVehicleContext)
+  const path = usePathname()
+  
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
@@ -77,43 +57,7 @@ export default function Nav(props: Props) {
         </div>
       </Typography>
       <Divider />
-      <List>
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton
-              onClick={() => setIsLoad(true)}
-              href={'/' + item.toLocaleLowerCase()}
-              sx={{ textAlign: 'center' }}
-            >
-              <ListItemText primary={item} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-        <ListItemButton
-          onClick={async () => {
-            try {
-              setIsLoad(true);
-              await logout();
-              localStorage.removeItem('camera')
-              router.push('/login');
-            } catch (error) {
-              alert(JSON.stringify(error));
-            }
-          }}
-          sx={{ textAlign: 'center' }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <LogoutIcon />
-            <ListItemText primary={'Logout'} />
-          </Box>
-        </ListItemButton>
-      </List>
+
     </Box>
   );
 
@@ -122,7 +66,7 @@ export default function Nav(props: Props) {
 
   const Themes = styled(AppBar)<AppBarProps>(({ theme }) => ({
     background: 'linear-gradient(125deg, #021B79, #0575E6)',
-    
+
   }));
 
   return (
@@ -132,19 +76,11 @@ export default function Nav(props: Props) {
         <CssBaseline />
         <Themes >
           <Toolbar>
-            {/* <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="start"
-              onClick={handleDrawerToggle}
-              sx={{ mr: 2, display: { sm: 'none' } }}
-            >
-              <MenuIcon />
-            </IconButton> */}
+
             {
               maxWidth ?
                 <Typography
-                  sx={{opacity: 1}}
+                  sx={{ opacity: 1 }}
                   variant="body1"
                   color="ButtonHighlight"
                 >
@@ -165,24 +101,38 @@ export default function Nav(props: Props) {
                 <span style={{ marginLeft: '10px', fontSize: '1.4rem', fontWeight: 700 }}>EMSink App</span>
               </div>
             </Typography>
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
 
-              <Button
-                onClick={async () => {
-                  try {
-                    setIsLoad(true);
-                    await logout();
-                    router.push('/login');
-                    localStorage.removeItem('camera')
-                  } catch (error) {
-                    alert(JSON.stringify(error));
-                  }
-                }}
-                style={{ color: 'white' }}
-              >
-                <LogoutIcon />
+            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+              <Button style={{ cursor: 'default' }} color='inherit' variant='text'>สถาณะ: </Button>
+              <Button style={{ cursor: 'default' }} variant='contained' color='inherit'>
+
+                {
+                  path === '/home' ?
+                  icon.length === 0 ?
+                      'ไม่มียานพาหนะ' :
+                      <>
+                        {
+                          icon.includes('car') ?
+                            'รถรับส่ง' : null
+                        }
+                        {
+                          icon.includes('helicopter') ?
+                            'ฮ.รับส่ง' : null
+                        }
+                        {
+                          icon.includes('ship') ?
+                            'เรือรับส่ง' : null
+                        }
+                      </>:
+                    null 
+
+                }
               </Button>
             </Box>
+            <Button sx={{ display: { xs: 'block', sm: 'none' }, cursor: 'default', position: 'absolute', right: 20 }} color='inherit' variant='text'>สถาณะ: </Button>
+
+
+
           </Toolbar>
         </Themes>
 

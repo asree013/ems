@@ -68,7 +68,7 @@ export default function CarPatientitem({ patient, vehicle }: { patient: PatientB
 
     function navigateToTranformToHalicopter() {
         setLoad(true)
-        window.location.href = `vehicle?tranfrom=helicopter&car_id=${vehicle.car.car_id}0&patient_id=${patient.Patient.id}`
+        window.location.href = `vehicle?tranfrom=helicopter&car_id=${vehicle.car.car_id}&patient_id=${patient.Patient.id}`
     }
 
     return (

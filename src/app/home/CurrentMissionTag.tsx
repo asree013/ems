@@ -6,25 +6,17 @@ import Box from '@mui/material/Box';
 // import Stepper from '@mui/joy/Stepper';
 import Step, { stepClasses } from '@mui/joy/Step';
 import StepIndicator, { stepIndicatorClasses } from '@mui/joy/StepIndicator';
-import Typography from '@mui/joy/Typography';
-import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
-import ContactsRoundedIcon from '@mui/icons-material/ContactsRounded';
-import LocalShippingRoundedIcon from '@mui/icons-material/LocalShippingRounded';
-import CreditCardRoundedIcon from '@mui/icons-material/CreditCardRounded';
-import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+
 import styled from 'styled-components';
 
 import CloseIcon from '@mui/icons-material/Close';
 import { MissionTag } from '@/models/mission.model';
-import { CurrentVehicleContext, TCurrentVehicles } from './CurrentVehicle.context';
 import { findMissionTagByMissionId } from '@/services/mission.service';
 import { CurrentMissionContext, TCurrentMission } from '@/contexts/currentMission.context';
 import { toast } from '@/services/alert.service';
 import Stepper from '@mui/material/Stepper';
-// import Step from '@mui/material/Step';
 import StepButton from '@mui/material/StepButton';
 import Button from '@mui/material/Button';
-// import Typography from '@mui/material/Typography';
 
 
 export default function CurrentMissionTah() {

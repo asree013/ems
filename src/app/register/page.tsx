@@ -1,6 +1,6 @@
 'use client';
 
-import { TStyleButton, TStyleThem } from '@/app/styles/themes';
+import { TStyleButton, TStyleThem, TStyleThemAuto } from '@/app/styles/themes';
 import React, { useEffect, useRef, useState } from 'react';
 import newLogo from '@/assets/image/icon_menu/logo4.png'
 import { Avatar, Badge, Card, Divider, FormControl, TextField } from '@mui/material';
@@ -34,7 +34,7 @@ import { registerByUser } from '@/services/user.service';
 const FormControlInputStyle = styled.div`
 display: flex;
 align-items: center;
-justify-content: center;
+justify-content: space-between;
 width: 100%;
 margin-top: 5px;
 
@@ -112,7 +112,7 @@ export default function Page() {
 
     return (
         <>
-            <TStyleThem h={hw < 700 ? 800 : hw} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', flexDirection: 'column' }}>
+            <TStyleThemAuto style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
                 <Button variant='soft' color='neutral' onClick={() => {
                     setLoad(true)
                     window.location.href = '/login'
@@ -126,7 +126,7 @@ export default function Page() {
                         </div>
                     </div>
 
-                    <Card elevation={4} style={{ width: 320, padding: '10px 20px', marginTop: '10px' }}>
+                    <Card elevation={4} style={{ width: 340, padding: '10px 20px', marginTop: '10px' }}>
 
                         <FormControlInputStyle id='username'>
                             <div style={{ height: '1rem' }}>
@@ -137,7 +137,7 @@ export default function Page() {
 
                                 if (e.target.value.length < 8) setErr({ ...err, username: true })
                                 else setFormUser({ ...formUser, username: e.target.value.toLocaleLowerCase() })
-                            }} type='text' style={{ width: '90%', marginLeft: '10px' }} label="ยูเซอร์เนม" variant="standard" />
+                            }} type='text' style={{ width: 300, marginLeft: '10px' }} label="ยูเซอร์เนม" variant="standard" />
                             {err.username ? <p style={{ color: 'red' }}>*ยูเซอร์เนมน้อยกว่า 8 ตัวอักษร</p> : null}
                         </FormControlInputStyle>
 
@@ -151,7 +151,7 @@ export default function Page() {
                                 if (e.target.value.length < 8) setErr({ ...err, password: true })
                                 else setCkPass(e.target.value)
 
-                            }} type='password' style={{ width: '90%', marginLeft: '10px' }} label="พาสเวิร์ด" variant="standard" />
+                            }} type='password' style={{ width: 300, marginLeft: '10px' }} label="พาสเวิร์ด" variant="standard" />
                             {err?.password ? <p style={{ color: 'red' }}>*พาสเวิร์ดน้อยกว่า 7 ตัวอักษร</p> : null}
                         </FormControlInputStyle>
 
@@ -171,7 +171,7 @@ export default function Page() {
 
                                 }
                                 // setFormUser({...formUser, phone_number: e.target.value})
-                            }} type='password' style={{ width: '90%', marginLeft: '10px' }} label="เช็ค พาสเวิร์ด" variant="standard" />
+                            }} type='password' style={{ width: 300, marginLeft: '10px' }} label="เช็ค พาสเวิร์ด" variant="standard" />
                             {err.ck_passowrd ? <p style={{ color: 'red' }}>*พาสเวิร์ดไม่ตรงกัน</p> : null}
                         </FormControlInputStyle>
 
@@ -184,7 +184,7 @@ export default function Page() {
 
                                 if (e.target.value.length < 5) setErr({ ...err, first_name: true })
                                 else setFormUser({ ...formUser, first_name: e.target.value })
-                            }} type='text' style={{ width: '90%', marginLeft: '10px' }} label="ชื่อ" variant="standard" />
+                            }} type='text' style={{ width: 300, marginLeft: '10px' }} label="ชื่อ" variant="standard" />
                             {err.first_name ? <p style={{ color: 'red' }}>*ชื่อสั้นเกินไป</p> : null}
                         </FormControlInputStyle>
 
@@ -197,7 +197,7 @@ export default function Page() {
 
                                 if (e.target.value.length < 5) setErr({ ...err, last_name: true })
                                 else setFormUser({ ...formUser, last_name: e.target.value })
-                            }} type='text' style={{ width: '90%', marginLeft: '10px' }} label="นามสกุล" variant="standard" />
+                            }} type='text' style={{ width: 300, marginLeft: '10px' }} label="นามสกุล" variant="standard" />
                             {err.last_name ? <p style={{ color: 'red' }}>*นามสกุลสั้นเกินไป</p> : null}
                         </FormControlInputStyle>
 
@@ -210,7 +210,7 @@ export default function Page() {
 
                                 if (e.target.value.includes('@')) setFormUser({ ...formUser, email: e.target.value })
                                 else setErr({ ...err, email: true })
-                            }} type='text' style={{ width: '90%', marginLeft: '10px' }} label="อีเมล" variant="standard" />
+                            }} type='text' style={{ width: 300, marginLeft: '10px' }} label="อีเมล" variant="standard" />
                             {err.email ? <p style={{ color: 'red' }}>*อีเมลไม่ถูกต้อง</p> : null}
                         </FormControlInputStyle>
 
@@ -253,7 +253,7 @@ export default function Page() {
                                     }
                                 }}
                                 type='text'
-                                style={{ width: '90%', marginLeft: '10px' }}
+                                style={{ width: 300, marginLeft: '10px' }}
                                 inputProps={{ maxLength: 16 }} // จำกัดจำนวนตัวอักษรสูงสุด (รวมขีด)
                                 label="บัตรประชาชน"
                                 variant="standard"
@@ -288,7 +288,7 @@ export default function Page() {
                                     }
                                 }}
                                 type='text'
-                                style={{ width: '90%', marginLeft: '10px' }}
+                                style={{ width: 300, marginLeft: '10px' }}
                                 label="เบอร์"
                                 variant="standard"
                             />
@@ -320,7 +320,7 @@ export default function Page() {
                             {
                                 !formUser.image ?
                                     <Button sx={{ marginLeft: '10px' }} fullWidth onClick={() => document.getElementById('imageProfile')?.click()} variant='outlined' color='neutral'>เปิดกล้อง/อัพโหลดรูปภาพ</Button> :
-                                    <div onClick={() => document.getElementById('imageProfile')?.click()} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <div onClick={() => document.getElementById('imageProfile')?.click()} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' , cursor: 'pointer'}}>
                                         <Badge badgeContent={'x'} color="error" sx={{ marginTop: '10px' }}>
                                             <Avatar
                                                 alt="Remy Sharp"
@@ -335,11 +335,14 @@ export default function Page() {
                                     const file = e.target.files[0]
                                     const formData = new FormData()
                                     formData.append('file', file)
+                                    setLoad(true)
                                     try {
                                         const image = await uploadImage(formData)
                                         setFormUser({ ...formUser, image: image.data.result })
                                     } catch (error) {
                                         toast('ฮัพโหลดรุปภาพไม่สำเร็จ', 'error')
+                                    } finally {
+                                        setLoad(false)
                                     }
                                 }
                             }} />
@@ -351,7 +354,7 @@ export default function Page() {
                         </TStyleButton>
                     </Card>
                 </div>
-            </TStyleThem>
+            </TStyleThemAuto>
 
             {
                 load ?
