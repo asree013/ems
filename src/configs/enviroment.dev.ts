@@ -3,7 +3,7 @@ export const enviromentDev = {
   baseUrl: 'https://api-ems.m-mert.com/v1',
   baseUrl_base: 'http://localhost:3333',
   baseUrl_base_onLine: 'https://api-ems.m-mert.com',
-  localUrl: 'http://127.0.0.1:3333/v1',
+  localUrl: process.env.NEXT_PUBLIC_BASE_LOCAL || 'http://192.168.3.101:3030/v1',
   patient: '/patient',
   login: '/login',
   device: '/device',

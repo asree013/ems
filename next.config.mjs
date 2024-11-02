@@ -74,4 +74,7 @@ import withPWAInit from '@ducanh2912/next-pwa';
 
 export default {
   dest: "public",
+  env: {
+    NEXT_PUBLIC_BASE_LOCAL: process.env.NEXT_PUBLIC_BASE_LOCAL
+  }
 }
