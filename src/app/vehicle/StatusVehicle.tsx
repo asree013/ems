@@ -1,17 +1,18 @@
 'use client'
-import * as React from 'react';
+
+import Loadding from '@/components/Loadding';
+import { Vehicles } from '@/models/vehicle.model';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import HourglassFullTwoToneIcon from '@mui/icons-material/HourglassFullTwoTone';
 import Button from '@mui/joy/Button';
 import Card from '@mui/joy/Card';
-import CardContent from '@mui/joy/CardContent';
 import CardActions from '@mui/joy/CardActions';
+import CardContent from '@mui/joy/CardContent';
 import CircularProgress from '@mui/joy/CircularProgress';
-import Typography from '@mui/joy/Typography';
 import SvgIcon from '@mui/joy/SvgIcon';
-import HourglassFullTwoToneIcon from '@mui/icons-material/HourglassFullTwoTone';
-import Loadding from '@/components/Loadding';
+import Typography from '@mui/joy/Typography';
 import { Paper } from '@mui/material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { Vehicles } from '@/models/vehicle.model';
+import * as React from 'react';
 
 type Props = {
     statusbol: boolean

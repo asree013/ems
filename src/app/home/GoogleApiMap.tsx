@@ -12,7 +12,7 @@ import { Button, Card, FormControlLabel, styled } from '@mui/material';
 import { Locations } from '@/models/location.model';
 import { LocateContextUser, TLocateC } from '@/contexts/locate.context';
 import HomeCss from './HomeCss.module.css';
-import { Missions } from '@/models/mission.model';
+import { MissionById, Missions } from '@/models/mission.model';
 
 import Switch, { SwitchProps } from '@mui/material/Switch';
 import { CurrentVehicleContext, TCurrentVehicles } from './CurrentVehicle.context';
@@ -38,7 +38,7 @@ type IconGoogleMap = {
 };
 
 type Props = {
-    mission: Missions
+    mission: MissionById
 }
 
 const IOSSwitch = styled((props: SwitchProps) => (
@@ -101,6 +101,29 @@ const GoogleApiMap = ({ mission }: Props) => {
     const [isSub, setIsSub] = useState<boolean>(false)
     const { userLocate, setUserLocate } = useContext<TLocateC>(LocateContextUser)
     const { vehicle } = useContext<TCurrentVehicles>(CurrentVehicleContext)
+
+    useEffect(() => {
+
+        setLoad(true);
+        const intervalId = setInterval(async () => {
+            if (window.google && window.google.maps.Size) {
+
+                setIcon(convertIconByVehicle() ?? {
+                    url: UserIcon.src,
+                    scaledSize: new window.google.maps.Size(35, 35),
+                    origin: new window.google.maps.Point(0, 0),
+                    anchor: new window.google.maps.Point(20, 20),
+                    labelOrigin: new window.google.maps.Point(20, -30),
+                });
+                clearInterval(intervalId);
+                setLoad(false);
+            }
+        }, 100);
+
+        return () => {
+            clearInterval(intervalId);
+        }
+    }, [userLocate, vehicle]);
 
     const onCheckUserLocation = useCallback(() => {
         return new Promise<void>((resolve, reject) => {
@@ -171,29 +194,6 @@ const GoogleApiMap = ({ mission }: Props) => {
     }
 
 
-    useEffect(() => {
-
-        setLoad(true);
-        const intervalId = setInterval(async () => {
-            if (window.google && window.google.maps.Size) {
-
-                setIcon(convertIconByVehicle() ?? {
-                    url: UserIcon.src,
-                    scaledSize: new window.google.maps.Size(35, 35),
-                    origin: new window.google.maps.Point(0, 0),
-                    anchor: new window.google.maps.Point(20, 20),
-                    labelOrigin: new window.google.maps.Point(20, -30) ,
-                });
-                clearInterval(intervalId);
-                setLoad(false);
-            }
-        }, 100);
-
-        return () => {
-            clearInterval(intervalId);
-        }
-    }, [userLocate]);
-
     return (
         <Card className={HomeCss.sizeMap} elevation={4} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', borderRadius: '10px', marginTop: '10px' }}>
             <APIProvider apiKey={enviromentDev.keyGoogleApi}>
@@ -212,13 +212,18 @@ const GoogleApiMap = ({ mission }: Props) => {
                             disableDefaultUI={true}
                             onClick={(e) => console.log(e.detail.latLng)}
                         >
-                            <MapControl position={ControlPosition.CENTER}>
-                                <svg width="70px" height="70px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect width="24" height="24" fill="none" />
-                                    <path d="M12 6V18" stroke="#ef4444" strokeLinecap="round" strokeLinejoin="round" />
-                                    <path d="M6 12H18" stroke="#ef4444" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                            </MapControl>
+                            {
+                                isSub ?
+                                    null:
+                                    <MapControl position={ControlPosition.CENTER}>
+                                        <svg width="70px" height="70px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <rect width="24" height="24" fill="none" />
+                                            <path d="M12 6V18" stroke="#ef4444" strokeLinecap="round" strokeLinejoin="round" />
+                                            <path d="M6 12H18" stroke="#ef4444" strokeLinecap="round" strokeLinejoin="round" />
+                                        </svg>
+                                    </MapControl>
+                            }
+
                             <MapControl position={ControlPosition.RIGHT}>
                                 <Button type='button' onClick={onCheckUserLocation} variant='contained' style={{ margin: 5 }}>
                                     <NearMeIcon />

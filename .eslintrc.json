@@ -8,7 +8,6 @@
     {
       "files": ["src/sar_system/**"],
       "rules": {
-        
         "quotes": "off",
         "comma-dangle": "off"
       }

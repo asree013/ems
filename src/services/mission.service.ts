@@ -1,4 +1,4 @@
-import { Missions, MissionState, MissionTag } from "@/models/mission.model";
+import { MissionById, Missions, MissionState, MissionTag } from "@/models/mission.model";
 import { endpoint } from "./endpoint.service";
 import { enviromentDev } from "@/configs/enviroment.dev";
 
@@ -71,7 +71,7 @@ export function leaveMission(mission_id: string) {
 
 export function findMissionCurrent() {
     try {
-        return endpoint.get<Missions>(`${enviromentDev.mission}/get-current-mission`)
+        return endpoint.get<MissionById>(`${enviromentDev.mission}/get-current-mission`)
     } catch (error) {
         throw error
     }
@@ -79,7 +79,7 @@ export function findMissionCurrent() {
 
 export function findMissionByMissionId(mission_id: string) {
     try {
-        return endpoint.get<Missions>(`${enviromentDev.mission}/${mission_id}`)
+        return endpoint.get<MissionById>(`${enviromentDev.mission}/${mission_id}`)
     } catch (error) {
         throw error
     }
@@ -109,6 +109,14 @@ export function addCarToMissionByMissionIdAndCarId(mission_id: string, car_id: s
 export function unAddCarToMissionByMissionIdAndCarId(mission_id: string, car_id: string) {
     try {
         return endpoint.put(`${enviromentDev.mission}/${mission_id}/un-assign-car-to-mission/${car_id}`)
+    } catch (error) {
+        throw error
+    }
+}
+
+export function unJionMissioon(mission_id: string) {
+    try {
+        return endpoint.put(`${enviromentDev.mission}/${mission_id}/un-join-mission`)
     } catch (error) {
         throw error
     }

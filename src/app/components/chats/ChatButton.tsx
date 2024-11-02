@@ -19,7 +19,7 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import TypographyM from '@mui/material/Typography';
 import { findMissionByMissionId, findMissionCurrent } from '@/services/mission.service';
-import { Missions } from '@/models/mission.model';
+import { MissionById, Missions } from '@/models/mission.model';
 import { timeOutJwt } from '@/services/timeout.service';
 import { socket } from '@/configs/socket';
 
@@ -199,7 +199,7 @@ export default function ChatButton() {
   const [value, setValue] = React.useState(0);
   const [selected, setSelected] = React.useState(true);
 
-  const [mission, setMission] = React.useState<Missions>({} as Missions);
+  const [mission, setMission] = React.useState<MissionById>({} as MissionById);
 
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
 
@@ -590,6 +590,7 @@ export default function ChatButton() {
     <>
       <PopupButton>
         <ToggleButton
+        sx={{borderRadius: '2rem'}}
           className={'positionChat'}
           value="check"
           selected={selected}

@@ -29,22 +29,46 @@ import BadgeIcon from '@mui/icons-material/Badge';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Loadding from '@/components/Loadding';
-import { registerByUser } from '@/services/user.service';
+import { registerByUser, userCreateRespository } from '@/services/user.service';
 
 const FormControlInputStyle = styled.div`
-display: flex;
-align-items: center;
-justify-content: space-between;
-width: 100%;
-margin-top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 5px;
 
-p{
+`
+
+const Pelement = styled.p`
     position: absolute;
     margin-bottom: 28px;
     margin-left: 100px;
     font-size: 14px;
-}
+`
 
+const TStyleThemRegister = styled.div`
+    background: linear-gradient(125deg, #021B79, #0575E6);
+    color: white;
+    height: 100vh;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    .btn_back{
+        position: absolute;
+        margin-bottom: 650px;
+        margin-right: 280px;
+    }
+    @media only screen and (max-width: 450px) {
+        height: 125vh;    
+        padding : 10px;
+        color: white;
+        background: linear-gradient(125deg, #021B79, #0575E6);
+
+    }
 `
 
 type ErrorMessage = {
@@ -91,8 +115,8 @@ export default function Page() {
         else{
             setLoad(true)
             try {
-                const result = await registerByUser(formUser)
-                window.location.href = `/login?username=${result.data.username}`
+                await registerByUser(formUser)
+                window.location.href = `/login`
             } catch (error: any) {
                 toast(JSON.stringify(error.message), 'error')
             } finally {
@@ -112,7 +136,7 @@ export default function Page() {
 
     return (
         <>
-            <TStyleThemAuto style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+            <TStyleThemRegister >
                 <Button variant='soft' color='neutral' onClick={() => {
                     setLoad(true)
                     window.location.href = '/login'
@@ -122,14 +146,14 @@ export default function Page() {
                         <p style={{ fontSize: '2.4rem' }}>สมัครมาชิก</p>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <img style={{ width: '1.8rem' }} src={newLogo.src} alt="" />
-                            <p style={{ marginLeft: '10px', color: 'white', fontSize: '1.5rem', fontWeight: 700 }}>Emsink</p>
+                            <p style={{ marginLeft: '10px', color: 'white', fontSize: '1.5rem', fontWeight: 700 }}>Marine-EMS</p>
                         </div>
                     </div>
 
-                    <Card elevation={4} style={{ width: 340, padding: '10px 20px', marginTop: '10px' }}>
+                    <Card elevation={4} style={{ width: 340, padding: '10px 20px', marginTop: '10px',height: 'auto' }}>
 
                         <FormControlInputStyle id='username'>
-                            <div style={{ height: '1rem' }}>
+                            <div style={{ height: '2rem', width: '20%' }}>
                                 <AccountCircleIcon />
                             </div>
                             <TextField error={err.username} onChange={(e) => {
@@ -137,12 +161,12 @@ export default function Page() {
 
                                 if (e.target.value.length < 8) setErr({ ...err, username: true })
                                 else setFormUser({ ...formUser, username: e.target.value.toLocaleLowerCase() })
-                            }} type='text' style={{ width: 300, marginLeft: '10px' }} label="ยูเซอร์เนม" variant="standard" />
-                            {err.username ? <p style={{ color: 'red' }}>*ยูเซอร์เนมน้อยกว่า 8 ตัวอักษร</p> : null}
+                            }} type='text' style={{ width: "100%", marginLeft: '10px' }} label="รหัสผู้ใช้งาน" variant="standard" />
+                            {err.username ? <Pelement style={{ color: 'red' }}>*รหัสผู้ใช้งานน้อยกว่า 8 ตัวอักษร</Pelement> : null}
                         </FormControlInputStyle>
 
                         <FormControlInputStyle id='password'>
-                            <div style={{ height: '1rem' }}>
+                            <div style={{ height: '1rem', width: '20%' }}>
                                 <LockIcon />
                             </div>
                             <TextField error={err.password} onChange={(e) => {
@@ -151,12 +175,12 @@ export default function Page() {
                                 if (e.target.value.length < 8) setErr({ ...err, password: true })
                                 else setCkPass(e.target.value)
 
-                            }} type='password' style={{ width: 300, marginLeft: '10px' }} label="พาสเวิร์ด" variant="standard" />
-                            {err?.password ? <p style={{ color: 'red' }}>*พาสเวิร์ดน้อยกว่า 7 ตัวอักษร</p> : null}
+                            }} type='password' style={{ width: '100%', marginLeft: '10px' }} label="รหัสผ่าน" variant="standard" />
+                            {err?.password ? <Pelement style={{ color: 'red' }}>*รหัสผ่านน้อยกว่า 7 ตัวอักษร</Pelement> : null}
                         </FormControlInputStyle>
 
                         <FormControlInputStyle id='ChkPass'>
-                            <div style={{ height: '1rem' }}>
+                            <div style={{ height: '1rem', width: '20%' }}>
                                 <PasswordIcon />
                             </div>
                             <TextField error={err.ck_passowrd} onChange={(e) => {
@@ -171,12 +195,12 @@ export default function Page() {
 
                                 }
                                 // setFormUser({...formUser, phone_number: e.target.value})
-                            }} type='password' style={{ width: 300, marginLeft: '10px' }} label="เช็ค พาสเวิร์ด" variant="standard" />
-                            {err.ck_passowrd ? <p style={{ color: 'red' }}>*พาสเวิร์ดไม่ตรงกัน</p> : null}
+                            }} type='password' style={{ width: '100%', marginLeft: '10px' }} label="เช็ค รหัสผ่าน" variant="standard" />
+                            {err.ck_passowrd ? <Pelement style={{ color: 'red' }}>*รหัสผ่านไม่ตรงกัน</Pelement> : null}
                         </FormControlInputStyle>
 
                         <FormControlInputStyle>
-                            <div style={{ height: '1rem' }}>
+                            <div style={{ height: '1rem', width: '20%' }}>
                                 <BadgeIcon />
                             </div>
                             <TextField error={err.first_name} onChange={(e) => {
@@ -184,12 +208,12 @@ export default function Page() {
 
                                 if (e.target.value.length < 5) setErr({ ...err, first_name: true })
                                 else setFormUser({ ...formUser, first_name: e.target.value })
-                            }} type='text' style={{ width: 300, marginLeft: '10px' }} label="ชื่อ" variant="standard" />
-                            {err.first_name ? <p style={{ color: 'red' }}>*ชื่อสั้นเกินไป</p> : null}
+                            }} type='text' style={{ width: '100%', marginLeft: '10px' }} label="ชื่อ" variant="standard" />
+                            {err.first_name ? <Pelement style={{ color: 'red' }}>*ชื่อสั้นเกินไป</Pelement> : null}
                         </FormControlInputStyle>
 
                         <FormControlInputStyle>
-                            <div style={{ height: '1rem' }}>
+                            <div style={{ height: '1rem', width: '20%' }}>
                                 <BadgeIcon />
                             </div>
                             <TextField error={err.last_name} onChange={(e) => {
@@ -197,12 +221,12 @@ export default function Page() {
 
                                 if (e.target.value.length < 5) setErr({ ...err, last_name: true })
                                 else setFormUser({ ...formUser, last_name: e.target.value })
-                            }} type='text' style={{ width: 300, marginLeft: '10px' }} label="นามสกุล" variant="standard" />
-                            {err.last_name ? <p style={{ color: 'red' }}>*นามสกุลสั้นเกินไป</p> : null}
+                            }} type='text' style={{ width: '100%', marginLeft: '10px' }} label="นามสกุล" variant="standard" />
+                            {err.last_name ? <Pelement style={{ color: 'red' }}>*นามสกุลสั้นเกินไป</Pelement> : null}
                         </FormControlInputStyle>
 
                         <FormControlInputStyle>
-                            <div style={{ height: '1rem' }}>
+                            <div style={{ height: '1rem', width: '20%' }}>
                                 <MailIcon />
                             </div>
                             <TextField error={err.email} onChange={(e) => {
@@ -210,12 +234,12 @@ export default function Page() {
 
                                 if (e.target.value.includes('@')) setFormUser({ ...formUser, email: e.target.value })
                                 else setErr({ ...err, email: true })
-                            }} type='text' style={{ width: 300, marginLeft: '10px' }} label="อีเมล" variant="standard" />
+                            }} type='text' style={{ width: '100%', marginLeft: '10px' }} label="อีเมล" variant="standard" />
                             {err.email ? <p style={{ color: 'red' }}>*อีเมลไม่ถูกต้อง</p> : null}
                         </FormControlInputStyle>
 
                         <FormControlInputStyle>
-                            <div style={{ height: '1rem' }}>
+                            <div style={{ height: '1rem', width: '20%' }}>
                                 <CreditCardIcon />
                             </div>
                             <TextField
@@ -253,7 +277,7 @@ export default function Page() {
                                     }
                                 }}
                                 type='text'
-                                style={{ width: 300, marginLeft: '10px' }}
+                                style={{ width: '100%', marginLeft: '10px' }}
                                 inputProps={{ maxLength: 16 }} // จำกัดจำนวนตัวอักษรสูงสุด (รวมขีด)
                                 label="บัตรประชาชน"
                                 variant="standard"
@@ -262,7 +286,7 @@ export default function Page() {
                         </FormControlInputStyle>
 
                         <FormControlInputStyle>
-                            <div style={{ height: '1rem' }}>
+                            <div style={{ height: '1rem', width: '20%' }}>
                                 <PhoneIcon />
                             </div>
                             <TextField
@@ -288,7 +312,7 @@ export default function Page() {
                                     }
                                 }}
                                 type='text'
-                                style={{ width: 300, marginLeft: '10px' }}
+                                style={{ width: '100%', marginLeft: '10px' }}
                                 label="เบอร์"
                                 variant="standard"
                             />
@@ -296,7 +320,7 @@ export default function Page() {
                         </FormControlInputStyle>
 
                         <FormControlInputStyle>
-                            <div style={{ height: '1rem' }}>
+                            <div style={{ height: '1rem', width: '20%' }}>
                                 <WorkIcon />
                             </div>
                             <FormControl style={{ marginLeft: '10px' }} fullWidth size='small' variant='standard'>
@@ -354,7 +378,7 @@ export default function Page() {
                         </TStyleButton>
                     </Card>
                 </div>
-            </TStyleThemAuto>
+            </TStyleThemRegister>
 
             {
                 load ?

@@ -15,12 +15,17 @@ import VehicleCard from './vehicle/VihecleCard';
 import { CurrentVehicleContext, TCurrentVehicles } from './CurrentVehicle.context';
 import CarPatientList from './vehicle/CarPatientList';
 import CarHistoryPatient from './vehicle/CarHistoryPatient';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import MainMonitor from './monitor/MainMonitor';
 import CurrentMissionTah from './CurrentMissionTag';
+import { Button } from '@mui/joy';
+import { unJionMissioon } from '@/services/mission.service';
+import { MissionById } from '@/models/mission.model';
+import { toast } from '@/services/alert.service';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -52,11 +57,9 @@ function a11yProps(index: number) {
 }
 
 export default function HomeContent() {
-    const [alignment, setAlignment] = useState<string | null>('left');
-    const [selected, setSelected] = useState<boolean>(true);
     const [load, setLoad] = useState<boolean>(false);
-    const { findMe, setFindMe } = useContext<TFindContext>(FindMeContext)
     const { missionUser, setMissionUser } = useContext<TCurrentMission>(CurrentMissionContext)
+
     const { vehicle, setVehicle } = useContext<TCurrentVehicles>(CurrentVehicleContext)
 
     const [value, setValue] = React.useState(0);
@@ -79,7 +82,18 @@ export default function HomeContent() {
 
                         {
                             missionUser ?
-                                null :
+                                <Button variant='outlined' color='neutral'
+                                    startDecorator={<ExitToAppIcon />} onClick={async () => {
+                                        setLoad(true)
+                                        try {
+                                            await unJionMissioon(missionUser.id)
+                                            window.location.reload()
+                                        } catch (error) {
+                                            toast('เกิดข้อผิดพลายไม่สามารถออกจากภารกิจได้', 'error')
+                                        } finally {
+                                            setLoad(false)
+                                        }
+                                    }}>ออกจากภารกิจ</Button> :
                                 <Fab onClick={() => {
                                     setLoad(true)
                                     window.location.href = '/mission'
@@ -118,7 +132,7 @@ export default function HomeContent() {
                                 {
                                     vehicle.car || vehicle.helicopter || vehicle.ship ?
                                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                            <div style={{marginTop: '15px'}} className={`${HomeCss.girdCarItem}`}>
+                                            <div style={{ marginTop: '15px' }} className={`${HomeCss.girdCarItem}`}>
                                                 <CarPatientList />
                                                 <div className={HomeCss.mobileSetting}>
                                                     <CarHistoryPatient />
@@ -129,7 +143,12 @@ export default function HomeContent() {
                                 }
                             </CustomTabPanel>
                             <CustomTabPanel value={value} index={1}>
-                                <MainMonitor vehicle={vehicle} />
+                                {
+                                    vehicle.car || vehicle.helicopter || vehicle.ship ?
+                                        <MainMonitor vehicle={vehicle} />:
+                                        null
+
+                                }
                             </CustomTabPanel>
                         </Box>
                     </div>

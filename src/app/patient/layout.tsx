@@ -1,10 +1,10 @@
 import { Metadata } from 'next';
 import { metadata } from '../layout';
 import TabMenu from '@/components/TabMenu';
-import ChatButton from '@/components/chats/ChatButton';
+import ChatButton from '@/app/components/chats/ChatButton';
 import Nav from '@/components/nav/Nav';
 
-metadata.title = 'Patient EMS App';
+metadata.title = 'Patient Marine-EMS';
 
 export default function DashboardLayout({
   children, // will be a page or nested layout

@@ -61,3 +61,12 @@ export function assingPatientInHelicopter(helicopter_id: string, patient_id: str
         throw error
     }
 }
+
+export function unJiontHelicopter(helicopter_id: string) {
+    try {
+        return endpoint.put<Helicopters>(enviromentDev.helicopter + `/${helicopter_id}/un_belong_helicopter`)
+    } catch (error) {
+        throw error
+    }
+}
+

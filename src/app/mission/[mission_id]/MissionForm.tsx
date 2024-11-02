@@ -10,7 +10,7 @@ import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import { OpenModalMapContext, TOpenModalMap } from '@/contexts/openModal.context';
 import CheckIcon from '@mui/icons-material/Check';
-import { Missions } from '@/models/mission.model';
+import { MissionById, Missions } from '@/models/mission.model';
 import Divider from '@mui/material/Divider';
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import { toast } from '@/services/alert.service';
@@ -33,7 +33,7 @@ type Props = {
 
 export default function MissionForm({ mission_id }: Props) {
   const { open, setOpen } = useContext<TOpenModalMap>(OpenModalMapContext)
-  const [missions, setMissions] = useState<Missions>({} as Missions)
+  const [missions, setMissions] = useState<MissionById>({} as MissionById)
   const [isNull, setIsNull] = useState<boolean>(false)
   const [load, setLoad] = useState<boolean>(false)
   const [src, setSrc] = useState<string>('')
@@ -57,6 +57,7 @@ export default function MissionForm({ mission_id }: Props) {
         m.utm = missions.utm
         m.mgrs = missions.mgrs
         m.address = missions.address
+        m.status = "Progress"
         await createMission(m)
         toast('Created Mission', 'success')
         history.back()
@@ -83,10 +84,28 @@ export default function MissionForm({ mission_id }: Props) {
 
   async function onUpdateMission() {
     setLoad(true)
+    const m = {} as Missions
+    m.title = missions.title
+    m.description = missions.description
+    m.image = missions.image
+    m.lat = missions.lat
+    m.long = missions.long
+    m.utm = missions.utm
+    m.mgrs = missions.mgrs
+    m.address = missions.address
     try {
-      const result = await updateMissionByMissionId(mission_id, missions)
+      const result = await updateMissionByMissionId(mission_id, m)
       toast('แก้ไขสำเร็จ', 'success')
-      setMissions(result.data)
+      const r = {} as MissionById
+      r.title = result.data.title
+      r.description = result.data.description
+      r.image = result.data.image
+      r.lat = result.data.lat
+      r.long = result.data.long
+      r.utm = result.data.utm
+      r.mgrs = result.data.mgrs
+      r.address = result.data.address
+      setMissions(r)
       history.back()
     } catch (error: any) {
       toast(JSON.stringify(error.message), 'error')
@@ -190,10 +209,10 @@ export default function MissionForm({ mission_id }: Props) {
             }
             <input onChange={handlerUpload} id='camera' type="file" capture accept='image/*' hidden />
           </Box>
-           
+
           <Divider />
           <Box className='mt-4' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
-            <Button  onClick={(e) => history.back()} style={{ width: '90%', fontSize: '1.5rem' }} variant='contained' color='error'>ยกเลิก</Button>
+            <Button onClick={(e) => history.back()} style={{ width: '90%', fontSize: '1.5rem' }} variant='contained' color='error'>ยกเลิก</Button>
             {
               mission_id.includes(NIL) ?
                 <Button onClick={onCreateMission} style={{ width: '90%', fontSize: '1.5rem' }} variant='contained' color='primary'>สร้าง</Button> :

@@ -1,9 +1,9 @@
 import { createContext, Dispatch, SetStateAction } from 'react'
-import {Missions} from '../models/mission.model'
+import {MissionById, Missions} from '../models/mission.model'
 
 export type TMissionDetailC = {
-    mission: Missions
-    setMission: Dispatch<SetStateAction<Missions>>
+    mission: MissionById
+    setMission: Dispatch<SetStateAction<MissionById>>
 }
 
 export const MissionDetailContext = createContext<TMissionDetailC>({} as TMissionDetailC)

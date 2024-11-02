@@ -1,9 +1,9 @@
-import { Missions } from "@/models/mission.model"
+import { MissionById, Missions } from "@/models/mission.model"
 import { createContext, Dispatch, SetStateAction } from "react"
 
 export type TCurrentMission = {
-    missionUser: Missions
-    setMissionUser: Dispatch<SetStateAction<Missions>>
+    missionUser: MissionById
+    setMissionUser: Dispatch<SetStateAction<MissionById>>
 }
 
 export const CurrentMissionContext = createContext<TCurrentMission>({} as TCurrentMission)

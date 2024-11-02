@@ -1,30 +1,27 @@
 'use client'
-import React, { Component, useCallback, useContext, useEffect, useRef, useState } from 'react';
-
-import { Missions } from '@/models/mission.model';
-import { findMission, findMissionCurrent } from '@/services/mission.service';
+import Loadding from '@/components/Loadding';
+import ModalUser from '@/components/ModalUser';
+import { CurrentMissionContext } from '@/contexts/currentMission.context';
+import { FindMeContext, TFindContext } from '@/contexts/findme.context';
+import { LocateContextUser } from '@/contexts/locate.context';
 import { MissionContexts } from '@/contexts/missions.context';
 import { OpenModalUserContext } from '@/contexts/modalUser.context';
-import ModalUser from '@/components/ModalUser';
-import { findCurrentVehicleByUser, findUsers, saveLocation } from '@/services/user.service';
-const utmObj = require('utm-latlng')
-import * as mgrs from 'mgrs'
-import { Locations } from '@/models/location.model';
-import HomeContent from './HomeContent';
 import { UsersContexts } from '@/contexts/users.context';
+import { Locations } from '@/models/location.model';
+import { MissionById, Missions } from '@/models/mission.model';
 import { Users } from '@/models/users.model';
-import { FindUserMe } from '@/services/authen.service';
-import Loadding from '@/components/Loadding';
-import { CurrentMissionContext } from '@/contexts/currentMission.context';
-import { LocateContextUser } from '@/contexts/locate.context';
-import { FindMeContext, TFindContext } from '@/contexts/findme.context';
+import { Vehicles } from '@/models/vehicle.model';
+import { findMissionCurrent } from '@/services/mission.service';
 import { timeOutJwt } from '@/services/timeout.service';
-import { Cars, Vehicles } from '@/models/vehicle.model';
-import { CurrentCarsContext, CurrentVehicleContext } from './CurrentVehicle.context';
-import { toast } from '@/services/alert.service';
-import { findCarByCarId } from '@/services/car.service';
+import { findCurrentVehicleByUser, saveLocation } from '@/services/user.service';
+import * as mgrs from 'mgrs';
+import React, { Component, useCallback, useContext, useEffect, useRef, useState } from 'react';
+
+import { CurrentVehicleContext } from './CurrentVehicle.context';
+import HomeContent from './HomeContent';
 import { IconVehicleContext, TIconVehicleC } from './IconVehicleContext';
 
+const utmObj = require('utm-latlng')
 const drawerWidth = 240;
 
 export default function Page() {
@@ -32,11 +29,10 @@ export default function Page() {
   const [openUser, setOpenUser] = useState(false);
   const [missions, setMissions] = useState<Missions[]>([]);
   const [missionId, setMissionId] = useState<Missions>({} as Missions);
-  const [missionUser, setMissionUser] = useState<Missions>({} as Missions);
+  const [missionUser, setMissionUser] = useState<MissionById>({} as MissionById);
   const [userLocate, setUserLocate] = useState<Locations>({} as Locations);
   const [users, setUsers] = useState<Users[]>([]);
   const [load, setLoad] = useState<boolean>(false)
-  const { findMe, setFindMe } = useContext<TFindContext>(FindMeContext)
   const [vehicle, setVehicle] = useState<Vehicles>({} as Vehicles)
   const {setIcon} = useContext<TIconVehicleC>(IconVehicleContext)
 
@@ -89,7 +85,7 @@ export default function Page() {
       const result = await findMissionCurrent()
       if (!result.data) {
         localStorage.removeItem('mission_id')
-        setMissionUser({} as Missions)
+        setMissionUser({} as MissionById)
       }
       setMissionUser(result.data)
       localStorage.setItem('mission_id', result.data.id)

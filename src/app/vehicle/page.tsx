@@ -1,11 +1,12 @@
 'use client'
-import React, { useCallback, useEffect, useState } from 'react'
-import TabVehicle from './TabVehicle'
-import { Vehicles } from '@/models/vehicle.model'
-import { findCurrentVehicleByUser } from '@/services/user.service'
-import { timeOutJwt } from '@/services/timeout.service'
-import { VehiclesHomeContext } from './vehicle_home.context'
-import Loadding from '@/components/Loadding'
+import Loadding from '@/components/Loadding';
+import { Vehicles } from '@/models/vehicle.model';
+import { timeOutJwt } from '@/services/timeout.service';
+import { findCurrentVehicleByUser } from '@/services/user.service';
+import React, { useCallback, useEffect, useState } from 'react';
+
+import TabVehicle from './TabVehicle';
+import { VehiclesHomeContext } from './vehicle_home.context';
 
 export default function page() {
   const [vehicle, setVehicle] = useState<Vehicles>({} as Vehicles)

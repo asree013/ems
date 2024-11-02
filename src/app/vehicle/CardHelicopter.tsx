@@ -80,7 +80,6 @@ export default function CardHelicopter({ data, ho_id }: Props) {
             try {
                 await updateDriverInHelicopter(helicopter.id, user_id)
                 window.location.reload()
-                setValue(0)
             } catch (error) {
                 timeOutJwt(error)
             } finally {
@@ -105,7 +104,7 @@ export default function CardHelicopter({ data, ho_id }: Props) {
         setLoad(true)
         try {
             await updateUserInHelicpter(helicopter.id)
-            setValue(0)
+            window.location.reload()
         } catch (error) {
             timeOutJwt(error)
         } finally {
@@ -149,7 +148,7 @@ export default function CardHelicopter({ data, ho_id }: Props) {
             <Card sx={{ minWidth: 245, marginTop: '15px', width: '100%' }} elevation={8}>
                 <CardHeader
                     title={helicopter.calling}
-                    subheader={helicopter.driver_id ? helicopter.driver_id : 'ยังไม่มีผลขับรถ'}
+                    subheader={helicopter.driver_id ? helicopter.driver_id : 'ยังไม่มีผลขับ ฮ.'}
                 />
                 <ImageList sx={{ minWidth: 205, minHeight: 200, width: '100%' }}>
                     <ImageListItem key="Subheader" cols={2}>
@@ -163,16 +162,8 @@ export default function CardHelicopter({ data, ho_id }: Props) {
                             loading="lazy"
                         />
                         <ImageListItemBar
-                            title={'หน้ารถ'}
-                            subtitle={'item.author'}
-                            actionIcon={
-                                <IconButton
-                                    sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                                    aria-label={`info about `}
-                                >
-                                    <InfoIcon />
-                                </IconButton>
-                            }
+                            title={'หน้า ฮ.'}
+                            
                         />
                     </ImageListItem>
 
@@ -184,16 +175,8 @@ export default function CardHelicopter({ data, ho_id }: Props) {
                             loading="lazy"
                         />
                         <ImageListItemBar
-                            title={'หน้ารถ'}
-                            subtitle={'item.author'}
-                            actionIcon={
-                                <IconButton
-                                    sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                                    aria-label={`info about `}
-                                >
-                                    <InfoIcon />
-                                </IconButton>
-                            }
+                            title={'หลัง ฮ.'}
+                            
                         />
                     </ImageListItem>
 
@@ -205,16 +188,8 @@ export default function CardHelicopter({ data, ho_id }: Props) {
                             loading="lazy"
                         />
                         <ImageListItemBar
-                            title={'หน้ารถ'}
-                            subtitle={'item.author'}
-                            actionIcon={
-                                <IconButton
-                                    sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                                    aria-label={`info about `}
-                                >
-                                    <InfoIcon />
-                                </IconButton>
-                            }
+                            title={'ซ้าย ฮ.'}
+                            
                         />
                     </ImageListItem>
 
@@ -226,16 +201,8 @@ export default function CardHelicopter({ data, ho_id }: Props) {
                             loading="lazy"
                         />
                         <ImageListItemBar
-                            title={'หน้ารถ'}
-                            subtitle={'item.author'}
-                            actionIcon={
-                                <IconButton
-                                    sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                                    aria-label={`info about `}
-                                >
-                                    <InfoIcon />
-                                </IconButton>
-                            }
+                            title={'ขวา ฮ.'}
+                            
                         />
                     </ImageListItem>
                 </ImageList>

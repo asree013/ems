@@ -1,27 +1,22 @@
 'use client'
-import * as React from 'react';
+
+import Loadding from '@/components/Loadding';
+import { enviromentDev } from '@/configs/enviroment.dev';
+import { PatientBelongCar } from '@/models/patient';
+import { Vehicles } from '@/models/vehicle.model';
+import { toast } from '@/services/alert.service';
+import { unAssingPatinetToCarByCarIdAndPatientId } from '@/services/car.service';
+import { convertGender } from '@/services/user.service';
+import QueuePlayNextIcon from '@mui/icons-material/QueuePlayNext';
+import { Button, IconButton, Tooltip } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
-import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
-import { PatientBelongCar, Patients } from '@/models/patient';
-import { findPatientById } from '@/services/paitent.service';
-import { timeOutJwt } from '@/services/timeout.service';
-import { toast } from '@/services/alert.service';
-import { enviromentDev } from '@/configs/enviroment.dev';
-import { convertGender, findCurrentVehicleByUser } from '@/services/user.service';
-import { Button, IconButton, Tooltip } from '@mui/material';
-import { unAssingPatinetToCarByCarIdAndPatientId } from '@/services/car.service';
-import Loadding from '@/components/Loadding';
-
-import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
-import QueuePlayNextIcon from '@mui/icons-material/QueuePlayNext';
-import { Vehicles } from '@/models/vehicle.model';
+import ListItemText from '@mui/material/ListItemText';
+import * as React from 'react';
 import Swal from 'sweetalert2';
-import PateintDetail from '@/components/car/PateintDetail';
 
 
 export default function CarPatientitem({ patient, vehicle }: { patient: PatientBelongCar, vehicle: Vehicles }) {

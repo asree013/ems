@@ -26,7 +26,7 @@ export default function MissionUser() {
                         <Typography>ไม่มีผู้บังคะบบัญชา</Typography> :
                         mission.Users.map((r, i) => {
                             if (!r.Responsibilities) {
-                                if (r.role.toLocaleLowerCase().includes('admin' || 'rootadmin')) {
+                                if (r.role.toLocaleLowerCase().includes('admin') || r.role.toLocaleLowerCase().includes('rootadmin')) {
                                     return (
                                         <Card
                                             key={i}

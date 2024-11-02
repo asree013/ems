@@ -50,7 +50,7 @@ export default function Page() {
       localStorage.setItem('user_id', JSON.stringify(findme.data.id))
       socket.emit('is-online', { user_id: findme.data.id })
       toast('เข้าสู่ระบบ', 'success')
-      window.location.href = '/select_mode'
+      window.location.href = '/home'
     } catch (error: any) {
       console.log(error);
       toast(JSON.stringify(error.message), 'error')
@@ -149,19 +149,11 @@ export default function Page() {
         <div className="homeLogin">
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <img style={{ width: '4.2rem' }} src={newLogo.src} alt="" />
-            <p style={{ marginLeft: '10px', color: 'white', fontSize: '4.5rem', fontWeight: 700 }}>Emsink</p>
+            <p style={{ marginLeft: '10px', color: 'white', fontSize: '2.9rem', fontWeight: 700 }}>Marine-EMS</p>
           </div>
           <form onSubmit={(e) => onSubmitLogin(e)}>
             <Card sx={{ width: 345 }}>
-              {/* <CardMedia
-                sx={{ height: 190 }}
-                image={newLogo.src}
-                title="green iguana"
-              /> */}
               <CardContent>
-                {/* <Typography gutterBottom variant="h5" component="div">
-                  Login EMSink
-                </Typography> */}
                 <FormControl style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row' }}>
                   <AccountCircleIcon />
                   <TextField

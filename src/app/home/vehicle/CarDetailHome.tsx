@@ -1,33 +1,24 @@
 'use client'
-import * as React from 'react';
-import AspectRatio from '@mui/joy/AspectRatio';
-import Avatar from '@mui/joy/Avatar';
+
+import { Vehicles } from '@/models/vehicle.model';
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import MoreHoriz from '@mui/icons-material/MoreHoriz';
 import Box from '@mui/joy/Box';
 import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import CardOverflow from '@mui/joy/CardOverflow';
-import Link from '@mui/joy/Link';
 import IconButton from '@mui/joy/IconButton';
-import Input from '@mui/joy/Input';
 import Typography from '@mui/joy/Typography';
-import MoreHoriz from '@mui/icons-material/MoreHoriz';
-import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
-import ModeCommentOutlined from '@mui/icons-material/ModeCommentOutlined';
-import SendOutlined from '@mui/icons-material/SendOutlined';
-import Face from '@mui/icons-material/Face';
-import BookmarkBorderRoundedIcon from '@mui/icons-material/BookmarkBorderRounded';
-import { useTheme } from '@mui/material/styles';
+import Button from '@mui/material/Button';
 import MobileStepper from '@mui/material/MobileStepper';
 import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import { useTheme } from '@mui/material/styles';
+import * as React from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
-import { Cars, Vehicles } from '@/models/vehicle.model';
-import { CarDetailContext, TCarDetailContent } from '@/components/car/CarDetail.context';
 
-import HomeCss from '../HomeCss.module.css'
+import HomeCss from '../HomeCss.module.css';
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
@@ -69,91 +60,6 @@ export default function CarDetailHome({ vehicles }: CarProps) {
   );
 }
 
-type CarInVehicles = {
-  Car: {
-    id: string
-    status: string
-    type: string
-    number: string
-    description: any
-    image_front: string
-    image_back: string
-    image_left: string
-    image_rigth: string
-    radio: string
-    calling: string
-    driver_id: string
-    mission_id: any
-    create_date: string
-    update_date: string
-    hospital_id: string
-    PatientBelongCar: Array<{
-      id: string
-      car_id: string
-      patient_id: string
-      transpose_date_time: any
-      transpose_to: any
-      transpose_id: any
-      create_date: string
-      update_date: string
-      Patient: {
-        id: string
-        first_name: string
-        last_name: string
-        qr_number: any
-        gender: string
-        age: any
-        birthday: any
-        id_card: any
-        tel: any
-        address: any
-        group_blood: any
-        image: string
-        image_id_card: any
-        user_create_id: any
-        user_update_id: any
-        date_time_died: any
-        date_time_go_home: any
-        create_date: string
-        update_date: string
-        mission_id: any
-        risk_level_id: any
-        History: Array<{
-          id: string
-          symptom_details: string
-          status: string
-          create_date: string
-          update_date: string
-          patient_id: string
-          chief_complaint: string
-          present_illness: string
-          user_create_id: string
-          user_update_id: string
-          physical_status: string
-          triage_lavel: string
-        }>
-      }
-      Car: {
-        id: string
-        status: string
-        type: string
-        number: string
-        description: any
-        image_front: string
-        image_back: string
-        image_left: string
-        image_rigth: string
-        radio: string
-        calling: string
-        driver_id: string
-        mission_id: any
-        create_date: string
-        update_date: string
-        hospital_id: string
-      }
-    }>
-  }
-}
 
 type Props = {
   vehicle: Vehicles
@@ -228,7 +134,7 @@ function SwipeableTextMobileStepper({ vehicle }: Props) {
         sx={{
           display: 'flex',
           alignItems: 'center',
-          height: 30,
+          height: 10,
           pl: 2,
           bgcolor: 'background.default',
 
@@ -248,7 +154,6 @@ function SwipeableTextMobileStepper({ vehicle }: Props) {
               <Box
                 component="img"
                 sx={{
-                  height: 'auto',
                   display: 'block',
                   overflow: 'hidden',
                   width: '100%',

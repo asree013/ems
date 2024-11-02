@@ -5,7 +5,7 @@ import TabMenu from '@/components/TabMenu';
 import { Suspense } from 'react';
 metadata.title = 'Home EMS App';
 import Loadding from '@/components/Loadding'
-import ChatButton from '@/components/chats/ChatButton';
+import ChatButton from '@/app/components/chats/ChatButton';
 import Nav from '@/components/nav/Nav';
 import { IconVehicleProvider } from './IconVehicleContext';
 
@@ -14,7 +14,6 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const constData = "";
 
   return (
     <section >

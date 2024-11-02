@@ -211,7 +211,8 @@
 
 .imageCarSize {
     max-width: 265px;
-    max-height: 265px;
+    max-height: 150px;
+    object-fit: contain;
 }
 .girdCarItem{
     display: grid;
@@ -251,7 +252,8 @@
 
     .imageCarSize {
         max-width: 120px;
-        max-height: 120px;
+        max-height: 60px;
+        object-fit: contain;
     }
 
 }

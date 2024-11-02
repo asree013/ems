@@ -116,7 +116,7 @@ export default function Page({ params }: Props) {
               ? history.map((r, i) => (
                 r.Patient ? (
                   <HistoryItem
-                    name={{ first_name: r.Patient.first_name, last_name: r.Patient.last_name, patient_id: r.Patient.id }}
+                    name={{ first_name: r.Patient.first_name, last_name: r.Patient.last_name, patient_id: r.Patient.id, gender: r.Patient.gender }}
                     value={r}
                     key={i}
                   />

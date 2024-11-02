@@ -1,6 +1,6 @@
 import { PatientBelongCar } from "./patient"
 
-export interface Cars {
+export interface ShipsCars {
   id: string
   status: string
   type: string
@@ -44,6 +44,25 @@ export interface Cars {
     CarLocation: number
     HistoryPatientBelongCar: number
   }
+}
+
+export interface Cars{
+  id: string
+  status: string
+  type: string
+  number: string
+  description: any
+  image_front: string
+  image_back: string
+  image_left: string
+  image_rigth: string
+  radio: string
+  calling: string
+  driver_id: any
+  mission_id: string
+  create_date: string
+  update_date: string
+  hospital_id: string
 }
 
 export interface CarByCarId {
@@ -211,6 +230,19 @@ export interface HelicopterById {
   }
 }
 
+export interface Ships {
+  id: string;
+  status: string
+  name: string
+  phone_number: string
+  description: string
+  image: string
+  radio: string
+  calling: string
+  hospital_id: string
+  type_id: string
+  missionId: string
+}
 
 export interface Vehicles {
   car: {
@@ -220,25 +252,7 @@ export interface Vehicles {
     time_un_belong: any
     create_date: string
     update_date: string
-    Car: {
-      id: string
-      status: string
-      type: string
-      number: string
-      description: any
-      image_front: string
-      image_back: string
-      image_left: string
-      image_rigth: string
-      radio: string
-      calling: string
-      driver_id: string
-      mission_id: string
-      create_date: string
-      update_date: string
-      hospital_id: string
-      PatientBelongCar: PatientBelongCar[]
-    },
+    Car: CarInVehicle
     is_driver: boolean
   }
   ship: any
@@ -268,4 +282,26 @@ export interface Vehicles {
     }
     is_driver: boolean
   }
+
+  
+}
+
+export type CarInVehicle = {
+  id: string
+  status: string
+  type: string
+  number: string
+  description: any
+  image_front: string
+  image_back: string
+  image_left: string
+  image_rigth: string
+  radio: string
+  calling: string
+  driver_id: string
+  mission_id: string
+  create_date: string
+  update_date: string
+  hospital_id: string
+  PatientBelongCar: PatientBelongCar[]
 }

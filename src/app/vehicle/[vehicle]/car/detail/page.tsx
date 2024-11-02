@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import CarDetail from '../../../../../components/car/CarDetail';
 import { findCarByCarId } from '@/services/car.service';
 import { timeOutJwt } from '@/services/timeout.service';
-import { CarByCarId, Cars } from '@/models/vehicle.model';
+import { CarByCarId } from '@/models/vehicle.model';
 import { CarDetailContext } from '../../../../../components/car/CarDetail.context';
 import PateintDetail from '../../../../../components/car/PateintDetail';
 import { useSearchParams } from 'next/navigation';

@@ -119,7 +119,7 @@ export default function Page({ params }: Props) {
               try {
                 const image = await uploadImage(formData)
                 setExan({ ...exan, image: image.data.result })
-                console.log(exan);
+                console.log('upload image');
 
               } catch (error) {
                 console.log(error);

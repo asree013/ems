@@ -1,9 +1,20 @@
 'use client';
 
-import { useCallback, useEffect, useId, useRef, useState } from 'react';
-import { lightningChart, Themes, emptyLine, AutoCursorModes, AxisTickStrategies, ColorHEX, SolidFill, PointShape, ColorRGBA } from '@lightningchart/lcjs';
-import { ecg, ecgNull } from '@/data/data.medical_result';
 import { socket } from '@/configs/socket';
+import { ecg } from '@/data/data.medical_result';
+import {
+  AutoCursorModes,
+  AxisTickStrategies,
+  ColorHEX,
+  ColorRGBA,
+  emptyLine,
+  lightningChart,
+  PointShape,
+  SolidFill,
+  Themes,
+} from '@lightningchart/lcjs';
+import { useEffect, useState } from 'react';
+
 
 interface ECGDataPoint {
   x: number;
@@ -23,7 +34,6 @@ type Props = {
 
 export default function ECG({ order_id }: Props) {
   const id = order_id + '_ecg'
-  const chartRefEcg = useRef<HTMLDivElement | null>(null);
   const [maxLength, setMaxLenght] = useState<{
     add: number,
     delete: number
@@ -35,23 +45,26 @@ export default function ECG({ order_id }: Props) {
   let newDataEcg = []
 
   async function fetchData() {
-    // const response = await fetch('http://localhost:3333/v1/ecg?page=0&limit=10');
-    // const testData = await response.json();
     let ecgData: any[]
     let i = 1
-    // let lengthData = testData.length | 250
     let lengthData = 250
-    ecgData = ecg
-
-    // setInterval(() => {
-    //   ecgData = ecgNull
-    // }, 3000)
+  
+    let arrayBuffer: {id: number, data: number[]}[] = {} as {id: number, data: number[]}[]
+    let nd = 0
+    let curNd = 0
 
     socket.emit('data-tranfer', { order_id, message: order_id });
     socket.off('data-tranfer-ecg')
     socket.on('data-tranfer-ecg', (message: any) => {
+      nd++
       console.log('pleth ', JSON.parse(message).ecg);
       newDataEcg = JSON.parse(message).ecg
+      const data = {
+        id: nd,
+        data: newDataEcg
+      }
+      arrayBuffer.push(data)
+      ecgData = arrayBuffer[curNd].data
     })
 
     const container = document.getElementById(id) as HTMLDivElement;
@@ -261,13 +274,19 @@ export default function ECG({ order_id }: Props) {
         pushedDataCount += newDataPointsCount;
       }
 
-      // if (index < ecgData.length) {
-      //   index++
-      //   console.log('++');
-      //   requestAnimationFrame(streamData);
+      if (index < ecgData.length)  {
+        index++
+        console.log('++');
+        requestAnimationFrame(streamData);
 
-      // }
-      requestAnimationFrame(streamData);
+      }
+      else {
+        ecgData = []
+        arrayBuffer = arrayBuffer.filter(r => r.id !== curNd )
+        curNd++
+        ecgData.push(arrayBuffer[curNd].data)
+        requestAnimationFrame(streamData);
+      }
 
     };
     streamData();

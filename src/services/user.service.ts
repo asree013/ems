@@ -6,7 +6,7 @@ import { Vehicles } from "@/models/vehicle.model"
 
 export function saveLocation(locate: Locations) {
     try {
-        return endpoint.post<Locations>(enviromentDev.user+ '/save-location', locate)
+        return endpoint.post<Locations>(enviromentDev.user + '/save-location', locate)
     } catch (error) {
         throw error
     }
@@ -14,7 +14,15 @@ export function saveLocation(locate: Locations) {
 
 export function findUsers(page: number, limit: number) {
     try {
-        return endpoint.get<Users[]>(enviromentDev.user+ `?page=${page}&limit=${limit}`)
+        return endpoint.get<Users[]>(enviromentDev.user + `?page=${page}&limit=${limit}`)
+    } catch (error) {
+        throw error
+    }
+}
+
+export function findUserById(user_id: string) {
+    try {
+        return endpoint.get<Users>(enviromentDev.user + `/${user_id}`)
     } catch (error) {
         throw error
     }
@@ -22,7 +30,7 @@ export function findUsers(page: number, limit: number) {
 
 export function getLocationUser() {
     try {
-        return endpoint.get<Locations[]>(enviromentDev.user+ '/get-location?page=0&limit=1',)
+        return endpoint.get<Locations[]>(enviromentDev.user + '/get-location?page=0&limit=1',)
     } catch (error) {
         throw error
     }
@@ -45,10 +53,10 @@ export function editUserByUserCookie(data: Users) {
 }
 
 export function convertGender(gender: string) {
-    if(gender?.toLocaleLowerCase()?.includes('male')) {
+    if (gender?.toLocaleLowerCase()?.includes('male')) {
         return 'เพศชาย'
     }
-    else{
+    else {
         return 'เพศหญิง'
     }
 }
@@ -56,6 +64,18 @@ export function convertGender(gender: string) {
 export function registerByUser(data: Users) {
     try {
         return endpoint.post<UserRegister>(`${enviromentDev.auth}/sign-up/user-register`, data)
+    } catch (error) {
+        throw error
+    }
+}
+
+export function userCreateRespository(user_id: string) {
+    const data = {
+        user_id: user_id,
+        role: "Leader"
+    }
+    try {
+        return endpoint.post(`${enviromentDev.respository}/assing`, data)
     } catch (error) {
         throw error
     }

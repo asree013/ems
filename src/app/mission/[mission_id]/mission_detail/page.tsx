@@ -5,7 +5,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import MissionDetail from './MissionDetail';
 import { MissionDetailContext } from '../../../../contexts/mission.detail.context';
-import { Missions } from '../../../../models/mission.model';
+import { MissionById, Missions } from '../../../../models/mission.model';
 import { findMissionByMissionId, leaveMission } from "../../../../services/mission.service"
 import { timeOutJwt } from "../../../../services/timeout.service"
 import MissionUser from './MissionUser';
@@ -13,6 +13,7 @@ import MissionStateTag from './MissionStateTag';
 import { Button } from '@mui/material';
 import { toast } from '@/services/alert.service';
 import Loadding from '@/components/Loadding';
+import MissionPatient from './MissionPatient';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -51,7 +52,7 @@ type Props = {
 
 export default function BasicTabs({ params }: Props) {
     const [value, setValue] = React.useState(0);
-    const [mission, setMission] = React.useState<Missions>({} as Missions);
+    const [mission, setMission] = React.useState<MissionById>({} as MissionById);
     const [load, setLoad] = React.useState(false)
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -66,18 +67,19 @@ export default function BasicTabs({ params }: Props) {
             window.location.href = '/home'
         } catch (error: any) {
             toast(error.message, 'error')
-        } finally {
-            setLoad(true)
-        }
+        } 
     }
 
     const feedMissionByMissionId = React.useCallback(async () => {
+        setLoad(true)
         try {
             const result = await findMissionByMissionId(params.mission_id);
             setMission(result.data);
         } catch (error) {
             console.log(error);
             timeOutJwt(error);
+        } finally{
+            setLoad(false)
         }
     }, [params.mission_id]);
 
@@ -86,7 +88,7 @@ export default function BasicTabs({ params }: Props) {
     }, [feedMissionByMissionId]);
 
     if (!mission.id) {
-        return <div>Loading...</div>; // หรือแสดง Loading component
+        return <div>Loading...</div>;
     }
 
     return (
@@ -105,12 +107,14 @@ export default function BasicTabs({ params }: Props) {
                     <CustomTabPanel value={value} index={0}>
                         <MissionDetail />
                         <Button onClick={onLeaveMission} style={{ width: '100%', margin: '10px 0' }} type='button' variant='contained' color='error'>ออกจากภารกิจ</Button>
+                        <Button style={{width: '100%'}} variant='contained' color='inherit'>จบภารกิจ ยกเลิก</Button>
+
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={1}>
                         <MissionUser />
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={2}>
-                        Item Three
+                        <MissionPatient mission={mission} />
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={3}>
                         <MissionStateTag data={mission} />

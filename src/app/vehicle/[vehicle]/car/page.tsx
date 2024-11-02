@@ -24,7 +24,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import BadgeIcon from '@mui/icons-material/Badge';
 import AddIcon from '@/assets/icon/4211763.png'
 
-import { Cars } from '@/models/vehicle.model';
+import { CarByCarId } from '@/models/vehicle.model';
 
 import carCss from './car.module.css'
 import { toast } from '@/services/alert.service';
@@ -43,7 +43,7 @@ type Props = {
 
 export default function Page({ params }: Props) {
 
-  const [car, setCar] = React.useState<Cars>({} as Cars)
+  const [car, setCar] = React.useState<CarByCarId>({} as CarByCarId)
   const [load, setLoad] = React.useState<boolean>(false)
 
   async function handleUploadImage(e: React.ChangeEvent<HTMLInputElement>, key: string) {

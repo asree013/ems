@@ -81,6 +81,7 @@ export default function CarCard({ data, car_id }: Props) {
         else {
             try {
                 await updateDriverInCar(car.id, user_id)
+                window.location.reload()
                 setValue(0)
             } catch (error) {
                 timeOutJwt(error)
@@ -125,11 +126,15 @@ export default function CarCard({ data, car_id }: Props) {
     }
 
     async function handlerAddUserInCar() {
+        setLoad(true)
         try {
             await updateUserInCar(car.id)
             setValue(0)
+            window.location.reload()
         } catch (error) {
             timeOutJwt(error)
+        } finally {
+            setLoad(false)
         }
     }
 
@@ -165,15 +170,6 @@ export default function CarCard({ data, car_id }: Props) {
                         />
                         <ImageListItemBar
                             title={'หน้ารถ'}
-                            subtitle={'item.author'}
-                            actionIcon={
-                                <IconButton
-                                    sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                                    aria-label={`info about `}
-                                >
-                                    <InfoIcon />
-                                </IconButton>
-                            }
                         />
                     </ImageListItem>
 
@@ -185,16 +181,7 @@ export default function CarCard({ data, car_id }: Props) {
                             loading="lazy"
                         />
                         <ImageListItemBar
-                            title={'หน้ารถ'}
-                            subtitle={'item.author'}
-                            actionIcon={
-                                <IconButton
-                                    sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                                    aria-label={`info about `}
-                                >
-                                    <InfoIcon />
-                                </IconButton>
-                            }
+                            title={'หลังรถ'}
                         />
                     </ImageListItem>
 
@@ -206,16 +193,7 @@ export default function CarCard({ data, car_id }: Props) {
                             loading="lazy"
                         />
                         <ImageListItemBar
-                            title={'หน้ารถ'}
-                            subtitle={'item.author'}
-                            actionIcon={
-                                <IconButton
-                                    sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                                    aria-label={`info about `}
-                                >
-                                    <InfoIcon />
-                                </IconButton>
-                            }
+                            title={'ซ้ายรถ'}
                         />
                     </ImageListItem>
 
@@ -227,16 +205,7 @@ export default function CarCard({ data, car_id }: Props) {
                             loading="lazy"
                         />
                         <ImageListItemBar
-                            title={'หน้ารถ'}
-                            subtitle={'item.author'}
-                            actionIcon={
-                                <IconButton
-                                    sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                                    aria-label={`info about `}
-                                >
-                                    <InfoIcon />
-                                </IconButton>
-                            }
+                            title={'ขวารถ'}
                         />
                     </ImageListItem>
                 </ImageList>

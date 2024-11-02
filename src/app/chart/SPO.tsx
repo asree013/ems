@@ -1,9 +1,19 @@
 'use client';
-
-import { useCallback, useEffect, useId, useRef, useState } from 'react';
-import { lightningChart, Themes, emptyLine, AutoCursorModes, AxisTickStrategies, ColorHEX, SolidFill, PointShape, ColorRGBA } from '@lightningchart/lcjs';
-import { ecg, ecgNull, spo2 } from '@/data/data.medical_result';
 import { socket } from '@/configs/socket';
+import { ecgNull } from '@/data/data.medical_result';
+import {
+  AutoCursorModes,
+  AxisTickStrategies,
+  ColorHEX,
+  ColorRGBA,
+  emptyLine,
+  lightningChart,
+  PointShape,
+  SolidFill,
+  Themes,
+} from '@lightningchart/lcjs';
+import { useEffect, useRef } from 'react';
+
 
 interface ECGDataPoint {
   x: number;
@@ -58,10 +68,10 @@ export default function SPO({ order_id }: Props) {
     const lc = lightningChart({
       license: "0002-n96ucKX1C700BOZwz7IAGHHjEuT4KwDfrkmx7QCyIBztfxcK2B2YdzqRkuyh0bv4JWu/viN/aCm4HYmBbVnGHphV-MEUCIQCoAbM5nVG3lu6EAeoZcsrvewNpdn+DEGKL6UpNeDXEbAIgCV8gVBAZ3XKPAkbuQDarCfg/BnBK4sN+L00cqoYMu5E=",
       licenseInformation: {
-          appTitle: "LightningChart JS Trial",
-          company: "LightningChart Ltd."
+        appTitle: "LightningChart JS Trial",
+        company: "LightningChart Ltd."
       },
-  })
+    })
 
     const chart = lc.ChartXY({
       theme: Themes.darkGold,

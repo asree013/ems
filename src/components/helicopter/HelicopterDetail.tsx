@@ -37,7 +37,7 @@ export default function HelicopterDetail() {
     <Card
       variant="outlined"
       sx={{
-        minWidth: 300,
+        width: 300,
         '--Card-radius': (theme) => theme.vars.radius.xs,
       }}
     >
@@ -52,7 +52,7 @@ export default function HelicopterDetail() {
       </CardOverflow>
 
       <CardContent>
-        <Link
+        {/* <Link
           component="button"
           underline="none"
           fontSize="sm"
@@ -60,7 +60,7 @@ export default function HelicopterDetail() {
           textColor="text.primary"
         >
           8.1M Likes
-        </Link>
+        </Link> */}
         <Typography fontSize="sm">
           <Link
             component="button"
@@ -68,11 +68,11 @@ export default function HelicopterDetail() {
             fontWeight="lg"
             textColor="text.primary"
           >
-            MUI
+            รายละเอียด ฮ.
           </Link>{' '}
-          The React component library you always wanted
+          {halicoptorById.description?? "ไม่มีขรายละเอียด"}
         </Typography>
-        <Link
+        {/* <Link
           component="button"
           underline="none"
           fontSize="sm"
@@ -80,7 +80,7 @@ export default function HelicopterDetail() {
           sx={{ color: 'text.tertiary' }}
         >
           more
-        </Link>
+        </Link> */}
         <Link
           component="button"
           underline="none"

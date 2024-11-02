@@ -7,7 +7,7 @@ import StepContent from '@mui/material/StepContent';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { Missions, MissionState, MissionTag } from '@/models/mission.model';
+import { MissionById, Missions, MissionState, MissionTag } from '@/models/mission.model';
 import { findMissionStateByMissionId, findMissionTagByMissionId, updateMissionTagByMissionId } from '@/services/mission.service';
 import { timeOutJwt } from '@/services/timeout.service';
 
@@ -17,7 +17,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import HourglassFullTwoToneIcon from '@mui/icons-material/HourglassFullTwoTone';
 
 type Props = {
-    data: Missions
+    data: MissionById
 }
 
 export default function MissionStateTag({ data }: Props) {
@@ -77,15 +77,6 @@ export default function MissionStateTag({ data }: Props) {
             if (newCurrent) {
                 updateTagCurrentByMissionIdAndTagId(newCurrent.id, newCurrent.status)
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
-                // const t = missionTag.filter((r, index) => {
-                //     if (index === i) {
-                //         return r.time_stamp = new Date().toLocaleString('th-TH')
-                //     }
-                //     else {
-                //         return r
-                //     }
-                // })
-                // steps = t
             }
         }
 
@@ -107,11 +98,20 @@ export default function MissionStateTag({ data }: Props) {
                         missionTag.map((step, index) => (
                             <Step key={index}>
                                 {generateFixIcon(index, activeStep, step)}
+                                
 
                                 <StepContent>
                                     <Typography>{step.description}</Typography>
                                     <Box sx={{ mb: 2 }}>
                                         <div>
+                                            <Button
+                                                color='inherit'
+                                                variant='contained'
+                                                onClick={handleBack}
+                                                sx={{ mt: 1, mr: 1 }}
+                                            >
+                                                ย้อน
+                                            </Button>
                                             <Button
                                                 variant="contained"
                                                 onClick={() => handleNext(index)}
@@ -123,14 +123,8 @@ export default function MissionStateTag({ data }: Props) {
                                                 {index === missionTag.length - 1 ? 'จบภารกิจ' : null}
                                                 {/* {index === 0 ? 'เสร็จสิ้น' : 'ถัดไป'} */}
                                             </Button>
-                                            {/* <Button
-                                                color='secondary'
-                                                variant='contained'
-                                                onClick={handleBack}
-                                                sx={{ mt: 1, mr: 1 }}
-                                            >
-                                                ข้าม
-                                            </Button>
+
+                                            {/* 
                                             <Button
                                                 color='success'
                                                 variant='contained'
@@ -153,6 +147,7 @@ export default function MissionStateTag({ data }: Props) {
                         )) :
                         <p>Load Step Mission</p>
                 }
+
             </Stepper>
             {activeStep === missionTag.length && (
                 <Paper square elevation={0} sx={{ p: 3 }}>
@@ -188,7 +183,7 @@ function generateFixIcon(index: number, currentIndex: number, step: MissionTag) 
                 <StepLabel StepIconComponent={StepIconCheck} data-last="true">
                     <div style={{ display: 'flex', alignItems: 'start', justifyContent: 'center', flexDirection: 'column' }}>
                         <p style={{ width: '100%' }}>{step.label}</p>
-                        <div style={{display:'flex', alignItems:'center'}}> เมื่อ: <p style={{color: 'green'}}>{new Date(step.update_date).toLocaleString('th-TH')}</p> </div>
+                        <div style={{ display: 'flex', alignItems: 'center' }}> เมื่อ: <p style={{ color: 'green' }}>{new Date(step.update_date).toLocaleString('th-TH')}</p> </div>
                     </div>
 
                 </StepLabel>
@@ -196,7 +191,7 @@ function generateFixIcon(index: number, currentIndex: number, step: MissionTag) 
         case index === currentIndex:
             return (
                 <StepLabel StepIconComponent={StepIconDoing}>
-                    <p style={{background: '#F37335', padding: '3px', borderRadius: '5px', color: 'whitesmoke'}}>
+                    <p style={{ background: '#F37335', padding: '3px', borderRadius: '5px', color: 'whitesmoke' }}>
                         {step.label}
                     </p>
                 </StepLabel>
@@ -206,7 +201,7 @@ function generateFixIcon(index: number, currentIndex: number, step: MissionTag) 
                 <StepLabel StepIconComponent={StepIconCheck}>
                     <div style={{ display: 'flex', alignItems: 'start', justifyContent: 'center', flexDirection: 'column' }}>
                         <p style={{ width: '100%' }}>{step.label}</p>
-                        <div style={{display:'flex', alignItems:'center'}}> เมื่อ: <p style={{color: 'green'}}>{new Date(step.update_date).toLocaleString('th-TH')}</p> </div>
+                        <div style={{ display: 'flex', alignItems: 'center' }}> เมื่อ: <p style={{ color: 'green' }}>{new Date(step.update_date).toLocaleString('th-TH')}</p> </div>
                     </div>
                 </StepLabel>
             );

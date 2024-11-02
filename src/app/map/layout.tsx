@@ -1,6 +1,6 @@
 import { metadata } from '../layout';
 import TabMenu from '@/components/TabMenu';
-import ChatButton from '@/components/chats/ChatButton';
+import ChatButton from '@/app/components/chats/ChatButton';
 import Nav from '@/components/nav/Nav';
 metadata.title = 'Home EMS App';
 

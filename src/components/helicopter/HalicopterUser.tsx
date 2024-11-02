@@ -8,12 +8,13 @@ import BallotIcon from '@mui/icons-material/Ballot';
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
 import InboxOutlinedIcon from '@mui/icons-material/InboxOutlined';
 import { AspectRatio } from '@mui/joy';
+import { MissionDetailContext, TMissionDetailC } from '@/contexts/mission.detail.context';
 import { Box, Card } from '@mui/material';
-import { CarDetailContext, TCarDetailContent } from './CarDetail.context';
-import CarUserItem from './CarUserItem';
+import { HelicopterByIdContext, THelicopterById } from '@/app/vehicle/[vehicle]/helicopter/detail/HelicopterById.context';
+import HelicopterUserItem from './HelicopterUserItem';
 
-export default function CarUser() {
-  const {carByid} = React.useContext<TCarDetailContent>(CarDetailContext)
+export default function HelicopterUser() {
+  const { halicoptorById } = React.useContext<THelicopterById>(HelicopterByIdContext)
 
   return (
     // <p>helicopter</p>
@@ -25,10 +26,10 @@ export default function CarUser() {
         </CardContent>
         <Box>
           {
-            carByid.UserBelongCar.length === 0 ?
+            halicoptorById.UserBelongHelicopter.length === 0 ?
               <Typography>ไม่มีผู้บังคะบบัญชา</Typography> :
-              carByid.UserBelongCar.map((r, i) =>
-                <CarUserItem key={i} user_id={r.user_id} keyValue={'commader'} />
+              halicoptorById.UserBelongHelicopter.map((r, i) =>
+                <HelicopterUserItem key={i} user_id={r.user_id} keyValue={'commader'} />
               )
           }
 
@@ -38,10 +39,10 @@ export default function CarUser() {
             </CardContent>
             <Box>
               {
-                carByid.UserBelongCar.length === 0 ?
+                halicoptorById.UserBelongHelicopter.length === 0 ?
                   <Typography>ไม่มีผู้บังคะบบัญชา</Typography> :
-                  carByid.UserBelongCar.map((r, i) =>
-                    <CarUserItem key={i} user_id={r.user_id} keyValue={'career'} />
+                  halicoptorById.UserBelongHelicopter.map((r, i) =>
+                    <HelicopterUserItem key={i} user_id={r.user_id} keyValue={'career'} />
                   )
               }
             </Box>
@@ -53,10 +54,10 @@ export default function CarUser() {
             </CardContent>
             <Box>
               {
-                carByid.UserBelongCar.length === 0 ?
+                halicoptorById.UserBelongHelicopter.length === 0 ?
                   <Typography>ไม่มีผู้บังคะบบัญชา</Typography> :
-                  carByid.UserBelongCar.map((r, i) =>
-                    <CarUserItem key={i} user_id={r.user_id} keyValue={'staff'} />
+                  halicoptorById.UserBelongHelicopter.map((r, i) =>
+                    <HelicopterUserItem key={i} user_id={r.user_id} keyValue={'staff'} />
                   )
               }
             </Box>

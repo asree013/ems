@@ -28,7 +28,7 @@ type Props = {
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
     triageLevel: TriageLevels;
     physicalStatus: PhysicalStatus;
-    name: {first_name: string, last_name: string}
+    name: {first_name: string, last_name: string, gender: string}
 };
 
 export default function PhysicalStatusModal({ open, setOpen, physicalStatus, triageLevel, historys, name }: Props) {
@@ -117,6 +117,10 @@ export default function PhysicalStatusModal({ open, setOpen, physicalStatus, tri
                     </div>
                     <div style={{ overflow: 'scroll', height: '450px', background: '#f9f8f8' }}>
                         <div ref={contentRef} style={{padding: '20px 30px'}}>
+                            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: "column", margin: '15px 0'}}>
+                                <h1 style={{fontSize: '18px', fontWeight: 600}}>ข้อมูล Physical Status</h1>
+                                <p>ของผู้ป่วย {name.gender.toLowerCase().includes("male")? 'นาย': 'นาง'}{name.first_name} {name.last_name}</p>
+                            </div>
                             {selected.triage && (
                                 <div className='mt-4'>
                                     <Divider className='mb-3'>Triage level</Divider>

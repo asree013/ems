@@ -1,30 +1,17 @@
 'use client'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+
+import Loadding from '@/components/Loadding';
+import AirlineSeatFlatAngledIcon from '@mui/icons-material/AirlineSeatFlatAngled';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import Card from '@mui/joy/Card';
 import CardActions from '@mui/joy/CardActions';
-import Chip from '@mui/joy/Chip';
 import Divider from '@mui/joy/Divider';
-import List from '@mui/joy/List';
-import ListItem from '@mui/joy/ListItem';
-import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import Typography from '@mui/joy/Typography';
-import Check from '@mui/icons-material/Check';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import { CurrentCarsContext, CurrentVehicleContext, TCurrentCars, TCurrentVehicles } from '../CurrentVehicle.context';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 
-import AddIcon from '@mui/icons-material/Add';
-import AirlineSeatFlatAngledIcon from '@mui/icons-material/AirlineSeatFlatAngled';
-
-import HomeCss from '../HomeCss.module.css'
-import { Paper } from '@mui/material';
-import Loadding from '@/components/Loadding';
-import CarDetail from '@/components/car/CarDetail';
-import { CarDetailContext } from '@/components/car/CarDetail.context';
-import { Cars } from '@/models/vehicle.model';
-import { findCarByCarId } from '@/services/car.service';
-import { toast } from '@/services/alert.service';
+import { CurrentVehicleContext, TCurrentVehicles } from '../CurrentVehicle.context';
+import HomeCss from '../HomeCss.module.css';
 import CarPatientitem from './CarPatientItem';
 
 

@@ -1,10 +1,8 @@
 'use client'
-import HistoryItem from '@/components/HistoryItem'
-import { Historys } from '@/models/history.model'
-import { toast } from '@/services/alert.service'
-import { findHistoryByPatientId } from '@/services/history.service'
-import { Button, Card } from '@mui/material'
-import React, { useCallback, useEffect, useState } from 'react'
+
+import HistoryItem from '@/components/HistoryItem';
+import { Button, Card } from '@mui/material';
+import React, { useCallback, useEffect, useState } from 'react';
 
 export type HistoryInCar = {
     id: string
@@ -23,7 +21,7 @@ export type HistoryInCar = {
 type Props = {
     history: HistoryInCar
     patient_id: string
-    name: {first_name: string, last_name: string}
+    name: {first_name: string, last_name: string, gender: string}
 }
 
 export default function CarHistoryItem({ history, patient_id, name }: Props) {
@@ -35,7 +33,7 @@ export default function CarHistoryItem({ history, patient_id, name }: Props) {
         <div className='mt-1'>
             {
                 history ?
-                    <HistoryItem value={history} name={{first_name: name.first_name, last_name: name.last_name, patient_id: patient_id}} />
+                    <HistoryItem value={history} name={{first_name: name.first_name, last_name: name.last_name, patient_id: patient_id, gender: name.gender}} />
                     : <Card elevation={3} style={{ margin: '10px 5px', padding: '10px' }}>
                         <p>ยังไม่มีประวัติ</p>
                         <div style={{ display: 'flex', alignContent: 'center', justifyContent: 'space-around' }}>

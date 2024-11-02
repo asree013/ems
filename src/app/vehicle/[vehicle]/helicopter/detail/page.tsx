@@ -3,18 +3,15 @@ import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import CarDetail from '../../../../../components/car/CarDetail';
-import { findCarByCarId } from '@/services/car.service';
 import { timeOutJwt } from '@/services/timeout.service';
-import { CarByCarId, Cars, HelicopterById, Helicopters } from '@/models/vehicle.model';
-import { CarDetailContext } from '../../../../../components/car/CarDetail.context';
-import PateintDetail from '../../../../../components/car/PateintDetail';
+import { HelicopterById } from '@/models/vehicle.model';
 import { useSearchParams } from 'next/navigation';
 import { findHelicopterById } from '@/services/helicopter.service';
 import { HelicopterByIdContext } from './HelicopterById.context';
 import HelicopterDetail from '@/components/helicopter/HelicopterDetail';
 import { HelicopterByIdDetailContext } from '@/components/helicopter/helicopterDetail.context';
 import HelicopterPatientDetail from '@/components/helicopter/HelicopterPatientDetail';
+import HalicopterUser from '@/components/helicopter/HalicopterUser';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -90,10 +87,12 @@ export default function Page({ params }: Props) {
                 </Box>
                 <HelicopterByIdDetailContext.Provider value={{ halicoptorById, setHelicopterById }}>
                     <CustomTabPanel value={value} index={0}>
-                        <HelicopterDetail />
+                        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                            <HelicopterDetail />
+                        </div>
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={1}>
-                        Item Two
+                        <HalicopterUser />
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={2}>
                         <HelicopterPatientDetail />

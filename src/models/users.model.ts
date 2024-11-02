@@ -24,7 +24,10 @@ export type Users = {
   mission_id: string
   Squad: string
   Hospital: Hospitals
-  Responsibilities: string
+  Responsibilities: {
+    user_id: string
+    role: string
+  }
   LocationActive: LocationActive[]
 }
 

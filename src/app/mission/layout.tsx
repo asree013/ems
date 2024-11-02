@@ -2,10 +2,10 @@ import { metadata } from '../layout';
 import { useCallback, useEffect } from 'react';
 import { FindUserMe } from '@/services/authen.service';
 import TabMenu from '@/components/TabMenu';
-import ChatButton from '@/components/chats/ChatButton';
+import ChatButton from '@/app/components/chats/ChatButton';
 import Nav from '@/components/nav/Nav';
 
-metadata.title = 'Monitor EMS App';
+metadata.title = 'Mission Marine-EMS';
 
 export default function DashboardLayout({
   children, // will be a page or nested layout

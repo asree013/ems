@@ -19,7 +19,6 @@ export default function Page() {
   const [patients, setPatients] = useState<Patients[]>([]);
 
   async function onUpdatePage(page: number, limit: number) {
-    console.log('page' ,page);
     
     setLoad(true)
     try {
@@ -38,7 +37,9 @@ export default function Page() {
     try {
       const result = await findPatientAll(1, 5);
       // const data = await result.json<Patients[]>()
-      setPatients(result.data);
+      console.log(result.data);
+      
+      setPatients(result.data.filter(r => r.mission_id === null));
     } catch (error) {
       console.log(error);
       timeOutJwt(error)
@@ -113,17 +114,7 @@ export default function Page() {
         </div>
 
       </PatientContextsArr.Provider>
-      {/* <Box className={patientCss.buttonCreate}>
-        <Fab
-          style={{ background: '#2c387e', color: 'white' }}
-          onClick={() => {
-            setLoad(true)
-            window.location.href = '/patient/' + NIL
-          }}
-        >
-          <SpeedDialIcon />
-        </Fab>
-      </Box> */}
+  
 
       {
         load ?
