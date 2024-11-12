@@ -14,7 +14,7 @@ import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import CircularProgress from '@mui/joy/CircularProgress';
 
 import HomeCss from '../HomeCss.module.css'
-import { Paper } from '@mui/material';
+import { Badge, Paper } from '@mui/material';
 import Loadding from '@/components/Loadding';
 import { toast } from '@/services/alert.service';
 import CarDetailHome from './CarDetailHome';
@@ -82,25 +82,28 @@ export default function VehicleCard() {
                         </Typography>
                         {
                             vehicle.car || vehicle.helicopter || vehicle.ship ?
-                                <Button
-                                    onClick={() => {
-                                        setLoad(true)
-                                        if (vehicle.car) {
-                                            window.location.href = '/vehicle/' + vehicle.car.Car.id + '/car/detail'
-                                        }
-                                        if (vehicle.helicopter) {
-                                            window.location.href = '/vehicle/' + vehicle.helicopter.Helicopter.id + '/helicopter/detail'
-                                        }
-                                    }}
-                                    variant="soft"
-                                    color="neutral"
-                                    endDecorator={<KeyboardArrowRight />}
-                                >
+                                <Badge badgeContent={'new'} color="error">
+                                    <Button
+                                        onClick={() => {
+                                            setLoad(true)
+                                            if (vehicle.car) {
+                                                window.location.href = '/vehicle/' + vehicle.car.Car.id + '/car/detail'
+                                            }
+                                            if (vehicle.helicopter) {
+                                                window.location.href = '/vehicle/' + vehicle.helicopter.Helicopter.id + '/helicopter/detail'
+                                            }
+                                        }}
+                                        variant="soft"
+                                        color="neutral"
+                                        endDecorator={<KeyboardArrowRight />}
+                                    >
 
-                                    {vehicle.car ? "ไปที่รถ" : null}
-                                    {vehicle.helicopter ? "ไปที่ ฮ." : null}
-                                    {vehicle.ship ? "ไปที่ เรื่อ" : null}
-                                </Button> : null
+                                        {vehicle.car ? "ไปที่รถ" : null}
+                                        {vehicle.helicopter ? "ไปที่ ฮ." : null}
+                                        {vehicle.ship ? "ไปที่ เรื่อ" : null}
+                                    </Button>
+                                </Badge>
+                                : null
                         }
                     </CardActions>
                 </Card>
@@ -184,8 +187,8 @@ function AlertDialog() {
                 <DialogActions>
                     <Button disabled={load} color='neutral' onClick={handleClose}>
                         {
-                            load? <CircularProgress size="sm" />
-                            : <p>ยกเลิก</p>
+                            load ? <CircularProgress size="sm" />
+                                : <p>ยกเลิก</p>
                         }
                     </Button>
                     <Button color='primary' disabled={load} onClick={async () => {
@@ -236,8 +239,8 @@ function AlertDialog() {
                         }
                     }} autoFocus>
                         {
-                            load? <CircularProgress size="sm" /> 
-                            : <p>และภารกิจ</p>
+                            load ? <CircularProgress size="sm" />
+                                : <p>และภารกิจ</p>
                         }
                     </Button>
                 </DialogActions>

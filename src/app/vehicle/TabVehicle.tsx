@@ -11,6 +11,7 @@ import MyVehicle from './MyVehicle';
 import ShipComponent from './ShipComponent';
 import { TabValueVehicleContext } from './tabValue.context';
 import styled from 'styled-components';
+import { Badge } from '@mui/material';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -53,25 +54,25 @@ function a11yProps(index: number) {
 export default function TabVehicle() {
   const [value, setValue] = React.useState(0);
   const tranfrom = useSearchParams().get('tranfrom')
-  
+
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
   React.useEffect(() => {
-    if(tranfrom === 'helicopter') {
+    if (tranfrom === 'helicopter') {
       setValue(2)
     }
-    if(tranfrom === 'car') {
+    if (tranfrom === 'car') {
       setValue(1)
     }
-  }, [tranfrom]) 
+  }, [tranfrom])
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }} >
         <TabStyled value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="ยานพาหนะของฉัน" {...a11yProps(0)} />
+          <Tab label="พาหนะของฉัน" {...a11yProps(0)} />
           <Tab label="รถยนต์" {...a11yProps(1)} />
           <Tab label="แฮลิคอปเตอร์" {...a11yProps(2)} />
           <Tab label="เรือ" {...a11yProps(2)} />

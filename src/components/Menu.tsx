@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import menuCss from './styles/MenuItem.module.css'
 import WidgetsIcon from '@mui/icons-material/Widgets';
-import { Card, IconButton, Paper } from '@mui/material';
+import { Badge, Card, IconButton, Paper } from '@mui/material';
 
 import { MenuValueContext, TMenuValueC } from '@/contexts/menu.value.context';
 import Loadding from './Loadding';
@@ -16,6 +16,16 @@ import HomeIcons from '@/assets/icon/home_9449216.png'
 import MornitorIcon from '@/assets/icon/monitor_4765315.png'
 import ChatIcon from '@/assets/icon/ui-element_15768343.png'
 import Ambulance from '@/assets/icon/ambulance.png'
+import styled from 'styled-components';
+
+const ButtonMenu = styled(Card)`
+    width: 100%;
+    padding: 3px;
+    cursor: pointer;
+    :hover {
+        background: #ececec;
+    }
+`
 
 export default function MenuItem() {
 
@@ -26,7 +36,7 @@ export default function MenuItem() {
     }
 
     useEffect(() => {
-        return() => {
+        return () => {
             onRedirect
         }
     }, [])
@@ -43,7 +53,7 @@ export default function MenuItem() {
                 </div>
 
                 <div className={menuCss.body}>
-                    <Card elevation={3} style={{ padding: 5, width: '100%' }}>
+                    <ButtonMenu elevation={3}>
                         <div onClick={() => {
                             window.location.href = '/home'
                             setLoad(true)
@@ -55,8 +65,8 @@ export default function MenuItem() {
                                 <p>detail</p>
                             </div>
                         </div>
-                    </Card>
-                    <Card elevation={3} style={{ padding: 5, width: '100%' }}>
+                    </ButtonMenu>
+                    <ButtonMenu elevation={3}>
                         <div onClick={() => {
                             window.location.href = '/chat'
                             setLoad(true)
@@ -68,8 +78,8 @@ export default function MenuItem() {
                                 <p>detail</p>
                             </div>
                         </div>
-                    </Card>
-                    <Card elevation={3}>
+                    </ButtonMenu>
+                    <ButtonMenu elevation={3}>
                         <div onClick={() => {
                             window.location.href = '/mission'
                             setLoad(true)
@@ -81,8 +91,8 @@ export default function MenuItem() {
                                 <p>detail</p>
                             </div>
                         </div>
-                    </Card>
-                    <Card elevation={3} style={{ padding: 5, width: '100%' }}>
+                    </ButtonMenu>
+                    <ButtonMenu elevation={3}>
                         <div onClick={() => {
                             window.location.href = '/patient'
                             setLoad(true)
@@ -94,8 +104,8 @@ export default function MenuItem() {
                                 <p>detail</p>
                             </div>
                         </div>
-                    </Card>
-                    <Card elevation={3} >
+                    </ButtonMenu>
+                    <ButtonMenu elevation={3}>
                         <div onClick={() => {
                             window.location.href = '/device'
                             setLoad(true)
@@ -107,8 +117,8 @@ export default function MenuItem() {
                                 <p>detail</p>
                             </div>
                         </div>
-                    </Card>
-                    <Card elevation={3}>
+                    </ButtonMenu>
+                    <ButtonMenu elevation={3}>
                         <div onClick={() => {
                             setLoad(true)
                             window.location.href = '/monitor'
@@ -120,20 +130,22 @@ export default function MenuItem() {
                                 <p>detail</p>
                             </div>
                         </div>
-                    </Card>
-                    <Card elevation={3}>
-                        <div onClick={() => {
-                            setLoad(true)
-                            window.location.href = '/vehicle'
-                            onRedirect()
-                        }} className={menuCss.menuItem}>
-                            <img src={Ambulance.src} style={{ height: '4rem', width: '4rem' }} alt="" />
-                            <div className={menuCss.menuDetail}>
-                                <h3>ยานพาหนะ</h3>
-                                <p>detail</p>
+                    </ButtonMenu>
+                    <Badge badgeContent={'new'} color="error">
+                        <ButtonMenu elevation={3}>
+                            <div onClick={() => {
+                                setLoad(true)
+                                window.location.href = '/vehicle'
+                                onRedirect()
+                            }} className={menuCss.menuItem}>
+                                <img src={Ambulance.src} style={{ height: '4rem', width: '4rem' }} alt="" />
+                                <div className={menuCss.menuDetail}>
+                                    <h3>ยานพาหนะ</h3>
+                                    <p>detail</p>
+                                </div>
                             </div>
-                        </div>
-                    </Card>
+                        </ButtonMenu>
+                    </Badge>
                 </div>
             </div>
 

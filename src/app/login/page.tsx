@@ -24,9 +24,21 @@ import styled from 'styled-components';
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import HttpsIcon from '@mui/icons-material/Https';
-import { TStyleButton } from '@/app/styles/themes';
 // import { useSearchParams } from 'next/navigation';
 
+export const TStyleButton = styled.button`
+    background: linear-gradient(125deg, #021B79, #0575E6);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), 0 8px 20px rgba(2, 27, 121, 0.5);
+    border-radius: 5px;
+    font-size: 22px;
+    font-weight: 600;
+
+    &:hover{
+        transform: scale(1.1);
+        transition: 0.4s;
+    }
+`
 
 export default function Page() {
   const [login, setLogin] = useState<Logins>({} as Logins);
