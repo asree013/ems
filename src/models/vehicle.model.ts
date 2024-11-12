@@ -230,20 +230,6 @@ export interface HelicopterById {
   }
 }
 
-export interface Ships {
-  id: string;
-  status: string
-  name: string
-  phone_number: string
-  description: string
-  image: string
-  radio: string
-  calling: string
-  hospital_id: string
-  type_id: string
-  missionId: string
-}
-
 export interface Vehicles {
   car: {
     id: string
@@ -304,4 +290,28 @@ export type CarInVehicle = {
   update_date: string
   hospital_id: string
   PatientBelongCar: PatientBelongCar[]
+}
+
+export interface TypeShips {
+  id: string
+  name_type: string
+  description: string
+  hospital_id: any
+}
+
+export interface Ships {
+  id: string
+  name: string
+  phone_number: string
+  description: any
+  status: string
+  image: string
+  radio: string
+  calling: string
+  hospital_id: string
+  create_date: string
+  update_date: string
+  driver_id: string
+  type_id: string
+  missionId: string
 }

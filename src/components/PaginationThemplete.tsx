@@ -39,12 +39,6 @@ export default function PaginationThemplete({ returnCurrent }: Props) {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' , minWidth: 230, marginTop: 20, width: '100%', padding: 20}}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <p>หน้า:{page}</p>
-                <Select className='ml-1' defaultValue="5" onChange={handleChange}>
-                    <Option value="5">5</Option>
-                    <Option value="10">10</Option>
-                    <Option value="15">15</Option>
-                    <Option value="20">20</Option>
-                </Select>
             </div>
             <div>
                 {

@@ -1,33 +1,21 @@
 'use client';
-import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
-import HistoryItem from '../../../../components/HistoryItem';
-import { Box, Divider, Fab, SpeedDial } from '@mui/material';
-import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 
-import historyCss from './historyCss.module.css';
-import HistoryTab from './HistoryTab';
-
+import Loadding from '@/components/Loadding';
+import { Historys } from '@/models/history.model';
+import { PhysicalStatus, TriageLevels } from '@/models/historyDetail.model';
+import { findHistoryByPatientId } from '@/services/history.service';
 import Button from '@mui/joy/Button';
 import Modal from '@mui/joy/Modal';
 import ModalClose from '@mui/joy/ModalClose';
-import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
-import { Historys } from '@/models/history.model';
-import {
-  createHistory,
-  findHistoryByPatientId,
-} from '@/services/history.service';
+import { Divider } from '@mui/material';
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import { Input, Textarea } from '@mui/joy';
-import Loadding from '@/components/Loadding';
-
-import Alert from '@mui/material/Alert';
-import CheckIcon from '@mui/icons-material/Check';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+import HistoryItem from '../../../../components/HistoryItem';
+import historyCss from './historyCss.module.css';
+import { HistoryDetailContext, PhysicalStatusContext, TraigeLevelContext } from './StepContext';
 import StepHistory from './StepHistory';
-import { HistoryDetailContext, PhysicalStatusContext, StepContext, TraigeLevelContext } from './StepContext';
-import { PhysicalStatus, TriageLevels } from '@/models/historyDetail.model';
+
 type Props = {
   params: {
     patient_id: string

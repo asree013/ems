@@ -10,12 +10,22 @@ import HelicopterComponent from './HalicopterComponent';
 import MyVehicle from './MyVehicle';
 import ShipComponent from './ShipComponent';
 import { TabValueVehicleContext } from './tabValue.context';
+import styled from 'styled-components';
 
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
 }
+
+const TabStyled = styled(Tabs)`
+  @media only screen and (max-width: 450px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+  }
+`
 
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -59,14 +69,14 @@ export default function TabVehicle() {
   }, [tranfrom]) 
   return (
     <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }} >
+        <TabStyled value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab label="ยานพาหนะของฉัน" {...a11yProps(0)} />
           <Tab label="รถยนต์" {...a11yProps(1)} />
           <Tab label="แฮลิคอปเตอร์" {...a11yProps(2)} />
           <Tab label="เรือ" {...a11yProps(2)} />
           <Tab label="หน่วยเดินเท้า" {...a11yProps(2)} />
-        </Tabs>
+        </TabStyled>
       </Box>
       <CustomTabPanel value={value} index={0}>
         <TabValueVehicleContext.Provider value={{ value, setValue }} >

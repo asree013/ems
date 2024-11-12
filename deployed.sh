@@ -2,9 +2,9 @@
 
 set -e  # หยุดทำงานเมื่อเกิดข้อผิดพลาด
 
-# git add .
-# git commit -m "update"
-# git push origin/main 
+git add .
+git commit -m "update"
+git push origin/main 
 
 echo "เริ่มการ build เพื่อ deploy"
 echo "กำลังลบโฟลเดอร์ public/_next ที่ใช้ generate ใหม่..."
