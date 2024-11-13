@@ -7,7 +7,7 @@ import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import { Patients } from '@/models/patient';
-import { CardMedia, Fab, IconButton } from '@mui/material';
+import { Avatar, Badge, CardMedia, Fab, IconButton } from '@mui/material';
 import { enviromentDev, enviromentPath } from '@/configs/enviroment.dev';
 import HistoryIcon from '@mui/icons-material/History';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
@@ -30,6 +30,7 @@ import QrCode2Icon from '@mui/icons-material/QrCode2';
 
 import AirplanemodeActiveIcon from '@mui/icons-material/AirplanemodeActive';
 import DirectionsBoatIcon from '@mui/icons-material/DirectionsBoat';
+import HelicopterIcon from '@/assets/image/icon_menu/helicopter_5768628.png'
 
 type Props = {
   patient: Patients;
@@ -97,15 +98,30 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
             justifyContent="space-between"
             alignItems="center"
           >
+            <Typography
+              gutterBottom
+              variant="body1"
+              component="div"
+              style={{ fontWeight: 700 }}
+            >
+              QR_Number: {patient.qr_number ?? "ไม่มีเลข"}
+            </Typography>
+            {
+              key?.includes('add-helicopter') ?
+                <Badge badgeContent="อยู๋" color='success'>
+                  <img style={{ width: 30 }} src={HelicopterIcon.src} />
+                </Badge> :
+                null
+            }
+          </Stack>
+          <Divider />
+          <Stack
+            width={'100%'}
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
             <div>
-              <Typography
-                gutterBottom
-                variant="body1"
-                component="div"
-                style={{ fontWeight: 700 }}
-              >
-                QR_Number: {patient.qr_number?? "ไม่มีเลข"}
-              </Typography>
               <Typography
                 gutterBottom
                 variant="body1"
@@ -122,32 +138,33 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
               >
                 สกุล: {patient.last_name}
               </Typography>
-              <Typography color="text.secondary" variant="body2">
+              <Typography color="text.secondary" variant="body2" component={'div'}>
                 G:{patient.gender}, Age:
                 {patient.age ? patient.age : 'ไม่ได้ระบุ'}, Birthday:
                 {patient.birthday ? patient.birthday : 'ไม่ได้ระบุ'}
               </Typography>
             </div>
-            <CardMedia
-              component="img"
-              sx={{ width: 121, height: 100, objectFit: 'fill' }}
-              image={patient.image ? patient.image : enviromentPath.noImage}
-              alt="Live from space album cover"
-            />
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+              <Avatar
+                sx={{ width: 90, height: 90, objectFit: 'fill' }}
+                src={patient.image ? patient.image : enviromentPath.noImage}
+                alt="Live from space album cover"
+              />
+            </Box>
           </Stack>
         </Box>
         <Divider />
         <Box sx={{ p: 2 }}>
           {
             key ?
-              
+
               <Chip
                 label={onConvertStr(key)}
                 icon={onConvertIcon(key)}
                 onClick={handlerOnAddPatientInVehicles}
                 variant="outlined"
                 color='success'
-              /> 
+              />
               :
               pathName ? (
                 <Stack direction="row" spacing={1}>
@@ -202,25 +219,25 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
   );
 
   function onConvertStr(str: string) {
-    if(str.includes('add-car')) {
+    if (str.includes('add-car')) {
       return "เพื่มผู้ป่วยในรถรับส่ง"
     }
-    if(str.includes('add-helicopter')) {
+    if (str.includes('add-helicopter')) {
       return "เพื่มผู้ป่วยใน ฮ. รับส่ง"
     }
-    if(str.includes('add-ship')) {
+    if (str.includes('add-ship')) {
       return "เพื่มผู้ป่วยใน เรื่อ รับส่ง"
     }
   }
 
   function onConvertIcon(str: string) {
-    if(str.includes('add-car')) {
+    if (str.includes('add-car')) {
       return <DirectionsCarIcon />
     }
-    if(str.includes('add-helicopter')) {
+    if (str.includes('add-helicopter')) {
       return <AirplanemodeActiveIcon />
     }
-    if(str.includes('add-ship')) {
+    if (str.includes('add-ship')) {
       return <DirectionsBoatIcon />
     }
   }

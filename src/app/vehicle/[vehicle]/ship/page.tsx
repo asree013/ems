@@ -29,8 +29,6 @@ import { NIL } from 'uuid';
 import ModalTypeShipt from './components/ModalTypeShipt';
 import shipCss from './ship.module.css';
 
-'use client'
-
 type Props = {
   params: {
     vehicle: string

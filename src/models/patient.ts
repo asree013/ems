@@ -28,27 +28,26 @@ export interface Patients {
   update_date: string
   mission_id: string
   risk_level_id: string
-  TriageSieve: {}
-  TriageSort: {}
-  Teatment: {}
-  Risklevel: {}
-  Loading: {}
-  Parking: {}
-  AllergyDrug: Array<{}>
-  AllergyFood: Array<{}>
-  BedUseHistory: Array<{}>
-  CongenitalDisease: Array<{}>
-  History: Array<Historys>
-  DiscoveredPatient: {}
-  OrderTransfer: Array<{
-    id: string
-    status_order: string
-    element_seq: number
-    create_date: string
-    hospital_id: any
-    patient_id: string
-  }>
-  ParkingHistory: {}
+  TriageSieve: any
+  TriageSort: any
+  Teatment: any
+  Risklevel: any
+  Loading: any
+  Parking: any
+  AllergyDrug: Array<AllergyDrug>
+  AllergyFood: Array<AllergyFoods>
+  BedUseHistory: Array<any>
+  CongenitalDisease: Array<any>
+  History: Array<any>
+  DiscoveredPatient: any
+  OrderTransfer: Array<any>
+  ParkingHistory: any
+  BelongCar: any
+  BelongChip: any
+  BelongHelicopter: BelongToHelicopter
+  HistoryPatientBelongCar: Array<any>
+  HistoryPatientBelongShip: Array<any>
+  HistoryPatientBelongHelicopter: Array<HistoryPatientBelongHelicopter>
   _count: {
     OrderTransfer: number
     BedUseHistory: number
@@ -60,6 +59,42 @@ export interface Patients {
     HistoryPatientBelongShip: number
     HistoryPatientBelongHelicopter: number
   }
+}
+
+interface BelongToHelicopter {
+  id: string
+  helicopter_id: string
+  patient_id: string
+  create_date: string
+  update_date: string
+  Helicopter: {
+    id: string
+    number: string
+    description: any
+    image_front: string
+    image_back: string
+    image_left: string
+    image_rigth: string
+    radio: string
+    calling: string
+    driver_id: any
+    mission_id: any
+    hospital_id: string
+    create_date: string
+    update_date: string
+  }
+}
+
+interface HistoryPatientBelongHelicopter {
+  id: string
+  helicopter_id: string
+  not_anymore: boolean
+  transpose_date_time: any
+  transpose_to: any
+  transpose_id: any
+  patient_id: string
+  create_date: string
+  update_date: string
 }
 
 export interface PatientBelongCar {

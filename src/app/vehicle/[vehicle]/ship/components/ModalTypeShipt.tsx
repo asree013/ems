@@ -1,22 +1,19 @@
 'use client'
-import * as React from 'react';
+
+import { TypeShips } from '@/models/vehicle.model';
+import { toast } from '@/services/alert.service';
+import { findTypeShipAll } from '@/services/ship.service';
+import CardTravelIcon from '@mui/icons-material/CardTravel';
 import Button from '@mui/joy/Button';
 import Modal from '@mui/joy/Modal';
 import ModalClose from '@mui/joy/ModalClose';
-import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
+import Typography from '@mui/joy/Typography';
+import { Box, Card } from '@mui/material';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import Divider from '@mui/material/Divider';
-import InboxIcon from '@mui/icons-material/Inbox';
-import DraftsIcon from '@mui/icons-material/Drafts';
-import { Box, Card, IconButton } from '@mui/material';
-import { toast } from '@/services/alert.service';
-import { findTypeShipAll } from '@/services/ship.service';
-import { TypeShips } from '@/models/ship.model';
-import CardTravelIcon from '@mui/icons-material/CardTravel';
+import * as React from 'react';
 
 type Props = {
     onReturnIdTypeShip: (id: string, name: string) => void

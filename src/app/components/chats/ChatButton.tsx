@@ -1,44 +1,39 @@
 'use client';
 
-import * as React from 'react';
+import { enviromentDev } from '@/configs/enviroment.dev';
+import { socket } from '@/configs/socket';
+import { ChatRooms, Chats } from '@/models/chat.model';
+import { MissionById } from '@/models/mission.model';
+import { toast } from '@/services/alert.service';
+import { feedMessageChatByRoomId, findChatRoomAll, mapDataHistoryToChat } from '@/services/chat.service';
+import { findMissionByMissionId, findMissionCurrent } from '@/services/mission.service';
+import { timeOutJwt } from '@/services/timeout.service';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import MessageIcon from '@mui/icons-material/Message';
-import { Badge, BadgeProps, Box, Chip, Fab, IconButton, Paper } from '@mui/material';
-import { styled as styleMui } from '@mui/material/styles'
-
-import Input from '@mui/joy/Input';
 import Button from '@mui/joy/Button';
+import CircularProgress from '@mui/joy/CircularProgress';
+import Input from '@mui/joy/Input';
 import ModalClose from '@mui/joy/ModalClose';
-import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
-
+import Typography from '@mui/joy/Typography';
+import { Badge, BadgeProps, Box, Chip, Paper } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
-import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
+import ListItemText from '@mui/material/ListItemText';
+import { styled as styleMui } from '@mui/material/styles';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import ToggleButton from '@mui/material/ToggleButton';
 import TypographyM from '@mui/material/Typography';
-import { findMissionByMissionId, findMissionCurrent } from '@/services/mission.service';
-import { MissionById, Missions } from '@/models/mission.model';
-import { timeOutJwt } from '@/services/timeout.service';
-import { socket } from '@/configs/socket';
-
-import { ChatRooms, Chats } from '@/models/chat.model';
 import Link from 'next/link';
+import * as React from 'react';
+import styled from 'styled-components';
 import { NIL } from 'uuid';
 
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-
-import ToggleButton from '@mui/material/ToggleButton';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-
-import { feedMessageChatByRoomId, findChatRoomAll, mapDataHistoryToChat } from '@/services/chat.service';
-import { enviromentDev } from '@/configs/enviroment.dev';
-import { toast } from '@/services/alert.service';
-import CircularProgress from '@mui/joy/CircularProgress';
-import styled from 'styled-components';
 
 type CurrenChat = {
   chat_id: string,
@@ -88,7 +83,7 @@ function a11yProps(index: number) {
 const PopupButton = styled.div`
     .positionChat{
       position: fixed;
-      top: 32.5rem;
+      bottom: 80px;
       right: 40px;
       z-index: 1;
     }

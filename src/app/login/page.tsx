@@ -26,7 +26,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import HttpsIcon from '@mui/icons-material/Https';
 // import { useSearchParams } from 'next/navigation';
 
-export const TStyleButton = styled.button`
+const TStyleButton = styled.button`
     background: linear-gradient(125deg, #021B79, #0575E6);
     color: white;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), 0 8px 20px rgba(2, 27, 121, 0.5);
