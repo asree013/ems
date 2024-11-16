@@ -1,40 +1,33 @@
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
-import Avatar from '@mui/material/Avatar';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
+'use client'
+import DetailIcon from '@/assets/icon/detail.png';
+import EditIcon from '@/assets/icon/eidt.png';
+import EmployeIcon from '@/assets/icon/employees.png';
+import PatientIcon from '@/assets/icon/patient_menu.png';
+import Loadding from '@/components/Loadding';
+import { Helicopters } from '@/models/vehicle.model';
+import { toast } from '@/services/alert.service';
+import { tranfromPatientCarToHelicopter } from '@/services/car.service';
+import { findHelicopterById, updateDriverInHelicopter, updateUserInHelicpter } from '@/services/helicopter.service';
+import { timeOutJwt } from '@/services/timeout.service';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import ShareIcon from '@mui/icons-material/Share';
+import { Button } from '@mui/material';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import Collapse from '@mui/material/Collapse';
+import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import ListSubheader from '@mui/material/ListSubheader';
-import InfoIcon from '@mui/icons-material/Info';
-import { Cars, Helicopters } from '@/models/vehicle.model';
-import { Button, Chip } from '@mui/material';
-import { findCarByCarId, tranfromPatientCarToHelicopter, updateDriverInCar, updateUserInCar } from '@/services/car.service';
-import { timeOutJwt } from '@/services/timeout.service';
-import Loadding from '@/components/Loadding';
-import { TabValueVehicleContext, TtabvalueC } from './tabValue.context';
-
-import DetailIcon from '@/assets/icon/detail.png'
-import EditIcon from '@/assets/icon/eidt.png'
-import PatientIcon from '@/assets/icon/patient_menu.png'
-import EmployeIcon from '@/assets/icon/employees.png'
-
-import vehicleCss from './vehicle.module.css'
+import { styled } from '@mui/material/styles';
 import { useSearchParams } from 'next/navigation';
-import { toast } from '@/services/alert.service';
-import { findHelicopterById, updateDriverInHelicopter, updateUserInHelicpter } from '@/services/helicopter.service';
+import * as React from 'react';
+
+import { TabValueVehicleContext, TtabvalueC } from './tabValue.context';
+import vehicleCss from './vehicle.module.css';
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -63,6 +56,7 @@ export default function CardHelicopter({ data, ho_id }: Props) {
     const { value, setValue } = React.useContext<TtabvalueC>(TabValueVehicleContext)
     const tranfrom = useSearchParams().get('tranfrom')
     const car_id = useSearchParams().get('car_id')
+    const ship_id = useSearchParams().get('ship_id')
     const patient_id = useSearchParams().get('patient_id')
 
     const handleExpandClick = () => {
@@ -112,9 +106,23 @@ export default function CardHelicopter({ data, ho_id }: Props) {
         }
     }
 
-    async function tranfromCatToHelicopter ()  {
-        setLoad(true)
-        if (patient_id && car_id) {
+    async function tranfromCatToHelicopter() {
+        // setLoad(true)
+        if(patient_id && ship_id){
+            toast('backend ship ยังไม่มี tranfrom', 'warning')
+            // try {
+            //     const data = {
+            //         patient_id: patient_id,
+            //         helicopter_id: helicopter.id
+            //     }
+            //     const result = await tranfromPatientCarToHelicopter(car_id, data)
+            //     console.log(result.data);
+            //     history.back()
+            // } catch (error: any) {
+            //     toast(error.message, 'error')
+            // }
+        }
+        else if (patient_id && car_id) {
             try {
                 const data = {
                     patient_id: patient_id,
@@ -163,7 +171,7 @@ export default function CardHelicopter({ data, ho_id }: Props) {
                         />
                         <ImageListItemBar
                             title={'หน้า ฮ.'}
-                            
+
                         />
                     </ImageListItem>
 
@@ -176,7 +184,7 @@ export default function CardHelicopter({ data, ho_id }: Props) {
                         />
                         <ImageListItemBar
                             title={'หลัง ฮ.'}
-                            
+
                         />
                     </ImageListItem>
 
@@ -189,7 +197,7 @@ export default function CardHelicopter({ data, ho_id }: Props) {
                         />
                         <ImageListItemBar
                             title={'ซ้าย ฮ.'}
-                            
+
                         />
                     </ImageListItem>
 
@@ -202,7 +210,7 @@ export default function CardHelicopter({ data, ho_id }: Props) {
                         />
                         <ImageListItemBar
                             title={'ขวา ฮ.'}
-                            
+
                         />
                     </ImageListItem>
                 </ImageList>
@@ -222,6 +230,13 @@ export default function CardHelicopter({ data, ho_id }: Props) {
                             :
                             car_id ?
                                 <Button style={{ width: '100%' }} color='success' variant='outlined' onClick={tranfromCatToHelicopter}>ย้ายจากรถไป ฮ.</Button> : null
+                    }
+                    {
+                        tranfrom ?
+                            ship_id ?
+                                <Button style={{ width: '100%' }} color='success' variant='outlined' onClick={tranfromCatToHelicopter}>ย้ายจากเรื่อไป ฮ.</Button>
+                                : null :
+                            null
                     }
                 </CardContent>
                 {

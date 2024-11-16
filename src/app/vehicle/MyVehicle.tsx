@@ -2,7 +2,7 @@
 import { Button, Card } from '@mui/material'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import CarCard from './CarICard'
-import { Cars, Helicopters, Vehicles } from '@/models/vehicle.model'
+import { Cars, Helicopters, Ships, Vehicles } from '@/models/vehicle.model'
 import vehicleCss from './vehicle.module.css'
 import Ambulance from '@/assets/icon/ambulance_1032989.png'
 import Helicopter from '@/assets/icon/army-helicopter_4806203.png'
@@ -18,6 +18,7 @@ import CardHelicopter from './CardHelicopter'
 import Loadding from '@/components/Loadding'
 import { unJoinCar } from '@/services/car.service'
 import { toast } from '@/services/alert.service'
+import CardShip from './CardShip'
 
 export default function MyVehicle() {
     const [load, setLoad] = useState<boolean>(false)
@@ -71,8 +72,19 @@ export default function MyVehicle() {
                 !vehicle.ship ?
                     null :
                     <div>
-                        <Button sx={{ width: '100%' }} type='button' variant='contained' color='success'>นำยานพาหนะเข้าร่วมภารกิจ</Button>
-                        <CarCard data={{} as Cars} />
+                        <Button onClick={ async () => {
+                            setLoad(true)
+                            try {
+                                await unJoinCar(vehicle.car.car_id)
+                                setVehicle({} as Vehicles)
+                            } catch (error: any) {
+                                toast(error.message, 'error')
+                            } finally{
+                                setLoad(false)
+                            }
+                        }} style={{width: '100%'}} variant='outlined' color='error'>ออกจาก เรือ</Button>
+                        <StatusVehicle isDriver={vehicle.ship.is_driver} mission_id={vehicle.ship.Ship?.missionId} statusbol={!vehicle.ship.Ship?.missionId ? true : false} vehicle={vehicle} />
+                        <CardShip data={{} as Ships} ship_id={vehicle.ship.ship_id} />
                     </div>
             }
 

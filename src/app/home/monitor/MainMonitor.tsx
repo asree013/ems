@@ -6,43 +6,25 @@ import main_css from './main_css.module.css'
 
 import MonitorItem from '@/app/monitor/MonitorItem'
 import { Monitorchart } from '@/data/monitor.data'
-import { CarByCarId, Vehicles } from '@/models/vehicle.model'
+import { CarByCarId, PatientBelongShip, Vehicles } from '@/models/vehicle.model'
 import { findCarByCarId } from '@/services/car.service'
 import { toast } from '@/services/alert.service'
 import styled from 'styled-components'
-import { Avatar, Card } from '@mui/material'
+import { Avatar, Card, IconButton, ListItemText, Tooltip } from '@mui/material'
+import QueuePlayNextIcon from '@mui/icons-material/QueuePlayNext';
 
 import ManIcon from '@mui/icons-material/Man';
 import Woman2Icon from '@mui/icons-material/Woman2';
 import { PatientBelongCar, Patients } from '@/models/patient'
 import { timeOutJwt } from '@/services/timeout.service'
+import Loadding from '@/components/Loadding'
 
 type Props = {
   vehicle: Vehicles
 }
 
 export default function MainMonitor({ vehicle }: Props) {
-  console.log(vehicle);
-  
-  // const [carId, setCarId] = useState<CarByCarId>({} as CarByCarId)
-  // const feedCarByCarId = useCallback(async () => {
-  //   try {
-  //     const car_id = await vehicle.car.car_id
-  //     const result = await findCarByCarId(car_id)
-  //     setCarId(result.data)
-  //   } catch (error: any) {
-  //     toast(error.message, 'error')
-  //     timeOutJwt(error)
-  //   }
-  // }, [setCarId, vehicle])
-
-  // useEffect(() => {
-  //   feedCarByCarId()
-
-  //   return () => {
-  //     feedCarByCarId
-  //   }
-  // }, [feedCarByCarId])
+  const [load, setLoad] = useState<boolean>(false)
 
   const Headers = styled.div`
     padding: 10px;
@@ -69,32 +51,92 @@ export default function MainMonitor({ vehicle }: Props) {
     <>
       <div>
         {
-          vehicle.car.Car.PatientBelongCar ?
-            vehicle.car.Car.PatientBelongCar.map((r, i) => {
-              if (!r.Patient.OrderTransfer) {
-                return null
-              }
-              return (
-                <div key={i}>
-                  <Headers>
-                    <HeadDetail>
-                      <Avatar src={r.Patient.image} />
-                      <p>{r.Patient.first_name}</p>
-                      <p>{r.Patient.last_name}</p>
-                    </HeadDetail>
-                    {convertGender(r)}
-                  </Headers>
-                  <MonitorItem el_id={i} order_id={r.Patient.OrderTransfer[0]?.id} />
-                </div>
-              )
-            }): null
+          vehicle.car ?
+            vehicle.car.Car.PatientBelongCar ?
+              vehicle.car.Car.PatientBelongCar.map((r, i) => {
+                if (r.Patient.OrderTransfer.length === 0) {
+                  return <p>เพิ่มจอแสดงผล</p>
+                }
+                return (
+                  <div key={i}>
+                    <Headers>
+                      <HeadDetail>
+                        <Avatar src={r.Patient.image} />
+                        <p>{r.Patient.first_name}</p>
+                        <p>{r.Patient.last_name}</p>
+                      </HeadDetail>
+                      {convertGender(r)}
+                    </Headers>
+                    <MonitorItem el_id={i} order_id={r.Patient.OrderTransfer[0]?.id} />
+                  </div>
+                )
+              })
+              : null
+            : null
+        }
+
+        {
+          vehicle.ship ?
+            vehicle.ship.Ship.PatientBelongShip ?
+              vehicle.ship.Ship.PatientBelongShip.map((r, i) => {
+                if (r.Patient.OrderTransfer.length === 0) {
+                  return (
+                    <div key={i}>
+                      <Headers>
+                        <HeadDetail>
+                          <Avatar src={r.Patient.image} />
+                          <p>{r.Patient.first_name}</p>
+                          <p>{r.Patient.last_name}</p>
+                        </HeadDetail>
+                        {convertGender(r)}
+                      </Headers>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
+                        <p style={{ fontSize: 26 }}>โปรดเพิ่มจอแสดงผล</p>
+                        <ListItemText className='ml-4'>
+                          <Tooltip title="เพิ่มจอแสดงกราฟ">
+                            <IconButton color='primary' onClick={() => {
+                              setLoad(true)
+                              window.location.href = `vehicle/${vehicle.ship.ship_id}/ship/detail/add_monitor?patient_add_id=${r.Patient.id}`
+                            }}>
+                              <QueuePlayNextIcon style={{ width: 50, height: 50 }} />
+                            </IconButton>
+                          </Tooltip>
+                        </ListItemText>
+                      </div>
+                    </div>
+                  )
+                }
+                return (
+                  <div key={i}>
+                    <Headers>
+                      <HeadDetail>
+                        <Avatar src={r.Patient.image} />
+                        <p>{r.Patient.first_name}</p>
+                        <p>{r.Patient.last_name}</p>
+                      </HeadDetail>
+                      {convertGender(r)}
+                    </Headers>
+                    <MonitorItem el_id={i} order_id={r.Patient.OrderTransfer[0]?.id} />
+                  </div>
+                )
+              })
+              : null
+            : null
         }
       </div>
+
+      {
+        load ?
+          <Loadding /> :
+          null
+      }
     </>
   )
 
-  function convertGender(patient: PatientBelongCar) {
-    if (patient.Patient?.gender.toLocaleLowerCase().includes('male')) {
+  function convertGender(patient: PatientBelongCar | PatientBelongShip) {
+    console.log(patient.Patient.gender.toLocaleLowerCase());
+    
+    if (patient.Patient.gender.toLocaleLowerCase() === 'male') {
       return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', width: '10rem', marginTop: '15px' }}>
         <p>เพศ: ชาย</p>
         <Card elevation={4} sx={{ background: '#1e88e5', marginLeft: '10px' }}>

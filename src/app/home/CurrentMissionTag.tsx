@@ -73,7 +73,6 @@ export default function CurrentMissionTah() {
         missionTag.findIndex((step, i) => !(i in completed))
         : activeStep + 1;
     setActiveStep(newActiveStep);
-    alert(activeStep);
 
   };
 

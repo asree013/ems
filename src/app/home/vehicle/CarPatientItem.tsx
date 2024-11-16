@@ -6,6 +6,8 @@ import { PatientBelongCar } from '@/models/patient';
 import { Vehicles } from '@/models/vehicle.model';
 import { toast } from '@/services/alert.service';
 import { unAssingPatinetToCarByCarIdAndPatientId } from '@/services/car.service';
+import { unAssingPatientInHelicopter } from '@/services/helicopter.service';
+import { unAssingPatientInShip } from '@/services/ship.service';
 import { convertGender } from '@/services/user.service';
 import QueuePlayNextIcon from '@mui/icons-material/QueuePlayNext';
 import { Button, IconButton, Tooltip } from '@mui/material';
@@ -37,12 +39,17 @@ export default function CarPatientitem({ patient, vehicle }: { patient: PatientB
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     if (vehicle.car) {
-                        const result = await unAssingPatinetToCarByCarIdAndPatientId(vehicle.car.Car.id, patient.Patient.id)
+                        await unAssingPatinetToCarByCarIdAndPatientId(vehicle.car.Car.id, patient.Patient.id)
                         toast(`เอาผู้ป่วย ${patient.Patient.first_name} ${patient.Patient.last_name} ออกจากรถแล้ว`, 'success')
                     }
                     if (vehicle.helicopter) {
+                        await unAssingPatientInHelicopter(vehicle.helicopter.helicopter_id, patient.patient_id)
                         toast(`เอาผู้ป่วย ${patient.Patient.first_name} ${patient.Patient.last_name} ออกจาก ฮ. แล้ว`, 'success')
 
+                    }
+                    if (vehicle.ship) {
+                        await unAssingPatientInShip(vehicle.ship.ship_id, patient.id)
+                        toast(`เอาผู้ป่วย ${patient.Patient.first_name} ${patient.Patient.last_name} ออกจากเรือแล้ว`, 'success')
                     }
                 }
             });
@@ -57,13 +64,25 @@ export default function CarPatientitem({ patient, vehicle }: { patient: PatientB
     }
 
     function navigateToTronformCar() {
-        setLoad(true)
-        window.location.href = `vehicle?tranfrom=car&heliopter_id=${vehicle.helicopter.helicopter_id}&patient_id=${patient.Patient.id}`
+        if (vehicle.helicopter) {
+            setLoad(true)
+            window.location.href = `vehicle?tranfrom=car&heliopter_id=${vehicle.helicopter.helicopter_id}&patient_id=${patient.Patient.id}`
+        }
+        if (vehicle.ship) {
+            setLoad(true)
+            window.location.href = `vehicle?tranfrom=car&ship_id=${vehicle.ship.ship_id}&patient_id=${patient.Patient.id}`
+        }
     }
 
     function navigateToTranformToHalicopter() {
-        setLoad(true)
-        window.location.href = `vehicle?tranfrom=helicopter&car_id=${vehicle.car.car_id}&patient_id=${patient.Patient.id}`
+        if (vehicle.ship) {
+            setLoad(true)
+            window.location.href = `vehicle?tranfrom=helicopter&ship_id=${vehicle.ship.ship_id}&patient_id=${patient.Patient.id}`
+        }
+        if (vehicle.car) {
+            setLoad(true)
+            window.location.href = `vehicle?tranfrom=helicopter&car_id=${vehicle.car.car_id}&patient_id=${patient.Patient.id}`
+        }
     }
 
     return (
@@ -78,7 +97,7 @@ export default function CarPatientitem({ patient, vehicle }: { patient: PatientB
                         <p>{patient.Patient.first_name}</p>
                         <p>{patient.Patient.last_name}</p>
                     </ListItemText>
-                    {
+                    {/* {
                         patient.Patient.OrderTransfer.filter(r => r.status_order.toLocaleLowerCase().includes('transfer')).length > 0 ?
                             null :
                             <ListItemText className='ml-4'>
@@ -91,7 +110,7 @@ export default function CarPatientitem({ patient, vehicle }: { patient: PatientB
                                     </IconButton>
                                 </Tooltip>
                             </ListItemText>
-                    }
+                    } */}
                 </ListItem>
                 <div >
                     {

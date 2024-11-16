@@ -62,6 +62,17 @@ export function assingPatientInHelicopter(helicopter_id: string, patient_id: str
     }
 }
 
+export function unAssingPatientInHelicopter(helicopter_id: string, patient_id: string) {
+    const data = {
+        patient_id: patient_id
+    }
+    try {
+        return endpoint.put<Helicopters>(enviromentDev.helicopter + `/${helicopter_id}/un_assign_patient_belong_helicopter/${helicopter_id}`, data)
+    } catch (error) {
+        throw error
+    }
+}
+
 export function unJiontHelicopter(helicopter_id: string) {
     try {
         return endpoint.put<Helicopters>(enviromentDev.helicopter + `/${helicopter_id}/un_belong_helicopter`)

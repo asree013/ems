@@ -172,7 +172,6 @@ const GoogleApiMap = ({ mission }: Props) => {
             };
         }
         if (vehicle.ship) {
-            alert('shipt')
             return {
                 url: ShipIcon.src,
                 scaledSize: new window.google.maps.Size(35, 35),

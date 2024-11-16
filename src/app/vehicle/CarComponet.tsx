@@ -9,32 +9,50 @@ import { findCarAll } from '@/services/car.service'
 import { timeOutJwt } from '@/services/timeout.service'
 import { TVehicleHomeContext, VehiclesHomeContext } from './vehicle_home.context'
 import { useSearchParams } from 'next/navigation'
+import { MissionById, Missions } from '@/models/mission.model'
+import { findMissionCurrent } from '@/services/mission.service'
+import { toast } from '@/services/alert.service'
 
 export default function CarComponet() {
   const tranfrom = useSearchParams().get('tranfrom')
+
   const [load, setLoad] = useState<boolean>(false)
   const [cars, setCars] = useState<Cars[]>({} as Cars[])
-  const { vehicle } = React.useContext<TVehicleHomeContext>(VehiclesHomeContext)
+  const [currentMission, setCurrentMission] = useState<MissionById>({} as MissionById)
+  const [isMissionNull, setIsMissionNull] = useState<boolean>(false)
 
-
+  const onFeedCurrentMission = useCallback(async() => {
+    try {
+      const resutl = await findMissionCurrent()
+      setCurrentMission(resutl.data)
+    } catch (error) {
+      toast('คุณไม่มีภากิจ', 'error')
+    }
+  }, [setCurrentMission])
+  
   const feedCar = useCallback(async () => {
     setLoad(true)
     try {
       const result = await findCarAll()
-      if (!tranfrom) {    
+
+      if (!tranfrom) {
+        console.log(result.data);
         setCars(result.data)
+        return
       }
-      else{
-        const newData = result.data.filter((r => {
-          if (r.mission_id === vehicle.car.Car.mission_id) {
-            return r
-          }
-          if (r.mission_id === vehicle.helicopter.Helicopter.mission_id) {
-            return r
-          }
-        }))
-        setCars(newData)
+      const newData = await result.data.filter((r => {
+        if (r.mission_id === currentMission.id) {
+          return r
+        }
+        else{
+          return null
+        }
+      }))
+      console.log(newData);
+      if(newData.length === 0) {
+        setIsMissionNull(true)
       }
+      setCars(newData)
     } catch (error) {
       timeOutJwt(error)
     } finally {
@@ -44,7 +62,9 @@ export default function CarComponet() {
 
   useEffect(() => {
     feedCar()
-  }, [feedCar])
+    onFeedCurrentMission()
+
+  }, [feedCar, onFeedCurrentMission])
 
   return (
     <>
@@ -59,6 +79,10 @@ export default function CarComponet() {
           cars.map((r, i) =>
             <CarCard key={i} data={r} />
           )
+      }
+      {
+        isMissionNull?
+        <p style={{margin: 20, fontSize: 23}}>ไม่มีรถรับส่งอื่นในภารกิจของคุณ</p>:null
       }
 
       {

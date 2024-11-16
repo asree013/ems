@@ -31,6 +31,10 @@ import QrCode2Icon from '@mui/icons-material/QrCode2';
 import AirplanemodeActiveIcon from '@mui/icons-material/AirplanemodeActive';
 import DirectionsBoatIcon from '@mui/icons-material/DirectionsBoat';
 import HelicopterIcon from '@/assets/image/icon_menu/helicopter_5768628.png'
+import CarIcon from '@/assets/icon/ambulance.png'
+import ShipIcon from '@/assets/image/icon_menu/ship_3469160.png'
+import BlockIcon from '@mui/icons-material/Block';
+import { assingPatientInShip } from '@/services/ship.service';
 
 type Props = {
   patient: Patients;
@@ -76,7 +80,8 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
           history.back()
         }
         if (key === 'add-ship') {
-
+          await assingPatientInShip(vehicle_id, patient.id)
+          history.back()
         }
       }
     } catch (error: any) {
@@ -107,12 +112,50 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
               QR_Number: {patient.qr_number ?? "ไม่มีเลข"}
             </Typography>
             {
-              key?.includes('add-helicopter') ?
-                <Badge badgeContent="อยู๋" color='success'>
-                  <img style={{ width: 30 }} src={HelicopterIcon.src} />
-                </Badge> :
-                null
+              patient.BelongHelicopter ?
+                <IconButton color='primary' onClick={() => {
+                  setIsLoad(true)
+                  window.location.href = '/vihecle/' + patient.BelongHelicopter.helicopter_id + '/helicopter'
+                }}>
+                  <Badge sx={{ overflow: 'scroll' }} badgeContent="อยู๋" color='success'>
+                    <img style={{ width: 30 }} src={HelicopterIcon.src} />
+                  </Badge>
+                </IconButton> : null
             }
+            {
+              patient.BelongCar ?
+                <IconButton color='default' onClick={() => {
+                  setIsLoad(true)
+                  window.location.href = '/vehicle/' + patient.BelongCar.car_id + '/car/detail'
+                }}>
+                  <Badge badgeContent="อยู๋" color='success'>
+                    <img style={{ width: 30 }} src={CarIcon.src} />
+                  </Badge>
+                </IconButton>
+                : null
+            }
+            {
+              patient.BelongChip ?
+                <IconButton color='default' onClick={() => {
+                  setIsLoad(true)
+                  window.location.href = '/vehicle/' + patient.BelongCar.car_id + '/car/detail'
+                }}>
+                  <Badge badgeContent="อยู๋" color='success'>
+                    <img style={{ width: 30 }} src={ShipIcon.src} />
+                  </Badge>
+                </IconButton>
+                : null
+            }
+            {
+              !patient.BelongHelicopter && !patient.BelongCar && !patient.BelongChip ?
+                <IconButton color='primary'>
+                  <Badge badgeContent="ว่าง" color='warning'>
+                    <BlockIcon color='error' />
+                  </Badge>
+                </IconButton>
+                : null
+            }
+
           </Stack>
           <Divider />
           <Stack

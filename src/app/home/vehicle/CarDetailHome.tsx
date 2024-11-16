@@ -109,6 +109,14 @@ function SwipeableTextMobileStepper({ vehicle }: Props) {
       },
     ]
   }
+  if (vehicle.ship) {
+    dataImage = [
+      {
+        imgPath: vehicle.ship.Ship?.image,
+        label: 'หน้ารถ'
+      }
+    ]
+  }
 
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);

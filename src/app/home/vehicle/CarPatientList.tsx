@@ -51,13 +51,13 @@ export default function CarPatientList() {
                                             )
                                     }
 
-                                    {/* {
+                                    {
                                         !vehicle.ship ?
                                             null :
-                                            vehicle.ship?.map((r, i) =>
-                                                <CarPatientitem key={i} patient={r} />
+                                            vehicle.ship.Ship.PatientBelongShip.map((r, i) =>
+                                                <CarPatientitem key={i} patient={r} vehicle={vehicle} />
                                             )
-                                    } */}
+                                    }
 
                                 </div>
                                 : <div onClick={() => {
@@ -79,6 +79,9 @@ export default function CarPatientList() {
                                 }
                                 if (vehicle.helicopter) {
                                     window.location.href = '/patient?key=add-helicopter&vehicle_id=' + vehicle.helicopter.Helicopter.id
+                                }
+                                if (vehicle.ship) {
+                                    window.location.href = '/patient?key=add-ship&vehicle_id=' + vehicle.ship.ship_id
                                 }
                             }}>
                                 {

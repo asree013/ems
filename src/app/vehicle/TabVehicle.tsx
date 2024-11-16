@@ -71,12 +71,18 @@ export default function TabVehicle() {
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }} >
-        <TabStyled value={value} onChange={handleChange} aria-label="basic tabs example">
+        <TabStyled
+          value={value}
+          onChange={handleChange}
+          variant="scrollable"
+          scrollButtons="auto"
+          aria-label="scrollable auto tabs example"
+        >
           <Tab label="พาหนะของฉัน" {...a11yProps(0)} />
           <Tab label="รถยนต์" {...a11yProps(1)} />
           <Tab label="แฮลิคอปเตอร์" {...a11yProps(2)} />
-          <Tab label="เรือ" {...a11yProps(2)} />
-          <Tab label="หน่วยเดินเท้า" {...a11yProps(2)} />
+          <Tab label="เรือ" {...a11yProps(3)} />
+          {/* <Tab label="หน่วยเดินเท้า" {...a11yProps(4)} /> */}
         </TabStyled>
       </Box>
       <CustomTabPanel value={value} index={0}>

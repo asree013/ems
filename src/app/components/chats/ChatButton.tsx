@@ -35,51 +35,6 @@ import styled from 'styled-components';
 import { NIL } from 'uuid';
 
 
-type CurrenChat = {
-  chat_id: string,
-  title: string,
-  is_online: boolean,
-  image_chat: string
-}
-
-const StyledBadge = styleMui(Badge)<BadgeProps>(({ theme }) => ({
-  '& .MuiBadge-badge': {
-    right: 0,
-    top: 5,
-    border: `2px solid ${theme.palette.background.paper}`,
-    padding: '0 4px',
-  },
-}));
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function CustomTabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
-    </div>
-  );
-}
-
-function a11yProps(index: number) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
-
 const PopupButton = styled.div`
     .positionChat{
       position: fixed;
@@ -124,7 +79,7 @@ const PopupButton = styled.div`
         border-radius: 8px;
     }
 
-    @media only screen and (min-width: 350px) {
+    @media only screen and (max-width: 450px) {
         .positionChat{
             right: 15px;
         }
@@ -145,7 +100,7 @@ const PopupButton = styled.div`
         }
     }
 
-    @media only screen and (min-width: 768px) {
+    /* @media only screen and (min-width: 768px) {
       .positionChat{
           top: 900px;
           right: 3rem;
@@ -158,10 +113,10 @@ const PopupButton = styled.div`
           top: 480px;
           right: 3rem;
       }
-    }
+    } */
 
 
-  @media only screen and (min-width: 1025px) {
+  @media only screen and (max-width: 1370px) {
       .positionChat{
           top: 40rem;
           right: 5rem;
@@ -177,6 +132,50 @@ const PopupButton = styled.div`
     }
   `
 
+type CurrenChat = {
+  chat_id: string,
+  title: string,
+  is_online: boolean,
+  image_chat: string
+}
+
+const StyledBadge = styleMui(Badge)<BadgeProps>(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    right: 0,
+    top: 5,
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: '0 4px',
+  },
+}));
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+function CustomTabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </div>
+  );
+}
+
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
 
 export default function ChatButton() {
   const [open, setOpen] = React.useState<boolean>(false);

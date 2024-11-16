@@ -42,7 +42,7 @@ export interface Patients {
   DiscoveredPatient: any
   OrderTransfer: Array<any>
   ParkingHistory: any
-  BelongCar: any
+  BelongCar: BelongCar
   BelongChip: any
   BelongHelicopter: BelongToHelicopter
   HistoryPatientBelongCar: Array<any>
@@ -97,6 +97,33 @@ interface HistoryPatientBelongHelicopter {
   update_date: string
 }
 
+interface BelongCar {
+  id: string
+  car_id: string
+  patient_id: string
+  create_date: string
+  update_date: string
+  Car: {
+    id: string
+    status: string
+    type: string
+    number: string
+    description: any
+    image_front: string
+    image_back: string
+    image_left: string
+    image_rigth: string
+    radio: string
+    calling: string
+    driver_id: any
+    mission_id: any
+    create_date: string
+    update_date: string
+    hospital_id: string
+    Mission: any
+  }
+}
+
 export interface PatientBelongCar {
   id: string
   car_id: string
@@ -128,39 +155,44 @@ export interface PatientBelongCar {
     update_date: string
     mission_id: any
     risk_level_id: any
-    History: Array<{
-      id: string
-      symptom_details: string
-      status: string
-      create_date: string
-      update_date: string
-      patient_id: string
-      chief_complaint: string
-      present_illness: string
-      user_create_id: string
-      user_update_id: string
-      physical_status: string
-      triage_lavel: string
-      Exan: Array<{
-        id: string
-        element_id: string
-        text: string
-        image: string
-        create_date: string
-        update_date: string
-        history_id: string
-        user_create_id: string
-        user_update_id: string
-      }>
-    }>
-    OrderTransfer: Array<{
-      id: string
-      status_order: string
-      element_seq: number
-      create_date: string
-      hospital_id: any
-      patient_id: string
-    }>
+    History: Array<HistoryInVehicle>
+    OrderTransfer: Array<OrderTranferInVehicle>
     Risklevel: any
   }
+}
+
+
+export type HistoryInVehicle = {
+  id: string
+  symptom_details: string
+  status: string
+  create_date: string
+  update_date: string
+  patient_id: string
+  chief_complaint: string
+  present_illness: string
+  user_create_id: string
+  user_update_id: string
+  physical_status: string
+  triage_lavel: string
+  Exan: Array<{
+    id: string
+    element_id: string
+    text: string
+    image: string
+    create_date: string
+    update_date: string
+    history_id: string
+    user_create_id: string
+    user_update_id: string
+  }>
+}
+
+export type OrderTranferInVehicle = {
+  id: string
+  status_order: string
+  element_seq: number
+  create_date: string
+  hospital_id: any
+  patient_id: string
 }

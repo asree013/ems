@@ -28,6 +28,7 @@ import { Vehicles } from '@/models/vehicle.model';
 import { unJiontHelicopter } from '@/services/helicopter.service';
 import { unJoinCar } from '@/services/car.service';
 import { unJionMissioon } from '@/services/mission.service';
+import { unJoinShip } from '@/services/ship.service';
 
 export default function VehicleCard() {
     const { vehicle, setVehicle } = useContext<TCurrentVehicles>(CurrentVehicleContext)
@@ -162,7 +163,7 @@ function AlertDialog() {
                                 color='primary'
                                 sx={{ fontSize: 'sm3', fontWeight: 'xl', mt: 1 }}
                             >
-                                ออกจาก {vehicle.car ? "รถ" : null} {vehicle.helicopter ? "ฮ." : null}
+                                ออกจาก {vehicle.car ? "รถ" : null} {vehicle.helicopter ? "ฮ." : null} {vehicle.ship ? "เรือ" : null}
                             </Typography>
                         </Typography>
                     </DialogContentText>
@@ -179,7 +180,7 @@ function AlertDialog() {
                                 color='danger'
                                 sx={{ fontSize: 'sm3', fontWeight: 'xl', mt: 1 }}
                             >
-                                ออกจาก {vehicle.car ? "รถ" : null} {vehicle.helicopter ? "ฮ." : null} และภารกิจ
+                                ออกจาก {vehicle.car ? "รถ" : null} {vehicle.helicopter ? "ฮ." : null} {vehicle.ship ? "เรือ" : null} และภารกิจ
                             </Typography>
                         </Typography>
                     </DialogContentText>
@@ -204,6 +205,11 @@ function AlertDialog() {
                                 window.location.reload()
                                 handleClose()
                             }
+                            if(vehicle.ship) {
+                                await unJoinShip(vehicle.ship.ship_id)
+                                window.location.reload()
+                                handleClose()
+                            }
                         } catch (error) {
                             toast(`เกิดข้อผิดพลาดไม่สามารถออกจากยานพาหนะได้`, 'error')
                         } finally {
@@ -213,7 +219,7 @@ function AlertDialog() {
                         {
                             load ?
                                 <CircularProgress size="sm" /> :
-                                <p>ออกจาก{vehicle.car ? "รถ" : null} {vehicle.helicopter ? "ฮ." : null}</p>
+                                <p>ออกจาก{vehicle.car ? "รถ" : null} {vehicle.helicopter ? "ฮ." : null} {vehicle.ship ? "เรือ" : null}</p>
                         }
                     </Button>
                     <Button disabled={load} color='danger' onClick={async () => {

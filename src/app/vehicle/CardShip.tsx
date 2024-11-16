@@ -35,7 +35,8 @@ import vehicleCss from './vehicle.module.css'
 import { useSearchParams } from 'next/navigation';
 import { toast } from '@/services/alert.service';
 import { findHelicopterById, updateDriverInHelicopter, updateUserInHelicpter } from '@/services/helicopter.service';
-import { findShipById } from '@/services/ship.service';
+import { assingBelongShip, assingDriverBelongShip, findShipById } from '@/services/ship.service';
+import { FindUserMe } from '@/services/authen.service';
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -70,6 +71,28 @@ export default function CardShip({ data, ship_id }: Props) {
         setExpanded(!expanded);
     };
 
+    async function addDriverInShip(){
+        setLoad(true)
+        try {
+            const findMe = await FindUserMe()
+            await assingDriverBelongShip(data.id, findMe.data.id)
+            window.location.reload()
+            setValue(0)
+        } catch (error: any) {
+            toast(error.message, 'error')
+        } finally{
+            setLoad(false)
+        }
+    }
+
+    async function joinShip() {
+        try {
+            await assingBelongShip(data.id)
+            window.location.reload()
+        } catch (error: any) {
+            toast(JSON.stringify(error.message), 'error')
+        }
+    }
     // async function hanlerAddHelicopter() {
     //     setLoad(true)
     //     const user_id = localStorage.getItem('user_id')
@@ -100,6 +123,7 @@ export default function CardShip({ data, ship_id }: Props) {
             setLoad(false)
         }
     }, [ship_id])
+    
 
     // async function handlerAddUserInHelicopter() {
     //     setLoad(true)
@@ -177,9 +201,9 @@ export default function CardShip({ data, ship_id }: Props) {
                                     {
                                         ships.driver_id ?
                                             null :
-                                            <Button type='button' onClick={() => {}}>ขับเรือ</Button>
+                                            <Button type='button' onClick={addDriverInShip}>ขับเรือ</Button>
                                     }
-                                    <Button type='button' onClick={() => {}}>เข้ามร่วมเรือ</Button>
+                                    <Button type='button' onClick={joinShip}>เข้ามร่วมเรือ</Button>
                                 </div>
                             :
                             car_id ?

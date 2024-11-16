@@ -22,8 +22,8 @@ export default function Page() {
   const [load, setLoad] = useState<boolean>(false)
   const [patients, setPatients] = useState<Patients[]>([]);
   const [patientData, setPatientsData] = useState<Patients[]>([]);
-  const key = useSearchParams().get('key')
-  
+  const [value, setValue] = useState<string>('')
+
   async function onUpdatePage(page: number, limit: number) {
 
     setLoad(true)
@@ -43,22 +43,15 @@ export default function Page() {
     try {
       const result = await findPatientAll(1, 5);
       setPatientsData(result.data)
-      if (!key) {
-        setPatients(result.data)
-      }
-      else if (key?.includes('add-helicopter')) {
-        setPatients(result.data.filter(r => r.mission_id !== null && r.BelongHelicopter.Helicopter.id !== null));
-      }
-      else {
-        setPatients(result.data.filter(r => r.mission_id === null && r.BelongHelicopter.Helicopter.id === null));
-      }
+      setPatients(result.data.filter(r => !r.mission_id && !r.BelongHelicopter && !r.BelongCar && !r.BelongChip));
+
     } catch (error) {
       console.log(error);
       timeOutJwt(error)
     } finally {
       setLoad(false);
     }
-  }, [setPatients]);
+  }, [setPatients, setPatientsData]);
 
   async function onScan(str: string) {
     setLoad(true)
@@ -108,24 +101,35 @@ export default function Page() {
   }
 
   function onFindAll() {
-
     setPatients(patientData)
   }
 
   function onFindCars() {
-    setPatients({} as Patients[])
+
+    const newData = patientData.filter(r => r.BelongCar)
+    console.log(newData);
+    
+    setPatients(newData)
   }
 
   function onFindHalicopter() {
-    const newData = patientData.filter(r => r.BelongHelicopter.Helicopter.id.length > 0)
+    const newData = patientData.filter(r => r.BelongHelicopter)
     setPatients(newData)
   }
 
   function onFindShip() {
-    // const newData = patientData.filter(r => r.BelongChip.Chip.id.length > 0)
+    const newData = patientData.filter(r => r.BelongChip.Chip)
     setPatients({} as Patients[])
   }
 
+  function onAssignValue(value: string) {
+    console.log(value);
+    
+  }
+
+  function patientNoneAssign() {
+    setPatients(patientData.filter(r => !r.mission_id && !r.BelongHelicopter && !r.BelongCar && !r.BelongChip));
+  }
   useEffect(() => {
     feedPateint();
   }, [feedPateint]);
@@ -140,16 +144,14 @@ export default function Page() {
             setLoad(true)
             window.location.href = '/patient/' + NIL
           }}>+ ผู้ป่วย</Button>
-          {
-            String(key).length === 0 ?
-              null:
-              <TabPatient
-                onRetunFindAll={onFindAll}
-                onRetunFindCar={onFindCars}
-                onRetunFindHalicopter={onFindHalicopter}
-                onRetunFindShip={onFindShip}
-              />
-          }
+          <TabPatient
+            onReturnNone={patientNoneAssign}
+            onRetunFindAll={onFindAll}
+            onRetunFindCar={onFindCars}
+            onRetunFindHalicopter={onFindHalicopter}
+            onRetunFindShip={onFindShip}
+            onSetValue={onAssignValue}
+          />
         </Box>
         <Divider sx={{ marginTop: '10px' }} />
         <PatientItem />

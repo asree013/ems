@@ -33,23 +33,31 @@ export default function CarHistoryPatient() {
                     <Box sx={{ height: '100%' }}>
                         {
                             vehicle.car || vehicle.helicopter || vehicle.ship ?
-                                <div style={{  height: '22rem', overflow: 'scroll', }}>
+                                <div style={{ height: '22rem', overflow: 'scroll', }}>
                                     {
-                                        !vehicle.car?
-                                        null:
-                                        vehicle.car.Car.PatientBelongCar?.map((r, i) => 
-                                            <CarHistoryItem key={i} name={{first_name: r.Patient.first_name, last_name: r.Patient.last_name, gender: r.Patient.gender}} patient_id={r.patient_id} history={r.Patient.History[0]} />
-                                        )
+                                        !vehicle.car ?
+                                            null :
+                                            vehicle.car.Car.PatientBelongCar?.map((r, i) =>
+                                                <CarHistoryItem key={i} name={{ first_name: r.Patient.first_name, last_name: r.Patient.last_name, gender: r.Patient.gender }} patient_id={r.patient_id} history={r.Patient.History[0]} />
+                                            )
                                     }
 
-{
-                                        !vehicle.helicopter?
-                                        null:
-                                        vehicle.helicopter.Helicopter.PatientBelongHelicopter?.map((r, i) => 
-                                            <CarHistoryItem key={i} name={{first_name: r.Patient.first_name, last_name: r.Patient.last_name, gender: r.Patient.gender}} patient_id={r.patient_id} history={r.Patient.History[0]} />
-                                        )
+                                    {
+                                        !vehicle.helicopter ?
+                                            null :
+                                            vehicle.helicopter.Helicopter.PatientBelongHelicopter?.map((r, i) =>
+                                                <CarHistoryItem key={i} name={{ first_name: r.Patient.first_name, last_name: r.Patient.last_name, gender: r.Patient.gender }} patient_id={r.patient_id} history={r.Patient.History[0]} />
+                                            )
                                     }
-                                    
+
+                                    {
+                                        !vehicle.ship ?
+                                            null :
+                                            vehicle.ship.Ship.PatientBelongShip?.map((r, i) =>
+                                                <CarHistoryItem key={i} name={{ first_name: r.Patient.first_name, last_name: r.Patient.last_name, gender: r.Patient.gender }} patient_id={r.patient_id} history={r.Patient.History[0]} />
+                                            )
+                                    }
+
                                 </div>
                                 : <div onClick={() => {
                                     setLoad(true)
@@ -65,9 +73,9 @@ export default function CarHistoryPatient() {
                         <Button
                             variant="soft"
                             color="neutral"
-                            // endDecorator={<KeyboardArrowRight />}
+                        // endDecorator={<KeyboardArrowRight />}
                         >
-                                จำนวนผู้ป่วย
+                            จำนวนผู้ป่วย
                             {vehicle.helicopter?.Helicopter.PatientBelongHelicopter.length}
                             {vehicle.car?.Car.PatientBelongCar.length}
                             {/* {vehicle.ship?.PatientBelongCar.length} */}
