@@ -10,26 +10,31 @@ import { useContext } from 'react';
 import { CurrentMissionContext, TCurrentMission } from '@/contexts/currentMission.context';
 import { getLatLng, haversines } from '@/services/sum_lat_long.service';
 import { LocateContextUser, TLocateC } from '@/contexts/locate.context';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Box } from '@mui/material';
+import PatientCount from './accrodien/PatientCount';
 
 export default function CardMissionUser() {
     const { missionUser, setMissionUser } = useContext<TCurrentMission>(CurrentMissionContext)
-    const { userLocate, setUserLocate } = useContext<TLocateC>(LocateContextUser)    
+    const { userLocate, setUserLocate } = useContext<TLocateC>(LocateContextUser)
 
     return (
         <>
             {
                 missionUser ?
-                        <Card
-                            onClick={() => window.location.href = '/mission/' + missionUser.id+ '/mission_detail'}
-                            key={missionUser.id}
-                            variant="outlined"
-                            orientation="horizontal"
-                            
-                            sx={{
-                                cursor: 'pointer',
-                                width: '100%',
-                                '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder' },
-                            }}
+                    <Accordion variant="outlined"
+                        sx={{
+                            cursor: 'pointer',
+                            width: '100%',
+                            '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder' },
+                        }}                   >
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1-content"
+                            id="panel1-header"
                         >
                             <AspectRatio ratio="1" sx={{ width: 90 }}>
                                 <img
@@ -39,7 +44,7 @@ export default function CardMissionUser() {
                                     alt=""
                                 />
                             </AspectRatio>
-                            <CardContent>
+                            <CardContent sx={{ margin: '0 10px' }}>
                                 <Typography level="title-lg" id="card-description">
                                     {missionUser.title}
                                 </Typography>
@@ -64,7 +69,14 @@ export default function CardMissionUser() {
                                     }
                                 </Chip>
                             </CardContent>
-                        </Card> :
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Box>
+                                <PatientCount currentMission={missionUser} />
+                            </Box>
+                        </AccordionDetails>
+                    </Accordion>
+                    :
                     <h1>ไม่มี ภารกิจ</h1>
             }
         </>

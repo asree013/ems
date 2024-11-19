@@ -3,7 +3,7 @@
 import Loadding from '@/components/Loadding';
 import { enviromentDev } from '@/configs/enviroment.dev';
 import { PatientBelongCar } from '@/models/patient';
-import { Vehicles } from '@/models/vehicle.model';
+import { PatientBelongShip, Vehicles } from '@/models/vehicle.model';
 import { toast } from '@/services/alert.service';
 import { unAssingPatinetToCarByCarIdAndPatientId } from '@/services/car.service';
 import { unAssingPatientInHelicopter } from '@/services/helicopter.service';
@@ -21,7 +21,7 @@ import * as React from 'react';
 import Swal from 'sweetalert2';
 
 
-export default function CarPatientitem({ patient, vehicle }: { patient: PatientBelongCar, vehicle: Vehicles }) {
+export default function CarPatientitem({ patient, vehicle }: { patient: PatientBelongCar | PatientBelongShip, vehicle: Vehicles }) {
     const [load, setLoad] = React.useState(false)
 
 

@@ -21,8 +21,8 @@ export default function Page() {
   const feedMissionAll = useCallback(async () => {
     setLoad(true)
     try {
-      const result = await findMission(1, 5)    
-      setMissions(result.data.filter(r => r.status.includes("Progress")))
+      const result = await findMission(1, 10)    
+      setMissions(result.data.filter(r => r.status.includes('Progress')))
 
     } catch (error: any) {
       toast(error.message, 'error')

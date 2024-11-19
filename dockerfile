@@ -22,6 +22,9 @@ RUN npm install --legacy-peer-deps --production \
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 
+# ตั้งค่าตัวแปรใน Dockerfile
+ARG NEXT_PUBLIC_KEY_VALUE
+ENV NEXT_PUBLIC_KEY_VALUE=$NEXT_PUBLIC_KEY_VALUE
 ENV NODE_ENV=production
 
 EXPOSE 3000

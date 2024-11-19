@@ -298,3 +298,12 @@
         margin-top: 10px;
     }
 }
+
+.labelIconGoogle{
+    background: white;
+    color: black;
+    border-radius: 5px;
+    padding: 3px;
+    border: 1px solid black;
+    font-weight: 600;
+}

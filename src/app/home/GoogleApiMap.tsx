@@ -22,6 +22,7 @@ import ShipIcon from '@/assets/image/icon_menu/ship_3469160.png'
 import AmbulanceIcon from '@/assets/icon/ambulance.png';
 import UserIcon from '@/assets/image/icon_menu/placeholder_3207670.png';
 import { Vehicles } from '@/models/vehicle.model';
+import '../globals.css';
 
 
 type LatLng = {
@@ -92,7 +93,6 @@ const IOSSwitch = styled((props: SwitchProps) => (
     },
 }));
 
-
 const GoogleApiMap = ({ mission }: Props) => {
     const [centerLocate, setCenterLocate] = useState<LatLng | null>(null);
     const [icon, setIcon] = useState<IconGoogleMap | null>(null);
@@ -113,7 +113,8 @@ const GoogleApiMap = ({ mission }: Props) => {
                     scaledSize: new window.google.maps.Size(35, 35),
                     origin: new window.google.maps.Point(0, 0),
                     anchor: new window.google.maps.Point(20, 20),
-                    labelOrigin: new window.google.maps.Point(20, -30),
+                    labelOrigin: new window.google.maps.Point(20, 55),
+
                 });
                 clearInterval(intervalId);
                 setLoad(false);
@@ -159,7 +160,7 @@ const GoogleApiMap = ({ mission }: Props) => {
                 scaledSize: new window.google.maps.Size(35, 35),
                 origin: new window.google.maps.Point(0, 0),
                 anchor: new window.google.maps.Point(20, 20),
-                labelOrigin: new window.google.maps.Point(20, -30),
+                labelOrigin: new window.google.maps.Point(20, 55),
             };
         }
         if (vehicle.helicopter) {
@@ -168,7 +169,7 @@ const GoogleApiMap = ({ mission }: Props) => {
                 scaledSize: new window.google.maps.Size(35, 35),
                 origin: new window.google.maps.Point(0, 0),
                 anchor: new window.google.maps.Point(20, 20),
-                labelOrigin: new window.google.maps.Point(20, -30),
+                labelOrigin: new window.google.maps.Point(20, 55),
             };
         }
         if (vehicle.ship) {
@@ -177,7 +178,7 @@ const GoogleApiMap = ({ mission }: Props) => {
                 scaledSize: new window.google.maps.Size(35, 35),
                 origin: new window.google.maps.Point(0, 0),
                 anchor: new window.google.maps.Point(20, 20),
-                labelOrigin: new window.google.maps.Point(20, -30),
+                labelOrigin: new window.google.maps.Point(20, 55),
             };
         }
         if (!vehicle) {
@@ -186,7 +187,7 @@ const GoogleApiMap = ({ mission }: Props) => {
                 scaledSize: new window.google.maps.Size(35, 35),
                 origin: new window.google.maps.Point(0, 0),
                 anchor: new window.google.maps.Point(20, 20),
-                labelOrigin: new window.google.maps.Point(20, -30),
+                labelOrigin: new window.google.maps.Point(20, 55),
 
             };
         }
@@ -213,7 +214,7 @@ const GoogleApiMap = ({ mission }: Props) => {
                         >
                             {
                                 isSub ?
-                                    null:
+                                    null :
                                     <MapControl position={ControlPosition.CENTER}>
                                         <svg width="70px" height="70px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <rect width="24" height="24" fill="none" />
@@ -259,18 +260,35 @@ const GoogleApiMap = ({ mission }: Props) => {
 
     function convertNameVehicle() {
         if (vehicle.car) {
-            return vehicle.car.Car.calling
+            return {
+                text: vehicle.car.Car.number.toString(),
+                fontSize: "1.1rem",
+                className: HomeCss.labelIconGoogle
+            };
         }
         if (vehicle.ship) {
-            return vehicle.ship
+            return {
+                text: vehicle.ship.Ship.calling.toString(),
+                fontSize: "1.1rem",
+                className: HomeCss.labelIconGoogle
+            };
         }
         if (vehicle.helicopter) {
-            return vehicle.helicopter.Helicopter.calling
+            return {
+                text: vehicle.helicopter.Helicopter.number.toString(),
+                fontSize: "1.1rem",
+                className: HomeCss.labelIconGoogle
+            };
         }
         if (!vehicle) {
-            return 'ตำแหน่งของคุณ'
+            return {
+                text: "ตำแหน่งของคุณ",
+                fontSize: "1.1rem",
+                className: HomeCss.labelIconGoogle
+            };
         }
     }
+
 };
 
 function Directions({ lat, lng }: { lat: number, lng: number }) {
@@ -329,5 +347,6 @@ function Directions({ lat, lng }: { lat: number, lng: number }) {
 }
 
 export default GoogleApiMap;
+
 
 

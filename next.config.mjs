@@ -75,6 +75,6 @@ import withPWAInit from '@ducanh2912/next-pwa';
 export default {
   dest: "public",
   env: {
-    NEXT_PUBLIC_BASE_LOCAL: process.env.NEXT_PUBLIC_BASE_LOCAL
-  }
+    NEXT_PUBLIC_KEY_VALUE: process.env.NEXT_PUBLIC_KEY_VALUE, // ดึงค่าจาก environment ของ Docker
+  },
 }

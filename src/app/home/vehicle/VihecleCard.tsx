@@ -18,6 +18,10 @@ import { Badge, Paper } from '@mui/material';
 import Loadding from '@/components/Loadding';
 import { toast } from '@/services/alert.service';
 import CarDetailHome from './CarDetailHome';
+import LogoutIcon from '@mui/icons-material/Logout';
+import ShipIcon from '@/assets/icon/ship_6122344.png'
+import Ambulance from '@/assets/icon/ambulance.png'
+import Helicopter from '@/assets/image/icon_menu/helicopter_5768628.png'
 
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -29,47 +33,99 @@ import { unJiontHelicopter } from '@/services/helicopter.service';
 import { unJoinCar } from '@/services/car.service';
 import { unJionMissioon } from '@/services/mission.service';
 import { unJoinShip } from '@/services/ship.service';
+import CarDetailCard from './CarDetailCard';
+import { CurrentMissionContext, TCurrentMission } from '@/contexts/currentMission.context';
+import { LocateContextUser, TLocateC } from '@/contexts/locate.context';
+import styled from 'styled-components';
+
+const HeaderVehicle = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    @media only screen and (max-width: 1300px) {
+        flex-direction: column;
+        align-items: center;
+
+    }
+`
+
+const NumberVehicle = styled.p`
+    font-size: 18px;
+    font-weight: 600;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 2px 8px;
+`
 
 export default function VehicleCard() {
     const { vehicle, setVehicle } = useContext<TCurrentVehicles>(CurrentVehicleContext)
     const [load, setLoad] = useState(false)
-
+    const { missionUser, setMissionUser } = useContext<TCurrentMission>(CurrentMissionContext)
+    const { userLocate, setUserLocate } = useContext<TLocateC>(LocateContextUser)
 
     return (
         <>
             <Box
                 className={HomeCss.myVehicle}
             >
+                <Card size="md" variant="outlined">
+                    <HeaderVehicle>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
+                            <p style={{ fontSize: '1.2rem', fontWeight: 600, marginLeft: '5px' }}>
+                                ยานพาหนะของฉัน
+                            </p>
+                        </div>
+                        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-around', flexDirection: 'row'}}>
+                            {
+                                vehicle.car ?
+                                    <img src={Ambulance.src} style={{ width: 30, height: 30, margin: '0 10px' }} alt="" /> :
+                                    null
+                            }
+                            {
+                                vehicle.ship ?
+                                    <img src={ShipIcon.src} style={{ width: 30, height: 30, margin: '0 10px' }} alt="" /> :
+                                    null
+                            }
+                            {
+                                vehicle.helicopter ?
+                                    <img src={Helicopter.src} style={{ width: 30, height: 30, margin: '0 10px' }} alt="" /> :
+                                    null
+                            }
+                            <NumberVehicle>
+                                {
+                                    vehicle.car ?
+                                        vehicle.car.Car.number :
+                                        null
+                                }
+                                {
+                                    vehicle.helicopter ?
+                                        vehicle.helicopter.Helicopter.number :
+                                        null
+                                }
+                                {
+                                    vehicle.ship ?
+                                        vehicle.ship.Ship.calling :
+                                        null
+                                }
+                            </NumberVehicle>
+                        </div>
 
-                <Card size="lg" variant="outlined">
-                    {/* <Chip size="sm" variant="outlined" color="neutral">
-                    BASIC
-                </Chip> */}
-                    <Typography level="h4"><DirectionsCarIcon color='primary' /> ยานพาหนะของฉัน</Typography>
+                    </HeaderVehicle>
+
                     <AlertDialog />
 
                     <Divider inset="none" />
-                    <Box sx={{ height: '100%' }}>
-                        {
-                            vehicle.car || vehicle.helicopter || vehicle.ship ?
-                                <div style={{ height: '100%' }}>
-                                    <CarDetailHome vehicles={vehicle} />
-                                </div>
-                                : <div onClick={() => {
-                                    setLoad(true)
-                                    window.location.href = '/vehicle'
-                                }}>
-                                    <p>ไม่มียานพาหนะที่คุณใช้งานในคณะนี้ กดบวกเพื่อเลือกยานพหานะที่ต้องการใช้งาน</p>
-                                    <div style={{ width: '100%', minHeight: '4rem', maxHeight: '17.3rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                        <Paper elevation={3} style={{ width: '9rem', minHeight: '3.5rem', height: '9rem', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }} >
-                                            <AddIcon style={{ width: '3rem', minHeight: '3rem', height: '9rem' }} />
-                                        </Paper>
-                                    </div>
-                                </div>
-                        }
+                    <Box>
+                        <CarDetailCard latlngMission={{
+                            lat: missionUser.lat,
+                            long: missionUser.long
+                        }} latlngUser={{
+                            lat: userLocate.lat,
+                            long: userLocate.long
+                        }} />
                     </Box>
-                    <Divider inset="none" />
-                    <CardActions>
+                    {/* <CardActions>
                         <Typography level="title-lg" sx={{ mr: 'auto' }}>
                             <Typography textColor="text.tertiary" sx={{ fontSize: 'sm' }}>
                                 เลขทะเบียน
@@ -106,9 +162,9 @@ export default function VehicleCard() {
                                 </Badge>
                                 : null
                         }
-                    </CardActions>
+                    </CardActions> */}
                 </Card>
-            </Box>
+            </Box >
 
             {
                 load ?
@@ -133,124 +189,133 @@ function AlertDialog() {
     };
 
     return (
-        <React.Fragment>
-            {
-                vehicle.car || vehicle.helicopter || vehicle.ship ?
-                    <Button variant="outlined" onClick={handleClickOpen}>
-                        อออกจากยานพาหนะ
-                    </Button> : null
-            }
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">
-                    {"คุณต้องการออกจากยานพาหนะหรือไม่ ?"}
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description" style={{ display: 'flex', alignItems: 'start', justifyContent: 'center', flexDirection: 'column' }}>
-                        <Typography
-                            component="p"
-                            textColor="text.secondary"
-                            sx={{ fontSize: 'sm', fontWeight: 'md' }}
-                        >
-                            - หากคุณต้องการออกจากยานพาหนะ ให้เลือก
+        <>
+            <React.Fragment>
+                {
+                    vehicle.car || vehicle.helicopter || vehicle.ship ?
+                        <Button variant="outlined" color='danger' endDecorator={<LogoutIcon />} onClick={handleClickOpen}>
+                            ออกยานพาหนะ
+                        </Button> : <Button endDecorator={<AddIcon />} variant="outlined" color='primary' onClick={() => {
+                            setLoad(true)
+                            window.location.href = '/vehicle'
+                        }}>
+                            เพิ่มยานพาหนะ
+                        </Button>
+                }
+                <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        {"คุณต้องการออกจากยานพาหนะหรือไม่ ?"}
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description" style={{ display: 'flex', alignItems: 'start', justifyContent: 'center', flexDirection: 'column' }}>
                             <Typography
                                 component="p"
-                                // textColor="text.primary"
-                                color='primary'
-                                sx={{ fontSize: 'sm3', fontWeight: 'xl', mt: 1 }}
+                                textColor="text.secondary"
+                                sx={{ fontSize: 'sm', fontWeight: 'md' }}
                             >
-                                ออกจาก {vehicle.car ? "รถ" : null} {vehicle.helicopter ? "ฮ." : null} {vehicle.ship ? "เรือ" : null}
+                                - หากคุณต้องการออกจากยานพาหนะ ให้เลือก
+                                <Typography
+                                    component="p"
+                                    // textColor="text.primary"
+                                    color='primary'
+                                    sx={{ fontSize: 'sm3', fontWeight: 'xl', mt: 1 }}
+                                >
+                                    ออกจาก {vehicle.car ? "รถ" : null} {vehicle.helicopter ? "ฮ." : null} {vehicle.ship ? "เรือ" : null}
+                                </Typography>
                             </Typography>
-                        </Typography>
-                    </DialogContentText>
-                    <DialogContentText style={{ marginTop: 10 }} id="alert-dialog-description">
-                        <Typography
-                            component="p"
-                            textColor="text.secondary"
-                            sx={{ fontSize: 'sm', fontWeight: 'md' }}
-                        >
-                            - หากคุณต้องการออกจากยานพาหนะและภารกิจ ให้เลือก
+                        </DialogContentText>
+                        <DialogContentText style={{ marginTop: 10 }} id="alert-dialog-description">
                             <Typography
                                 component="p"
-                                // textColor="text.primary"
-                                color='danger'
-                                sx={{ fontSize: 'sm3', fontWeight: 'xl', mt: 1 }}
+                                textColor="text.secondary"
+                                sx={{ fontSize: 'sm', fontWeight: 'md' }}
                             >
-                                ออกจาก {vehicle.car ? "รถ" : null} {vehicle.helicopter ? "ฮ." : null} {vehicle.ship ? "เรือ" : null} และภารกิจ
+                                - หากคุณต้องการออกจากยานพาหนะและภารกิจ ให้เลือก
+                                <Typography
+                                    component="p"
+                                    // textColor="text.primary"
+                                    color='danger'
+                                    sx={{ fontSize: 'sm3', fontWeight: 'xl', mt: 1 }}
+                                >
+                                    ออกจาก {vehicle.car ? "รถ" : null} {vehicle.helicopter ? "ฮ." : null} {vehicle.ship ? "เรือ" : null} และภารกิจ
+                                </Typography>
                             </Typography>
-                        </Typography>
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button disabled={load} color='neutral' onClick={handleClose}>
-                        {
-                            load ? <CircularProgress size="sm" />
-                                : <p>ยกเลิก</p>
-                        }
-                    </Button>
-                    <Button color='primary' disabled={load} onClick={async () => {
-                        setLoad(true)
-                        try {
-                            if (vehicle.car) {
-                                await unJoinCar(vehicle.car.car_id)
-                                window.location.reload()
-                                handleClose()
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button disabled={load} color='neutral' onClick={handleClose}>
+                            {
+                                load ? <CircularProgress size="sm" />
+                                    : <p>ยกเลิก</p>
                             }
-                            if (vehicle.helicopter) {
-                                await unJiontHelicopter(vehicle.helicopter.helicopter_id)
-                                window.location.reload()
-                                handleClose()
+                        </Button>
+                        <Button color='primary' disabled={load} onClick={async () => {
+                            setLoad(true)
+                            try {
+                                if (vehicle.car) {
+                                    await unJoinCar(vehicle.car.car_id)
+                                    window.location.reload()
+                                    handleClose()
+                                }
+                                if (vehicle.helicopter) {
+                                    await unJiontHelicopter(vehicle.helicopter.helicopter_id)
+                                    window.location.reload()
+                                    handleClose()
+                                }
+                                if (vehicle.ship) {
+                                    await unJoinShip(vehicle.ship.ship_id)
+                                    window.location.reload()
+                                    handleClose()
+                                }
+                            } catch (error) {
+                                toast(`เกิดข้อผิดพลาดไม่สามารถออกจากยานพาหนะได้`, 'error')
+                            } finally {
+                                setLoad(false)
                             }
-                            if(vehicle.ship) {
-                                await unJoinShip(vehicle.ship.ship_id)
-                                window.location.reload()
-                                handleClose()
+                        }} autoFocus>
+                            {
+                                load ?
+                                    <CircularProgress size="sm" /> :
+                                    <p>ออกจาก{vehicle.car ? "รถ" : null} {vehicle.helicopter ? "ฮ." : null} {vehicle.ship ? "เรือ" : null}</p>
                             }
-                        } catch (error) {
-                            toast(`เกิดข้อผิดพลาดไม่สามารถออกจากยานพาหนะได้`, 'error')
-                        } finally {
-                            setLoad(false)
-                        }
-                    }} autoFocus>
-                        {
-                            load ?
-                                <CircularProgress size="sm" /> :
-                                <p>ออกจาก{vehicle.car ? "รถ" : null} {vehicle.helicopter ? "ฮ." : null} {vehicle.ship ? "เรือ" : null}</p>
-                        }
-                    </Button>
-                    <Button disabled={load} color='danger' onClick={async () => {
-                        setLoad(true)
-                        try {
-                            if (vehicle.car) {
-                                await unJoinCar(vehicle.car.Car.id)
-                                await unJionMissioon(vehicle.car.Car.mission_id)
-                                handleClose()
-                                window.location.reload()
-                            }
-                            if (vehicle.helicopter) {
-                                await unJiontHelicopter(vehicle.helicopter.Helicopter.id)
-                                await unJionMissioon(vehicle.helicopter.Helicopter.mission_id)
-                                handleClose()
-                                window.location.reload()
+                        </Button>
+                        <Button disabled={load} color='danger' onClick={async () => {
+                            setLoad(true)
+                            try {
+                                if (vehicle.car) {
+                                    await unJoinCar(vehicle.car.Car.id)
+                                    await unJionMissioon(vehicle.car.Car.mission_id)
+                                    handleClose()
+                                    window.location.reload()
+                                }
+                                if (vehicle.helicopter) {
+                                    await unJiontHelicopter(vehicle.helicopter.Helicopter.id)
+                                    await unJionMissioon(vehicle.helicopter.Helicopter.mission_id)
+                                    handleClose()
+                                    window.location.reload()
 
+                                }
+                            } catch (error) {
+                                toast(`เกิดข้อผิดพลาดไม่สามารถออกจากยานพาหนะได้`, 'error')
+                            } finally {
+                                setLoad(false)
                             }
-                        } catch (error) {
-                            toast(`เกิดข้อผิดพลาดไม่สามารถออกจากยานพาหนะได้`, 'error')
-                        } finally {
-                            setLoad(false)
-                        }
-                    }} autoFocus>
-                        {
-                            load ? <CircularProgress size="sm" />
-                                : <p>และภารกิจ</p>
-                        }
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </React.Fragment>
+                        }} autoFocus>
+                            {
+                                load ? <CircularProgress size="sm" />
+                                    : <p>และภารกิจ</p>
+                            }
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            </React.Fragment>
+
+            {load ? <Loadding /> : null}
+        </>
     );
 }

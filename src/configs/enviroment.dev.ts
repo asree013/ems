@@ -1,9 +1,18 @@
+const isBrowser = typeof window !== 'undefined';
+let newUrl: string = '';
+function onAssignWindow() {
+  if(isBrowser){
+    newUrl = window.location.protocol + '//' +window.location.host.split(':')[0] + '/3333/v1'
+  }
+}
+
+onAssignWindow()
 export const enviromentDev = {
   myUrl: process.env,
   baseUrl: 'https://api-ems.m-mert.com/v1',
   baseUrl_base: 'http://localhost:3333/v1',
-  baseUrl_base_onLine: 'https://api-ems.m-mert.com',
-  localUrl: process.env.NEXT_PUBLIC_BASE_LOCAL || 'http://192.168.3.101:3030/v1',
+  baseUrl_base_onLine: 'https://api-ems.m-mert.com/v1',
+  localUrl: newUrl,
   patient: '/patient',
   login: '/login',
   device: '/device',

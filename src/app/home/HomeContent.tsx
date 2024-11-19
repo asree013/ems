@@ -26,6 +26,7 @@ import { Button } from '@mui/joy';
 import { unJionMissioon } from '@/services/mission.service';
 import { MissionById } from '@/models/mission.model';
 import { toast } from '@/services/alert.service';
+import { NIL } from 'uuid';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -82,7 +83,7 @@ export default function HomeContent() {
 
                         {
                             missionUser ?
-                                <Button variant='outlined' color='neutral'
+                                <Button variant='outlined' color='danger'
                                     startDecorator={<ExitToAppIcon />} onClick={async () => {
                                         setLoad(true)
                                         try {
@@ -94,10 +95,20 @@ export default function HomeContent() {
                                             setLoad(false)
                                         }
                                     }}>ออกจากภารกิจ</Button> :
-                                <Fab onClick={() => {
-                                    setLoad(true)
-                                    window.location.href = '/mission'
-                                }} size='small' color='primary'><AddIcon /></Fab>
+                                <div>
+                                    {/* <Fab onClick={() => {
+                                        setLoad(true)
+                                        window.location.href = '/mission'
+                                    }} size='small' color='primary'><AddIcon /></Fab> */}
+                                    <Button onClick={() => {
+                                        setLoad(true)
+                                        window.location.href = '/mission/'+ NIL
+                                    }} variant='outlined' color='neutral' sx={{ margin: '0 10px' }}>สร้างภากิจ</Button>
+                                    <Button onClick={() => {
+                                        setLoad(true)
+                                        window.location.href = '/mission'
+                                    }} color='neutral'>เข้าร่วมภารกิจ</Button>
+                                </div>
                         }
                     </div>
                     <div style={{ margin: '15px 0' }}>
@@ -145,7 +156,7 @@ export default function HomeContent() {
                             <CustomTabPanel value={value} index={1}>
                                 {
                                     vehicle.car || vehicle.helicopter || vehicle.ship ?
-                                        <MainMonitor vehicle={vehicle} />:
+                                        <MainMonitor vehicle={vehicle} /> :
                                         null
 
                                 }

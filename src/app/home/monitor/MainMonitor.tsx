@@ -55,7 +55,8 @@ export default function MainMonitor({ vehicle }: Props) {
             vehicle.car.Car.PatientBelongCar ?
               vehicle.car.Car.PatientBelongCar.map((r, i) => {
                 if (r.Patient.OrderTransfer.length === 0) {
-                  return <p>เพิ่มจอแสดงผล</p>
+                  return <MonitorItem el_id={i} order_id={r.Patient.OrderTransfer[0]?.id} />
+
                 }
                 return (
                   <div key={i}>
@@ -92,6 +93,7 @@ export default function MainMonitor({ vehicle }: Props) {
                       </Headers>
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
                         <p style={{ fontSize: 26 }}>โปรดเพิ่มจอแสดงผล</p>
+                        
                         <ListItemText className='ml-4'>
                           <Tooltip title="เพิ่มจอแสดงกราฟ">
                             <IconButton color='primary' onClick={() => {
@@ -103,6 +105,7 @@ export default function MainMonitor({ vehicle }: Props) {
                           </Tooltip>
                         </ListItemText>
                       </div>
+                      <MonitorItem el_id={i} order_id={r.Patient.OrderTransfer[0]?.id} />
                     </div>
                   )
                 }

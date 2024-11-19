@@ -46,6 +46,7 @@ export default function Page() {
   const [errUser, setErrUser] = useState(false);
   const [errPass, setErrPass] = useState(false);
   // const usernamePath = useSearchParams().get('username')
+  console.log('---> ', process.env.NEXT_PUBLIC_KEY_VALUE)
   
 
   async function onSubmitLogin(e: any) {

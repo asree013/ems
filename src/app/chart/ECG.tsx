@@ -48,7 +48,7 @@ export default function ECG({ order_id }: Props) {
     let ecgData: any[]
     let i = 1
     let lengthData = 250
-  
+    ecgData = ecg
     let arrayBuffer: {id: number, data: number[]}[] = {} as {id: number, data: number[]}[]
     let nd = 0
     let curNd = 0
@@ -76,7 +76,7 @@ export default function ECG({ order_id }: Props) {
     const CHANNELS: ChannelInfo[] = new Array(channelCount).fill(0).map((_, i) => ({ name: `ECG`, yMin: maxLength.delete, yMax: maxLength.add }));
 
     const lc = lightningChart({
-      license: "0002-n96ucKX1C700BOZwz7IAGHHjEuT4KwDfrkmx7QCyIBztfxcK2B2YdzqRkuyh0bv4JWu/viN/aCm4HYmBbVnGHphV-MEUCIQCoAbM5nVG3lu6EAeoZcsrvewNpdn+DEGKL6UpNeDXEbAIgCV8gVBAZ3XKPAkbuQDarCfg/BnBK4sN+L00cqoYMu5E=",
+      license: "0002-n3Kei2+JqP3mbgcisdTOqyUYkI9dKwBznrJ7kaTi8nYLPWlsFq7MjLj6N0CRKnGEhitt1MItFk92rt167zJjsqiu-MEUCIDmZsdNiMy4uw/r8V7eEl10rvnW8OF+DmWC7itAAEChIAiEA2cNQHKBUzKVR56eimH17WbRLSvoAhWAI7IMSB0PCUyg=",
       licenseInformation: {
         appTitle: "LightningChart JS Trial",
         company: "LightningChart Ltd."
@@ -280,13 +280,13 @@ export default function ECG({ order_id }: Props) {
         requestAnimationFrame(streamData);
 
       }
-      else {
-        ecgData = []
-        arrayBuffer = arrayBuffer.filter(r => r.id !== curNd )
-        curNd++
-        ecgData.push(arrayBuffer[curNd].data)
-        requestAnimationFrame(streamData);
-      }
+      // else {
+      //   ecgData = []
+      //   arrayBuffer = arrayBuffer.filter(r => r.id !== curNd )
+      //   curNd++
+      //   ecgData.push(arrayBuffer[curNd].data)
+      //   requestAnimationFrame(streamData);
+      // }
 
     };
     streamData();

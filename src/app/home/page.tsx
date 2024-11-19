@@ -22,7 +22,6 @@ import HomeContent from './HomeContent';
 import { IconVehicleContext, TIconVehicleC } from './IconVehicleContext';
 
 const utmObj = require('utm-latlng')
-const drawerWidth = 240;
 
 export default function Page() {
   const UTM = new utmObj('Everest');

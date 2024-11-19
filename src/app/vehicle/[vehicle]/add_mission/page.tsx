@@ -21,7 +21,7 @@ export default function Page() {
     setLoad(true)
     try {
       const result = await findMission(1, 5)
-      setMissions(result.data.filter(r => r.status.includes('Progress')))
+      setMissions(result.data)
 
     } catch (error) {
       timeOutJwt(error)
