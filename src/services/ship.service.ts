@@ -59,3 +59,11 @@ export function unAssingPatientInShip(ship_id: string, patient_id: string) {
 export function unJoinShip(ship_id: string) {
     return endpoint.put(enviromentDev.ship + `/${ship_id}/un_belong_ship`)
 }
+
+export function addShipInMission(mission_id: string, ship_id: string) {
+    return endpoint.put(enviromentDev.mission + `/${mission_id}/assign-ship-to-mission/${ship_id}`)
+}
+
+export function unAddShipInMission(mission_id: string, ship_id: string) {
+    return endpoint.put(enviromentDev.mission + `/${mission_id}/un-assign-ship-to-mission/${ship_id}`)
+}

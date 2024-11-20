@@ -20,13 +20,13 @@ export function findHalecopterAll() {
 
 export function findHelicopterById(ho_id: string) {
     try {
-        return endpoint.get<HelicopterById>(enviromentDev.helicopter+ `/${ho_id}`)
+        return endpoint.get<HelicopterById>(enviromentDev.helicopter + `/${ho_id}`)
     } catch (error) {
         throw error
     }
 }
 
-export function tranformPatientHelicopterToCar(helicopter_id: string, data: {patient_id: string, car_id: string}) {
+export function tranformPatientHelicopterToCar(helicopter_id: string, data: { patient_id: string, car_id: string }) {
 
     try {
         return endpoint.put(enviromentDev.helicopter + `/${helicopter_id}/tranform_patient_to_car`, data)
@@ -35,9 +35,9 @@ export function tranformPatientHelicopterToCar(helicopter_id: string, data: {pat
     }
 }
 
-export function updateDriverInHelicopter(ho_id: string, user_id: string){
+export function updateDriverInHelicopter(ho_id: string, user_id: string) {
     try {
-        return endpoint.put<Helicopters>(enviromentDev.helicopter+ `/${ho_id}/assign_driver/${user_id}`)
+        return endpoint.put<Helicopters>(enviromentDev.helicopter + `/${ho_id}/assign_driver/${user_id}`)
     } catch (error) {
         throw error
     }
@@ -79,5 +79,13 @@ export function unJiontHelicopter(helicopter_id: string) {
     } catch (error) {
         throw error
     }
+}
+
+export function addHelicopterInMission(mission_id: string, helicopter_id: string) {
+    return endpoint.put(`${enviromentDev.mission}/${mission_id}/assign-helicopter-to-mission/${helicopter_id}`)
+}
+
+export function unAddHelicopterInMission(mission_id: string, helicopter_id: string) {
+    return endpoint.put(`${enviromentDev.mission}/${mission_id}/un-assign-helicopter-to-mission/${helicopter_id}`)
 }
 

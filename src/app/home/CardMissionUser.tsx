@@ -16,6 +16,18 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Box } from '@mui/material';
 import PatientCount from './accrodien/PatientCount';
+import UserCount from './accrodien/UserCount';
+import styled from 'styled-components';
+
+const GrinMenu = styled(Box)`
+    display: grid;
+    grid-template-columns: repeat(2, 2fr);
+    grid-gap: 10px;
+
+    @media only screen and (max-width: 1025px) {
+        grid-template-columns: repeat(1, 2fr);
+    }
+`
 
 export default function CardMissionUser() {
     const { missionUser, setMissionUser } = useContext<TCurrentMission>(CurrentMissionContext)
@@ -71,9 +83,11 @@ export default function CardMissionUser() {
                             </CardContent>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <Box>
+                            <GrinMenu>
+                                <UserCount currentMission={missionUser} />
                                 <PatientCount currentMission={missionUser} />
-                            </Box>
+                            </GrinMenu>
+
                         </AccordionDetails>
                     </Accordion>
                     :

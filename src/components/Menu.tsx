@@ -1,5 +1,5 @@
 'use client'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import menuCss from './styles/MenuItem.module.css'
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import { Badge, Card, IconButton, Paper } from '@mui/material';
@@ -7,8 +7,6 @@ import { Badge, Card, IconButton, Paper } from '@mui/material';
 import { MenuValueContext, TMenuValueC } from '@/contexts/menu.value.context';
 import Loadding from './Loadding';
 
-// import HomeIcon from '@mui/icons-material/Home';
-// import HotelIcon from '@mui/icons-material/Hotel';
 import DeviceIcon from '@/assets/icon/device_5062836.png'
 import MissionIcon from '@/assets/icon/mission.png'
 import PatientIcon from '@/assets/icon/patient_menu.png'
@@ -17,6 +15,9 @@ import MornitorIcon from '@/assets/icon/monitor_4765315.png'
 import ChatIcon from '@/assets/icon/ui-element_15768343.png'
 import Ambulance from '@/assets/icon/ambulance.png'
 import styled from 'styled-components';
+import { Users } from '@/models/users.model';
+import { FindUserMe } from '@/services/authen.service';
+import { toast } from '@/services/alert.service';
 
 const ButtonMenu = styled(Card)`
     width: 100%;
@@ -29,6 +30,17 @@ const ButtonMenu = styled(Card)`
 
 export default function MenuItem() {
 
+    const [findMe, setFindMe] = useState<Users>({} as Users)
+
+    const onFindUserMe = useCallback(async() => {
+        try {
+            const result = await FindUserMe()
+            setFindMe(result.data)
+        } catch (error: any) {
+            toast(error.message, 'error')
+        }
+    }, [setFindMe])
+
     function onRedirect() {
         setInterval(() => {
             setValue(0)
@@ -36,10 +48,11 @@ export default function MenuItem() {
     }
 
     useEffect(() => {
+        onFindUserMe()
         return () => {
             onRedirect
         }
-    }, [])
+    }, [onFindUserMe])
 
     const { value, setValue } = useContext<TMenuValueC>(MenuValueContext)
     const [load, setLoad] = useState<boolean>(false)
@@ -68,7 +81,7 @@ export default function MenuItem() {
                     </ButtonMenu>
                     <ButtonMenu elevation={3}>
                         <div onClick={() => {
-                            window.location.href = '/chat'
+                            window.location.href = '/chat/' + findMe.id
                             setLoad(true)
                             onRedirect()
                         }} className={menuCss.menuItem}>

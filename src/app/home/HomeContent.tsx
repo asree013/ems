@@ -87,6 +87,7 @@ export default function HomeContent() {
                                     startDecorator={<ExitToAppIcon />} onClick={async () => {
                                         setLoad(true)
                                         try {
+                                            localStorage.removeItem('mission_id')
                                             await unJionMissioon(missionUser.id)
                                             window.location.reload()
                                         } catch (error) {

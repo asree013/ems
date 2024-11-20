@@ -94,11 +94,6 @@ export function updateMissionByMissionId(mission_id: string, data: Missions) {
 }
 
 export function addCarToMissionByMissionIdAndCarId(mission_id: string, car_id: string) {
-    console.log({
-        MIS: mission_id,
-        CAR: car_id
-    });
-    
     try {
         return endpoint.put(`${enviromentDev.mission}/${mission_id}/assign-car-to-mission/${car_id}`)
     } catch (error) {

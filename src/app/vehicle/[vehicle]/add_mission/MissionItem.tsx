@@ -16,6 +16,8 @@ import { timeOutJwt } from '@/services/timeout.service';
 import { toast } from '@/services/alert.service';
 import { useParams, useSearchParams } from 'next/navigation';
 import Loadding from '@/components/Loadding';
+import { addShipInMission } from '@/services/ship.service';
+import { addHelicopterInMission } from '@/services/helicopter.service';
 
 type Props = {
   mission: Missions
@@ -43,15 +45,23 @@ export default function MissionItem({ mission, currentLo, returnLoad }: Props) {
         return
       }
       if (key?.includes('ship')) {
+        const result = await addShipInMission(mission.id, vehicleId)
+        localStorage.setItem('mission_id', mission.id)
+        returnLoad(true)
+        toast('เข้าร่วมภารกิจ', 'seccess')
+        window.location.href = '/mission/' + mission.id + '/mission_detail'
         return
       }
       if (key?.includes('helicopter')) {
+        const result = await addHelicopterInMission(mission.id, vehicleId)
+        localStorage.setItem('mission_id', mission.id)
+        returnLoad(true)
+        toast('เข้าร่วมภารกิจ', 'seccess')
+        window.location.href = '/mission/' + mission.id + '/mission_detail'
         return
       }
     } catch (error: any) {
       // timeOutJwt(error)
-      console.log(error);
-      
       setLoad(false)
       toast(JSON.stringify(error.message), 'error')
 
