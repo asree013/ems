@@ -5,8 +5,6 @@ import TabMenu from '@/components/TabMenu';
 import ChatButton from '@/app/components/chats/ChatButton';
 import Nav from '@/components/nav/Nav';
 
-metadata.title = 'Mission Marine-EMS';
-
 export default function DashboardLayout({
   children, // will be a page or nested layout
 }: {

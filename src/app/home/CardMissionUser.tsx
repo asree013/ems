@@ -67,7 +67,7 @@ export default function CardMissionUser() {
                                         href="#interactive-card"
                                         sx={{ color: 'text.tertiary' }}
                                     >
-                                        {missionUser.status}
+                                        {onConvertStatus(missionUser?.status)}
                                     </Link>
                                 </Typography>
                                 <Chip
@@ -95,4 +95,10 @@ export default function CardMissionUser() {
             }
         </>
     );
+
+    function onConvertStatus(status: string) {
+        if(status?.toLocaleLowerCase() === 'progress') return <p style={{color: 'green'}}>กำลังดำเนินการ</p>
+        if(status?.toLocaleLowerCase() === 'pending') return <p style={{color: 'blue'}}>กำลังร่าง</p>
+        else return <p style={{color: 'red'}}>ภารกิจดำเนินการเสร็จสิ้น</p>
+    }
 }

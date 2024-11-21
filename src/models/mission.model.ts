@@ -21,18 +21,7 @@ export interface MissionById {
   user_update_id: string
   create_date: string
   update_date: string
-  Users: Array<{
-    first_name: string
-    last_name: string
-    phone_number?: string
-    career?: string
-    address: any
-    image?: string
-    role: string
-    Responsibilities?: {
-      role: string
-    }
-  }>
+  Users: Array<UserInMissionId>
   MissionHistory: Array<{
     id: string
     user_id: string
@@ -430,6 +419,19 @@ export interface MissionById {
       HistoryPatientBelongHelicopter: number
     }
   }>
+}
+
+export type UserInMissionId = {
+  first_name: string
+  last_name: string
+  phone_number?: string
+  career?: string
+  address: any
+  image?: string
+  role: string
+  Responsibilities?: {
+    role: string
+  }
 }
 
 export interface Missions {

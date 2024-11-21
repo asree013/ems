@@ -67,7 +67,7 @@ export default function MissionUser() {
             <CardContent>
                 <Typography level="body-xs">ทีมแพทย์</Typography>
             </CardContent>
-            {
+            {/* {
                 mission.Users.length === 0 ?
                     <Typography>ไม่มีทีมแพทย์</Typography> :
                     mission.Users.map((r, i) => {
@@ -135,12 +135,12 @@ export default function MissionUser() {
                             }
                         }
                     })
-            }
+            } */}
 
             <CardContent>
                 <Typography level="body-xs">สมาชิก</Typography>
             </CardContent>
-            {
+            {/* {
                 mission.Users.length === 0 ?
                     <Typography>ไม่มีสมาชิก</Typography> :
                     mission.Users.map((r, i) => {
@@ -208,7 +208,7 @@ export default function MissionUser() {
                             }
                         }
                     })
-            }
+            } */}
 
 
             <CardOverflow

@@ -9,20 +9,17 @@ import ChatItem from './components/ChatItem';
 
 const drawerWidth = 300;
 
-interface Props {
+type Props = { 
     params: {
         user_id: string
     }
-    window?: () => Window;
 }
 
-export default function ResponsiveDrawer({params, window}: Props) {
+export default function page(props: Props) {
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [isClosing, setIsClosing] = React.useState(false);
 
-
-    // Remove this const when copying and pasting into your project.
-    const container = window !== undefined ? () => window().document.body : undefined;
+    const container = typeof window !== 'undefined' ? () => window.document.body : undefined;
 
     return (
         <Box sx={{ display: 'flex' }}>

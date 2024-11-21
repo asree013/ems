@@ -44,10 +44,10 @@ export default function PatientCount({ currentMission }: Props) {
                                 alt=""
                             />
                         </AspectRatio>
-                        <p style={{ margin: '0 10px' }}>ผู้ป่วยในภารกิจ</p>
+                        <p style={{ margin: '0 10px', fontSize: '1rem', fontWeight: 500  }}>ผู้ป่วยในภารกิจ</p>
                     </Box>
 
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', fontWeight: 500  }}>
                         {
                             (
                                 currentMission?.patients?.length
@@ -66,13 +66,12 @@ export default function PatientCount({ currentMission }: Props) {
                             <th>เพศ</th>
                             <th>เลขบัตร</th>
                             <th>ยานพานะ</th>
-                            <th>Protein&nbsp;(g)</th>
+                            <th>อื่น</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            currentMission?.patients?.map((r, i) =>
-                                
+                            currentMission?.patients?.map((r, i) =>       
                                 <TableResultPateint key={i} pateint={r}  />
                             )
                         }

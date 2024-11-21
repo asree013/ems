@@ -1,7 +1,8 @@
 'use client'
 import { PateintAllInMission } from '@/models/mission.model'
-import { Avatar } from '@mui/material'
+import { Avatar, IconButton } from '@mui/material'
 import React from 'react'
+import ChatIcon from '@mui/icons-material/Chat';
 
 type Prosp = {
     pateint: any
@@ -15,7 +16,11 @@ export default function TableResultPateint({ pateint }: Prosp) {
             <td>{pateint.gender.toLocaleLowerCase() === 'male' ? <p>ชาย</p> : <p>หญิง</p>}</td>
             <td>{pateint.id_card ?? 'ไม่ทราบเลขบัตร'}</td>
             <td>24</td>
-            <td>4</td>
+            <td>
+                <IconButton>
+                    <ChatIcon />
+                </IconButton>
+            </td>
         </tr>
     )
 }
