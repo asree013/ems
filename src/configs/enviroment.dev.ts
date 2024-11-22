@@ -33,7 +33,7 @@ export const enviromentDev = {
   communicate: '/communication',
   respository: '/responsibility',
   ship: '/ship',
-  typeShip: '/type_ship'
+  typeShip: '/type_ship',
 };
 
 export const enviromentPath = {

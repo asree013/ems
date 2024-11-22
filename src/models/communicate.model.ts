@@ -10,7 +10,7 @@ export interface Communicates {
         phone_number: any
         career: any
         id_card: any
-        image?: string
+        image: any
         create_date: string
         update_date: string
         hospital_branch_id: any
@@ -18,7 +18,7 @@ export interface Communicates {
         doctorsId: any
         squad_id: any
         team_id: any
-        mission_id?: string
+        mission_id: string
         Squad: any
         Hospital: {
             id: string
@@ -33,7 +33,7 @@ export interface Communicates {
             update_date: string
         }
         Responsibilities: any
-        DriverCar?: {
+        DriverCar: {
             id: string
             status: string
             type: string
@@ -51,8 +51,35 @@ export interface Communicates {
             update_date: string
             hospital_id: string
         }
-        DriverShip: any
+        DriverShip: {
+            id: string
+            name: string
+            phone_number: string
+            description: any
+            status: string
+            image: string
+            radio: string
+            calling: string
+            hospital_id: string
+            create_date: string
+            update_date: string
+            driver_id: string
+            type_id: string
+            mission_id: any
+        }
         DriverHelicopter: any
     }
     communication_id: string
+    Joiner: Array<any>
 }
+
+export interface Rooms {
+    id: string
+    owner_id: string
+    Joiner: Array<{
+      first_name: string
+      last_name: string
+      phone_number: any
+      image: string
+    }>
+  }

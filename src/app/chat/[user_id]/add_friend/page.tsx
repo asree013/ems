@@ -16,6 +16,8 @@ import DirectionsIcon from '@mui/icons-material/Directions';
 import { Users } from '@/models/users.model'
 import { toast } from '@/services/alert.service'
 import { findUsers } from '@/services/user.service'
+import { getCommunicationAll } from '@/services/communication.service'
+import { Communicates } from '@/models/communicate.model'
 
 const BodyFriend = styled.div`
   display: flex;
@@ -26,11 +28,11 @@ const BodyFriend = styled.div`
 `
 
 export default function page() {
-  const [users, setUsers] = useState<Users[]>({} as Users[])
+  const [users, setUsers] = useState<Communicates[]>({} as Communicates[])
 
-  const onFeedUser = useCallback(async () => {
+  const onFeedUserCommunicate = useCallback(async () => {
     try {
-      const result = await findUsers(1, 10)
+      const result = await getCommunicationAll()
       setUsers(result.data)
     } catch (error: any) {
       toast(error.message, 'error')
@@ -38,8 +40,8 @@ export default function page() {
   }, [setUsers])
 
   useEffect(() => {
-    onFeedUser()
-  }, [onFeedUser])
+    onFeedUserCommunicate()
+  }, [onFeedUserCommunicate])
   return (
     <>
       <Nav />
@@ -68,7 +70,7 @@ export default function page() {
 
         {
           Array.isArray(users) && users.length > 0 ? (
-            users.map((r, i) => <UserProfileAddFriend key={i} />)
+            users.map((r, i) => <UserProfileAddFriend key={i} data={r} />)
           ) : (
             <p>ไม่พบข้อมูลผู้ใช้งาน</p>
           )
