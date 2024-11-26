@@ -36,12 +36,6 @@ import { NIL } from 'uuid';
 
 
 const PopupButton = styled.div`
-    .positionChat{
-      position: fixed;
-      bottom: 80px;
-      right: 40px;
-      z-index: 1;
-    }
     .chatModal {
         width: 270px;
         height: 220px;
@@ -87,17 +81,6 @@ const PopupButton = styled.div`
             height: 25rem;
             width: 20rem;
         }
-        .bodyCard{
-            position: fixed;
-            top: 6.5rem;
-            right: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            padding: 5px;
-            z-index: 1;
-        }
     }
 
     /* @media only screen and (min-width: 768px) {
@@ -117,18 +100,11 @@ const PopupButton = styled.div`
 
 
   @media only screen and (max-width: 1370px) {
-      .positionChat{
-          top: 40rem;
-          right: 5rem;
-      }
       .chat_size {
           height: 25rem;
           width: 20rem;
       }
-      .bodyCard{
-          top: 14rem;
-          right: 5rem;
-      }
+
     }
   `
 
@@ -584,7 +560,7 @@ export default function ChatButton() {
     <>
       <PopupButton>
         <ToggleButton
-        sx={{borderRadius: '2rem'}}
+        sx={{borderRadius: '2rem',position: 'fixed', bottom: 86, right: 16}}
           className={'positionChat'}
           value="check"
           selected={selected}
@@ -613,7 +589,7 @@ export default function ChatButton() {
       {
         open ?
           <PopupButton>
-            <Paper elevation={8} className={'bodyCard'}>
+            <Paper elevation={8} sx={{bottom: 166, right: 25,position: 'fixed', zIndex: 4, width: 340, padding: 2}}>
               <Sheet
                 className={'chat_size'}
               >

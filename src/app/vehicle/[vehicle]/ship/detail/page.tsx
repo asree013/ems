@@ -13,6 +13,7 @@ import { useSearchParams } from 'next/navigation';
 import CarUser from '@/components/car/CarUser';
 import { ShipByIdContext, ShipDetailContext } from './ShipById.context';
 import { findShipById } from '@/services/ship.service';
+import BedInShip from './BedInShip';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -83,6 +84,7 @@ export default function Page({ params }: Props) {
             <Tab label="รายละเอียดรถ" {...a11yProps(0)} />
             <Tab label="สมาชิก" {...a11yProps(1)} />
             <Tab label="ผู้ป่วย" {...a11yProps(2)} />
+            <Tab label="เตียงในเรือ" {...a11yProps(3)} />
           </Tabs>
         </Box>
         <ShipDetailContext.Provider value={{ shipById, setShipById }} >
@@ -94,6 +96,9 @@ export default function Page({ params }: Props) {
           </CustomTabPanel>
           <CustomTabPanel value={value} index={2}>
             <PateintDetail />
+          </CustomTabPanel>
+          <CustomTabPanel value={value} index={3}>
+            <BedInShip />
           </CustomTabPanel>
         </ShipDetailContext.Provider>
       </ShipByIdContext.Provider>

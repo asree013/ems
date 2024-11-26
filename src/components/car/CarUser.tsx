@@ -11,9 +11,13 @@ import { AspectRatio } from '@mui/joy';
 import { Box, Card } from '@mui/material';
 import { CarDetailContext, TCarDetailContent } from './CarDetail.context';
 import CarUserItem from './CarUserItem';
+import { ShipDetailContext, TShipDetailContext } from '@/app/vehicle/[vehicle]/ship/detail/ShipById.context';
+import { HelicopterByIdDetailContext, THelicopterByIdDetail } from '../helicopter/helicopterDetail.context';
 
 export default function CarUser() {
-  const {carByid} = React.useContext<TCarDetailContent>(CarDetailContext)
+  const { carByid } = React.useContext<TCarDetailContent>(CarDetailContext)
+  const { shipById, setShipById } = React.useContext<TShipDetailContext>(ShipDetailContext)
+  const { halicoptorById, setHelicopterById } = React.useContext<THelicopterByIdDetail>(HelicopterByIdDetailContext)
 
   return (
     // <p>helicopter</p>
@@ -25,11 +29,38 @@ export default function CarUser() {
         </CardContent>
         <Box>
           {
-            carByid.UserBelongCar.length === 0 ?
+            carByid?.UserBelongCar?.length === 0 ? (
+              <Typography>ไม่มีผู้บังคับบัญชา</Typography>
+            ) : (
+              Array.from(
+                new Map(
+                  carByid?.UserBelongCar?.map(r => [r.user_id, r])
+                ).values()
+              ).map((uniqueUser, i) => (
+                <CarUserItem key={i} user_id={uniqueUser.user_id} keyValue={'commander'} />
+              ))
+            )
+          }
+          {
+            shipById?.UserBelongShip?.length === 0 ?
               <Typography>ไม่มีผู้บังคะบบัญชา</Typography> :
-              carByid.UserBelongCar.map((r, i) =>
+              Array.from(
+                new Map(
+                  shipById?.UserBelongShip?.map((r) => [r.user_id, r])
+                ).values()
+              ).map((r, i) =>
                 <CarUserItem key={i} user_id={r.user_id} keyValue={'commader'} />
+
               )
+          }
+
+          {
+            halicoptorById?.UserBelongHelicopter?.length === 0 ?
+              <Typography>ไม่มีผู้บังคะบบัญชา</Typography> :
+              Array.from(new Map(halicoptorById?.UserBelongHelicopter?.map(r => [r.user_id, r])).values())
+                .map((r, i) =>
+                  <CarUserItem key={i} user_id={r.user_id} keyValue={'commader'} />
+                )
           }
 
           <Box>
@@ -38,11 +69,29 @@ export default function CarUser() {
             </CardContent>
             <Box>
               {
-                carByid.UserBelongCar.length === 0 ?
+                carByid?.UserBelongCar?.length === 0 ?
                   <Typography>ไม่มีผู้บังคะบบัญชา</Typography> :
-                  carByid.UserBelongCar.map((r, i) =>
+                  Array.from(
+                    new Map(carByid?.UserBelongCar?.map(r => [r.user_id, r])).values()
+                  ).map((r, i) =>
                     <CarUserItem key={i} user_id={r.user_id} keyValue={'career'} />
                   )
+              }
+              {
+                shipById?.UserBelongShip?.length === 0 ?
+                  <Typography>ไม่มีผู้บังคะบบัญชา</Typography> :
+                  Array.from(new Map(shipById?.UserBelongShip?.map(r => [r.user_id, r])).values())
+                    .map((r, i) =>
+                      <CarUserItem key={i} user_id={r.user_id} keyValue={'career'} />
+                    )
+              }
+              {
+                halicoptorById?.UserBelongHelicopter?.length === 0 ?
+                  <Typography>ไม่มีผู้บังคะบบัญชา</Typography> :
+                  Array.from(new Map(halicoptorById?.UserBelongHelicopter?.map(r => [r.user_id, r])).values())
+                    .map((r, i) =>
+                      <CarUserItem key={i} user_id={r.user_id} keyValue={'career'} />
+                    )
               }
             </Box>
           </Box>
@@ -52,12 +101,33 @@ export default function CarUser() {
               <Divider>สมาชิก</Divider>
             </CardContent>
             <Box>
+              {carByid ?
+
+                carByid?.UserBelongCar?.length === 0 ?
+                  <Typography>ไม่มีผู้บังสมาชิกรถ</Typography> :
+                  Array.from(new Map(carByid?.UserBelongCar?.map(r => [r.user_id, r])).values())
+                    .map((r, i) =>
+                      <CarUserItem key={i} user_id={r.user_id} keyValue={'staff'} />
+                    )
+                : null
+
+              }
               {
-                carByid.UserBelongCar.length === 0 ?
-                  <Typography>ไม่มีผู้บังคะบบัญชา</Typography> :
-                  carByid.UserBelongCar.map((r, i) =>
-                    <CarUserItem key={i} user_id={r.user_id} keyValue={'staff'} />
-                  )
+                shipById?.UserBelongShip?.length === 0 ?
+                  <Typography>ไม่มีผู้บังสมาชิก</Typography> :
+                  Array.from(new Map(shipById?.UserBelongShip?.map(r => [r.user_id, r])).values())
+                    .map((r, i) =>
+                      <CarUserItem key={i} user_id={r.user_id} keyValue={'staff'} />
+                    )
+              }
+
+              {
+                halicoptorById?.UserBelongHelicopter?.length === 0 ?
+                  <Typography>ไม่มีผู้บังสมาชิก</Typography> :
+                  Array.from(new Map(halicoptorById?.UserBelongHelicopter?.map(r => [r.user_id, r])).values())
+                    .map((r, i) =>
+                      <CarUserItem key={i} user_id={r.user_id} keyValue={'staff'} />
+                    )
               }
             </Box>
           </Box>

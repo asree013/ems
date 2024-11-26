@@ -11,6 +11,7 @@ import { getCommunicationMe } from '@/services/communication.service';
 import { toast } from '@/services/alert.service';
 import Loadding from '@/components/Loadding';
 import { CommunicateMeContext } from './communicateMe.context';
+import { useSearchParams } from 'next/navigation';
 
 const drawerWidth = 300;
 
@@ -25,6 +26,8 @@ export default function page({ params }: Props) {
     const [isClosing, setIsClosing] = React.useState(false);
     const [communicateMe, setCommunicateMe] = React.useState<Communicates>({} as Communicates)
     const [load, setload] = React.useState<boolean>(false)
+    const qurey = useSearchParams().get('user_id_one-to-one')
+    // alert(qurey)
 
     const container = typeof window !== 'undefined' ? () => window.document.body : undefined;
 

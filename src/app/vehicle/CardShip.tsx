@@ -234,11 +234,11 @@ export default function CardShip({ data, ship_id }: Props) {
                                         <Card elevation={5}>
                                             <div onClick={() => {
                                                 setLoad(true)
-                                                window.location.href = '/vehicle/' + ships.id + '/car/detail'
+                                                window.location.href = '/vehicle/' + ships.id + '/ship/detail'
                                             }} className={vehicleCss.menuItem} style={{ cursor: 'pointer' }}>
                                                 <img src={DetailIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
                                                 <div className={vehicleCss.menuDetail}>
-                                                    <h3>รายละเอียดรถ</h3>
+                                                    <h3>รายละเอียดเรื่อ</h3>
                                                     <p>detail</p>
                                                 </div>
                                             </div>
@@ -246,11 +246,11 @@ export default function CardShip({ data, ship_id }: Props) {
                                         <Card elevation={5} className='mt-4'>
                                             <div onClick={() => {
                                                 setLoad(true)
-                                                window.location.href = '/vehicle/' + ships.id + '/car'
+                                                window.location.href = '/vehicle/' + ships.id + '/ship'
                                             }} className={vehicleCss.menuItem} style={{ cursor: 'pointer' }}>
                                                 <img src={EditIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
                                                 <div className={vehicleCss.menuDetail}>
-                                                    <h3>แก้ไขรถ</h3>
+                                                    <h3>แก้ไขเรื่อ</h3>
                                                     <p>detail</p>
                                                 </div>
                                             </div>
@@ -258,7 +258,7 @@ export default function CardShip({ data, ship_id }: Props) {
                                         <Card elevation={5} className='mt-4'>
                                             <div onClick={() => {
                                                 setLoad(true)
-                                                window.location.href = '/vehicle/' + ships.id + '/car/detail?key=patient'
+                                                window.location.href = '/vehicle/' + ships.id + '/ship/detail?key=patient'
                                             }} className={vehicleCss.menuItem} style={{ cursor: 'pointer' }}>
                                                 <img src={PatientIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
                                                 <div className={vehicleCss.menuDetail}>
@@ -270,7 +270,7 @@ export default function CardShip({ data, ship_id }: Props) {
                                         <Card elevation={5} className='mt-4'>
                                             <div onClick={() => {
                                                 setLoad(true)
-                                                window.location.href = '/vehicle/' + ships.id + '/car/detail?key=employes'
+                                                window.location.href = '/vehicle/' + ships.id + '/ship/detail?key=employes'
                                             }} className={vehicleCss.menuItem} style={{ cursor: 'pointer' }}>
                                                 <img src={EmployeIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
                                                 <div className={vehicleCss.menuDetail}>

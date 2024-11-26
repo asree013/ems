@@ -42,7 +42,7 @@ export default function TableResultUser({ user }: Prosp) {
                 <td>
                     <IconButton onClick={() => {
                         setload(true)
-                        window.location.href = '/chat/' + findMe.id + '/'
+                        window.location.href = '/chat/' + findMe.id + '?user_id_one-to-one=' +user.id
                     }}>
                         <ChatIcon color='warning' />
                     </IconButton>
