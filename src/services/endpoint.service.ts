@@ -7,17 +7,17 @@ let Url: string | undefined = ''
 
 function onCheckPath() {
   if(isBrowser){
-    if(window.location.protocol === 'http:'){
-      window.location.hostname === 'localhost'? Url = enviromentDev.baseUrl_base: Url = enviromentDev.localUrl
-      console.log(process.env.NEXT_PUBLIC_KEY_VALUE);
+    // if(window.location.protocol === 'http:'){
+    //   window.location.hostname === 'localhost'? Url = enviromentDev.baseUrl_base: Url = enviromentDev.localUrl
+    //   console.log(process.env.NEXT_PUBLIC_KEY_VALUE);
       
-    }
-    else{
-      Url = enviromentDev.baseUrl_base_onLine
-      console.log(Url);
+    // }
+    // else{
+    //   Url = enviromentDev.baseUrl_base_onLine
+    //   console.log(Url);
 
-    }
-    
+    // }
+    Url = enviromentDev.baseUrl_base
   }
 }
 

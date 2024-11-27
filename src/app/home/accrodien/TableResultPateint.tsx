@@ -2,7 +2,7 @@
 import { PateintAllInMission } from '@/models/mission.model'
 import { Avatar, IconButton } from '@mui/material'
 import React from 'react'
-import ChatIcon from '@mui/icons-material/Chat';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 type Prosp = {
     pateint: any
@@ -18,7 +18,7 @@ export default function TableResultPateint({ pateint }: Prosp) {
             <td>24</td>
             <td>
                 <IconButton>
-                    <ChatIcon />
+                    <VisibilityIcon />
                 </IconButton>
             </td>
         </tr>

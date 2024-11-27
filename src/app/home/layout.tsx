@@ -8,6 +8,7 @@ import Loadding from '@/components/Loadding'
 import ChatButton from '@/app/components/chats/ChatButton';
 import Nav from '@/components/nav/Nav';
 import { IconVehicleProvider } from './IconVehicleContext';
+import ChatItem from '../chat/ChatItem';
 
 export default function DashboardLayout({
   children, // will be a page or nested layout
@@ -27,7 +28,7 @@ export default function DashboardLayout({
             </Suspense>
           </TabMenu>
         </div>
-        <ChatButton />
+        <ChatItem />
 
       </IconVehicleProvider>
     </section>

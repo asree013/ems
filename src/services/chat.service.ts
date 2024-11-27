@@ -1,14 +1,32 @@
 import { enviromentDev } from "@/configs/enviroment.dev";
-import { ChatHistorys, ChatRooms, Chats } from "@/models/chat.model";
+import { ChatHistorys, Chats, RoomChats } from "@/models/chat.model";
 import axios from "axios";
 
 const isBrowser = typeof window !== 'undefined';
-const newUrl = isBrowser && window.location.protocol === 'http:' ? enviromentDev.baseUrl_base : enviromentDev.baseUrl_base_onLine
 
+let Url: string | undefined = ''
+
+function onCheckPath() {
+  if(isBrowser){
+    if(window.location.protocol === 'http:'){
+      window.location.hostname === 'localhost'? Url = enviromentDev.baseUrl_base: Url = enviromentDev.localUrl
+      
+    }
+    else{
+      Url = enviromentDev.baseUrl_base_onLine
+      console.log(Url);
+
+    }
+    
+  }
+}
+
+onCheckPath()
 
 export function findChatRoomAll() {
+
     try {
-        return axios.get<ChatRooms[]>(newUrl + enviromentDev.chat + enviromentDev.room, {
+        return axios.get<RoomChats[]>(Url?.split('/v1')[0] + enviromentDev.chat + enviromentDev.room, {
             withCredentials: true
         })
     } catch (error) {
@@ -19,7 +37,7 @@ export function findChatRoomAll() {
 export function feedMessageChatByRoomId(room_id: string, page?: number, limit?: number) {
 
     try {
-        return axios.get<ChatHistorys[]>(`${newUrl + enviromentDev.chat}/room/${room_id}/chat-hitory?page=${page}&limit=${limit}`, {
+        return axios.get<ChatHistorys[]>(`${Url + enviromentDev.chat}/room/${room_id}/chat-hitory?page=${page}&limit=${limit}`, {
             withCredentials: true
         })
     } catch (error) {

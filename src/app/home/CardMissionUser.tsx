@@ -18,6 +18,7 @@ import { Box } from '@mui/material';
 import PatientCount from './accrodien/PatientCount';
 import UserCount from './accrodien/UserCount';
 import styled from 'styled-components';
+import VehicleCount from './accrodien/VehicleCount';
 
 const GrinMenu = styled(Box)`
     display: grid;
@@ -84,6 +85,7 @@ export default function CardMissionUser() {
                         </AccordionSummary>
                         <AccordionDetails>
                             <GrinMenu>
+                                <VehicleCount currentMission={missionUser} />
                                 <UserCount currentMission={missionUser} />
                                 <PatientCount currentMission={missionUser} />
                             </GrinMenu>

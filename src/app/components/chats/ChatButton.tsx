@@ -2,7 +2,7 @@
 
 import { enviromentDev } from '@/configs/enviroment.dev';
 import { socket } from '@/configs/socket';
-import { ChatRooms, Chats } from '@/models/chat.model';
+import { RoomChats, Chats } from '@/models/chat.model';
 import { MissionById } from '@/models/mission.model';
 import { toast } from '@/services/alert.service';
 import { feedMessageChatByRoomId, findChatRoomAll, mapDataHistoryToChat } from '@/services/chat.service';
@@ -163,7 +163,7 @@ export default function ChatButton() {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [messages, setMessages] = React.useState<Chats[]>([]);
   const [room_id, setRoomId] = React.useState<string>('');
-  const [chatRoom, setChatRoom] = React.useState<ChatRooms[]>({} as ChatRooms[])
+  const [chatRoom, setChatRoom] = React.useState<RoomChats[]>({} as RoomChats[])
   const [loadMessage, setLoadMessage] = React.useState<boolean>(false)
 
   const [value, setValue] = React.useState(0);

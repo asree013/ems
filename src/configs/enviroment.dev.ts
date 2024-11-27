@@ -2,7 +2,7 @@ const isBrowser = typeof window !== 'undefined';
 let newUrl: string = '';
 function onAssignWindow() {
   if(isBrowser){
-    newUrl = window.location.protocol + '//' +window.location.host.split(':')[0] + '/3333/v1'
+    newUrl = window.location.protocol + '//' +window.location.host.split(':')[0] + ':3333/v1'
   }
 }
 
