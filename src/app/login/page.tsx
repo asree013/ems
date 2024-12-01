@@ -11,7 +11,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox'
 import logoImage from '@/assets/icon/user_6543039.png';
 import newLogo from '@/assets/image/icon_menu/logo4.png'
-import 'react-toastify/dist/ReactToastify.css';
 import './login.css';
 import Loadding from '../../components/Loadding';
 import { Logins } from '../../models/authen.model';

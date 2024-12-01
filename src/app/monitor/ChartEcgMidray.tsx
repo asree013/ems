@@ -16,8 +16,6 @@ import {
   CompletedOrderTranferByOrderId,
   editOrderTranferByOrderId,
 } from '@/services/order_tranfer.service';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import Divider from '@mui/material/Divider';
 
 import { socket } from '@/configs/socket';
@@ -27,6 +25,7 @@ import { referfToken } from '@/services/authen.service';
 import { useRouter } from 'next/navigation';
 
 import chartCss from './chart.module.css'
+import { toast } from '@/services/alert.service';
 
 var x: number[] = [];
 var a: number[] = []
@@ -125,15 +124,15 @@ export default function ChartEcgMidRay({
       if (status.length === 0) {
         const close = await CompletedOrderTranferByOrderId(id);
         console.log(close);
-        toast.success('Close Case');
+        toast('Close Case', 'success');
         window.location.reload();
       } else {
         await editOrderTranferByOrderId(id, ot);
-        toast.success('Completed Case');
+        toast('Completed Case', 'success');
         window.location.reload();
       }
     } catch (error: any) {
-      toast.error(error.message);
+      toast(error.message, 'error');
     }
   }
 
@@ -406,7 +405,6 @@ export default function ChartEcgMidRay({
       <div className="monitorItems" id={order.id}>
         <StartChart funOnOpen={onStartMonitor} />
         <p style={{color: 'white', fontSize: '5rem'}}>Midray</p>
-        <ToastContainer />
         <div className="hearder_monitor">
           <div className="name_monitor">
             <p style={{ fontSize: '18px' }}>

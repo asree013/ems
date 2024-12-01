@@ -1,4 +1,3 @@
-import { Confirm } from 'notiflix';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 

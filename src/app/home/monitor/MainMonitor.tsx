@@ -55,7 +55,30 @@ export default function MainMonitor({ vehicle }: Props) {
             vehicle.car.Car.PatientBelongCar ?
               vehicle.car.Car.PatientBelongCar.map((r, i) => {
                 if (r.Patient.OrderTransfer.length === 0) {
-                  return <MonitorItem el_id={i} order_id={r.Patient.OrderTransfer[0]?.id} />
+                  return <div key={i}>
+                    <Headers>
+                      <HeadDetail>
+                        <Avatar src={r.Patient.image} />
+                        <p>{r.Patient.first_name}</p>
+                        <p>{r.Patient.last_name}</p>
+                      </HeadDetail>
+                      {convertGender(r)}
+                    </Headers>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
+                      <p style={{ fontSize: 26 }}>โปรดเพิ่มจอแสดงผล</p>
+
+                      <ListItemText className='ml-4'>
+                        <Tooltip title="เพิ่มจอแสดงกราฟ">
+                          <IconButton color='primary' onClick={() => {
+                            setLoad(true)
+                            window.location.href = `vehicle/${vehicle.ship.ship_id}/ship/detail/add_monitor?patient_add_id=${r.Patient.id}`
+                          }}>
+                            <QueuePlayNextIcon style={{ width: 50, height: 50 }} />
+                          </IconButton>
+                        </Tooltip>
+                      </ListItemText>
+                    </div>
+                  </div>
 
                 }
                 return (
@@ -93,7 +116,7 @@ export default function MainMonitor({ vehicle }: Props) {
                       </Headers>
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
                         <p style={{ fontSize: 26 }}>โปรดเพิ่มจอแสดงผล</p>
-                        
+
                         <ListItemText className='ml-4'>
                           <Tooltip title="เพิ่มจอแสดงกราฟ">
                             <IconButton color='primary' onClick={() => {
@@ -105,7 +128,6 @@ export default function MainMonitor({ vehicle }: Props) {
                           </Tooltip>
                         </ListItemText>
                       </div>
-                      <MonitorItem el_id={i} order_id={r.Patient.OrderTransfer[0]?.id} />
                     </div>
                   )
                 }
@@ -138,7 +160,7 @@ export default function MainMonitor({ vehicle }: Props) {
 
   function convertGender(patient: PatientBelongCar | PatientBelongShip) {
     console.log(patient.Patient.gender.toLocaleLowerCase());
-    
+
     if (patient.Patient.gender.toLocaleLowerCase() === 'male') {
       return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', width: '10rem', marginTop: '15px' }}>
         <p>เพศ: ชาย</p>

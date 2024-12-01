@@ -13,13 +13,14 @@ import { Users } from '@/models/users.model';
 import { Vehicles } from '@/models/vehicle.model';
 import { findMissionCurrent } from '@/services/mission.service';
 import { timeOutJwt } from '@/services/timeout.service';
-import { findCurrentVehicleByUser, saveLocation } from '@/services/user.service';
+import { findCurrentVehicleByUser, onSaveLocation, saveLocation } from '@/services/user.service';
 import * as mgrs from 'mgrs';
 import React, { Component, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 import { CurrentVehicleContext } from './CurrentVehicle.context';
 import HomeContent from './HomeContent';
 import { IconVehicleContext, TIconVehicleC } from './IconVehicleContext';
+import { toast } from '@/services/alert.service';
 
 const utmObj = require('utm-latlng')
 
@@ -36,44 +37,13 @@ export default function Page() {
   const {setIcon} = useContext<TIconVehicleC>(IconVehicleContext)
 
   const pushLocationUser = useCallback(async () => {
-    try {
-      return new Promise<void>((resolve, reject) => {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            async (position) => {
-              try {
-                const { latitude, longitude } = position.coords;
-                const utm = UTM.convertLatLngToUtm(longitude, latitude, 1);
-                const mgrss = mgrs.forward([longitude, latitude]);
-                const g = {} as Locations;
-                g.lat = latitude.toString();
-                g.long = longitude.toString();
-                g.mgrs = mgrss;
-                g.utm = JSON.stringify(utm);
-
-                await saveLocation(g);
-                setUserLocate(g);
-
-                resolve();
-              } catch (error) {
-                setLoad(true)
-                timeOutJwt(error)
-              }
-            },
-            (error) => {
-              console.error("Error getting geolocation:", error);
-              reject(error);
-            }
-          );
-        } else {
-          const error = new Error("Geolocation is not supported by this browser.");
-          console.error(error);
-          reject(error);
-        }
-      });
-    } catch (error) {
-      console.log(error);
+    const getLo = await onSaveLocation()
+    if(!getLo){
+      return toast('ไม่สามารถเข้าถึงที่ตั้งได้', 'error')
     }
+    setUserLocate(getLo)
+
+    
   }, [setUserLocate]);
 
 
@@ -120,14 +90,14 @@ export default function Page() {
     findCurrentVehicle()
 
 
-    // const saveLo = setInterval(() => {
-    //   pushLocationUser();
-    //   console.log('5 secon');
+    const saveLo = setInterval(() => {
+      pushLocationUser();
+      console.log('15 secon');
 
-    // }, 5000);
+    }, 15000);
 
     return () => {
-      // clearInterval(saveLo);
+      clearInterval(saveLo);
       pushLocationUser
       findMissionByUsre
       findCurrentVehicle

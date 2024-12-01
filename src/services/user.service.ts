@@ -3,6 +3,11 @@ import { endpoint } from "./endpoint.service"
 import { Locations } from "@/models/location.model"
 import { UserRegister, Users } from "@/models/users.model"
 import { Vehicles } from "@/models/vehicle.model"
+import { toast } from "./alert.service"
+import * as mgrs from 'mgrs';
+
+const utmObj = require('utm-latlng')
+const UTM = new utmObj('Everest');
 
 export function saveLocation(locate: Locations) {
     try {
@@ -11,6 +16,41 @@ export function saveLocation(locate: Locations) {
         throw error
     }
 }
+
+export function onSaveLocation(): Promise<Locations | void> {
+    return new Promise((resolve, reject) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            try {
+              const { latitude, longitude } = position.coords;
+              const utm = UTM.convertLatLngToUtm(longitude, latitude, 1);
+              const mgrss = mgrs.forward([longitude, latitude]);
+              const g = {} as Locations 
+                g.lat = latitude.toString(),
+                g.long = longitude.toString(),
+                g.mgrs = mgrss,
+                g.utm = JSON.stringify(utm),
+              
+              resolve(g); // Return the location object via resolve
+            } catch (error) {
+              toast('ไม่สามารถรับที่อยู่ได้', 'error');
+              reject(error); // Reject with error
+            }
+          },
+          (error) => {
+            console.error("Error getting geolocation:", error);
+            reject(error); // Reject with geolocation error
+          }
+        );
+      } else {
+        const error = new Error("Geolocation is not supported by this browser.");
+        console.error(error);
+        reject(error); // Reject with unsupported geolocation error
+      }
+    });
+  }
+  
 
 export function findUsers(page: number, limit: number) {
     try {
