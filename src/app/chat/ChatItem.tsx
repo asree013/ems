@@ -167,6 +167,10 @@ export default function ChatItem() {
         useEffect(() => {
             onFeedUserOnline()
 
+            return() => {
+                onFeedUserOnline
+            }
+
         }, [onFeedUserOnline])
 
         return (
