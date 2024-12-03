@@ -18,11 +18,11 @@ import { FindUserMe, logins } from '../../services/authen.service';
 import { useEffect, useState } from 'react';
 import { toast } from '@/services/alert.service'
 import { escape } from 'querystring';
-import { socket } from '@/configs/socket';
 import styled from 'styled-components';
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import HttpsIcon from '@mui/icons-material/Https';
+import { socket } from '@/configs/socket.config';
 // import { useSearchParams } from 'next/navigation';
 
 const TStyleButton = styled.button`

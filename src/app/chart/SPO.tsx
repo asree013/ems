@@ -1,5 +1,5 @@
 'use client';
-import { socket } from '@/configs/socket';
+import { socket } from '@/configs/socket.config';
 import { ecgNull } from '@/data/data.medical_result';
 import {
   AutoCursorModes,

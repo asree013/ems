@@ -1,7 +1,7 @@
 'use client';
 
 import { enviromentDev } from '@/configs/enviroment.dev';
-import { socket } from '@/configs/socket';
+import { socket } from '@/configs/socket.config';
 import { RoomChats, Chats } from '@/models/chat.model';
 import { MissionById } from '@/models/mission.model';
 import { toast } from '@/services/alert.service';

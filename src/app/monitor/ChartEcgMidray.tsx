@@ -18,7 +18,6 @@ import {
 } from '@/services/order_tranfer.service';
 import Divider from '@mui/material/Divider';
 
-import { socket } from '@/configs/socket';
 import { EcgTransfer } from '@/models/ecg.model';
 import StartChart from './StartChart';
 import { referfToken } from '@/services/authen.service';
@@ -26,6 +25,7 @@ import { useRouter } from 'next/navigation';
 
 import chartCss from './chart.module.css'
 import { toast } from '@/services/alert.service';
+import { socket } from '@/configs/socket.config';
 
 var x: number[] = [];
 var a: number[] = []
