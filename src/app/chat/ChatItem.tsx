@@ -53,6 +53,29 @@ export default function ChatItem() {
     const [open, setOpen] = React.useState<boolean>(false);
     const [currentRoomId, setCurrentRoomId] = useState<RoomChats>({} as RoomChats)
     const [loadChat, setLoadChat] = useState<boolean>(false)
+    const [roomChat, setRoomChat] = useState<RoomChats[]>({} as RoomChats[])
+
+    const onFeedUserOnline = useCallback(async () => {
+        setLoadChat(true)
+        try {
+            const result = await findChatRoomAll()
+            setRoomChat(result.data)
+        } catch (error: any) {
+            timeOutJwt(error)
+            toast(error.message, 'error')
+        } finally {
+            setLoadChat(false)
+        }
+    }, [setRoomChat])
+
+    useEffect(() => {
+        onFeedUserOnline()
+
+        return () => {
+            onFeedUserOnline
+        }
+
+    }, [onFeedUserOnline])
 
     return (
         <>
@@ -141,43 +164,20 @@ export default function ChatItem() {
 
     function TabChat() {
         const [value, setValue] = React.useState(0);
-        const [roomChat, setRoomChat] = useState<RoomChats[]>({} as RoomChats[])
 
         const handleChange = (event: React.SyntheticEvent, newValue: number) => {
             setValue(newValue);
         };
 
-        const onFeedUserOnline = useCallback(async () => {
-            setLoadChat(true)
-            try {
-                const result = await findChatRoomAll()
-                setRoomChat(result.data)
-            } catch (error: any) {
-                timeOutJwt(error)
-                toast(error.message, 'error')
-            } finally {
-                setLoadChat(false)
-            }
-        }, [setRoomChat])
-
         function onChatNow(room: RoomChats) {
             setCurrentRoomId(room)
         }
-
-        useEffect(() => {
-            onFeedUserOnline()
-
-            return() => {
-                onFeedUserOnline
-            }
-
-        }, [onFeedUserOnline])
 
         return (
             <Box sx={{ width: '100%' }}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                        <Tab label="ผู้คนที่ออนไลน" {...a11yProps(0)} />
+                        <Tab label="ออนไลน" {...a11yProps(0)} />
                         <Tab label="เพื่อน" {...a11yProps(1)} />
                         <Tab label="กลุ่ม" {...a11yProps(2)} />
                     </Tabs>

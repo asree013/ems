@@ -16,6 +16,8 @@ import { NIL } from 'uuid';
 
 import PatientItem from './PatientItem';
 import TabPatient from './TabPateint';
+import { createColumnOfflineDb, onAddDataPatientOffline } from '@/services/worker.service';
+import { dbDexie } from '@/configs/dexie.config';
 
 
 export default function Page() {
@@ -41,9 +43,14 @@ export default function Page() {
   const feedPateint = useCallback(async () => {
     setLoad(true);
     try {
-      const result = await findPatientAll(1, 5);
+      const result = await findPatientAll(1, 15);
+      console.log(result.data);
+      
       setPatientsData(result.data)
-      setPatients(result.data.filter(r => !r.mission_id && !r.BelongHelicopter && !r.BelongCar && !r.BelongChip));
+      setPatients(result.data?.filter((r) => {
+        if(!r.mission_id && !r.BelongHelicopter && !r.BelongCar && !r.BelongChip ) return r
+        else return null
+      }));
 
     } catch (error) {
       console.log(error);
@@ -89,7 +96,6 @@ export default function Page() {
     setLoad(true);
     try {
       const result = await findPatientAll(1, 5);
-      // const data = await result.json<Patients[]>()
       setPatients(result.data);
     } catch (error) {
       console.log(error);
@@ -108,7 +114,7 @@ export default function Page() {
 
     const newData = patientData.filter(r => r.BelongCar)
     console.log(newData);
-    
+
     setPatients(newData)
   }
 
@@ -124,14 +130,19 @@ export default function Page() {
 
   function onAssignValue(value: string) {
     console.log(value);
-    
+
   }
 
   function patientNoneAssign() {
     setPatients(patientData.filter(r => !r.mission_id && !r.BelongHelicopter && !r.BelongCar && !r.BelongChip));
   }
+
   useEffect(() => {
     feedPateint();
+
+    return () => {
+      feedPateint
+    }
   }, [feedPateint]);
 
   return (

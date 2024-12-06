@@ -1,3 +1,4 @@
+import { RxJsonSchema } from 'rxdb';
 import { AllergyDrug } from "./allergyDrug.model"
 import { AllergyFoods } from "./allertgyFood.model"
 import { Bed } from "./bed.model"
@@ -196,3 +197,143 @@ export type OrderTranferInVehicle = {
   hospital_id: any
   patient_id: string
 }
+
+export const PatientOffline = {
+  title: "PatientOffline Schema",
+  description: "Schema for offline patients with relations",
+  version: 0,
+  type: "object",
+  primaryKey: "id", // กำหนด primaryKey
+  properties: {
+    id: { type: "string" },
+    first_name: { type: "string" },
+    last_name: { type: "string" },
+    qr_number: { type: "string" },
+    gender: { type: "string" },
+    age: { type: "string" },
+    birthday: { type: "string", format: "date" },
+    id_card: { type: "string" },
+    tel: { type: "string" },
+    address: { type: "string" },
+    group_blood: { type: "string" },
+    image: { type: "string" },
+    image_id_card: { type: "string" },
+    user_create_id: { type: "string" },
+    user_update_id: { type: "string" },
+    date_time_died: { type: "string", format: "date-time" },
+    date_time_go_home: { type: "string", format: "date-time" },
+    create_date: { type: "string", format: "date-time" },
+    update_date: { type: "string", format: "date-time" },
+    mission_id: { type: "string" },
+    risk_level_id: { type: "string" },
+    TriageSieve: { type: "object", additionalProperties: true },
+    TriageSort: { type: "object", additionalProperties: true },
+    Teatment: { type: "object", additionalProperties: true },
+    Risklevel: { type: "object", additionalProperties: true },
+    Loading: { type: "object", additionalProperties: true },
+    Parking: { type: "object", additionalProperties: true },
+    AllergyDrug: {
+      type: "array",
+      items: { type: "object", ref: "AllergyDrug" },
+    },
+    AllergyFood: {
+      type: "array",
+      items: { type: "object", ref: "AllergyFoods" },
+    },
+    BedUseHistory: {
+      type: "array",
+      items: { type: "object", additionalProperties: true },
+    },
+    CongenitalDisease: {
+      type: "array",
+      items: { type: "object", additionalProperties: true },
+    },
+    History: {
+      type: "array",
+      items: { type: "object", additionalProperties: true },
+    },
+    DiscoveredPatient: {
+      type: "object",
+      properties: {
+        id: { type: "string" },
+        discovery_date: { type: "string", format: "date-time" },
+        location: { type: "string" },
+        discovered_by: { type: "string" },
+        details: { type: "string" },
+      },
+      required: ["id", "discovery_date", "location"],
+    },
+    OrderTransfer: {
+      type: "array",
+      items: { type: "object", additionalProperties: true },
+    },
+    ParkingHistory: { type: "object", additionalProperties: true },
+    BelongCar: {
+      type: "object",
+      properties: {
+        id: { type: "string" },
+        car_id: { type: "string" },
+        patient_id: { type: "string" },
+        create_date: { type: "string", format: "date-time" },
+        update_date: { type: "string", format: "date-time" },
+        Car: {
+          type: "object",
+          properties: {
+            id: { type: "string" },
+            number: { type: "string" },
+            description: { type: "string" },
+            image_front: { type: "string" },
+            image_back: { type: "string" },
+          },
+        },
+      },
+    },
+    BelongHelicopter: {
+      type: "object",
+      properties: {
+        id: { type: "string" },
+        helicopter_id: { type: "string" },
+        patient_id: { type: "string" },
+        create_date: { type: "string", format: "date-time" },
+        update_date: { type: "string", format: "date-time" },
+        Helicopter: {
+          type: "object",
+          properties: {
+            id: { type: "string" },
+            number: { type: "string" },
+            image_front: { type: "string" },
+            radio: { type: "string" },
+            calling: { type: "string" },
+          },
+        },
+      },
+    },
+    HistoryPatientBelongCar: {
+      type: "array",
+      items: { type: "object", additionalProperties: true },
+    },
+    HistoryPatientBelongShip: {
+      type: "array",
+      items: { type: "object", additionalProperties: true },
+    },
+    HistoryPatientBelongHelicopter: {
+      type: "array",
+      items: { type: "object", additionalProperties: true },
+    },
+    _count: {
+      type: "object",
+      properties: {
+        OrderTransfer: { type: "number" },
+        BedUseHistory: { type: "number" },
+        AllergyFood: { type: "number" },
+        AllergyDrug: { type: "number" },
+        CongenitalDisease: { type: "number" },
+        History: { type: "number" },
+      },
+    },
+  },
+  required: ["id", "first_name", "last_name", "create_date"],
+};
+
+
+

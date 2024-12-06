@@ -18,6 +18,7 @@ import { MenuValueContext } from '@/contexts/menu.value.context';
 import { timeOutJwt } from '@/services/timeout.service';
 import ProfileComponent from './ProfileComponent';
 import { FindMeTabContext } from './subContext/findMeTab.content';
+import { syncDb } from '@/services/worker.service';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -75,7 +76,13 @@ export default function TabMenu({ children }: Props) {
         }
     }, [setFindMe]);
 
+    async function updateDb() {
+        const n = await syncDb()
+        console.log('sync db');
+    }
+
     React.useEffect(() => {
+        // updateDb()
         if (ref.current) {
             ref.current.ownerDocument.body.scrollTop = 0;
         }

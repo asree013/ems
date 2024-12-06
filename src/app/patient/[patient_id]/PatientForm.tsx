@@ -39,8 +39,7 @@ import RadioGroup from '@mui/joy/RadioGroup';
 import Sheet from '@mui/joy/Sheet';
 import Done from '@mui/icons-material/Done';
 import Loadding from '@/components/Loadding';
-import { uploadImage } from '@/services/uploadImage.service';
-
+import { uploadBase64Image, uploadImage } from '@/services/uploadImage.service';
 type Props = {
   returnOnCreatePatient: () => void;
   returnOnUpdatePatient: () => void;
@@ -213,23 +212,18 @@ export default function PatientForm({
           <input type="file" id='profileP' onChange={async(e) => {
             setLoad(true)
             if (e.target.files) {
-              if (e.target.files) {
-                const fdt = new FormData()
-                fdt.append('file', e.target.files[0])
-                const image = await uploadImage(fdt)
-                setPatient({ ...patient, image: image.data.result })
+                const image = await uploadBase64Image(e.target.files[0])
+                setPatient({ ...patient, image: String(image) })
+              
                 setLoad(false)
-              }
             }
           }} hidden />
 
           <input type="file" id='profileId' onChange={async (e) => {
             setLoad(true)
             if (e.target.files) {
-              const fdt = new FormData()
-              fdt.append('file', e.target.files[0])
-              const image = await uploadImage(fdt)
-              setPatient({ ...patient, image_id_card: image.data.result })
+              const image = await uploadBase64Image(e.target.files[0])
+              setPatient({ ...patient, image_id_card: String(image) })
               setLoad(false)
             }
           }} hidden />

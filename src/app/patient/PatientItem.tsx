@@ -26,7 +26,7 @@ export default function PatientItem({ order_tranfer_id }: Props) {
       <React.Fragment>
         <CssBaseline />
         <div className={patientCss.patient_list}>
-          {patients.length > 0 ? (
+          {Array.isArray(patients) ? (
             <>
               {patients.map((r) => (
                 <PatientList
