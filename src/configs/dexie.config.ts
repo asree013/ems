@@ -7,9 +7,11 @@ import { useLiveQuery } from 'dexie-react-hooks';
 export const dbDexie = new Dexie('ems_local') as Dexie & {
     patients: EntityTable<Patients, 'id'>;
     historys: EntityTable<Historys, 'id'>
+    userFindMe: EntityTable<Users, 'id'>
 };
 
 dbDexie.version(1).stores({
     patients: '&id',
-    historys: '&id'
+    historys: '&id',
+    userFindMe: '&id',
 });

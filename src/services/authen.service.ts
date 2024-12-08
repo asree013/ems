@@ -1,8 +1,10 @@
 import { Logins } from '@/models/authen.model';
 import { endpoint } from './endpoint.service';
 import { enviromentDev } from '@/configs/enviroment.dev';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { Users } from '@/models/users.model';
+import { checkOnline } from './worker.service';
+import { dbDexie } from '@/configs/dexie.config';
 
 const isBrowser = typeof window !== 'undefined';
 
@@ -39,8 +41,16 @@ export function logout() {
   return endpoint.get<Users>(`${enviromentDev.auth}/sign-out`);
 }
 
-export function FindUserMe() {
-  return endpoint.get<Users>(`${enviromentDev.auth}/me`);
+export async function FindUserMe() {
+  if(await checkOnline()){
+    const result = await endpoint.get<Users>(`${enviromentDev.auth}/me`);
+    dbDexie.userFindMe.add(result.data).catch(e => console.log(e))
+    return result
+  } else{
+    const newData = await dbDexie.userFindMe.toArray()
+    const data = newData[0]
+    return {data} as AxiosResponse  
+  }
 }
 export function referfToken() {
   return endpoint.get(`${enviromentDev.auth}/refresh-token`);

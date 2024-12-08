@@ -16,7 +16,6 @@ import { NIL } from 'uuid';
 
 import PatientItem from './PatientItem';
 import TabPatient from './TabPateint';
-import { createColumnOfflineDb, onAddDataPatientOffline } from '@/services/worker.service';
 import { dbDexie } from '@/configs/dexie.config';
 
 

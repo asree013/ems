@@ -19,38 +19,37 @@ export function saveLocation(locate: Locations) {
 
 export function onSaveLocation(): Promise<Locations | void> {
     return new Promise((resolve, reject) => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          async (position) => {
-            try {
-              const { latitude, longitude } = position.coords;
-              const utm = UTM.convertLatLngToUtm(longitude, latitude, 1);
-              const mgrss = mgrs.forward([longitude, latitude]);
-              const g = {} as Locations 
-                g.lat = latitude.toString(),
-                g.long = longitude.toString(),
-                g.mgrs = mgrss,
-                g.utm = JSON.stringify(utm),
-              
-              resolve(g); // Return the location object via resolve
-            } catch (error) {
-              toast('ไม่สามารถรับที่อยู่ได้', 'error');
-              reject(error); // Reject with error
-            }
-          },
-          (error) => {
-            console.error("Error getting geolocation:", error);
-            reject(error); // Reject with geolocation error
-          }
-        );
-      } else {
-        const error = new Error("Geolocation is not supported by this browser.");
-        console.error(error);
-        reject(error); // Reject with unsupported geolocation error
-      }
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    try {
+                        const { latitude, longitude } = position.coords;
+                        const utm = UTM.convertLatLngToUtm(longitude, latitude, 1);
+                        const mgrss = mgrs.forward([longitude, latitude]);
+                        const g = {} as Locations
+                        g.lat = latitude.toString(),
+                            g.long = longitude.toString(),
+                            g.mgrs = mgrss,
+                            g.utm = JSON.stringify(utm),
+
+                            resolve(g); // Return the location object via resolve
+                    } catch (error) {
+                        toast('ไม่สามารถรับที่อยู่ได้', 'error');
+                        reject(error); // Reject with error
+                    }
+                },
+                (error) => {
+                    console.error("Error getting geolocation:", error);
+                    reject(error); // Reject with geolocation error
+                }
+            );
+        } else {
+            const error = new Error("Geolocation is not supported by this browser.");
+            console.error(error);
+            reject(error); // Reject with unsupported geolocation error
+        }
     });
-  }
-  
+}
 
 export function findUsers(page: number, limit: number) {
     try {
