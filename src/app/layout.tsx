@@ -4,7 +4,10 @@ import './globals.css';
 import logoIcon from '@/assets/icon/electronic-device_5758533.png';
 import newLogo from '@/assets/image/icon_menu/logo4.png';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({
+  subsets: ['latin'],
+  fallback: ['Arial', 'sans-serif'], // เพิ่ม fallback ฟอนต์
+});
 
 export let metadata: Metadata = {
   applicationName: 'Marine-EMS',

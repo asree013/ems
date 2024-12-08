@@ -42,11 +42,7 @@ export default function Page() {
       return toast('ไม่สามารถเข้าถึงที่ตั้งได้', 'error')
     }
     setUserLocate(getLo)
-
-    
   }, [setUserLocate]);
-
-
 
   const findMissionByUsre = useCallback(async () => {
     setLoad(true)

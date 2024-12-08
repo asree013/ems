@@ -23,7 +23,7 @@ function onCheckPath() {
 onCheckPath()
 
 export const endpoint = axios.create({
-  baseURL: Url,
+  baseURL: enviromentDev.baseUrl,
   timeout: 25000,
   withCredentials: true,
 });

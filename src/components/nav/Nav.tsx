@@ -17,6 +17,8 @@ import Loadding from '../Loadding';
 import { Avatar, styled as styledM, useMediaQuery } from '@mui/material';
 import { IconVehicleContext, TIconVehicleC } from '@/app/home/IconVehicleContext';
 import styled from 'styled-components';
+import { checkOnline } from '@/services/worker.service';
+import { toast } from '@/services/alert.service';
 
 
 interface Props {
@@ -49,7 +51,7 @@ export default function Nav(props: Props) {
   const [isLoad, setIsLoad] = React.useState(false);
   const { icon } = React.useContext<TIconVehicleC>(IconVehicleContext)
   const path = usePathname()
-  
+
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
@@ -79,6 +81,26 @@ export default function Nav(props: Props) {
     background: 'linear-gradient(125deg, #021B79, #0575E6)',
 
   }));
+
+  const [online, setOnline] = React.useState<boolean>(true)
+  let timeInteval: any
+  const onCheckOnline = React.useCallback(async () => {
+    try {
+      const resutl = await checkOnline()
+      setOnline(resutl)
+      timeInteval = setInterval(async () => {
+        const resutl = await checkOnline()
+        setOnline(resutl)
+      }, 5000)
+    } catch (error) {
+      toast('error', 'error')
+    }
+  }, [setOnline, timeInteval])
+
+  React.useEffect(() => {
+    onCheckOnline()
+
+  }, [onCheckOnline])
 
   return (
     <>
@@ -119,34 +141,19 @@ export default function Nav(props: Props) {
               </Brander>
             </Typography>
 
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+
+            {/* <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
               <Button style={{ cursor: 'default' }} color='inherit' variant='text'>สถาณะ: </Button>
-              <Button style={{ cursor: 'default' }} variant='contained' color='inherit'>
+              <div style={{ width: 20, height: 20, background: 'red', border: '1px solid white', borderRadius: 20 }}></div>
+            </Box> */}
+            <Button sx={{ cursor: 'default', position: 'fixed', right: 20, top: 10 
+              ,display: 'flex', alignItems: 'center', justifyContent: 'center'
+            }} color='inherit' variant='text'>
+              <p style={{fontSize: '16px'}}>{online?'ออนไลน์': 'ออฟไลน์'} :</p>
+              <div style={{  marginLeft: 8,width: 20, height: 20, background: online? 'green': 'red', border: '1px solid white', borderRadius: 20 }}></div>
+            </Button>
 
-                {
-                  path === '/home' ?
-                  icon.length === 0 ?
-                      'ไม่มียานพาหนะ' :
-                      <>
-                        {
-                          icon.includes('car') ?
-                            'รถรับส่ง' : null
-                        }
-                        {
-                          icon.includes('helicopter') ?
-                            'ฮ.รับส่ง' : null
-                        }
-                        {
-                          icon.includes('ship') ?
-                            'เรือรับส่ง' : null
-                        }
-                      </>:
-                    null 
 
-                }
-              </Button>
-            </Box>
-            <Button sx={{ display: { xs: 'block', sm: 'none' }, cursor: 'default', position: 'absolute', right: 20 }} color='inherit' variant='text'>สถาณะ: </Button>
 
 
 

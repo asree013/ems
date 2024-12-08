@@ -1,0 +1,8 @@
+192.168.3.101 {
+    reverse_proxy 192.168.3.101:3000
+    encode gzip
+    tls {
+        # ถ้าใช้ Let's Encrypt ต้องแน่ใจว่า Domain ถูกต้อง
+        # dns cloudflare # หากใช้ DNS Challenge
+    }
+}

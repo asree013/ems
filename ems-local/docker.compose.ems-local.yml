@@ -1,10 +1,27 @@
 version: '3.5'
 services:
-  app: 
+  app:
     container_name: app
     image: asree001/app-ems
     ports:
-      - "192.168.3.101:3000:3000"
+      - "3000:3000"
     platform: 'linux/amd64'
-    env_file:
-      - ./.env
+
+  caddy:
+    container_name: caddy
+    image: lucaslorentz/caddy-docker-proxy:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./data:/data
+      - ./config:/config
+    depends_on:
+      - app
+
+networks:
+  caddy_network:
+    # สร้าง Docker network
+    driver: bridge

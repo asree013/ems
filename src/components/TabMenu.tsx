@@ -18,7 +18,8 @@ import { MenuValueContext } from '@/contexts/menu.value.context';
 import { timeOutJwt } from '@/services/timeout.service';
 import ProfileComponent from './ProfileComponent';
 import { FindMeTabContext } from './subContext/findMeTab.content';
-import { syncDb } from '@/services/worker.service';
+import { checkOnline, syncDb } from '@/services/worker.service';
+import { toast } from '@/services/alert.service';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -76,6 +77,8 @@ export default function TabMenu({ children }: Props) {
         }
     }, [setFindMe]);
 
+    
+
     async function updateDb() {
         const n = await syncDb()
         console.log('sync db');
@@ -110,7 +113,7 @@ export default function TabMenu({ children }: Props) {
                         </MenuValueContext.Provider>
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={2}>
-                        <FindMeTabContext.Provider value={{findMe, setFindMe}} >
+                        <FindMeTabContext.Provider value={{ findMe, setFindMe }} >
                             <ProfileComponent />
                         </FindMeTabContext.Provider>
                     </CustomTabPanel>
@@ -121,7 +124,7 @@ export default function TabMenu({ children }: Props) {
                         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered>
                             <Tab style={{ margin: '0 5px' }} label="Home" {...a11yProps(0)} icon={<HomeIcon />} />
                             <Tab style={{ margin: '0 5px' }} label="Menu" {...a11yProps(1)} icon={<WidgetsIcon />} />
-                            <Tab style={{ margin: '0 5px' }} label="Profile" {...a11yProps(2)} icon={<Avatar src={findMe.image} sx={{ width: 25, height: 25 }} />} />
+                            <Tab style={{ margin: '0 5px' }} label="Profile" {...a11yProps(2)} icon={<Avatar src={findMe?.image} sx={{ width: 25, height: 25 }} />} />
                         </Tabs>
                     </Box>
                 </Paper>

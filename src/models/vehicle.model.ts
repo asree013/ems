@@ -231,6 +231,7 @@ export interface HelicopterById {
 }
 
 export interface Vehicles {
+  id: string
   car: {
     id: string
     user_id: string

@@ -5,6 +5,9 @@ import { UserRegister, Users } from "@/models/users.model"
 import { Vehicles } from "@/models/vehicle.model"
 import { toast } from "./alert.service"
 import * as mgrs from 'mgrs';
+import { checkOnline } from "./worker.service"
+import { dbDexie } from "@/configs/dexie.config"
+import { AxiosResponse } from "axios"
 
 const utmObj = require('utm-latlng')
 const UTM = new utmObj('Everest');
@@ -23,6 +26,8 @@ export function onSaveLocation(): Promise<Locations | void> {
             navigator.geolocation.getCurrentPosition(
                 async (position) => {
                     try {
+                        console.log('======>', position);
+
                         const { latitude, longitude } = position.coords;
                         const utm = UTM.convertLatLngToUtm(longitude, latitude, 1);
                         const mgrss = mgrs.forward([longitude, latitude]);
@@ -75,16 +80,26 @@ export function getLocationUser() {
     }
 }
 
-export function findCurrentVehicleByUser() {
+export async function findCurrentVehicleByUser() {
     try {
-        return endpoint.get<Vehicles>(enviromentDev.user + '/current-vehicle')
+        if(await checkOnline()){
+            const result = await endpoint.get<Vehicles>(enviromentDev.user + '/current-vehicle')
+            dbDexie.currentVehicle.add(result.data)
+            return result
+        }
+        else{
+            const find = await dbDexie.currentVehicle.toArray()
+            const data = find[0]
+            return {data} as AxiosResponse
+        }
     } catch (error) {
         throw error
     }
 }
 
-export function editUserByUserCookie(data: Users) {
+export async function editUserByUserCookie(data: Users) {
     try {
+        if (await checkOnline() === false) return toast('ไม่สามารถแก้ไขข้อมูลในคณะที่ ofline ได้', 'error')
         return endpoint.put<Users>(enviromentDev.user, data)
     } catch (error) {
         throw error
