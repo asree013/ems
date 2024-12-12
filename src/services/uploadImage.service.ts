@@ -15,6 +15,7 @@ export function uploadImage(file: FormData) {
 }
 
 export async function uploadBase64Image(file: File) {
+    ///เอาไว้log ขนาด base64 ก่อน ลดขนาด
     const imageFile = file;
     const newImage = await new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -22,24 +23,20 @@ export async function uploadBase64Image(file: File) {
         reader.onerror = reject;
         reader.readAsDataURL(imageFile);
     })
-    console.log(String(newImage).length);
+    console.log('ขนาด base64 ก่อน ลดขนาด: ', String(newImage).length);
 
-    // console.log();
-    // console.log();
-    // console.log();
-    // console.log();
-
-
+    ///setting เพื่อลดขนาด base 64
     const options = {
         maxSizeMB: 1,
         maxWidthOrHeight: 380,
         useWebWorker: true,
-        maxIteration: 30,            // จำกัดจำนวนการลองบีบอัด 10 ครั้ง
-        initialQuality: 0.2,         // กำหนดคุณภาพเริ่มต้นที่ 20% เพื่อให้ภาพมีขนาดเล็กลง
+        maxIteration: 30,            // จำกัดจำนวนการลองบีบอัด 30 ครั้ง
+        initialQuality: 0.4,         // กำหนดคุณภาพเริ่มต้นที่ 40% เพื่อให้ภาพมีขนาดเล็กลง
         alwaysKeepResolution: false, // ไม่ต้องคงความละเอียดไว้
         preserveExif: false,
     }
     try {
+        ///เอาไว้log ขนาด base64 หลัง ลดขนาด
         const compressedFile = await imageCompression(imageFile, options);
         const resultImage = await new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -47,8 +44,7 @@ export async function uploadBase64Image(file: File) {
             reader.onerror = reject;
             reader.readAsDataURL(compressedFile);
         })
-        console.log(String(resultImage).length);
-
+        console.log('ขนาด base64 หลัง ลดขนาด: ',String(resultImage).length);
         return resultImage
     } catch (error) {
         throw error

@@ -23,9 +23,12 @@ function onCheckPath() {
 onCheckPath()
 
 export const endpoint = axios.create({
-  baseURL: enviromentDev.baseUrl,
+  baseURL: Url,
   timeout: 25000,
   withCredentials: true,
+  // headers: {
+  //   Authorization: `Bearer`
+  // }
 });
 
 

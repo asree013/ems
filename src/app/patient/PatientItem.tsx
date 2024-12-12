@@ -1,12 +1,10 @@
 'use client';
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
 import PatientList from './PatientList';
 import patientCss from './patient.module.css';
 import { Card, Fab } from '@mui/material';
-import { usePathname } from 'next/navigation';
 import Loadding from '@/components/Loadding';
 import { NIL } from 'uuid';
 import { PatientContextsArr, PContexts } from '@/contexts/patient.context';
@@ -62,35 +60,6 @@ export default function PatientItem({ order_tranfer_id }: Props) {
             </div>
           )}
         </div>
-        {/* <AppBar
-          position="fixed"
-          sx={{ top: 'auto', bottom: 0, background: '#2c387e' }}
-        >
-          <Toolbar>
-            {pathname ? (
-              <Typography variant="h5">Patient List</Typography>
-            ) : (
-              <Typography variant="h5">Add Patient in Monitor</Typography>
-            )}
-            <StyledFab
-              style={{ background: '#f50057', color: 'whiteSmoke' }}
-              aria-label="add"
-              onClick={() => {
-                setIsload(true)
-                router.push('/patient/' + NIL)
-              }}
-            >
-              <AddIcon />
-            </StyledFab>
-            <Box sx={{ flexGrow: 1 }} />
-            <IconButton color="inherit">
-              <SearchIcon />
-            </IconButton>
-            <IconButton color="inherit">
-              <MoreIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar> */}
         {
           load ?
             <Loadding /> :

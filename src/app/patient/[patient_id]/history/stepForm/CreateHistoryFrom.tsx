@@ -26,7 +26,7 @@ export default function CreateHistoryFrom() {
             h.patient_id = patient_id.toString()
             const result = await createHistory(h)
             console.log(result.data);
-            window.location.reload()
+            // window.location.reload()
         } catch (error: any) {
             // timeOutJwt(error)
             toast(JSON.stringify(error.message), 'error')

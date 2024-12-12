@@ -41,7 +41,7 @@ export default function CardPhysicalStatus({ physical }: Props) {
             <div className={'borders'}>
                 <div className='m-3' style={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
                     <p style={{ fontWeight: 600, fontSize: '18px' }}>Physical status</p>
-                    <p className='ml-2'>({physical.ga.toUpperCase()}) {physical.ga.toLocaleLowerCase().includes('nsf') ? 'No Singnigicant Finding' : ''}</p>
+                    <p className='ml-2'>({physical?.ga?.toUpperCase()}) {physical?.ga?.toLocaleLowerCase().includes('nsf') ? 'No Singnigicant Finding' : ''}</p>
                 </div>
                 <div className={'broderLine'}></div>
 

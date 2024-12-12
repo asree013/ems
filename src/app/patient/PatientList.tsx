@@ -19,6 +19,7 @@ import {
 import { OrderTranfer } from '@/models/order_tranfer.model';
 import { toast } from '@/services/alert.service';
 import Loadding from '@/components/Loadding';
+import FolderDeleteIcon from '@mui/icons-material/FolderDelete';
 
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 
@@ -35,13 +36,15 @@ import CarIcon from '@/assets/icon/ambulance.png'
 import ShipIcon from '@/assets/image/icon_menu/ship_3469160.png'
 import BlockIcon from '@mui/icons-material/Block';
 import { assingPatientInShip } from '@/services/ship.service';
+import { checkOnline } from '@/services/worker.service';
+import { dbDexie } from '@/configs/dexie.config';
 
 type Props = {
   patient: Patients;
   order_tranfer_id?: string;
 };
 
-export default function PatientList({ patient, order_tranfer_id }: Props) {
+export default async function PatientList({ patient, order_tranfer_id }: Props) {
   const pathName = usePathname().includes('patient');
   const router = useRouter();
   const [isLoad, setIsLoad] = React.useState(false);
@@ -238,6 +241,19 @@ export default function PatientList({ patient, order_tranfer_id }: Props) {
                   >
                     <QrCode2Icon color="inherit" />
                   </IconButton>
+                  {
+                    await checkOnline() === false ?
+                      <IconButton
+                        size="small"
+                        color="primary"
+                        onClick={async () => {
+                          await dbDexie.patients.delete(patient.id).catch(e => null)
+                          window.location.reload()
+                        }}
+                      >
+                        <FolderDeleteIcon color="error" />
+                      </IconButton> : null
+                  }
                 </Stack>
               ) : (
                 <Stack direction="row" spacing={1}>

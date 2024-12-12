@@ -18,19 +18,7 @@ export async function findPatientAll(
         {
           withCredentials: true,
         },
-      );
-      const allPatients = await response.data;
-      const uniquePatients = new Map<string, Patients>();
-
-      allPatients.forEach(patient => {
-        uniquePatients.set(patient.id, patient);
-      });
-      const data = Array.from(uniquePatients.values());
-      console.log(data);
-      
-      dbDexie.patients.bulkAdd(data).catch(e => console.log(e)
       )
-
       return response;
     }
     else {
@@ -50,12 +38,13 @@ export async function findPatientAll(
   }
 }
 
-export async function findPatientById(id: string) {
+export async function findPatientById(id: string): Promise<AxiosResponse<Patients>> {
   try {
     if (await checkOnline()) {
       return endpoint.get<Patients>(`${enviromentDev.patient}/${id}`);
     } else {
-      const data = await dbDexie.patients.where('id').equals(id)
+      const p = await dbDexie.patients.where('id').equals(id).toArray()
+      const data = p[0]
       return { data } as AxiosResponse
     }
 
@@ -84,11 +73,12 @@ export async function createPatient(item: Patients) {
       const create = await endpoint.post<Patients>(`${enviromentDev.patient}`, item, {
         withCredentials: true,
       });
-      await dbDexie.patients.add(create.data)
       return create
     } else {
       item.id = v4()
       const data = await dbDexie.patients.add(item)
+      console.log(data);
+      
       return { data } as AxiosResponse
     }
   } catch (error) {

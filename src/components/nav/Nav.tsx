@@ -22,10 +22,6 @@ import { toast } from '@/services/alert.service';
 
 
 interface Props {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
   windows?: () => Window;
 }
 
@@ -49,7 +45,6 @@ export default function Nav(props: Props) {
   const { windows } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isLoad, setIsLoad] = React.useState(false);
-  const { icon } = React.useContext<TIconVehicleC>(IconVehicleContext)
   const path = usePathname()
 
   const handleDrawerToggle = () => {
@@ -79,7 +74,6 @@ export default function Nav(props: Props) {
 
   const Themes = styledM(AppBar)<AppBarProps>(({ theme }) => ({
     background: 'linear-gradient(125deg, #021B79, #0575E6)',
-
   }));
 
   const [online, setOnline] = React.useState<boolean>(true)
@@ -95,16 +89,19 @@ export default function Nav(props: Props) {
     } catch (error) {
       toast('error', 'error')
     }
-  }, [setOnline, timeInteval])
+  }, [setOnline])
 
   React.useEffect(() => {
     onCheckOnline()
 
+    return() => {
+      clearInterval(timeInteval)
+      
+    }
   }, [onCheckOnline])
 
   return (
     <>
-
       <Box sx={{ display: 'flex', zIndex: 1 }} >
         <CssBaseline />
         <Themes >
@@ -152,9 +149,6 @@ export default function Nav(props: Props) {
               <p style={{fontSize: '16px'}}>{online?'ออนไลน์': 'ออฟไลน์'} :</p>
               <div style={{  marginLeft: 8,width: 20, height: 20, background: online? 'green': 'red', border: '1px solid white', borderRadius: 20 }}></div>
             </Button>
-
-
-
 
 
           </Toolbar>

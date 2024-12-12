@@ -29,7 +29,7 @@ export default function Page() {
 
     setLoad(true)
     try {
-      const result = await findPatientAll(page, limit)
+      const result = await findPatientAll(page, 11)
       setPatients(result.data)
     } catch (error) {
       timeOutJwt(error)
@@ -42,8 +42,7 @@ export default function Page() {
   const feedPateint = useCallback(async () => {
     setLoad(true);
     try {
-      const result = await findPatientAll(1, 15);
-      console.log(result.data);
+      const result = await findPatientAll(1, 11);
       
       setPatientsData(result.data)
       setPatients(result.data?.filter((r) => {
@@ -57,7 +56,7 @@ export default function Page() {
     } finally {
       setLoad(false);
     }
-  }, [setPatients, setPatientsData]);
+  }, [setPatientsData]);
 
   async function onScan(str: string) {
     setLoad(true)
@@ -94,7 +93,7 @@ export default function Page() {
   async function onFeedPatientAgain() {
     setLoad(true);
     try {
-      const result = await findPatientAll(1, 5);
+      const result = await findPatientAll(1, 11);
       setPatients(result.data);
     } catch (error) {
       console.log(error);

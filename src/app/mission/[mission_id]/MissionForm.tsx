@@ -25,7 +25,7 @@ import MapSelect from './MapSelect';
 import { MissionFromContext, TMissionFromContext } from '@/contexts/mission.from.context'
 
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
-import { uploadImage } from '@/services/uploadImage.service';
+import { uploadBase64Image, uploadImage } from '@/services/uploadImage.service';
 
 type Props = {
   mission_id: string
@@ -73,11 +73,9 @@ export default function MissionForm({ mission_id }: Props) {
   async function handlerUpload(e: React.ChangeEvent<HTMLInputElement>) {
     setLoad(true)
     if (e.target.files) {
-      const file = new FormData()
-      file.append('file', e.target.files[0])
-      const image = await uploadImage(file)
-      setMissions({ ...missions, image: image.data.result })
-      setSrc(image.data.result)
+      const image = await uploadBase64Image(e.target.files[0])
+      setMissions({ ...missions, image: String(image) })
+      setSrc(String(image))
       setLoad(false)
     }
   }

@@ -4,6 +4,7 @@ import { Historys } from '@/models/history.model';
 import { checkOnline } from './worker.service';
 import { dbDexie } from '@/configs/dexie.config';
 import { AxiosResponse } from 'axios';
+import { v4 } from 'uuid';
 
 export async function findHistoryByPatientId(patientId: string) {
   try {
@@ -11,10 +12,10 @@ export async function findHistoryByPatientId(patientId: string) {
       const result = await endpoint.get<Historys[]>(
         `${enviromentDev.patient}/${patientId}${enviromentDev.history}`,
       );
-      await dbDexie.historys.bulkAdd(result.data)
       return result
     } else {
-      const data = await dbDexie.historys.toArray()
+      const findHistory = await dbDexie.historys.toArray()
+      const data = findHistory.filter(r => r.patient_id === patientId)
       return {data} as AxiosResponse
     }
   } catch (error) {
@@ -35,12 +36,29 @@ export function findHistoryByPatientIdById(
   }
 }
 
-export function createHistory(data: Historys) {
+export async function createHistory(item: Historys) {
   try {
-    return endpoint.post<Historys>(
-      `${enviromentDev.patient}/${data.patient_id}${enviromentDev.history}`,
-      data,
-    );
+    if(await checkOnline()){
+      const res = await endpoint.post<Historys>(
+        `${enviromentDev.patient}/${item.patient_id}${enviromentDev.history}`,
+        item,
+      );
+      return res
+    }
+    else {
+      item.id = v4()
+      const findP = await dbDexie.patients.where('id').equals(item.patient_id).toArray()
+      item.Patient = findP[0]
+      item.create_date = String(new Date())
+      item.update_date = String(new Date())
+      const data = await dbDexie.historys.add(item).catch(e => null)
+      const fv = await dbDexie.currentVehicle.toArray()
+      for (let index = 0; index < fv[0].car.Car.PatientBelongCar.length; index++) {
+        const element = fv[0].car.Car.PatientBelongCar[index];
+        
+      }
+      return {data} as AxiosResponse
+    }
   } catch (error) {
     throw error;
   }

@@ -32,7 +32,7 @@ import { createCar, findCarByCarId } from '@/services/car.service';
 import { timeOutJwt } from '@/services/timeout.service';
 import { NIL } from 'uuid';
 import { useSearchParams } from 'next/navigation';
-import { uploadImage } from '@/services/uploadImage.service';
+import { uploadBase64Image, uploadImage } from '@/services/uploadImage.service';
 import Loadding from '@/components/Loadding';
 
 type Props = {
@@ -51,31 +51,23 @@ export default function Page({ params }: Props) {
     setLoad(true)
     if (e.target.files) {
       if (key.includes('front')) {
-        const file = new FormData()
-        file.append('file', e.target.files[0])
-        const image = await uploadImage(file)
-        setCar({ ...car, image_front: image.data.result })
+        const image = await uploadBase64Image(e.target.files[0])
+        setCar({ ...car, image_front: String(image) })
         setLoad(false)
       }
       else if (key.includes('back')) {
-        const file = new FormData()
-        file.append('file', e.target.files[0])
-        const image = await uploadImage(file)
-        setCar({ ...car, image_back: image.data.result })
+        const image = await uploadBase64Image(e.target.files[0])
+        setCar({ ...car, image_back: String(image) })
         setLoad(false)
       }
       else if (key.includes('left')) {
-        const file = new FormData()
-        file.append('file', e.target.files[0])
-        const image = await uploadImage(file)
-        setCar({ ...car, image_left: image.data.result })
+        const image = await uploadBase64Image(e.target.files[0])
+        setCar({ ...car, image_left: String(image) })
         setLoad(false)
       }
       else if (key.includes('right')) {
-        const file = new FormData()
-        file.append('file', e.target.files[0])
-        const image = await uploadImage(file)
-        setCar({ ...car, image_rigth: image.data.result })
+        const image = await uploadBase64Image(e.target.files[0])
+        setCar({ ...car, image_rigth: String(image) })
         setLoad(false)
       }
     }

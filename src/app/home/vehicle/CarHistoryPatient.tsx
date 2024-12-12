@@ -54,7 +54,7 @@ export default function CarHistoryPatient() {
                                         !vehicle.ship ?
                                             null :
                                             vehicle.ship.Ship.PatientBelongShip?.map((r, i) =>
-                                                <CarHistoryItem key={i} name={{ first_name: r.Patient.first_name, last_name: r.Patient.last_name, gender: r.Patient.gender }} patient_id={r.patient_id} history={r.Patient.History[0]} />
+                                                <CarHistoryItem key={i} name={{ first_name: r.Patient.first_name, last_name: r.Patient.last_name, gender: r.Patient.gender }} patient_id={r.patient_id} history={r.Patient?.History[0]} />
                                             )
                                     }
 

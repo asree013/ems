@@ -24,7 +24,7 @@ import { toast } from '@/services/alert.service';
 import { timeOutJwt } from '@/services/timeout.service';
 import Divider from '@mui/material/Divider';
 import Loadding from './Loadding';
-import { uploadImage } from '@/services/uploadImage.service';
+import { uploadBase64Image, uploadImage } from '@/services/uploadImage.service';
 
 import style from './styles/Profile.module.css'
 
@@ -38,14 +38,17 @@ export default function ProfileComponent() {
         setLoad(true)
         e.preventDefault()
         if (e.target.files) {
-            const file = new FormData()
-            file.append('file', e.target.files[0])
-            const image = await uploadImage(file)
-            const u = {} as Users
-            u.image = image.data.result
-            const result = await editUserByUserCookie(u)
-            setFindMe({ ...findMe, image: result.data.image })
-            setLoad(false)
+            try {
+                const image = await uploadBase64Image(e.target.files[0])
+                const u = {} as Users
+                u.image = String(image)
+                const result = await editUserByUserCookie(u)
+                setFindMe({ ...findMe, image: String(image) })
+
+                setLoad(false)
+            } catch (error) {
+
+            }
         }
     }
 
@@ -55,6 +58,7 @@ export default function ProfileComponent() {
             setFindMe(result.data)
             setIsEdit(false)
             toast('แก้ไขข้อมูลส่วนตัวสำเร็จ', 'success')
+
         } catch (error) {
             timeOutJwt(error)
             console.log(error);

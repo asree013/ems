@@ -70,8 +70,6 @@ export default function Page({ params }: Props) {
     try {
       const result = await findHistoryByPatientId(params.patient_id);
       setHistory(result.data);
-      // setHistoryFilter(result.data);
-
     } catch (error: any) {
       console.log(error);
       if (error.response.data.statusCode === 401) {

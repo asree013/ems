@@ -9,8 +9,7 @@ import { unAssingPatinetToCarByCarIdAndPatientId } from '@/services/car.service'
 import { unAssingPatientInHelicopter } from '@/services/helicopter.service';
 import { unAssingPatientInShip } from '@/services/ship.service';
 import { convertGender } from '@/services/user.service';
-import QueuePlayNextIcon from '@mui/icons-material/QueuePlayNext';
-import { Button, IconButton, Tooltip } from '@mui/material';
+import { Button } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
@@ -40,6 +39,7 @@ export default function CarPatientitem({ patient, vehicle }: { patient: PatientB
                 if (result.isConfirmed) {
                     if (vehicle.car) {
                         await unAssingPatinetToCarByCarIdAndPatientId(vehicle.car.Car.id, patient.Patient.id)
+                        window.location.reload()
                         toast(`เอาผู้ป่วย ${patient.Patient.first_name} ${patient.Patient.last_name} ออกจากรถแล้ว`, 'success')
                     }
                     if (vehicle.helicopter) {
