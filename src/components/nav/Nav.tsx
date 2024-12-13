@@ -46,6 +46,7 @@ export default function Nav(props: Props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isLoad, setIsLoad] = React.useState(false);
   const path = usePathname()
+  const [isOnline, setIsOnline] = React.useState<boolean>(navigator.onLine);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -76,29 +77,19 @@ export default function Nav(props: Props) {
     background: 'linear-gradient(125deg, #021B79, #0575E6)',
   }));
 
-  const [online, setOnline] = React.useState<boolean>(true)
-  let timeInteval: any
-  const onCheckOnline = React.useCallback(async () => {
-    try {
-      const resutl = await checkOnline()
-      setOnline(resutl)
-      timeInteval = setInterval(async () => {
-        const resutl = await checkOnline()
-        setOnline(resutl)
-      }, 5000)
-    } catch (error) {
-      toast('error', 'error')
-    }
-  }, [setOnline])
-
   React.useEffect(() => {
-    onCheckOnline()
+    const updateOnlineStatus = () => {
+      setIsOnline(navigator.onLine);
+    };
 
-    return() => {
-      clearInterval(timeInteval)
-      
-    }
-  }, [onCheckOnline])
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+
+    return () => {
+      window.removeEventListener('online', updateOnlineStatus);
+      window.removeEventListener('offline', updateOnlineStatus);
+    };
+  }, []);
 
   return (
     <>
@@ -146,8 +137,8 @@ export default function Nav(props: Props) {
             <Button sx={{ cursor: 'default', position: 'fixed', right: 20, top: 10 
               ,display: 'flex', alignItems: 'center', justifyContent: 'center'
             }} color='inherit' variant='text'>
-              <p style={{fontSize: '16px'}}>{online?'ออนไลน์': 'ออฟไลน์'} :</p>
-              <div style={{  marginLeft: 8,width: 20, height: 20, background: online? 'green': 'red', border: '1px solid white', borderRadius: 20 }}></div>
+              <p style={{fontSize: '16px'}}>{isOnline?'ออนไลน์': 'ออฟไลน์'} :</p>
+              <div style={{  marginLeft: 8,width: 20, height: 20, background: isOnline? 'green': 'red', border: '1px solid white', borderRadius: 20 }}></div>
             </Button>
 
 

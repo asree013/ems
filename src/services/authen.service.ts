@@ -42,9 +42,9 @@ export function logout() {
 }
 
 export async function FindUserMe() {
-  if(await checkOnline()){
+  if(navigator.onLine){
     const result = await endpoint.get<Users>(`${enviromentDev.auth}/me`);
-    dbDexie.userFindMe.add(result.data).catch(e => console.log(e))
+    dbDexie.userFindMe.add(result.data).catch(e => null)
     return result
   } else{
     const newData = await dbDexie.userFindMe.toArray()

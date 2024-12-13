@@ -59,7 +59,7 @@ export default function TabMenu({ children }: Props) {
     const ref = React.useRef<HTMLDivElement>(null);
     const [findMe, setFindMe] = React.useState<Users>({} as Users)
     const [load, setLoad] = React.useState<boolean>(false)
-
+    const [isOnline, setIsOnline] = React.useState<boolean>(navigator.onLine);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
@@ -77,63 +77,81 @@ export default function TabMenu({ children }: Props) {
         }
     }, [setFindMe]);
 
-    const [sync, setSync] = React.useState(false)
-
-    const onSyncData = async () => {
-        const n = await syncDb()
-    }
-
-React.useEffect(() => {
-    onSyncData()
-    if (ref.current) {
-        ref.current.ownerDocument.body.scrollTop = 0;
-    }
-    if (Object.keys(findMe).length === 0) {
-        checkRole()
-    }
-    return () => {
-        checkRole
-    }
-}, [checkRole, onSyncData]);
-
-return (
-    <>
-        <Box sx={{ pb: 7, position: 'absolute' }} ref={ref} style={{ width: '100%' }}>
-            <CssBaseline />
-            <FindMeContext.Provider value={{ findMe, setFindMe }}>
-                <CustomTabPanel value={value} index={0} >
-                    <div style={{ width: '100%' }}>
-                        {children}
-                    </div>
-                </CustomTabPanel>
-                <CustomTabPanel value={value} index={1}>
-                    <MenuValueContext.Provider value={{ value, setValue }}>
-                        <MenuItem />
-                    </MenuValueContext.Provider>
-                </CustomTabPanel>
-                <CustomTabPanel value={value} index={2}>
-                    <FindMeTabContext.Provider value={{ findMe, setFindMe }} >
-                        <ProfileComponent />
-                    </FindMeTabContext.Provider>
-                </CustomTabPanel>
-            </FindMeContext.Provider>
-            <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 1 }} elevation={6}>
-
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered>
-                        <Tab style={{ margin: '0 5px' }} label="Home" {...a11yProps(0)} icon={<HomeIcon />} />
-                        <Tab style={{ margin: '0 5px' }} label="Menu" {...a11yProps(1)} icon={<WidgetsIcon />} />
-                        <Tab style={{ margin: '0 5px' }} label="Profile" {...a11yProps(2)} icon={<Avatar src={findMe?.image} sx={{ width: 25, height: 25 }} />} />
-                    </Tabs>
-                </Box>
-            </Paper>
-        </Box>
-
-        {
-            load ?
-                <Loadding /> :
-                null
+    React.useEffect(() => {
+        if (ref.current) {
+            ref.current.ownerDocument.body.scrollTop = 0;
         }
-    </>
-);
+        if (Object.keys(findMe).length === 0) {
+            checkRole()
+        }
+        return () => {
+            checkRole
+        }
+    }, [checkRole]);
+
+    React.useEffect(() => {
+        const updateOnlineStatus = async () => {
+            setIsOnline(navigator.onLine);
+            if (navigator.onLine) {
+                await syncDb()
+                return
+            }
+            else{
+                console.log('cannot sync');
+                
+                return
+            }
+        };
+
+        window.addEventListener('online', () =>
+            updateOnlineStatus()
+        );
+        window.addEventListener('offline', updateOnlineStatus);
+
+        return () => {
+            window.removeEventListener('online', updateOnlineStatus);
+            window.removeEventListener('offline', updateOnlineStatus);
+        };
+    }, []);
+
+    return (
+        <>
+            <Box sx={{ pb: 7, position: 'absolute' }} ref={ref} style={{ width: '100%' }}>
+                <CssBaseline />
+                <FindMeContext.Provider value={{ findMe, setFindMe }}>
+                    <CustomTabPanel value={value} index={0} >
+                        <div style={{ width: '100%' }}>
+                            {children}
+                        </div>
+                    </CustomTabPanel>
+                    <CustomTabPanel value={value} index={1}>
+                        <MenuValueContext.Provider value={{ value, setValue }}>
+                            <MenuItem />
+                        </MenuValueContext.Provider>
+                    </CustomTabPanel>
+                    <CustomTabPanel value={value} index={2}>
+                        <FindMeTabContext.Provider value={{ findMe, setFindMe }} >
+                            <ProfileComponent />
+                        </FindMeTabContext.Provider>
+                    </CustomTabPanel>
+                </FindMeContext.Provider>
+                <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 1 }} elevation={6}>
+
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered>
+                            <Tab style={{ margin: '0 5px' }} label="Home" {...a11yProps(0)} icon={<HomeIcon />} />
+                            <Tab style={{ margin: '0 5px' }} label="Menu" {...a11yProps(1)} icon={<WidgetsIcon />} />
+                            <Tab style={{ margin: '0 5px' }} label="Profile" {...a11yProps(2)} icon={<Avatar src={findMe?.image} sx={{ width: 25, height: 25 }} />} />
+                        </Tabs>
+                    </Box>
+                </Paper>
+            </Box>
+
+            {
+                load ?
+                    <Loadding /> :
+                    null
+            }
+        </>
+    );
 }

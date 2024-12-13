@@ -11,6 +11,7 @@ import { AxiosResponse } from "axios"
 import { v4 } from "uuid"
 import { assingPatinetToCarByCarIdAndPatientId } from "./car.service"
 import { PatientBelongCar, Patients } from "@/models/patient"
+import { Historys } from "@/models/history.model"
 
 const utmObj = require('utm-latlng')
 const UTM = new utmObj('Everest');
@@ -46,7 +47,7 @@ export function onSaveLocation(): Promise<Locations | void> {
                         reject(error); // Reject with error
                     }
                 },
-                (error) => {
+                (error: any) => {
                     console.error("Error getting geolocation:", error);
                     reject(error); // Reject with geolocation error
                 }
@@ -83,9 +84,9 @@ export function getLocationUser() {
     }
 }
 
-export async function findCurrentVehicleByUser() {
+export async function findCurrentVehicleByUser(): Promise<AxiosResponse<Vehicles>> {
     try {
-        if (await checkOnline()) {
+        if (navigator.onLine) {
             const result = await endpoint.get<Vehicles>(enviromentDev.user + '/current-vehicle')
             result.data.id = v4()
             const findAddInVehicel = await dbDexie.currentVehicle.toArray()
@@ -109,7 +110,6 @@ export async function findCurrentVehicleByUser() {
 
                 await dbDexie.currentVehicle.clear()
                 await dbDexie.currentVehicle.add(result.data).catch(e => null)
-                return result
             }
             if (result.data.helicopter) {
                 const checkMatchDataHelicopter = findAddInVehicel[0].helicopter.Helicopter.PatientBelongHelicopter.filter(r =>
@@ -124,31 +124,21 @@ export async function findCurrentVehicleByUser() {
                 await dbDexie.currentVehicle.clear()
                 await dbDexie.currentVehicle.add(result.data).catch(e => null)
                 await dbDexie.patients.bulkAdd(result.data.helicopter.Helicopter.PatientBelongHelicopter.map(r => r.Patient) as any).catch(e => null)
-                return result
             }
+            return result
+
         }
         else {
             const find = await dbDexie.currentVehicle.toArray()
-            const p = await dbDexie.patients.toArray()
-            const h = await dbDexie.historys.toArray()
-            const checkPatient = find[0].car.Car.PatientBelongCar.filter(r =>
-                p.some(res => res.id === r.id)
-            )
-            if (checkPatient.length > 0 && p.length > 0) await dbDexie.patients.bulkAdd(find[0].car.Car.PatientBelongCar.map(r => r.Patient) as any).catch(e => '')
-            console.log(find[0].car.Car.PatientBelongCar[0].Patient.History);
+            await dbDexie.patients.clear().catch(e => null)
+            await dbDexie.historys.clear().catch(e => null)
+            await dbDexie.patients.bulkAdd(find[0].car.Car.PatientBelongCar.map(r => r.Patient) as any).catch(e => '')
+            let newHistory = find[0].car.Car.PatientBelongCar.map(r => r.Patient.History[0])
+            if(!newHistory){
+                throw {error: 'not fount history'}
+            }
             
-            const checkHistory = find[0].car.Car.PatientBelongCar.filter(r =>
-                h.some(res => {
-                    if(!res){
-                        return r.Patient.History[0]
-                    }
-                    if(res.id === r.Patient?.History[0]?.id){
-                        return res
-                    }
-                })
-            )
-            console.log('check hist ', checkHistory );     
-            if(checkHistory.length > 0) await dbDexie.historys.bulkAdd(find[0].car.Car.PatientBelongCar.map(r => r.Patient?.History[0]) as any).catch(e => '')
+            await dbDexie.historys.bulkAdd(newHistory as any).catch(e => '')
             const data = find[0]
             return { data } as AxiosResponse
         }
@@ -159,7 +149,7 @@ export async function findCurrentVehicleByUser() {
 
 export async function editUserByUserCookie(data: Users) {
     try {
-        if (await checkOnline() === false) {
+        if (navigator.onLine === false) {
             toast('ไม่สามารถแก้ไขข้อมูลในคณะที่ ofline ได้', 'error')
             return { data } as AxiosResponse
         }

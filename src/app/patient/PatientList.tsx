@@ -45,6 +45,8 @@ type Props = {
 };
 
 export default async function PatientList({ patient, order_tranfer_id }: Props) {
+  console.log(patient);
+  
   const pathName = usePathname().includes('patient');
   const router = useRouter();
   const [isLoad, setIsLoad] = React.useState(false);

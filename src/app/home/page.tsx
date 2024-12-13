@@ -34,11 +34,12 @@ export default function Page() {
   const [users, setUsers] = useState<Users[]>([]);
   const [load, setLoad] = useState<boolean>(false)
   const [vehicle, setVehicle] = useState<Vehicles>({} as Vehicles)
-  const {setIcon} = useContext<TIconVehicleC>(IconVehicleContext)
+  const { setIcon } = useContext<TIconVehicleC>(IconVehicleContext)
+  const [isOnline, setIsOnline] = useState<boolean>(false);
 
   const pushLocationUser = useCallback(async () => {
     const getLo = await onSaveLocation()
-    if(!getLo){
+    if (!getLo) {
       return toast('ไม่สามารถเข้าถึงที่ตั้งได้', 'error')
     }
     setUserLocate(getLo)
@@ -67,18 +68,30 @@ export default function Page() {
     try {
       const result = await findCurrentVehicleByUser()
       setVehicle(result.data)
-      if(result.data.car) return setIcon('car')
-      if(result.data.helicopter) return setIcon('helicopter')
-        if(result.data.ship) return setIcon('ship')
+      if (result.data.car) return setIcon('car')
+      if (result.data.helicopter) return setIcon('helicopter')
+      if (result.data.ship) return setIcon('ship')
     } catch (error: any) {
-      console.log('findCurrent: ' ,error);
-      
+      console.log('findCurrent: ', error);
+
       // toast(JSON.stringify(error.message), 'error')
       // timeOutJwt(error)
     } finally {
       setLoad(false)
     }
   }, [setVehicle])
+
+  const updateOnlineStatus = () => {
+    setIsOnline(navigator.onLine);
+    if (navigator.onLine) {
+      pushLocationUser();
+      findMissionByUsre()
+      findCurrentVehicle()
+    } else {
+      findMissionByUsre()
+      findCurrentVehicle()
+    }
+  };
 
   useEffect(() => {
     pushLocationUser();
@@ -98,8 +111,26 @@ export default function Page() {
       findMissionByUsre
       findCurrentVehicle
     };
-  }, [pushLocationUser, findMissionByUsre, findCurrentVehicle]);
+  }, []);
 
+  useEffect(() => {
+
+    const online = window.addEventListener('online', updateOnlineStatus);
+    const saveLo = setInterval(() => {
+      pushLocationUser();
+      console.log('15 secon');
+
+    }, 15000);
+
+
+    const offline = window.addEventListener('offline', updateOnlineStatus);
+
+    return () => {
+      clearInterval(saveLo);
+      online
+      offline
+    };
+  }, []);
 
   return (
     <>
@@ -112,7 +143,7 @@ export default function Page() {
                 <CurrentVehicleContext.Provider value={{ vehicle, setVehicle }} >
 
 
-                    <HomeContent />
+                  <HomeContent />
 
                 </CurrentVehicleContext.Provider>
               </LocateContextUser.Provider>

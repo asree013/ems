@@ -8,7 +8,7 @@ import { v4 } from 'uuid';
 
 export async function findHistoryByPatientId(patientId: string) {
   try {
-    if(await checkOnline()){
+    if(navigator.onLine){
       const result = await endpoint.get<Historys[]>(
         `${enviromentDev.patient}/${patientId}${enviromentDev.history}`,
       );
@@ -38,7 +38,7 @@ export function findHistoryByPatientIdById(
 
 export async function createHistory(item: Historys) {
   try {
-    if(await checkOnline()){
+    if(navigator.onLine){
       const res = await endpoint.post<Historys>(
         `${enviromentDev.patient}/${item.patient_id}${enviromentDev.history}`,
         item,

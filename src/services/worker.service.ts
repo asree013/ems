@@ -17,7 +17,7 @@ export async function checkOnline() {
 export async function syncDb() {
     try {
         ///do create patient
-        if (await checkOnline()) {
+        if (navigator.onLine) {
             const findPatientOf = await dbDexie.patients.toArray()
             if (findPatientOf.length === 0) return 
             console.log('syncing');
@@ -33,7 +33,7 @@ export async function syncDb() {
             
             // if(findAddInVehicel[0].helicopter.Helicopter.PatientBelongHelicopter.length > 0){
             //     await Promise.all(findAddInVehicel[0].helicopter.Helicopter.PatientBelongHelicopter.map(async (r) => await assingPatinetToCarByCarIdAndPatientId(r.car_id, r.Patient.id)))
-            // }
+            // }            
             return
         }
         else {
