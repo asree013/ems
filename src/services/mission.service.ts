@@ -1,7 +1,6 @@
 import { MissionById, Missions, MissionState, MissionTag } from "@/models/mission.model";
 import { endpoint } from "./endpoint.service";
 import { enviromentDev } from "@/configs/enviroment.dev";
-import { checkOnline } from "./worker.service";
 import { dbDexie } from "@/configs/dexie.config";
 import { AxiosResponse } from "axios";
 

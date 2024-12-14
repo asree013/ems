@@ -1,14 +1,21 @@
+
 import { enviromentDev } from '@/configs/enviroment.dev';
 import { endpoint } from './endpoint.service';
 import { Historys } from '@/models/history.model';
-import { checkOnline } from './worker.service';
 import { dbDexie } from '@/configs/dexie.config';
 import { AxiosResponse } from 'axios';
 import { v4 } from 'uuid';
 
+let isOnline = false
+
+const isNavigator = typeof navigator !== 'undefined'
+if (isNavigator) {
+    isOnline = navigator.onLine
+}
+
 export async function findHistoryByPatientId(patientId: string) {
   try {
-    if(navigator.onLine){
+    if(isOnline){
       const result = await endpoint.get<Historys[]>(
         `${enviromentDev.patient}/${patientId}${enviromentDev.history}`,
       );
@@ -38,7 +45,7 @@ export function findHistoryByPatientIdById(
 
 export async function createHistory(item: Historys) {
   try {
-    if(navigator.onLine){
+    if(isOnline){
       const res = await endpoint.post<Historys>(
         `${enviromentDev.patient}/${item.patient_id}${enviromentDev.history}`,
         item,

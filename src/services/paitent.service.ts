@@ -1,10 +1,18 @@
+
 import { Patients } from '@/models/patient';
 import { endpoint } from './endpoint.service';
 import { enviromentDev } from '@/configs/enviroment.dev';
 import { AxiosResponse } from 'axios';
-import { checkOnline } from './worker.service';
 import { dbDexie } from '@/configs/dexie.config';
 import { v4 } from 'uuid';
+
+
+let isOnline = false
+
+const isNavigator = typeof navigator !== 'undefined'
+if (isNavigator) {
+    isOnline = navigator.onLine
+}
 
 export async function findPatientAll(
   page: number = 0,
@@ -12,7 +20,7 @@ export async function findPatientAll(
 ): Promise<AxiosResponse<Patients[]>> {
   try {
 
-    if (navigator.onLine) {
+    if (isOnline) {
       const response = await endpoint.get<Patients[]>(
         `${enviromentDev.patient}?page=${page}&limit=${limit}`,
         {
@@ -33,7 +41,7 @@ export async function findPatientAll(
 
 export async function findPatientById(id: string): Promise<AxiosResponse<Patients>> {
   try {
-    if (navigator.onLine) {
+    if (isOnline) {
       return endpoint.get<Patients>(`${enviromentDev.patient}/${id}`);
     } else {
       const p = await dbDexie.patients.where('id').equals(id).toArray()
@@ -48,7 +56,7 @@ export async function findPatientById(id: string): Promise<AxiosResponse<Patient
 
 export async function findPatientByQrNumber(qrNumber: string) {
   try {
-    if (navigator.onLine) {
+    if (isOnline) {
       return endpoint.get<Patients>(`${enviromentDev.patient}/get-by-qr-number/${qrNumber}`);
     } else {
       const data = await dbDexie.patients.where('qr_number').equals(qrNumber)
@@ -62,7 +70,7 @@ export async function findPatientByQrNumber(qrNumber: string) {
 
 export async function createPatient(item: Patients) {
   try {
-    if (navigator.onLine) {
+    if (isOnline) {
       const create = await endpoint.post<Patients>(`${enviromentDev.patient}`, item, {
         withCredentials: true,
       });
@@ -71,7 +79,7 @@ export async function createPatient(item: Patients) {
       item.id = v4()
       const data = await dbDexie.patients.add(item)
       console.log(data);
-      
+
       return { data } as AxiosResponse
     }
   } catch (error) {
@@ -81,7 +89,7 @@ export async function createPatient(item: Patients) {
 
 export async function updatePatient(patient_id: string, item: Patients) {
   try {
-    if (navigator.onLine) {
+    if (isOnline) {
       const update = await endpoint.put<Patients>(
         `${enviromentDev.patient}/${patient_id}`,
         item,

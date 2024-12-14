@@ -36,7 +36,6 @@ import CarIcon from '@/assets/icon/ambulance.png'
 import ShipIcon from '@/assets/image/icon_menu/ship_3469160.png'
 import BlockIcon from '@mui/icons-material/Block';
 import { assingPatientInShip } from '@/services/ship.service';
-import { checkOnline } from '@/services/worker.service';
 import { dbDexie } from '@/configs/dexie.config';
 
 type Props = {
@@ -244,7 +243,7 @@ export default async function PatientList({ patient, order_tranfer_id }: Props) 
                     <QrCode2Icon color="inherit" />
                   </IconButton>
                   {
-                    await checkOnline() === false ?
+                    window.navigator.onLine ?
                       <IconButton
                         size="small"
                         color="primary"

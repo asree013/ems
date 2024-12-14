@@ -1,4 +1,5 @@
 'use client'
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import Loadding from '@/components/Loadding';
 import ModalUser from '@/components/ModalUser';
 import { CurrentMissionContext } from '@/contexts/currentMission.context';
@@ -13,16 +14,13 @@ import { Users } from '@/models/users.model';
 import { Vehicles } from '@/models/vehicle.model';
 import { findMissionCurrent } from '@/services/mission.service';
 import { timeOutJwt } from '@/services/timeout.service';
-import { findCurrentVehicleByUser, onSaveLocation, saveLocation } from '@/services/user.service';
-import * as mgrs from 'mgrs';
-import React, { Component, useCallback, useContext, useEffect, useRef, useState } from 'react';
-
-import { CurrentVehicleContext } from './CurrentVehicle.context';
+import { findCurrentVehicleByUser, onSaveLocation } from '@/services/user.service';
+import { toast } from '@/services/alert.service';
 import HomeContent from './HomeContent';
 import { IconVehicleContext, TIconVehicleC } from './IconVehicleContext';
-import { toast } from '@/services/alert.service';
+import { CurrentVehicleContext } from './CurrentVehicle.context';
 
-const utmObj = require('utm-latlng')
+const utmObj = require('utm-latlng');
 
 export default function Page() {
   const UTM = new utmObj('Everest');
@@ -32,137 +30,101 @@ export default function Page() {
   const [missionUser, setMissionUser] = useState<MissionById>({} as MissionById);
   const [userLocate, setUserLocate] = useState<Locations>({} as Locations);
   const [users, setUsers] = useState<Users[]>([]);
-  const [load, setLoad] = useState<boolean>(false)
-  const [vehicle, setVehicle] = useState<Vehicles>({} as Vehicles)
-  const { setIcon } = useContext<TIconVehicleC>(IconVehicleContext)
-  const [isOnline, setIsOnline] = useState<boolean>(false);
+  const [load, setLoad] = useState<boolean>(false);
+  const [vehicle, setVehicle] = useState<Vehicles>({} as Vehicles);
+  const { setIcon } = useContext<TIconVehicleC>(IconVehicleContext);
+  const [isOnline, setIsOnline] = useState<boolean>(navigator.onLine);
 
   const pushLocationUser = useCallback(async () => {
-    const getLo = await onSaveLocation()
+    const getLo = await onSaveLocation();
     if (!getLo) {
-      return toast('ไม่สามารถเข้าถึงที่ตั้งได้', 'error')
+      return toast('ไม่สามารถเข้าถึงที่ตั้งได้', 'error');
     }
-    setUserLocate(getLo)
+    setUserLocate(getLo);
   }, [setUserLocate]);
 
-  const findMissionByUsre = useCallback(async () => {
-    setLoad(true)
+  const findMissionByUser = useCallback(async () => {
+    setLoad(true);
     try {
-      const result = await findMissionCurrent()
+      const result = await findMissionCurrent();
       if (!result.data) {
-        localStorage.removeItem('mission_id')
-        setMissionUser({} as MissionById)
+        localStorage.removeItem('mission_id');
+        setMissionUser({} as MissionById);
+      } else {
+        setMissionUser(result.data);
+        localStorage.setItem('mission_id', result.data.id);
       }
-      setMissionUser(result.data)
-      localStorage.setItem('mission_id', result.data.id)
     } catch (error) {
-      console.log(error);
-      // timeOutJwt(error)
+      console.error(error);
     } finally {
-      setLoad(false)
+      setLoad(false);
     }
-  }, [setMissionUser])
+  }, [setMissionUser]);
 
   const findCurrentVehicle = useCallback(async () => {
-    setLoad(true)
+    setLoad(true);
     try {
-      const result = await findCurrentVehicleByUser()
-      setVehicle(result.data)
-      if (result.data.car) return setIcon('car')
-      if (result.data.helicopter) return setIcon('helicopter')
-      if (result.data.ship) return setIcon('ship')
-    } catch (error: any) {
-      console.log('findCurrent: ', error);
-
-      // toast(JSON.stringify(error.message), 'error')
-      // timeOutJwt(error)
+      const result = await findCurrentVehicleByUser();
+      setVehicle(result.data);
+      if (result.data.car) setIcon('car');
+      else if (result.data.helicopter) setIcon('helicopter');
+      else if (result.data.ship) setIcon('ship');
+    } catch (error) {
+      console.error('findCurrentVehicle:', error);
     } finally {
-      setLoad(false)
+      setLoad(false);
     }
-  }, [setVehicle])
-
-  const updateOnlineStatus = () => {
-    setIsOnline(navigator.onLine);
-    if (navigator.onLine) {
-      pushLocationUser();
-      findMissionByUsre()
-      findCurrentVehicle()
-    } else {
-      findMissionByUsre()
-      findCurrentVehicle()
-    }
-  };
+  }, [setIcon, setVehicle]);
 
   useEffect(() => {
-    pushLocationUser();
-    findMissionByUsre()
-    findCurrentVehicle()
-
+    const updateOnlineStatus = () => {
+      const online = navigator.onLine;
+      setIsOnline(online);
+      if (online) {
+        pushLocationUser();
+        findMissionByUser();
+        findCurrentVehicle();
+      }
+      else{
+        findMissionByUser();
+        findCurrentVehicle();
+      }
+    };
 
     const saveLo = setInterval(() => {
       pushLocationUser();
-      console.log('15 secon');
-
+      console.log('Saving location every 15 seconds');
     }, 15000);
+
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+
+    updateOnlineStatus();
 
     return () => {
       clearInterval(saveLo);
-      pushLocationUser
-      findMissionByUsre
-      findCurrentVehicle
+      window.removeEventListener('online', updateOnlineStatus);
+      window.removeEventListener('offline', updateOnlineStatus);
     };
-  }, []);
-
-  useEffect(() => {
-
-    const online = window.addEventListener('online', updateOnlineStatus);
-    const saveLo = setInterval(() => {
-      pushLocationUser();
-      console.log('15 secon');
-
-    }, 15000);
-
-
-    const offline = window.addEventListener('offline', updateOnlineStatus);
-
-    return () => {
-      clearInterval(saveLo);
-      online
-      offline
-    };
-  }, []);
+  }, [pushLocationUser, findMissionByUser, findCurrentVehicle]);
 
   return (
     <>
       <MissionContexts.Provider value={{ missions, setMissions }}>
         <OpenModalUserContext.Provider value={{ openUser, setOpenUser, missionId, setMissionId }}>
-          <UsersContexts.Provider value={{ users, setUsers }} >
-
-            <CurrentMissionContext.Provider value={{ missionUser, setMissionUser }} >
-              <LocateContextUser.Provider value={{ userLocate, setUserLocate }} >
-                <CurrentVehicleContext.Provider value={{ vehicle, setVehicle }} >
-
-
+          <UsersContexts.Provider value={{ users, setUsers }}>
+            <CurrentMissionContext.Provider value={{ missionUser, setMissionUser }}>
+              <LocateContextUser.Provider value={{ userLocate, setUserLocate }}>
+                <CurrentVehicleContext.Provider value={{ vehicle, setVehicle }}>
                   <HomeContent />
-
                 </CurrentVehicleContext.Provider>
               </LocateContextUser.Provider>
             </CurrentMissionContext.Provider>
-
             <ModalUser />
-
           </UsersContexts.Provider>
         </OpenModalUserContext.Provider>
       </MissionContexts.Provider>
-
-      {
-        load ?
-          <Loadding /> :
-          null
-      }
+      {load? <Loadding />: null}
     </>
   );
-
 }
-
-

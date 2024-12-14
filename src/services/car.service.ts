@@ -1,10 +1,17 @@
 import { CarByCarId, Cars, Vehicles } from "@/models/vehicle.model";
 import { endpoint } from "./endpoint.service";
 import { enviromentDev } from "@/configs/enviroment.dev";
-import { checkOnline } from "./worker.service";
 import { dbDexie } from "@/configs/dexie.config";
 import { HistoryInVehicle, PatientBelongCar, Patients } from "@/models/patient";
 import { AxiosResponse } from "axios";
+
+let isOnline = false
+
+const isNavigator = typeof navigator !== 'undefined'
+if (isNavigator) {
+    isOnline = navigator.onLine
+}
+
 
 export function createCar(data: Cars) {
     try {
@@ -52,7 +59,7 @@ export async function assingPatinetToCarByCarIdAndPatientId(car_id: string, pati
         patient_id: patient_id
     }
     try {
-        if (await checkOnline()) {
+        if (isOnline) {
             const res = await endpoint.put<Cars>(enviromentDev.car + `/${car_id}/assign_patient_belong_car/${car_id}`, data)
             return res
         } else {
@@ -90,7 +97,7 @@ export async function unAssingPatinetToCarByCarIdAndPatientId(car_id: string, pa
         patient_id: patient_id
     }
     try {
-        if (await checkOnline()) {
+        if (isOnline) {
             const response = await endpoint.put<Cars>(enviromentDev.car + `/${car_id}/un_assign_patient_belong_car/${car_id}`, data)
             return response
         }

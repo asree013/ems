@@ -17,9 +17,7 @@ import Loadding from '../Loadding';
 import { Avatar, styled as styledM, useMediaQuery } from '@mui/material';
 import { IconVehicleContext, TIconVehicleC } from '@/app/home/IconVehicleContext';
 import styled from 'styled-components';
-import { checkOnline } from '@/services/worker.service';
 import { toast } from '@/services/alert.service';
-
 
 interface Props {
   windows?: () => Window;
@@ -78,6 +76,9 @@ export default function Nav(props: Props) {
   }));
 
   React.useEffect(() => {
+    if (typeof window === 'undefined') {
+      console.log('syncDb can only run on client-side');
+    }
     const updateOnlineStatus = () => {
       setIsOnline(navigator.onLine);
     };
@@ -134,11 +135,12 @@ export default function Nav(props: Props) {
               <Button style={{ cursor: 'default' }} color='inherit' variant='text'>สถาณะ: </Button>
               <div style={{ width: 20, height: 20, background: 'red', border: '1px solid white', borderRadius: 20 }}></div>
             </Box> */}
-            <Button sx={{ cursor: 'default', position: 'fixed', right: 20, top: 10 
-              ,display: 'flex', alignItems: 'center', justifyContent: 'center'
+            <Button sx={{
+              cursor: 'default', position: 'fixed', right: 20, top: 10
+              , display: 'flex', alignItems: 'center', justifyContent: 'center'
             }} color='inherit' variant='text'>
-              <p style={{fontSize: '16px'}}>{isOnline?'ออนไลน์': 'ออฟไลน์'} :</p>
-              <div style={{  marginLeft: 8,width: 20, height: 20, background: isOnline? 'green': 'red', border: '1px solid white', borderRadius: 20 }}></div>
+              <p style={{ fontSize: '16px' }}>{isOnline ? 'ออนไลน์' : 'ออฟไลน์'} :</p>
+              <div style={{ marginLeft: 8, width: 20, height: 20, background: isOnline ? 'green' : 'red', border: '1px solid white', borderRadius: 20 }}></div>
             </Button>
 
 

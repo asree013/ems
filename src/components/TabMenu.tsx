@@ -18,7 +18,7 @@ import { MenuValueContext } from '@/contexts/menu.value.context';
 import { timeOutJwt } from '@/services/timeout.service';
 import ProfileComponent from './ProfileComponent';
 import { FindMeTabContext } from './subContext/findMeTab.content';
-import { checkOnline, syncDb } from '@/services/worker.service';
+import { syncDb } from '@/services/worker.service';
 import { toast } from '@/services/alert.service';
 
 interface TabPanelProps {
@@ -59,6 +59,7 @@ export default function TabMenu({ children }: Props) {
     const ref = React.useRef<HTMLDivElement>(null);
     const [findMe, setFindMe] = React.useState<Users>({} as Users)
     const [load, setLoad] = React.useState<boolean>(false)
+
     const [isOnline, setIsOnline] = React.useState<boolean>(navigator.onLine);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -91,16 +92,17 @@ export default function TabMenu({ children }: Props) {
 
     React.useEffect(() => {
         const updateOnlineStatus = async () => {
-            setIsOnline(navigator.onLine);
-            if (navigator.onLine) {
-                await syncDb()
-                return
-            }
-            else{
-                console.log('cannot sync');
-                
-                return
-            }
+            if (isOnline) {
+                if (navigator.onLine) {
+                    await syncDb()
+                    return
+                }
+                else {
+                    console.log('cannot sync');
+    
+                    return
+                }
+            }       
         };
 
         window.addEventListener('online', () =>

@@ -1,3 +1,4 @@
+
 import { enviromentDev } from "@/configs/enviroment.dev"
 import { endpoint } from "./endpoint.service"
 import { Locations } from "@/models/location.model"
@@ -5,7 +6,6 @@ import { UserRegister, Users } from "@/models/users.model"
 import { Vehicles } from "@/models/vehicle.model"
 import { toast } from "./alert.service"
 import * as mgrs from 'mgrs';
-import { checkOnline } from "./worker.service"
 import { dbDexie } from "@/configs/dexie.config"
 import { AxiosResponse } from "axios"
 import { v4 } from "uuid"
@@ -86,7 +86,8 @@ export function getLocationUser() {
 
 export async function findCurrentVehicleByUser(): Promise<AxiosResponse<Vehicles>> {
     try {
-        if (navigator.onLine) {
+        const checkOnline = navigator.onLine
+        if (checkOnline) {
             const result = await endpoint.get<Vehicles>(enviromentDev.user + '/current-vehicle')
             result.data.id = v4()
             const findAddInVehicel = await dbDexie.currentVehicle.toArray()
@@ -134,10 +135,10 @@ export async function findCurrentVehicleByUser(): Promise<AxiosResponse<Vehicles
             await dbDexie.historys.clear().catch(e => null)
             await dbDexie.patients.bulkAdd(find[0].car.Car.PatientBelongCar.map(r => r.Patient) as any).catch(e => '')
             let newHistory = find[0].car.Car.PatientBelongCar.map(r => r.Patient.History[0])
-            if(!newHistory){
-                throw {error: 'not fount history'}
+            if (!newHistory) {
+                throw { error: 'not fount history' }
             }
-            
+
             await dbDexie.historys.bulkAdd(newHistory as any).catch(e => '')
             const data = find[0]
             return { data } as AxiosResponse

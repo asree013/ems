@@ -1,48 +1,44 @@
-import { addRxPlugin, createRxDatabase } from 'rxdb';
-import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
-import { RxDBDevModePlugin } from 'rxdb/plugins/dev-mode';
-import { PatientOffline, Patients } from '@/models/patient';
-import axios from 'axios';
+import { useEffect } from 'react';
 import { dbDexie } from '@/configs/dexie.config';
 import { createPatient, findPatientById } from './paitent.service';
-import { assingPatinetToCarByCarIdAndPatientId } from './car.service';
+import axios from 'axios';
 
-export async function checkOnline() {
-    return new Promise<boolean>((r) => {
-        axios.get('https://one.one.one.one/').then((d) => r(true))
-            .catch(e => r(false))
-    })
+let isOnline = false
+
+const isNavigator = typeof navigator !== 'undefined'
+if (isNavigator) {
+    isOnline = navigator.onLine
 }
 
-export async function syncDb() {
+
+export const syncDb = async (): Promise<void> => {
     try {
-        ///do create patient
-        if (navigator.onLine) {
-            const findPatientOf = await dbDexie.patients.toArray()
-            if (findPatientOf.length === 0) return 
-            console.log('syncing');
+        if (isOnline=== false) {
+            console.log('Cannot sync, offline');
+            return;
+        }
 
-            await Promise.all(findPatientOf.map(async (r) => {
-                const find = await findPatientById(r.id)
-                if(!find.data) return
-                const create = await createPatient(find.data)
-                console.log('sync ===> create pateint', create);
-                
-            }))
-            dbDexie.patients.clear().catch(e => null)
-            
-            // if(findAddInVehicel[0].helicopter.Helicopter.PatientBelongHelicopter.length > 0){
-            //     await Promise.all(findAddInVehicel[0].helicopter.Helicopter.PatientBelongHelicopter.map(async (r) => await assingPatinetToCarByCarIdAndPatientId(r.car_id, r.Patient.id)))
-            // }            
-            return
+        const findPatientOf = await dbDexie.patients.toArray();
+        if (findPatientOf.length === 0) {
+            console.log('No patients to sync');
+            return;
         }
-        else {
-            console.log('cannot sync');
-            return
-        }
-        /// do create history
+
+        console.log('Syncing...');
+        await Promise.all(
+            findPatientOf.map(async (patient) => {
+                const find = await findPatientById(patient.id);
+                if (!find.data) return;
+
+                const create = await createPatient(find.data);
+                console.log('Sync ===> Create patient', create);
+            })
+        );
+
+        await dbDexie.patients.clear().catch((e) => console.log('Error clearing local DB:', e));
     } catch (error) {
-        console.log('catch sync');
-
+        console.error('Error during sync:', error);
     }
-}
+};
+
+
