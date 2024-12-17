@@ -1,33 +1,32 @@
 import { enviromentDev } from '@/configs/enviroment.dev';
 import axios from 'axios';
 
-const isBrowser = typeof window !== 'undefined';
+export const getUrl = (): string | undefined => {
+  if (typeof window === 'undefined') return undefined;
 
-let Url: string | undefined = ''
-
-function onCheckPath() {
-  if(isBrowser){
-    if(window.location.protocol === 'http:'){
-      window.location.hostname === 'localhost'? Url = enviromentDev.baseUrl_base: Url = enviromentDev.localUrl
-      console.log(process.env.NEXT_PUBLIC_KEY_VALUE);
-      
-    }
-    else{
-      Url = enviromentDev.baseUrl_base_onLine
-      console.log(Url);
-
-    }
+  if (window.location.protocol === 'http:') {
+    return window.location.hostname === 'localhost'
+      ? enviromentDev.baseUrl_base
+      : enviromentDev.localUrl;
+  } else {
+    return enviromentDev.baseUrl_base_onLine;
   }
-}
+};
 
-onCheckPath()
+export const getIsOnline = (): boolean => {
+  return typeof navigator !== 'undefined' && navigator.onLine;
+};
+
+// const jwt = localStorage.getItem('jwt')
+
+// if(!jwt) alert('is not jwt')
 
 export const endpoint = axios.create({
-  baseURL: Url,
+  baseURL: getUrl(),
   timeout: 25000,
   withCredentials: true,
   // headers: {
-  //   Authorization: `Bearer`
+  //   Authorization: `Bearer ${String(jwt)}`
   // }
 });
 

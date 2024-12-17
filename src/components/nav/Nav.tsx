@@ -15,9 +15,8 @@ import LogoEms from '@/assets/image/icon_menu/logo4.png'
 import Loadding from '../Loadding';
 
 import { Avatar, styled as styledM, useMediaQuery } from '@mui/material';
-import { IconVehicleContext, TIconVehicleC } from '@/app/home/IconVehicleContext';
 import styled from 'styled-components';
-import { toast } from '@/services/alert.service';
+import { getIsOnline } from '@/services/endpoint.service';
 
 interface Props {
   windows?: () => Window;
@@ -44,7 +43,7 @@ export default function Nav(props: Props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isLoad, setIsLoad] = React.useState(false);
   const path = usePathname()
-  const [isOnline, setIsOnline] = React.useState<boolean>(navigator.onLine);
+  const [isOnline, setIsOnline] = React.useState<boolean>(getIsOnline());
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -76,15 +75,13 @@ export default function Nav(props: Props) {
   }));
 
   React.useEffect(() => {
-    if (typeof window === 'undefined') {
-      console.log('syncDb can only run on client-side');
-    }
     const updateOnlineStatus = () => {
-      setIsOnline(navigator.onLine);
+      setIsOnline(getIsOnline());
     };
-
-    window.addEventListener('online', updateOnlineStatus);
-    window.addEventListener('offline', updateOnlineStatus);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('online', updateOnlineStatus);
+      window.addEventListener('offline', updateOnlineStatus);
+    }
 
     return () => {
       window.removeEventListener('online', updateOnlineStatus);

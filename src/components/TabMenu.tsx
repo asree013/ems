@@ -20,6 +20,7 @@ import ProfileComponent from './ProfileComponent';
 import { FindMeTabContext } from './subContext/findMeTab.content';
 import { syncDb } from '@/services/worker.service';
 import { toast } from '@/services/alert.service';
+import { getIsOnline } from '@/services/endpoint.service';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -60,7 +61,7 @@ export default function TabMenu({ children }: Props) {
     const [findMe, setFindMe] = React.useState<Users>({} as Users)
     const [load, setLoad] = React.useState<boolean>(false)
 
-    const [isOnline, setIsOnline] = React.useState<boolean>(navigator.onLine);
+    const [isOnline, setIsOnline] = React.useState<boolean>(getIsOnline());
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
@@ -91,29 +92,23 @@ export default function TabMenu({ children }: Props) {
     }, [checkRole]);
 
     React.useEffect(() => {
-        const updateOnlineStatus = async () => {
-            if (isOnline) {
-                if (navigator.onLine) {
-                    await syncDb()
-                    return
+        if (typeof window !== "undefined") {
+            const updateOnlineStatus = async () => {
+                if (getIsOnline()) {
+                    await syncDb();
+                } else {
+                    console.log('Cannot sync');
                 }
-                else {
-                    console.log('cannot sync');
+            };
     
-                    return
-                }
-            }       
-        };
-
-        window.addEventListener('online', () =>
-            updateOnlineStatus()
-        );
-        window.addEventListener('offline', updateOnlineStatus);
-
-        return () => {
-            window.removeEventListener('online', updateOnlineStatus);
-            window.removeEventListener('offline', updateOnlineStatus);
-        };
+            window.addEventListener('online', updateOnlineStatus);
+            window.addEventListener('offline', updateOnlineStatus);
+    
+            return () => {
+                window.removeEventListener('online', updateOnlineStatus);
+                window.removeEventListener('offline', updateOnlineStatus);
+            };
+        }
     }, []);
 
     return (

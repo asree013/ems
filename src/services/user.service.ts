@@ -1,6 +1,6 @@
 
 import { enviromentDev } from "@/configs/enviroment.dev"
-import { endpoint } from "./endpoint.service"
+import { endpoint, getIsOnline } from "./endpoint.service"
 import { Locations } from "@/models/location.model"
 import { UserRegister, Users } from "@/models/users.model"
 import { Vehicles } from "@/models/vehicle.model"
@@ -86,8 +86,7 @@ export function getLocationUser() {
 
 export async function findCurrentVehicleByUser(): Promise<AxiosResponse<Vehicles>> {
     try {
-        const checkOnline = navigator.onLine
-        if (checkOnline) {
+        if (getIsOnline()) {
             const result = await endpoint.get<Vehicles>(enviromentDev.user + '/current-vehicle')
             result.data.id = v4()
             const findAddInVehicel = await dbDexie.currentVehicle.toArray()

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { dbDexie } from '@/configs/dexie.config';
 import { createPatient, findPatientById } from './paitent.service';
 import axios from 'axios';
+import { getIsOnline } from './endpoint.service';
 
 let isOnline = false
 
@@ -13,7 +14,7 @@ if (isNavigator) {
 
 export const syncDb = async (): Promise<void> => {
     try {
-        if (isOnline=== false) {
+        if (getIsOnline()=== false) {
             console.log('Cannot sync, offline');
             return;
         }

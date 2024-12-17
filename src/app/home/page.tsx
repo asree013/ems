@@ -1,5 +1,5 @@
 'use client'
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import Loadding from '@/components/Loadding';
 import ModalUser from '@/components/ModalUser';
 import { CurrentMissionContext } from '@/contexts/currentMission.context';
@@ -19,6 +19,7 @@ import { toast } from '@/services/alert.service';
 import HomeContent from './HomeContent';
 import { IconVehicleContext, TIconVehicleC } from './IconVehicleContext';
 import { CurrentVehicleContext } from './CurrentVehicle.context';
+import { getIsOnline } from '@/services/endpoint.service';
 
 const utmObj = require('utm-latlng');
 
@@ -33,7 +34,8 @@ export default function Page() {
   const [load, setLoad] = useState<boolean>(false);
   const [vehicle, setVehicle] = useState<Vehicles>({} as Vehicles);
   const { setIcon } = useContext<TIconVehicleC>(IconVehicleContext);
-  const [isOnline, setIsOnline] = useState<boolean>(navigator.onLine);
+  const [isOnline, setIsOnline] = useState<boolean>(getIsOnline());
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const pushLocationUser = useCallback(async () => {
     const getLo = await onSaveLocation();
@@ -78,31 +80,33 @@ export default function Page() {
 
   useEffect(() => {
     const updateOnlineStatus = () => {
-      const online = navigator.onLine;
+      const online = getIsOnline()
       setIsOnline(online);
       if (online) {
         pushLocationUser();
         findMissionByUser();
         findCurrentVehicle();
       }
-      else{
+      else {
         findMissionByUser();
         findCurrentVehicle();
       }
     };
 
-    const saveLo = setInterval(() => {
+    intervalRef.current = setInterval(() => {
       pushLocationUser();
       console.log('Saving location every 15 seconds');
     }, 15000);
 
-    window.addEventListener('online', updateOnlineStatus);
-    window.addEventListener('offline', updateOnlineStatus);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('online', updateOnlineStatus);
+      window.addEventListener('offline', updateOnlineStatus);
+    }
 
     updateOnlineStatus();
 
     return () => {
-      clearInterval(saveLo);
+      if (intervalRef.current) clearInterval(intervalRef.current);
       window.removeEventListener('online', updateOnlineStatus);
       window.removeEventListener('offline', updateOnlineStatus);
     };
@@ -124,7 +128,7 @@ export default function Page() {
           </UsersContexts.Provider>
         </OpenModalUserContext.Provider>
       </MissionContexts.Provider>
-      {load? <Loadding />: null}
+      {load ? <Loadding /> : null}
     </>
   );
 }

@@ -3,14 +3,5 @@
   "rules": {
     "quotes": "off", 
     "comma-dangle": "off" 
-  },
-  "overrides": [
-    {
-      "files": ["src/sar_system/**"],
-      "rules": {
-        "quotes": "off",
-        "comma-dangle": "off"
-      }
-    }
-  ]
+  }
 }

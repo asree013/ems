@@ -57,7 +57,8 @@ export default function Page() {
       localStorage.setItem('camera', JSON.stringify({ status: encodeUser, message: encodePass }))
     }
     try {
-      await logins(login);
+      const result = await logins(login);
+      localStorage.setItem('jwt', result.data.token)
       const findme = await FindUserMe()
       localStorage.setItem('user_id', JSON.stringify(findme.data.id))
       socket.emit('is-online', { user_id: findme.data.id })
