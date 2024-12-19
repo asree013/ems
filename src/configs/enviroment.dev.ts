@@ -10,7 +10,8 @@ onAssignWindow()
 export const enviromentDev = {
   myUrl: process.env,
   baseUrl: 'https://api-ems.m-mert.com/v1',
-  baseUrl_base: 'https://api-ems.m-mert.com/v2',
+  baseUrl_base_v1: 'https://api-ems.m-mert.com/v1',
+  baseUrl_base_v2: 'https://api-ems.m-mert.com/v2',
   baseUrl_base_onLine: 'https://api-ems.m-mert.com/v1',
   localUrl: newUrl,
   patient: '/patient',
