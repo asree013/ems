@@ -10,7 +10,7 @@ let Url: string | undefined = ''
 function onCheckPath() {
   if(isBrowser){
     if(window.location.protocol === 'http:'){
-      window.location.hostname === 'localhost'? Url = enviromentDev.baseUrl_base: Url = enviromentDev.localUrl
+      window.location.hostname === 'localhost'? Url = enviromentDev.baseUrl_base_v2: Url = enviromentDev.localUrl
       
     }
     else{

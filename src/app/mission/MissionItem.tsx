@@ -29,7 +29,7 @@ export default function MissionItem({ mission, currentLo, returnLoad }: Props) {
     setLoad(true)
     try {
       await joinMission(mission.id)
-      window.location.href = '/mission/' + mission.id + '/mission_detail'
+      window.location.href = '/home'
       localStorage.setItem('mission_id', mission.id)
       returnLoad(true)
       toast('เข้าร่วมภารกิจ', 'seccess')

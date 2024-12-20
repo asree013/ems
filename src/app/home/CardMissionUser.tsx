@@ -37,8 +37,9 @@ export default function CardMissionUser() {
     return (
         <>
             {
-                missionUser ?
-                    <Accordion variant="outlined"
+                !missionUser ?
+                    <h1>ไม่มี ภารกิจ</h1>
+                    : <Accordion variant="outlined"
                         sx={{
                             cursor: 'pointer',
                             width: '100%',
@@ -92,15 +93,13 @@ export default function CardMissionUser() {
 
                         </AccordionDetails>
                     </Accordion>
-                    :
-                    <h1>ไม่มี ภารกิจ</h1>
             }
         </>
     );
 
     function onConvertStatus(status: string) {
-        if(status?.toLocaleLowerCase() === 'progress') return <p style={{color: 'green'}}>กำลังดำเนินการ</p>
-        if(status?.toLocaleLowerCase() === 'pending') return <p style={{color: 'blue'}}>กำลังร่าง</p>
-        else return <p style={{color: 'red'}}>ภารกิจดำเนินการเสร็จสิ้น</p>
+        if (status?.toLocaleLowerCase() === 'progress') return <p style={{ color: 'green' }}>กำลังดำเนินการ</p>
+        if (status?.toLocaleLowerCase() === 'pending') return <p style={{ color: 'blue' }}>กำลังร่าง</p>
+        else return <p style={{ color: 'red' }}>ภารกิจดำเนินการเสร็จสิ้น</p>
     }
 }
