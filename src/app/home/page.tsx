@@ -49,15 +49,7 @@ export default function Page() {
     setLoad(true);
     try {
       const result = await findMissionCurrent();
-      console.log('current Mission :' ,result);
-      
-      if (!result.data) {
-        localStorage.removeItem('mission_id');
-        setMissionUser({} as MissionById);
-      } else {
-        setMissionUser(result.data);
-        localStorage.setItem('mission_id', result.data.id);
-      }
+      setMissionUser(result.data);
     } catch (error) {
       console.error(error);
     } finally {

@@ -10,7 +10,7 @@ rm -rf public/_next
 echo "ลบ public/_next สำเร็จ"
 echo "ทำการ build"
 
-npm run build
+bun run build
 echo ""
 echo "build เสร็จสิ้น"
 

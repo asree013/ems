@@ -9,14 +9,11 @@ import { toast } from '@/services/alert.service';
 import { findPatientAll, findPatientByQrNumber } from '@/services/paitent.service';
 import { timeOutJwt } from '@/services/timeout.service';
 import { Box, Button, Divider } from '@mui/material';
-import { useSearchParams } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { NIL } from 'uuid';
 
 import PatientItem from './PatientItem';
 import TabPatient from './TabPateint';
-import { dbDexie } from '@/configs/dexie.config';
 
 
 export default function Page() {

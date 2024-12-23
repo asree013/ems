@@ -14,16 +14,20 @@ import Flight from '@mui/icons-material/Flight';
 import Wifi from '@mui/icons-material/Wifi';
 import Bluetooth from '@mui/icons-material/Bluetooth';
 import Podcasts from '@mui/icons-material/Podcasts';
+import { FindMeTabContext, TfindMeSubC } from './subContext/findMeTab.content';
 
 export default function ProfileSetting() {
+  const { findMe, setFindMe } = React.useContext<TfindMeSubC>(FindMeTabContext)
+  const [isEdit, setIsEdit] = React.useState<boolean>(false)
+  const [load, setLoad] = React.useState<boolean>(false)
   return (
-    <Sheet variant="soft" sx={{ width: 343, p: 2, borderRadius: 'sm' }}>
+    <Sheet className="w-full" variant="soft" sx={{ width: 343, p: 2, borderRadius: 'sm' }}>
       <Typography
         level="h3"
         id="ios-example-demo"
         sx={{ fontSize: 'xl2', fontWeight: 'xl', mb: 1 }}
       >
-        Settings
+        Profile
       </Typography>
       <List
         aria-labelledby="ios-example-demo"
@@ -63,12 +67,10 @@ export default function ProfileSetting() {
           >
             <ListItem>
               <ListItemDecorator>
-                <Avatar size="lg" sx={{ '--Avatar-size': '60px' }}>
-                  MB
-                </Avatar>
+                <Avatar size="lg" src={findMe.image?? ''} sx={{ '--Avatar-size': '60px' }} />
               </ListItemDecorator>
               <div>
-                <Typography sx={{ fontSize: 'xl' }}>Murphy Bates</Typography>
+                <Typography sx={{ fontSize: 'xl' }}>{findMe.first_name} {findMe.last_name}</Typography>
                 <Typography sx={{ fontSize: 'xs' }}>
                   Apple ID, iCloud, Media & Purchase
                 </Typography>
@@ -78,7 +80,7 @@ export default function ProfileSetting() {
             <ListItem>
               <ListItemButton>
                 <ListItemContent>iCloud+ Feature Updates</ListItemContent>
-                <KeyboardArrowRight  />
+                <KeyboardArrowRight />
               </ListItemButton>
             </ListItem>
           </List>
@@ -166,7 +168,7 @@ export default function ProfileSetting() {
                 >
                   Mars
                 </Typography>
-                <KeyboardArrowRight  />
+                <KeyboardArrowRight />
               </ListItemButton>
             </ListItem>
             <ListDivider inset="startContent" />
@@ -184,7 +186,7 @@ export default function ProfileSetting() {
                 >
                   On
                 </Typography>
-                <KeyboardArrowRight  />
+                <KeyboardArrowRight />
               </ListItemButton>
             </ListItem>
             <ListDivider inset="startContent" />
@@ -196,7 +198,7 @@ export default function ProfileSetting() {
                   </Sheet>
                 </ListItemDecorator>
                 <ListItemContent>Cellular</ListItemContent>
-                <KeyboardArrowRight  />
+                <KeyboardArrowRight />
               </ListItemButton>
             </ListItem>
           </List>

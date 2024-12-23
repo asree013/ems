@@ -16,12 +16,12 @@ import Loadding from '@/components/Loadding';
 
 import Divider from '@mui/material/Divider';
 import InfoOutlined from '@mui/icons-material/InfoOutlined';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
 import pateintIdCss from './patient_id.module.css';
 import RiskLevelModal from './RiskLevelModal';
 import { toast } from '@/services/alert.service';
 import { PatientContext } from '@/contexts/patient.context';
+import { timeOutJwt } from '@/services/timeout.service';
 
 type Props = {
   params: {
@@ -81,6 +81,7 @@ const Page: React.FC<Props> = ({ params }: Props) => {
       await createPatient(p);
       history.back();
     } catch (error) {
+      timeOutJwt(error)
       toast('error', 'error');
       console.log(error);
       setIsLoad(false)

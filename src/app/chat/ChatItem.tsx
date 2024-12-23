@@ -61,7 +61,6 @@ export default function ChatItem() {
             const result = await findChatRoomAll()
             setRoomChat(result.data)
         } catch (error: any) {
-            timeOutJwt(error)
             toast(error.message, 'error')
         } finally {
             setLoadChat(false)
@@ -185,19 +184,34 @@ export default function ChatItem() {
                 <CustomTabPanel value={value} index={0}>
                     <div style={{ overflowY: 'scroll', height: 290, padding: '10px' }}>
                         {
-                            roomChat.length > 0 ?
-                                roomChat.map((r, i) =>
-                                    <div key={i} onClick={() => onChatNow(r)}>
-                                        <List variant="outlined" sx={{ minWidth: 240, borderRadius: 'sm' }}>
-                                            <ListItem >
-                                                <ListItemDecorator>
-                                                    <Avatar size="sm" src={r.owner.image} />
-                                                </ListItemDecorator>
-                                                {r.owner.first_name} {r.owner.last_name}
-                                            </ListItem>
-                                        </List>
-                                    </div>
-                                ) : <p>ไม่มีใครออนไลน์</p>
+                            roomChat.length === 0 ?
+                                <p>ไม่มีใครออนไลน์</p> :
+                                roomChat.map((r, i) => {
+                                    if (r.type === "PTM") {
+                                        return <div key={i} onClick={() => onChatNow(r)} className='cursor-pointer'>
+                                            <List variant="outlined" sx={{ minWidth: 240, borderRadius: 'sm' }}>
+                                                <ListItem >
+                                                    <ListItemDecorator>
+                                                        <Avatar size="sm" src={r?.owner?.image ?? ""} />
+                                                    </ListItemDecorator>
+                                                    {r.room_name}
+                                                </ListItem>
+                                            </List>
+                                        </div>
+                                    }
+                                    else {
+                                        return <div key={i} onClick={() => onChatNow(r)} className='cursor-pointer'>
+                                            <List variant="outlined" sx={{ minWidth: 240, borderRadius: 'sm' }}>
+                                                <ListItem >
+                                                    <ListItemDecorator>
+                                                        <Avatar size="sm" src={r?.owner?.image ?? ""} />
+                                                    </ListItemDecorator>
+                                                    {r.owner.first_name} {r.owner.last_name}
+                                                </ListItem>
+                                            </List>
+                                        </div>
+                                    }
+                                })
                         }
                         {
                             loadChat ?
@@ -248,10 +262,10 @@ export default function ChatItem() {
                             <ArrowBackIosIcon />
                         </IconButton>
                         <Badge color={currentRoomId.is_online ? "success" : "default"} badgeContent variant="dot">
-                            <Avatar src={currentRoomId.owner.image} />
+                            <Avatar src={currentRoomId?.owner?.image ?? ""} />
                         </Badge>
                         <div style={{ marginLeft: '8px', display: 'flex', flexDirection: 'column', alignItems: 'start', justifyContent: 'center' }}>
-                            <p style={{ fontSize: '16px', fontWeight: 400, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: 100 }}>{currentRoomId.owner.first_name} {currentRoomId.owner.last_name}</p>
+                            <p style={{ fontSize: '16px', fontWeight: 400, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: 100 }}>{currentRoomId?.owner?.first_name ? currentRoomId.owner.first_name : currentRoomId.room_name} {currentRoomId?.owner?.last_name}</p>
                             {
                                 currentRoomId.is_online ?
                                     <p style={{ fontSize: '13px', fontWeight: 600, color: 'green' }}>กำลังใช้งาน</p> :

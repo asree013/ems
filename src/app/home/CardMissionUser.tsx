@@ -38,7 +38,7 @@ export default function CardMissionUser() {
         <>
             {
                 !missionUser ?
-                    <h1>ไม่มี ภารกิจ</h1>
+                    null
                     : <Accordion variant="outlined"
                         sx={{
                             cursor: 'pointer',

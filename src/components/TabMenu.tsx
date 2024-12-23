@@ -21,6 +21,7 @@ import { FindMeTabContext } from './subContext/findMeTab.content';
 import { syncDb } from '@/services/worker.service';
 import { toast } from '@/services/alert.service';
 import { getIsOnline } from '@/services/endpoint.service';
+import ProfileSetting from './ProfileSetting';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -128,7 +129,7 @@ export default function TabMenu({ children }: Props) {
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={2}>
                         <FindMeTabContext.Provider value={{ findMe, setFindMe }} >
-                            <ProfileComponent />
+                            <ProfileSetting />
                         </FindMeTabContext.Provider>
                     </CustomTabPanel>
                 </FindMeContext.Provider>
