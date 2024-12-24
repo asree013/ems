@@ -58,9 +58,7 @@ export default function VehicleCount({ currentMission }: Props) {
 
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', fontWeight: 500 }}>
                         {
-                            (currentMission?.HelicopterJoinMission?.length ?? 0 + currentMission?.CarJoinMission?.length ?? 0 + currentMission?.ShipJoinMission?.length ?? 0) ?
-                                (currentMission?.HelicopterJoinMission?.length ?? 0 + currentMission?.CarJoinMission?.length ?? 0 + currentMission?.ShipJoinMission?.length ?? 0) + 1 :
-                                0
+                            Number((currentMission?._count?.CarJoinMission)) + Number(currentMission?._count?.HelicopterJoinMission) + Number(currentMission?._count?.ShipJoinMission)
                         } คัน
                     </Box>
                 </Box>
@@ -97,7 +95,7 @@ export default function VehicleCount({ currentMission }: Props) {
                         </tr>
                     </thead>
                     <tbody>
-                        {
+                    {
                             selected === 'all' ?
                                 currentMission?.CarJoinMission?.map((r, i) =>
                                     <tr key={i}>
@@ -118,7 +116,27 @@ export default function VehicleCount({ currentMission }: Props) {
                                 ) : null
                         }
                         {
-                            selected === 'all' ?
+                            selected === 'car' ?
+                                currentMission?.CarJoinMission?.map((r, i) =>
+                                    <tr key={i}>
+                                        <td><img style={{ width: 40, height: 40, objectFit: 'contain' }} src={r.image_front} alt="" /></td>
+                                        <td>{r.calling}</td>
+                                        <td>{r.number}</td>
+                                        <td>{r.radio ?? 'ไม่ได้ระบุ'}</td>
+                                        <td>{r.status}</td>
+                                        <td>
+                                            <IconButton>
+                                                <ChatIcon />
+                                            </IconButton>
+                                        </td>
+                                        <td>
+                                            <Switch  />
+                                        </td>
+                                    </tr>
+                                ) : null
+                        }
+                        {
+                            selected === 'ship' ?
                                 currentMission?.ShipJoinMission?.map((r, i) =>
                                     <tr key={i}>
                                         <td><img style={{ width: 40, height: 40, objectFit: 'contain' }} src={r.image} alt="" /></td>
@@ -138,7 +156,7 @@ export default function VehicleCount({ currentMission }: Props) {
                                 ) : null
                         }
                         {
-                            selected === 'all' ?
+                            selected === 'helicopter' ?
                                 currentMission?.HelicopterJoinMission?.map((r, i) =>
                                     <tr key={i}>
                                         <td><img style={{ width: 40, height: 40, objectFit: 'contain' }} src={r.image_front} alt="" /></td>

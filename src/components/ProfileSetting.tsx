@@ -15,13 +15,20 @@ import Wifi from '@mui/icons-material/Wifi';
 import Bluetooth from '@mui/icons-material/Bluetooth';
 import Podcasts from '@mui/icons-material/Podcasts';
 import { FindMeTabContext, TfindMeSubC } from './subContext/findMeTab.content';
+import NightlightRoundIcon from '@mui/icons-material/NightlightRound';
+import { ThemeMode } from '@/class/Themes.class';
+import Link from 'next/link';
 
 export default function ProfileSetting() {
   const { findMe, setFindMe } = React.useContext<TfindMeSubC>(FindMeTabContext)
-  const [isEdit, setIsEdit] = React.useState<boolean>(false)
   const [load, setLoad] = React.useState<boolean>(false)
+  const themMode = new ThemeMode('light')
+
+  React.useEffect(() => {
+    themMode.setMode('light')
+  }, [])
   return (
-    <Sheet className="w-full" variant="soft" sx={{ width: 343, p: 2, borderRadius: 'sm' }}>
+    <Sheet className="w-ful" variant="soft" sx={{ width: 343, p: 2, borderRadius: 'sm' }}>
       <Typography
         level="h3"
         id="ios-example-demo"
@@ -67,7 +74,7 @@ export default function ProfileSetting() {
           >
             <ListItem>
               <ListItemDecorator>
-                <Avatar size="lg" src={findMe.image?? ''} sx={{ '--Avatar-size': '60px' }} />
+                <Avatar size="lg" src={findMe.image ?? ''} sx={{ '--Avatar-size': '60px' }} />
               </ListItemDecorator>
               <div>
                 <Typography sx={{ fontSize: 'xl' }}>{findMe.first_name} {findMe.last_name}</Typography>
@@ -77,12 +84,14 @@ export default function ProfileSetting() {
               </div>
             </ListItem>
             <ListDivider inset="startContent" />
-            <ListItem>
-              <ListItemButton>
-                <ListItemContent>iCloud+ Feature Updates</ListItemContent>
-                <KeyboardArrowRight />
-              </ListItemButton>
-            </ListItem>
+            <Link href={'/user/' + findMe.id}>
+              <ListItem>
+                <ListItemButton>
+                  <ListItemContent>แก้ไขข้อมูลส่วนตัว</ListItemContent>
+                  <KeyboardArrowRight />
+                </ListItemButton>
+              </ListItem>
+            </Link>
           </List>
         </ListItem>
         <ListItem nested>
@@ -118,17 +127,26 @@ export default function ProfileSetting() {
           >
             <ListItem>
               <ListItemDecorator>
-                <Sheet variant="solid" color="warning">
-                  <Flight />
+                <Sheet variant="solid" className="bg-black">
+                  <NightlightRoundIcon />
                 </Sheet>
               </ListItemDecorator>
               <ListItemContent htmlFor="airplane-mode" component="label">
-                Airplane Mode
+                Dark Mode
               </ListItemContent>
               <Switch
                 id="airplane-mode"
                 size="lg"
                 color="success"
+                defaultChecked={themMode.getMode() === "dark"}
+                onChange={() => {
+                  if (themMode.getMode() === "light") {
+                    themMode.setMode('dark')
+                  }
+                  else {
+                    themMode.setMode('light')
+                  }
+                }}
                 sx={(theme) => ({
                   '--Switch-thumbShadow': '0 3px 7px 0 rgba(0 0 0 / 0.12)',
                   '--Switch-thumbSize': '27px',

@@ -1,8 +1,7 @@
 'use client'
 import Loadding from '@/components/Loadding'
-import { Users } from '@/models/users.model'
 import { FindUserMe } from '@/services/authen.service'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import './globals.css';
 
 export default function App() {
