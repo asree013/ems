@@ -5,6 +5,7 @@ import ChatButton from '@/app/components/chats/ChatButton';
 import Nav from '@/components/nav/Nav';
 import { Suspense } from 'react';
 import Loadding from '@/components/Loadding';
+import BreadCrumb from '@/components/BreadCrumb';
 
 metadata.title = 'Patient Marine-EMS';
 
@@ -20,6 +21,7 @@ export default function DashboardLayout({
       <Suspense fallback={<Loadding />}>
         <div style={{ marginTop: '60px' }}>
           <TabMenu>
+            <BreadCrumb />
             {children}
           </TabMenu>
         </div>

@@ -9,6 +9,7 @@ import ChatButton from '@/app/components/chats/ChatButton';
 import Nav from '@/components/nav/Nav';
 import { IconVehicleProvider } from './IconVehicleContext';
 import ChatItem from '../chat/ChatItem';
+import BreadCrumb from '@/components/BreadCrumb';
 
 export default function DashboardLayout({
   children, // will be a page or nested layout
@@ -24,6 +25,8 @@ export default function DashboardLayout({
         <div style={{ marginTop: '60px' }}>
           <TabMenu>
             <Suspense fallback={<Loadding />}>
+              <BreadCrumb />
+
               {children}
             </Suspense>
           </TabMenu>

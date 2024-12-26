@@ -32,7 +32,7 @@ export default function MenuItem() {
 
     const [findMe, setFindMe] = useState<Users>({} as Users)
 
-    const onFindUserMe = useCallback(async() => {
+    const onFindUserMe = useCallback(async () => {
         try {
             const result = await FindUserMe()
             setFindMe(result.data)
@@ -144,16 +144,29 @@ export default function MenuItem() {
                             </div>
                         </div>
                     </ButtonMenu>
+                    <ButtonMenu elevation={3}>
+                        <div onClick={() => {
+                            setLoad(true)
+                            window.location.href = '/vehicle'
+                            onRedirect()
+                        }} className={menuCss.menuItem}>
+                            <img src={Ambulance.src} style={{ height: '4rem', width: '4rem' }} alt="" />
+                            <div className={menuCss.menuDetail}>
+                                <h3>ยานพาหนะ</h3>
+                                <p>detail</p>
+                            </div>
+                        </div>
+                    </ButtonMenu>
                     <Badge badgeContent={'new'} color="error">
                         <ButtonMenu elevation={3}>
                             <div onClick={() => {
                                 setLoad(true)
-                                window.location.href = '/vehicle'
+                                window.location.href = '/mission_tag_setting'
                                 onRedirect()
                             }} className={menuCss.menuItem}>
                                 <img src={Ambulance.src} style={{ height: '4rem', width: '4rem' }} alt="" />
                                 <div className={menuCss.menuDetail}>
-                                    <h3>ยานพาหนะ</h3>
+                                    <h3>ลักษณะภารกิจ</h3>
                                     <p>detail</p>
                                 </div>
                             </div>

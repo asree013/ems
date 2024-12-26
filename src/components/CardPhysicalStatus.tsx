@@ -244,21 +244,21 @@ export default function CardPhysicalStatus({ physical }: Props) {
                         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                             <div>
                                 <div className='m-3'>
-                                    <p>{physical.neuro?.motor_power?.left_arm.part} / {physical.neuro?.motor_power?.left_arm.of_part}</p>
+                                    <p>{physical.neuro?.motor_power?.left_arm?.part} / {physical.neuro?.motor_power?.left_arm?.of_part}</p>
                                 </div>
                                 <div style={{ border: '1px solid black' }}></div>
                                 <div className='m-3'>
-                                    <p>{physical.neuro?.motor_power?.left_leg.part} / {physical.neuro?.motor_power?.left_leg.of_part}</p>
+                                    <p>{physical.neuro?.motor_power?.left_leg?.part} / {physical.neuro?.motor_power?.left_leg?.of_part}</p>
                                 </div>
                             </div>
                             <div style={{ border: '1px solid black', height: '5rem' }}></div>
                             <div>
                                 <div className='m-3'>
-                                    <p>{physical.neuro?.motor_power?.right_arm.part} / {physical.neuro?.motor_power?.right_arm.of_part}</p>
+                                    <p>{physical.neuro?.motor_power?.right_arm?.part} / {physical.neuro?.motor_power?.right_arm?.of_part}</p>
                                 </div>
                                 <div style={{ border: '1px solid black' }}></div>
                                 <div className='m-3'>
-                                    <p>{physical.neuro?.motor_power?.right_leg.part} / {physical.neuro?.motor_power?.right_leg.of_part}</p>
+                                    <p>{physical.neuro?.motor_power?.right_leg?.part} / {physical.neuro?.motor_power?.right_leg?.of_part}</p>
                                 </div>
                             </div>
                         </div>

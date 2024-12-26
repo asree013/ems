@@ -4,6 +4,7 @@ import { FindUserMe } from '@/services/authen.service';
 import TabMenu from '@/components/TabMenu';
 import ChatButton from '@/app/components/chats/ChatButton';
 import Nav from '@/components/nav/Nav';
+import BreadCrumb from '@/components/BreadCrumb';
 
 metadata.title = 'Mission Marine-EMS';
 
@@ -29,6 +30,7 @@ export default function DashboardLayout({
     <section >
       {/* Include shared UI here e.g. a header or sidebar */}
       <Nav />
+      <BreadCrumb />
 
       <TabMenu>
         {children}
