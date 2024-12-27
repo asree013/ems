@@ -15,6 +15,7 @@ import HistoryItem from '../../../../components/HistoryItem';
 import historyCss from './historyCss.module.css';
 import { HistoryDetailContext, PhysicalStatusContext, TraigeLevelContext } from './StepContext';
 import StepHistory from './StepHistory';
+import BreadCrumb, { TBreadCrumd } from '@/components/BreadCrumb';
 
 type Props = {
   params: {
@@ -22,7 +23,24 @@ type Props = {
   }
 }
 
+
 export default function Page({ params }: Props) {
+
+  const items: TBreadCrumd[] = [
+    {
+      labe: 'หน้าหลัก',
+      path: '/home'
+    },
+    {
+      labe: 'ผู้ป่วย',
+      path: '/patient/'
+    },
+    {
+      labe: 'ประวัติการรักษา',
+      path: '/history'
+    },
+  ]
+  
 
   const [historyDetail, setHistoryDetail] = useState<Historys>({} as Historys)
   const [historyFrom, setHistoryFrom] = useState<boolean>(false);
@@ -86,8 +104,8 @@ export default function Page({ params }: Props) {
 
   return (
     <>
+    <BreadCrumb item={items} />
       <div className={historyCss.homePage}>
-        <h1>ประวัติการรักษา</h1>
         <div className={historyCss.item}>
           <Button variant='solid' color='primary' onClick={() => {
             setHistoryFrom(true);

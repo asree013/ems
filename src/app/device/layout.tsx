@@ -17,8 +17,6 @@ export default function DashboardLayout({
       <Nav />
 
       <div style={{ marginTop: '60px' }}>
-        <BreadCrumb />
-
         <TabMenu>
           {children}
         </TabMenu>

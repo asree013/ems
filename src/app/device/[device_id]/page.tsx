@@ -3,12 +3,29 @@ import React, { useCallback, useEffect, useState } from 'react';
 import FromDevice from './FromDevice';
 import { NIL } from 'uuid';
 import { findDeviceById } from '../../../services/device.service';
+import BreadCrumb, { TBreadCrumd } from '@/components/BreadCrumb';
 
 type Props = {
   params: {
     device_id: string;
   };
 };
+
+const items: TBreadCrumd[] = [
+  {
+    labe: "หน้าหลัก",
+    path: '/home'
+  },
+  {
+    labe: "เครื่องวัด",
+    path: '/device'
+  },
+  {
+    labe: "เพิ่มเครื่องวัด",
+    path: '/device'
+  },
+
+]
 
 const Page: React.FC<Props> = ({ params }) => {
   const [device, setDevice] = useState<Device>({} as Device);
@@ -31,6 +48,7 @@ const Page: React.FC<Props> = ({ params }) => {
 
   return (
     <>
+      <BreadCrumb item={items} />
       {params.device_id !== NIL ? (
         <FromDevice result={device} />
       ) : (

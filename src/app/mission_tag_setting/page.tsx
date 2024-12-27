@@ -1,46 +1,116 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { NIL } from 'uuid'
+import CardSettingTag from './CardSettingTag'
+import { MissionTagSetting } from '@/models/missionTagSetting.model'
+import { getMissionTagSetting } from '@/services/mission_tag_setting.service'
+import { toast } from '@/services/alert.service'
+import BreadCrumb, { TBreadCrumd } from '@/components/BreadCrumb'
+
+const items: TBreadCrumd[] = [
+    {
+        labe: "หน้าหลัก",
+        path: '/home'
+    },
+    {
+        labe: "ลักษณะภารกิจ",
+        path: '/mission_tag_setting'
+    }
+]
 
 export default function page() {
-    const [setting, setSetting] = useState<any>({} as any)
+    const [setting, setSetting] = useState<MissionTagSetting[]>({} as MissionTagSetting[])
+
+    const onFeedMissionTagSetting = useCallback(async () => {
+        try {
+            const result = await getMissionTagSetting(1, 50)
+            console.log(result.data);
+
+            setSetting(result.data)
+        } catch (error: any) {
+            toast(error.message, 'error')
+        }
+    }, [setSetting])
+
+    useEffect(() => {
+        onFeedMissionTagSetting()
+
+    }, [onFeedMissionTagSetting])
+
     return (
-        <div className='container p-2 flex 2xl:flex-row xl:flex-row lg:flex-col sm:flex-col items-start justify-center mt-8 gap-6 max-w-full'>
+        <div className='max-w-full'>
+            <BreadCrumb item={items} />
 
-            <div className='p-8 border border-gray-300 rounded-lg min-w-[320px] max-w-full hover:shadow-shadow cursor-pointer'>
-                <button onClick={() => {
-                    const path = '/mission_tag_setting/' + NIL + `?vehicle=car&count=0`
-                    console.log(path);
-                    window.location.href = path
-                }} className='absolute top-28 ml-3 bg-gray-300 text-black hover:bg-gray-700 hover:text-white p-4 rounded-lg'>
-                    <p className='text-xl font-bold'>Setting Tag Car</p>
-                </button>
-                <div className='mt-6'>
-                    test
+            <div className='p-2 flex flex-col 2xl:flex-row xl:flex-row lg:flex-col sm:flex-col items-start justify-center mt-8 gap-6'>
+                <div>
+                    <button onClick={() => {
+                        const path = '/mission_tag_setting/' + NIL + `?vehicle=car&count=${setting.filter(r => r.is_car === true).length}`
+                        console.log(path);
+                        window.location.href = path
+                    }} className=' bg-gray-300 text-black hover:bg-gray-700 hover:text-white p-3 rounded-t-lg'>
+                        <p className='text-start font-bold'>สร้าง</p>
+                        <p className='mt-0 text-xl font-bold'>Setting Tag Car</p>
+                    </button>
+                    <div className='pt-3 pl-8 pr-8 pb-8  border border-gray-300 rounded-b-lg rounded-e-lg min-w-[300px] mix-w-[400px] h-[400px] max-w-full hover:shadow-shadow '>
+                        <p>แท็กรถยนต์</p>
+                        <div className='mt-6 w-[250px] h-[300px] overflow-y-scroll'>
+                            {
+                                setting.length > 0 ?
+                                    setting.filter(r => r.is_car === true).map((r, i) => (
+                                        <CardSettingTag key={i} data={r} />
+                                    )) :
+                                    null
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button onClick={() => {
+                        const path = '/mission_tag_setting/' + NIL + `?vehicle=helicopter&count=${setting.filter(r => r.is_helicopter === true).length}`
+                        console.log(path);
+                        window.location.href = path
+                    }} className=' bg-gray-300 text-black hover:bg-gray-700 hover:text-white p-3 rounded-t-lg'>
+                        <p className='text-start font-bold'>สร้าง</p>
+                        <p className='mt-0 text-xl font-bold'>Setting Tag Helicopter</p>
+                    </button>
+                    <div className='pt-3 pl-8 pr-8 pb-8  border border-gray-300 rounded-b-lg rounded-e-lg min-w-[300px] mix-w-[400px] h-[400px] max-w-full hover:shadow-shadow '>
+                        <p>แท็ก ฮ.</p>
+                        <div className='mt-6 w-[250px] h-[300px] overflow-y-scroll'>
+                            {
+                                setting.length > 0 ?
+                                    setting.filter(r => r.is_helicopter === true).map((r, i) => (
+                                        <CardSettingTag key={i} data={r} />
+                                    )) :
+                                    null
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button onClick={() => {
+                        const path = '/mission_tag_setting/' + NIL + `?vehicle=ship&count=${setting.filter(r => r.is_ship === true).length}`
+                        console.log(path);
+                        window.location.href = path
+                    }} className=' bg-gray-300 text-black hover:bg-gray-700 hover:text-white p-3 rounded-t-lg'>
+                        <p className='text-start font-bold'>สร้าง</p>
+                        <p className='mt-0 text-xl font-bold'>Setting Tag Ship</p>
+                    </button>
+                    <div className='pt-3 pl-8 pr-8 pb-8  border border-gray-300 rounded-b-lg rounded-e-lg min-w-[300px] mix-w-[400px] h-[400px] max-w-full hover:shadow-shadow '>
+                        <p>แท็กเรือ</p>
+                        <div className='mt-6 w-[250px] h-[300px] overflow-y-scroll'>
+                            {
+                                setting.length > 0 ?
+                                    setting.filter(r => r.is_ship === true).map((r, i) => (
+                                        <CardSettingTag key={i} data={r} />
+                                    )) :
+                                    null
+                            }
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div className='p-8 border border-gray-300 rounded-lg min-w-[320px] max-w-full hover:shadow-shadow cursor-pointer'>
-                <button onClick={() => {
-                    const path = '/mission_tag_setting/' + NIL + `?vehicle=helicopter&count=0`
-                    console.log(path);
 
-                    window.location.href = path
-                }} className='absolute top-28 ml-3 bg-gray-300 text-black hover:bg-gray-700 hover:text-white p-4 rounded-lg'>
-                    <p className='text-xl font-bold'>Setting Tag Helicopter</p>
-                </button>
-                <div className='mt-6'>
-                    test
-                </div>
-            </div>
-            <div className='p-8 border border-gray-300 rounded-lg min-w-[320px] max-w-full hover:shadow-shadow cursor-pointer'>
-                <button className='absolute top-28 ml-3 bg-gray-300 text-black hover:bg-gray-700 hover:text-white p-4 rounded-lg'>
-                    <p className='text-xl font-bold'>Setting Tag Ship</p>
-                </button>
-                <div className='mt-6'>
-                    test
-                </div>
-            </div>
         </div>
     )
 }

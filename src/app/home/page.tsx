@@ -13,15 +13,22 @@ import { MissionById, Missions } from '@/models/mission.model';
 import { Users } from '@/models/users.model';
 import { Vehicles } from '@/models/vehicle.model';
 import { findMissionCurrent } from '@/services/mission.service';
-import { timeOutJwt } from '@/services/timeout.service';
 import { findCurrentVehicleByUser, onSaveLocation } from '@/services/user.service';
 import { toast } from '@/services/alert.service';
 import HomeContent from './HomeContent';
 import { IconVehicleContext, TIconVehicleC } from './IconVehicleContext';
 import { CurrentVehicleContext } from './CurrentVehicle.context';
 import { getIsOnline } from '@/services/endpoint.service';
+import BreadCrumb, { TBreadCrumd } from '@/components/BreadCrumb';
 
 const utmObj = require('utm-latlng');
+
+const items: TBreadCrumd[] = [
+  {
+    labe: 'หน้าหลัก',
+    path: '/home'
+  }
+]
 
 export default function Page() {
   const UTM = new utmObj('Everest');
@@ -108,6 +115,8 @@ export default function Page() {
 
   return (
     <>
+      <BreadCrumb item={items} />
+
       <MissionContexts.Provider value={{ missions, setMissions }}>
         <OpenModalUserContext.Provider value={{ openUser, setOpenUser, missionId, setMissionId }}>
           <UsersContexts.Provider value={{ users, setUsers }}>

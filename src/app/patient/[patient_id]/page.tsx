@@ -22,12 +22,28 @@ import RiskLevelModal from './RiskLevelModal';
 import { toast } from '@/services/alert.service';
 import { PatientContext } from '@/contexts/patient.context';
 import { timeOutJwt } from '@/services/timeout.service';
+import BreadCrumb, { TBreadCrumd } from '@/components/BreadCrumb';
 
 type Props = {
   params: {
     patient_id: string;
   };
 };
+
+const items: TBreadCrumd[] = [
+  {
+    labe: 'หน้าหลัก',
+    path: '/home'
+  },
+  {
+    labe: 'ผู้ป่วย',
+    path: '/patient'
+  },
+  {
+    labe: 'เพิ่ม ผู้ป่วย',
+    path: '/patient'
+  },
+]
 
 const Page: React.FC<Props> = ({ params }: Props) => {
   const [open, setOpen] = useState<boolean>(true);
@@ -134,6 +150,7 @@ const Page: React.FC<Props> = ({ params }: Props) => {
 
   return (
     <>
+      <BreadCrumb item={items} />
       <PatientContext.Provider value={{ patient, setPatient }} >
         <div className={pateintIdCss.patient_id_flex}>
           <div className={pateintIdCss.patient_id_home}>
@@ -167,13 +184,13 @@ const Page: React.FC<Props> = ({ params }: Props) => {
               </Box>
             </Card>
 
-            <Card style={{width: '92%', padding: '10px', margin: '10px 0'}} elevation={4}>
-              <label style={{margin: '5px 0'}}>กรอกเลข Qr-Number </label>
+            <Card style={{ width: '92%', padding: '10px', margin: '10px 0' }} elevation={4}>
+              <label style={{ margin: '5px 0' }}>กรอกเลข Qr-Number </label>
               <TextField onChange={(e) => {
-                setPatient({...patient, qr_number: e.target.value})
-              }} id="Qe" label="Qr Number" variant="filled" style={{width: '100%'}} />
+                setPatient({ ...patient, qr_number: e.target.value })
+              }} id="Qe" label="Qr Number" variant="filled" style={{ width: '100%' }} />
             </Card>
-            
+
             <PatientForm
               returnOnCreatePatient={onCreatePatient}
               returnOnUpdatePatient={onUpdatePatient}

@@ -6,6 +6,7 @@ import Nav from '@/components/nav/Nav';
 import { Suspense } from 'react';
 import Loadding from '@/components/Loadding';
 import BreadCrumb from '@/components/BreadCrumb';
+import ChatItem from '../chat/ChatItem';
 
 metadata.title = 'Mission tag Setting Marine-EMS';
 
@@ -20,16 +21,13 @@ export default function DashboardLayout({
       <Nav />
       <Suspense fallback={<Loadding />}>
         <div style={{ marginTop: '60px' }}>
-
           <TabMenu>
-            <BreadCrumb />
             {children}
           </TabMenu>
         </div>
       </Suspense>
 
-      <ChatButton />
-
+      <ChatItem />
     </section>
   );
 }

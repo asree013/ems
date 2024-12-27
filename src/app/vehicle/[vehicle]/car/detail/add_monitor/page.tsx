@@ -12,8 +12,35 @@ import QRScannerOrder from '@/components/QrcodeScanOrder'
 import { CreateOrder, OrderTranfer } from '@/models/order_tranfer.model'
 import Loadding from '@/components/Loadding'
 import { createOrderTranfer, editOrderTranferByOrderId } from '@/services/order_tranfer.service'
+import BreadCrumb, { TBreadCrumd } from '@/components/BreadCrumb'
 
-export default function page() {
+type Props = {
+  params: {
+    vehicle: string
+  }
+}
+
+export default function page({ params }: Props) {
+  const items: TBreadCrumd[] = [
+    {
+      labe: "หน้าหลัก",
+      path: '/home'
+    },
+    {
+      labe: "ยานพาหนะ",
+      path: '/vehicle'
+    },
+    {
+      labe: "รายละเอียดรถรับส่ง",
+      path: '/vehicle/' + params.vehicle + '/car/detail'
+    },
+    {
+      labe: "เพิ่มเครื่องแสดงผลรถรับส่ง",
+      path: '/vehicle/' + params.vehicle + '/car/detail'
+    },
+
+  ]
+
   const vehicleId = useParams().vehicle
   const patient_id = useSearchParams().get('patient_add_id')
 
@@ -28,20 +55,20 @@ export default function page() {
       setCarById(result.data)
     } catch (error: any) {
       toast(JSON.stringify(error.message), 'error')
-    } finally{
+    } finally {
       setLoad(false)
     }
   }, [setCarById])
 
   async function onScanOrder(str: string) {
     // console.log(str);
-    setOrder({...order, device_id: str})
+    setOrder({ ...order, device_id: str })
   }
 
   async function onClickOrder(str: string) {
     setLoad(true)
     console.log(str);
-    setOrder({...order, device_id: str})
+    setOrder({ ...order, device_id: str })
     const co = {} as CreateOrder
     co.device_id = str
     co.element_seq = 0
@@ -60,7 +87,7 @@ export default function page() {
 
 
   async function onCreateOrderTranfer() {
-    
+
   }
 
   React.useEffect(() => {
@@ -77,18 +104,24 @@ export default function page() {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    margin-top: 60px;
 
   `
   return (
     <>
       {
-        load?
-        <Loadding />:
-        null
+        load ?
+          <Loadding /> :
+          null
       }
-      <Bodys>
-        <QRScannerOrder onClickSearch={onClickOrder} onSendResult={onScanOrder} onSetDefault={onCreateOrderTranfer} />
-      </Bodys>
+      <div>
+        <BreadCrumb item={items} />
+
+        <Bodys>
+          <QRScannerOrder onClickSearch={onClickOrder} onSendResult={onScanOrder} onSetDefault={onCreateOrderTranfer} />
+        </Bodys>
+      </div>
     </>
   )
 }

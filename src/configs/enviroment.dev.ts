@@ -35,6 +35,7 @@ export const enviromentDev = {
   communicate: '/communication',
   respository: '/responsibility',
   typeShip: '/type_ship',
+  settingTag: '/mission_tag_setting'
 };
 
 export const enviromentPath = {

@@ -12,6 +12,7 @@ import PateintDetail from '../../../../../components/car/PateintDetail';
 import { useSearchParams } from 'next/navigation';
 import { CarByIdContext } from './CarById.context';
 import CarUser from '@/components/car/CarUser';
+import BreadCrumb, { TBreadCrumd } from '@/components/BreadCrumb';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -49,6 +50,23 @@ type Props = {
 }
 
 export default function Page({ params }: Props) {
+
+  const items: TBreadCrumd[] = [
+    {
+      labe: "หน้าหลัก",
+      path: '/home'
+    },
+    {
+      labe: "ยานพาหนะ",
+      path: '/vehicle'
+    },
+    {
+      labe: "รายละเอียดรถรับส่ง",
+      path: '/vehicle'
+    },
+
+  ]
+
   const key = useSearchParams().get('key')
   const [value, setValue] = React.useState(key ? key.includes('patient') ? 2 : 1 : 0);
   const [carByid, setCarById] = React.useState<CarByCarId>({} as CarByCarId)
@@ -75,9 +93,10 @@ export default function Page({ params }: Props) {
   }, [feedCarById])
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <CarByIdContext.Provider value={{carByid, setCarById}} >
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+    <Box sx={{ width: '100%', padding: 2 }}>
+      <BreadCrumb item={items} />
+      <CarByIdContext.Provider value={{ carByid, setCarById }} >
+        <Box sx={{ borderBottom: 1, borderColor: 'divider', marginTop: 2 }}>
           <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
             <Tab label="รายละเอียดรถ" {...a11yProps(0)} />
             <Tab label="สมาชิก" {...a11yProps(1)} />

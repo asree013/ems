@@ -55,17 +55,18 @@ export default function Bar({ nameBar, nameToCreate, returnString }: Props) {
           variant="text"
           onClick={() => {
             setIsLoadding(true);
-            try {
-              router.push(`${nameToCreate}/${NIL}`);
-              setIsLoadding(false);
-            } catch (error) {
-              setIsLoadding(false);
-            }
+            router.push(`${nameToCreate}/${NIL}`);
+
           }}
         >
           create
         </Button>
       </Paper>
+
+      {
+        isLoadding ?
+          <Loadding /> : null
+      }
     </>
   );
 }

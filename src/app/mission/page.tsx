@@ -12,6 +12,19 @@ import { Button } from '@mui/material';
 import { NIL } from 'uuid';
 import Loadding from '@/components/Loadding';
 import { toast } from '@/services/alert.service';
+import BreadCrumb, { TBreadCrumd } from '@/components/BreadCrumb';
+
+const items: TBreadCrumd[] = [
+  {
+    labe: "หน้าหลัก",
+    path: '/home'
+  },
+  {
+    labe: "ภารกิจ",
+    path: '/mission'
+  },
+
+]
 
 export default function Page() {
   const [missions, setMissions] = useState<Missions[]>({} as Missions[])
@@ -21,7 +34,7 @@ export default function Page() {
   const feedMissionAll = useCallback(async () => {
     setLoad(true)
     try {
-      const result = await findMission(1, 10)    
+      const result = await findMission(1, 10)
       setMissions(result.data.filter(r => r.status.includes('Progress')))
 
     } catch (error: any) {
@@ -59,21 +72,27 @@ export default function Page() {
   }, [feedMissionAll, feedLocationUser])
   return (
     <>
-      <div className={missionCss.body}>
-        <Button type='button' className='w-full' variant='outlined' onClick={() => {
-          setLoad(true)
-          window.location.href = '/mission/' + NIL
-        }} >สร้างภารกิจ</Button>
-        <div className={missionCss.itemCard}>
-          {
-            Object.keys(missions).length === 0 ?
-              null :
-              missions.map(r =>
-                <MissionItem returnLoad={onSetLoad} key={r.id} mission={r} currentLo={locate[0]} />
-              )
-          }
+      <div className='mt-12 p-2'>
+        <BreadCrumb item={items} />
+        <div className={missionCss.body}>
+          <div className='flex flex-row items-center justify-between w-full p-7 rounded-lg border border-gray-300 shadow-lg'>
+            <input className='border border-gray-400 p-2 rounded-lg w-[290px]' type="text" placeholder='ค้นหาภารกิจ' />
+            <Button type='button' className='w-[180px] text-lg' variant='outlined' onClick={() => {
+              setLoad(true)
+              window.location.href = '/mission/' + NIL
+            }} >สร้างภารกิจ</Button>
+          </div>
+          <div className={missionCss.itemCard}>
+            {
+              Object.keys(missions).length === 0 ?
+                null :
+                missions.map(r =>
+                  <MissionItem returnLoad={onSetLoad} key={r.id} mission={r} currentLo={locate[0]} />
+                )
+            }
+          </div>
+          <PaginationThemplete returnCurrent={onUpdatePage} />
         </div>
-        <PaginationThemplete returnCurrent={onUpdatePage} />
       </div>
 
       {

@@ -7,6 +7,19 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import TabVehicle from './TabVehicle';
 import { VehiclesHomeContext } from './vehicle_home.context';
+import BreadCrumb, { TBreadCrumd } from '@/components/BreadCrumb';
+
+const items: TBreadCrumd[] = [
+  {
+    labe: "หน้าหลัก",
+    path: '/home'
+  },
+  {
+    labe: "ยานพาหนะ",
+    path: '/vehivcle'
+  },
+
+]
 
 export default function page() {
   const [vehicle, setVehicle] = useState<Vehicles>({} as Vehicles)
@@ -35,15 +48,18 @@ export default function page() {
   return (
     <>
       <div>
-        <VehiclesHomeContext.Provider value={{ vehicle, setVehicle }}>
-          <TabVehicle />
-        </VehiclesHomeContext.Provider>
+        <BreadCrumb item={items} />
+        <div className='mt-2 p-2'>
+          <VehiclesHomeContext.Provider value={{ vehicle, setVehicle }}>
+            <TabVehicle />
+          </VehiclesHomeContext.Provider>
+        </div>
       </div>
 
       {
-        load?
-        <Loadding />:
-        null
+        load ?
+          <Loadding /> :
+          null
       }
     </>
   )

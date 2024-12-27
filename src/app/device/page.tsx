@@ -5,12 +5,25 @@ import './device.css';
 import Bar from './Bar';
 import Loadding from '../../components/Loadding';
 import { findDeviceAll } from '../../services/device.service';
+import BreadCrumb, { TBreadCrumd } from '@/components/BreadCrumb';
+
+const items: TBreadCrumd[] = [
+  {
+    labe: "หน้าหลัก",
+    path: '/home'
+  },
+  {
+    labe: "เครื่องวัด",
+    path: '/device'
+  },
+
+]
 
 const Page: React.FC = () => {
   const [device, setDevice] = useState<Device[]>([]);
   const [load, setLoad] = useState(false);
 
-  function onReturnSearch(str: string) {}
+  function onReturnSearch(str: string) { }
 
   const feedDevice = useCallback(async () => {
     setLoad(true);
@@ -38,18 +51,21 @@ const Page: React.FC = () => {
       {load === true ? (
         <Loadding />
       ) : (
-        <div className="DeviceHome">
-          <h1>Device All</h1>
-          <Bar
-            nameBar="Search Device"
-            nameToCreate="/device/"
-            returnString={onReturnSearch}
-          />
-          {device.length > 0
-            ? device.map((r, i) => (
+        <div>
+          <BreadCrumb item={items} />
+          <div className="DeviceHome">
+            <h1>Device All</h1>
+            <Bar
+              nameBar="Search Device"
+              nameToCreate="/device/"
+              returnString={onReturnSearch}
+            />
+            {device.length > 0
+              ? device.map((r, i) => (
                 <DeviceItem key={i} deviceItem={r} index={i} />
               ))
-            : null}
+              : null}
+          </div>
         </div>
       )}
     </>

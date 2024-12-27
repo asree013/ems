@@ -21,7 +21,6 @@ export default function DashboardLayout({
       <Suspense fallback={<Loadding />}>
         <div style={{ marginTop: '60px' }}>
           <TabMenu>
-            <BreadCrumb />
             {children}
           </TabMenu>
         </div>

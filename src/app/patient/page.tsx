@@ -14,6 +14,18 @@ import { NIL } from 'uuid';
 
 import PatientItem from './PatientItem';
 import TabPatient from './TabPateint';
+import BreadCrumb, { TBreadCrumd } from '@/components/BreadCrumb';
+
+const items: TBreadCrumd[] = [
+  {
+    labe: 'หน้าหลัก',
+    path: '/home'
+  },
+  {
+    labe: 'ผู้ป่วย',
+    path: '/patient'
+  },
+]
 
 
 export default function Page() {
@@ -143,6 +155,7 @@ export default function Page() {
   return (
     <>
       {/* <PatientList patient={{} as Patient}/> */}
+      <BreadCrumb item={items} />
       <PatientContextsArr.Provider value={{ patients, setPatients }} >
         <QRScannerComponent onSendResult={onScan} onClickSearch={onClickSear} onSetDefault={onFeedPatientAgain} />
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>

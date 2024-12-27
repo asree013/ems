@@ -14,6 +14,7 @@ import HomeIcons from '@/assets/icon/home_9449216.png'
 import MornitorIcon from '@/assets/icon/monitor_4765315.png'
 import ChatIcon from '@/assets/icon/ui-element_15768343.png'
 import Ambulance from '@/assets/icon/ambulance.png'
+import MissionTagSetting from '@/assets/icon/mission_tag_setting.png'
 import styled from 'styled-components';
 import { Users } from '@/models/users.model';
 import { FindUserMe } from '@/services/authen.service';
@@ -164,7 +165,7 @@ export default function MenuItem() {
                                 window.location.href = '/mission_tag_setting'
                                 onRedirect()
                             }} className={menuCss.menuItem}>
-                                <img src={Ambulance.src} style={{ height: '4rem', width: '4rem' }} alt="" />
+                                <img src={MissionTagSetting.src} style={{ height: '4rem', width: '4rem' }} alt="" />
                                 <div className={menuCss.menuDetail}>
                                     <h3>ลักษณะภารกิจ</h3>
                                     <p>detail</p>
