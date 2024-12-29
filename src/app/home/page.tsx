@@ -3,7 +3,6 @@ import React, { useCallback, useContext, useEffect, useRef, useState } from 'rea
 import Loadding from '@/components/Loadding';
 import ModalUser from '@/components/ModalUser';
 import { CurrentMissionContext } from '@/contexts/currentMission.context';
-import { FindMeContext, TFindContext } from '@/contexts/findme.context';
 import { LocateContextUser } from '@/contexts/locate.context';
 import { MissionContexts } from '@/contexts/missions.context';
 import { OpenModalUserContext } from '@/contexts/modalUser.context';
@@ -31,7 +30,6 @@ const items: TBreadCrumd[] = [
 ]
 
 export default function Page() {
-  const UTM = new utmObj('Everest');
   const [openUser, setOpenUser] = useState(false);
   const [missions, setMissions] = useState<Missions[]>([]);
   const [missionId, setMissionId] = useState<Missions>({} as Missions);

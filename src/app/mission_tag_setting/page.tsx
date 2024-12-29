@@ -22,6 +22,17 @@ const items: TBreadCrumd[] = [
 export default function page() {
     const [setting, setSetting] = useState<MissionTagSetting[]>({} as MissionTagSetting[])
 
+    function onUpdateData(value: MissionTagSetting) {
+        console.log(value);
+        const update = setting.map((item) => {
+            if(item.id === value.id) return value
+            else{
+              return item
+            }
+          })
+        setSetting(update)       
+    }
+
     const onFeedMissionTagSetting = useCallback(async () => {
         try {
             const result = await getMissionTagSetting(1, 50)
@@ -42,7 +53,7 @@ export default function page() {
         <div className='max-w-full'>
             <BreadCrumb item={items} />
 
-            <div className='p-2 flex flex-col 2xl:flex-row xl:flex-row lg:flex-col sm:flex-col items-start justify-center mt-8 gap-6'>
+            <div className='p-2 flex flex-col 2xl:flex-row xl:flex-row lg:flex-col md:flex-col sm:flex-col md:items-center sm:items-center items-start justify-center mt-8 gap-6'>
                 <div>
                     <button onClick={() => {
                         const path = '/mission_tag_setting/' + NIL + `?vehicle=car&count=${setting.filter(r => r.is_car === true).length}`
@@ -58,7 +69,7 @@ export default function page() {
                             {
                                 setting.length > 0 ?
                                     setting.filter(r => r.is_car === true).map((r, i) => (
-                                        <CardSettingTag key={i} data={r} />
+                                        <CardSettingTag key={i} returnNewData={onUpdateData} data={r} />
                                     )) :
                                     null
                             }
@@ -80,7 +91,7 @@ export default function page() {
                             {
                                 setting.length > 0 ?
                                     setting.filter(r => r.is_helicopter === true).map((r, i) => (
-                                        <CardSettingTag key={i} data={r} />
+                                        <CardSettingTag returnNewData={onUpdateData} key={i} data={r} />
                                     )) :
                                     null
                             }
@@ -102,7 +113,7 @@ export default function page() {
                             {
                                 setting.length > 0 ?
                                     setting.filter(r => r.is_ship === true).map((r, i) => (
-                                        <CardSettingTag key={i} data={r} />
+                                        <CardSettingTag returnNewData={onUpdateData} key={i} data={r} />
                                     )) :
                                     null
                             }

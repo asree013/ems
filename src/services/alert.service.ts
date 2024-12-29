@@ -15,6 +15,9 @@ export function toast(txt: string, icons: any, time?: number) {
       toast.onmouseenter = Swal.stopTimer;
       toast.onmouseleave = Swal.resumeTimer;
     },
+    customClass: {
+      popup: 'z-50'
+    }
   });
   return Toast.fire({
     icon: icons,

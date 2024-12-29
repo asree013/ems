@@ -4,20 +4,24 @@ import withPWAInit from '@ducanh2912/next-pwa';
 
 const nextConfig = {
   output: 'standalone',
-  webpack: (config, { isServer }) => {
-    if (isServer) {
-      const fallbackDir = path.resolve('public', '_next', 'data');
-      const fallbackFile = path.join(fallbackDir, 'fallback.json');
-
-      // สร้างโฟลเดอร์และไฟล์ fallback.json ถ้ายังไม่มี
-      if (!fs.existsSync(fallbackFile)) {
-        fs.mkdirSync(fallbackDir, { recursive: true });
-        fs.writeFileSync(fallbackFile, JSON.stringify({ message: 'Fallback content' }));
-      }
-    }
-
-    return config;
+  reactStrictMode: false,
+  experimental: {
+    emotion: true,
   },
+  // webpack: (config, { isServer }) => {
+  //   if (isServer) {
+  //     const fallbackDir = path.resolve('public', '_next', 'data');
+  //     const fallbackFile = path.join(fallbackDir, 'fallback.json');
+
+  //     // สร้างโฟลเดอร์และไฟล์ fallback.json ถ้ายังไม่มี
+  //     if (!fs.existsSync(fallbackFile)) {
+  //       fs.mkdirSync(fallbackDir, { recursive: true });
+  //       fs.writeFileSync(fallbackFile, JSON.stringify({ message: 'Fallback content' }));
+  //     }
+  //   }
+
+  //   return config;
+  // },
 };
 
 // export default withPWAInit({

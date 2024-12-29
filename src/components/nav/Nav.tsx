@@ -38,11 +38,9 @@ const Brander = styled.div`
 `
 
 export default function Nav(props: Props) {
-  const router = useRouter();
   const { windows } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isLoad, setIsLoad] = React.useState(false);
-  const path = usePathname()
   const [isOnline, setIsOnline] = React.useState<boolean>(getIsOnline());
 
   const handleDrawerToggle = () => {
@@ -91,7 +89,7 @@ export default function Nav(props: Props) {
 
   return (
     <>
-      <Box sx={{ display: 'flex', zIndex: 1 }} >
+      <Box sx={{ display: 'flex' }} className="z-20" >
         <CssBaseline />
         <Themes >
           <Toolbar>
@@ -127,16 +125,11 @@ export default function Nav(props: Props) {
               </Brander>
             </Typography>
 
-
-            {/* <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              <Button style={{ cursor: 'default' }} color='inherit' variant='text'>สถาณะ: </Button>
-              <div style={{ width: 20, height: 20, background: 'red', border: '1px solid white', borderRadius: 20 }}></div>
-            </Box> */}
             <Button sx={{
               cursor: 'default', position: 'fixed', right: 20, top: 10
               , display: 'flex', alignItems: 'center', justifyContent: 'center'
             }} color='inherit' variant='text'>
-              <p style={{ fontSize: '16px' }}>{isOnline ? 'ออนไลน์' : 'ออฟไลน์'} :</p>
+              <span style={{ fontSize: '16px' }}>{isOnline ? 'ออนไลน์' : 'ออฟไลน์'} :</span>
               <div style={{ marginLeft: 8, width: 20, height: 20, background: isOnline ? 'green' : 'red', border: '1px solid white', borderRadius: 20 }}></div>
             </Button>
 
