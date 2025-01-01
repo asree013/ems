@@ -37,6 +37,7 @@ export default function page() {
       setLoad(false)
     }
   }, [setVehicle])
+  
 
   useEffect(() => {
     findVehicleByUserId()
@@ -49,7 +50,7 @@ export default function page() {
     <>
       <div>
         <BreadCrumb item={items} />
-        <div className='mt-2 p-2'>
+        <div className='p-2'>
           <VehiclesHomeContext.Provider value={{ vehicle, setVehicle }}>
             <TabVehicle />
           </VehiclesHomeContext.Provider>

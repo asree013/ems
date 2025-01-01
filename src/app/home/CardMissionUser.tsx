@@ -2,7 +2,6 @@
 import * as React from 'react';
 import AspectRatio from '@mui/joy/AspectRatio';
 import Link from '@mui/joy/Link';
-import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import Chip from '@mui/joy/Chip';
 import Typography from '@mui/joy/Typography';
@@ -37,8 +36,7 @@ export default function CardMissionUser() {
     return (
         <>
             {
-                !missionUser ?
-                    null
+                !missionUser ? null
                     : <Accordion variant="outlined"
                         sx={{
                             cursor: 'pointer',
@@ -85,6 +83,11 @@ export default function CardMissionUser() {
                             </CardContent>
                         </AccordionSummary>
                         <AccordionDetails>
+                            <div className='p-3'>
+                                <Link>
+                                    <p onClick={() => window.location.href = '/mission/' + missionUser.id + '/mission_detail'} className="underline text-md font-medium text-gray-500 cursor-pointer">คลิกดูรายละเอียดภารกิจ อื่นๆ</p>
+                                </Link>
+                            </div>
                             <GrinMenu>
                                 <VehicleCount currentMission={missionUser} />
                                 <UserCount currentMission={missionUser} />

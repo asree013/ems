@@ -1,33 +1,13 @@
 import { enviromentDev } from "@/configs/enviroment.dev";
 import { ChatHistorys, Chats, RoomChats } from "@/models/chat.model";
 import axios from "axios";
-import { getJwt } from "./endpoint.service";
+import { getJwt, getUrl } from "./endpoint.service";
 
-const isBrowser = typeof window !== 'undefined';
-
-let Url: string | undefined = ''
-
-function onCheckPath() {
-  if (isBrowser) {
-    if (window.location.protocol === 'http:') {
-      window.location.hostname === 'localhost' ? Url = enviromentDev.baseUrl_base_v2 : Url = enviromentDev.localUrl
-
-    }
-    else {
-      Url = enviromentDev.baseUrl_base_onLine
-      console.log(Url);
-
-    }
-
-  }
-}
-
-onCheckPath()
 
 export function findChatRoomAll() {
 
   try {
-    return axios.get<RoomChats[]>(Url?.split('/v2')[0] + enviromentDev.chat + enviromentDev.room, {
+    return axios.get<RoomChats[]>(getUrl()?.split('/v1')[0] + enviromentDev.chat + enviromentDev.room, {
       withCredentials: true,
       headers: {
         Authorization: `Bearer ${getJwt()}`,
@@ -41,7 +21,7 @@ export function findChatRoomAll() {
 export function feedMessageChatByRoomId(room_id: string, page?: number, limit?: number) {
 
   try {
-    return axios.get<ChatHistorys[]>(`${Url + enviromentDev.chat}/room/${room_id}/chat-hitory?page=${page}&limit=${limit}`, {
+    return axios.get<ChatHistorys[]>(`${getUrl() + enviromentDev.chat}/room/${room_id}/chat-hitory?page=${page}&limit=${limit}`, {
       withCredentials: true
     })
   } catch (error) {

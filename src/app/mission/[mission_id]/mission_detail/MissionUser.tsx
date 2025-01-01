@@ -22,7 +22,7 @@ export default function MissionUser() {
             </CardContent>
             <Box>
                 {
-                    mission.Users.length === 0 ?
+                    mission.Users?.length === 0 ?
                         <Typography>ไม่มีผู้บังคะบบัญชา</Typography> :
                         mission.Users.map((r, i) => {
                             if (!r.Responsibilities) {

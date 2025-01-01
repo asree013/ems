@@ -75,12 +75,12 @@ export default function Page() {
       <div className='mt-12 p-2'>
         <BreadCrumb item={items} />
         <div className={missionCss.body}>
-          <div className='flex flex-row items-center justify-between w-full p-7 rounded-lg border border-gray-300 shadow-lg'>
+          <div className='flex flex-col lg:flex-row items-center justify-between w-full p-7 rounded-lg border border-gray-300 shadow-lg'>
             <input className='border border-gray-400 p-2 rounded-lg w-[290px]' type="text" placeholder='ค้นหาภารกิจ' />
-            <Button type='button' className='w-[180px] text-lg' variant='outlined' onClick={() => {
+            <button type='button' className='w-full max-w-[130px] mt-2 text-md bg-gray-400 hover:bg-gray-500 text-white p-2 rounded-lg' onClick={() => {
               setLoad(true)
               window.location.href = '/mission/' + NIL
-            }} >สร้างภารกิจ</Button>
+            }} >สร้างภารกิจ</button>
           </div>
           <div className={missionCss.itemCard}>
             {

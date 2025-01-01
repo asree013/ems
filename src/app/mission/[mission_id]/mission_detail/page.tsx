@@ -14,6 +14,7 @@ import { Button } from '@mui/material';
 import { toast } from '@/services/alert.service';
 import Loadding from '@/components/Loadding';
 import MissionPatient from './MissionPatient';
+import BreadCrumb, { TBreadCrumd } from '@/components/BreadCrumb';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -55,6 +56,21 @@ export default function BasicTabs({ params }: Props) {
     const [mission, setMission] = React.useState<MissionById>({} as MissionById);
     const [load, setLoad] = React.useState(false)
 
+    const items: TBreadCrumd[] = [
+        {
+            labe: 'หน้าหลัก',
+            path: "/home",
+        },
+        {
+            labe: 'ภารกิจ',
+            path: "/mission",
+        },
+        {
+            labe: 'ภารกิจ' + mission.title,
+            path: "/mission/" ,
+        },
+    ]
+
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
@@ -67,7 +83,7 @@ export default function BasicTabs({ params }: Props) {
             window.location.href = '/home'
         } catch (error: any) {
             toast(error.message, 'error')
-        } 
+        }
     }
 
     const feedMissionByMissionId = React.useCallback(async () => {
@@ -78,7 +94,7 @@ export default function BasicTabs({ params }: Props) {
         } catch (error) {
             console.log(error);
             timeOutJwt(error);
-        } finally{
+        } finally {
             setLoad(false)
         }
     }, [params.mission_id]);
@@ -93,39 +109,42 @@ export default function BasicTabs({ params }: Props) {
 
     return (
         <>
-            <Box sx={{ width: '100%', marginTop: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
-                <h1 style={{ fontSize: '22px', fontWeight: 700 }}>ภารกิจในปัจจุบัน</h1>
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                        <Tab label="รายละเอียด" {...a11yProps(0)} />
-                        <Tab label="สมาชิก" {...a11yProps(1)} />
-                        <Tab label="ผู้ป่วย" {...a11yProps(2)} />
-                        <Tab label="สถาณะ" {...a11yProps(3)} />
-                    </Tabs>
-                </Box>
-                <MissionDetailContext.Provider value={{ mission, setMission }} >
-                    <CustomTabPanel value={value} index={0}>
-                        <MissionDetail />
-                        <Button onClick={onLeaveMission} style={{ width: '100%', margin: '10px 0' }} type='button' variant='contained' color='error'>ออกจากภารกิจ</Button>
-                        <Button style={{width: '100%'}} variant='contained' color='inherit'>จบภารกิจ ยกเลิก</Button>
+            <div className='mt-[60px]'>
+                <BreadCrumb item={items} />
+                <Box sx={{ width: '100%', marginTop: 10,display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+                    <h1 style={{ fontSize: '22px', fontWeight: 700 }}>ชื่อภารกิจ: {mission.title}</h1>
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                            <Tab label="รายละเอียด" {...a11yProps(0)} />
+                            <Tab label="สมาชิก" {...a11yProps(1)} />
+                            <Tab label="ผู้ป่วย" {...a11yProps(2)} />
+                            <Tab label="สถาณะ" {...a11yProps(3)} />
+                        </Tabs>
+                    </Box>
+                    <MissionDetailContext.Provider value={{ mission, setMission }} >
+                        <CustomTabPanel value={value} index={0}>
+                            <MissionDetail />
+                            <Button onClick={onLeaveMission} style={{ width: '100%', margin: '10px 0' }} type='button' variant='contained' color='error'>ออกจากภารกิจ</Button>
+                            <Button style={{ width: '100%' }} variant='contained' color='inherit'>จบภารกิจ ยกเลิก</Button>
 
-                    </CustomTabPanel>
-                    <CustomTabPanel value={value} index={1}>
-                        <MissionUser />
-                    </CustomTabPanel>
-                    <CustomTabPanel value={value} index={2}>
-                        <MissionPatient mission={mission} />
-                    </CustomTabPanel>
-                    <CustomTabPanel value={value} index={3}>
-                        <MissionStateTag data={mission} />
-                    </CustomTabPanel>
-                </MissionDetailContext.Provider>
-            </Box>
+                        </CustomTabPanel>
+                        <CustomTabPanel value={value} index={1}>
+                            <MissionUser />
+                        </CustomTabPanel>
+                        <CustomTabPanel value={value} index={2}>
+                            <MissionPatient mission={mission} />
+                        </CustomTabPanel>
+                        <CustomTabPanel value={value} index={3}>
+                            <MissionStateTag data={mission} />
+                        </CustomTabPanel>
+                    </MissionDetailContext.Provider>
+                </Box>
+            </div>
 
             {
-                load?
-                <Loadding />:
-                null
+                load ?
+                    <Loadding /> :
+                    null
             }
         </>
     );

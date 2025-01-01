@@ -8,10 +8,6 @@ import Ambulance from '@/assets/icon/ambulance_1032989.png'
 import Helicopter from '@/assets/icon/army-helicopter_4806203.png'
 import ShipIcon from '@/assets/icon/ship_6122344.png'
 import { TabValueVehicleContext, TtabvalueC } from './tabValue.context'
-import { findCurrentVehicleByUser } from '@/services/user.service'
-import { timeOutJwt } from '@/services/timeout.service'
-import TabPanel from '@mui/joy/TabPanel';
-import Typography from '@mui/joy/Typography';
 import { TVehicleHomeContext, VehiclesHomeContext } from './vehicle_home.context'
 import StatusVehicle from './StatusVehicle'
 import CardHelicopter from './CardHelicopter'
@@ -31,20 +27,22 @@ export default function MyVehicle() {
             {
                 !vehicle.car ?
                     null :
-                    <div>
-                        <Button onClick={ async () => {
-                            setLoad(true)
-                            try {
-                                await unJoinCar(vehicle.car.car_id)
-                                setVehicle({} as Vehicles)
-                            } catch (error: any) {
-                                toast(error.message, 'error')
-                            } finally{
-                                setLoad(false)
-                            }
-                        }} style={{width: '100%'}} variant='outlined' color='error'>ออกจากรถ</Button>
-                        <StatusVehicle isDriver={vehicle.car.is_driver} mission_id={vehicle.car.Car?.mission_id} statusbol={!vehicle.car.Car?.mission_id ? true : false} vehicle={vehicle} />
-                        <CarCard data={{} as Cars} car_id={vehicle.car.car_id} />
+                    <div className='flex flex-col sm:flex-row items-start justify-center gap-3'>
+                        <div className='mt-3'>
+                            <Button onClick={async () => {
+                                setLoad(true)
+                                try {
+                                    await unJoinCar(vehicle.car.car_id)
+                                    setVehicle({} as Vehicles)
+                                } catch (error: any) {
+                                    toast(error.message, 'error')
+                                } finally {
+                                    setLoad(false)
+                                }
+                            }} className='w-[270px]' variant='outlined' color='error'>ออกจากรถ</Button>
+                            <StatusVehicle isDriver={vehicle.car.is_driver} mission_id={vehicle.car.Car?.mission_id} statusbol={!vehicle.car.Car?.mission_id ? true : false} vehicle={vehicle} />
+                        </div>
+                        <CarCard data={{} as Cars} car_id={vehicle.car.car_id } />
                     </div>
             }
 
@@ -52,17 +50,17 @@ export default function MyVehicle() {
                 !vehicle.helicopter ?
                     null :
                     <div>
-                        <Button onClick={ async () => {
+                        <Button onClick={async () => {
                             setLoad(true)
                             try {
                                 await unJoinCar(vehicle.car.car_id)
                                 setVehicle({} as Vehicles)
                             } catch (error: any) {
                                 toast(error.message, 'error')
-                            } finally{
+                            } finally {
                                 setLoad(false)
                             }
-                        }} style={{width: '100%'}} variant='outlined' color='error'>ออกจาก ฮ.</Button>
+                        }} style={{ width: '100%' }} variant='outlined' color='error'>ออกจาก ฮ.</Button>
                         <StatusVehicle isDriver={vehicle.helicopter.is_driver} mission_id={vehicle.helicopter.Helicopter?.mission_id} statusbol={!vehicle.helicopter.Helicopter.mission_id ? true : false} vehicle={vehicle} />
                         <CardHelicopter data={{} as Helicopters} ho_id={vehicle.helicopter.Helicopter.id} />
                     </div>
@@ -72,17 +70,17 @@ export default function MyVehicle() {
                 !vehicle.ship ?
                     null :
                     <div>
-                        <Button onClick={ async () => {
+                        <Button onClick={async () => {
                             setLoad(true)
                             try {
                                 await unJoinCar(vehicle.car.car_id)
                                 setVehicle({} as Vehicles)
                             } catch (error: any) {
                                 toast(error.message, 'error')
-                            } finally{
+                            } finally {
                                 setLoad(false)
                             }
-                        }} style={{width: '100%'}} variant='outlined' color='error'>ออกจาก เรือ</Button>
+                        }} style={{ width: '100%' }} variant='outlined' color='error'>ออกจาก เรือ</Button>
                         <StatusVehicle isDriver={vehicle.ship.is_driver} mission_id={vehicle.ship.Ship?.missionId} statusbol={!vehicle.ship.Ship?.missionId ? true : false} vehicle={vehicle} />
                         <CardShip data={{} as Ships} ship_id={vehicle.ship.ship_id} />
                     </div>
@@ -91,11 +89,11 @@ export default function MyVehicle() {
             {/* <CarCard data={{} as Cars} /> */}
 
             {/* <Button sx={{ width: '100%' }} type='button' variant='contained' color='success'>นำยานพาหนะเข้าร่วมภารกิจ</Button> */}
-            
+
             {
-                load?
-                <Loadding />:
-                null
+                load ?
+                    <Loadding /> :
+                    null
             }
         </>
     )

@@ -1,11 +1,5 @@
-import { RxJsonSchema } from 'rxdb';
 import { AllergyDrug } from "./allergyDrug.model"
 import { AllergyFoods } from "./allertgyFood.model"
-import { Bed } from "./bed.model"
-import { CongenitalDiseases } from "./congenitalDisease.model"
-import { Historys } from "./history.model"
-import { OrderTranfer } from "./order_tranfer.model"
-import { ParkingHistorys } from "./parkingHistory.model"
 
 export interface Patients {
   id: string

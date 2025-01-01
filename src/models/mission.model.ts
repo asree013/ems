@@ -15,8 +15,9 @@ export interface MissionById {
   lat: string
   long: string
   utm: string
+  vehicle: string
   mgrs: string
-  order_tranfer_id: any
+  order_tranfer_id: string
   user_create_id: string
   user_update_id: string
   create_date: string
@@ -448,6 +449,8 @@ export interface Missions {
   long: string
   utm: string
   mgrs: string
+  case_number: string
+  vehicle: string
   user_create_id: string
   user_update_id: string
   create_date: string

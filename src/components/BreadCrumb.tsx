@@ -26,7 +26,9 @@ export default function BreadCrumb({ item }: Props) {
     <>
       <div role="presentation" className='ml-4 mt-2'>
         <h1 className='mt-2 text-2xl font-bold text-blue-gd-from'>
-          {item[item.length - 1].labe}
+          {item[item.length - 1].labe.length > 30
+            ? `${item[item.length - 1].labe.slice(0, 30)}...`
+            : item[item.length - 1].labe}
         </h1>
         <Breadcrumbs className='mt-2' aria-label="breadcrumb">
           {
@@ -43,7 +45,8 @@ export default function BreadCrumb({ item }: Props) {
                 >
                   {i === 0 ? <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" /> : null}
                   {
-                    i === item.length - 1 ? <p className='text-black font-bold'>{r.labe}</p> : <p className='hover:text-blue-gd-from font-medium'>{r.labe}</p>
+                    i === item.length - 1 ? <p className='text-black font-bold'>{r.labe.length > 30? `${r.labe.slice(0, 30)}...`
+                    : r.labe}</p> : <p className='hover:text-blue-gd-from font-medium'>{r.labe}</p>
                   }
                 </button>
               )) : null
@@ -53,8 +56,8 @@ export default function BreadCrumb({ item }: Props) {
       </div>
 
       {
-        load?
-        <Loadding />: null
+        load ?
+          <Loadding /> : null
       }
     </>
   );

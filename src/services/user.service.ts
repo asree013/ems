@@ -30,18 +30,17 @@ export function onSaveLocation(): Promise<Locations | void> {
             navigator.geolocation.getCurrentPosition(
                 async (position) => {
                     try {
-                        console.log('======>', position);
-
                         const { latitude, longitude } = position.coords;
                         const utm = UTM.convertLatLngToUtm(longitude, latitude, 1);
                         const mgrss = mgrs.forward([longitude, latitude]);
                         const g = {} as Locations
-                        g.lat = latitude.toString(),
-                            g.long = longitude.toString(),
-                            g.mgrs = mgrss,
-                            g.utm = JSON.stringify(utm),
-
-                            resolve(g); // Return the location object via resolve
+                        g.lat = latitude.toString()
+                        g.long = longitude.toString()
+                        g.mgrs = mgrss
+                        g.utm = JSON.stringify(utm)
+                        console.log();
+                        
+                        resolve(g);
                     } catch (error) {
                         toast('ไม่สามารถรับที่อยู่ได้', 'error');
                         reject(error); // Reject with error
@@ -79,6 +78,14 @@ export function findUserById(user_id: string) {
 export function getLocationUser() {
     try {
         return endpoint.get<Locations[]>(enviromentDev.user + '/get-location?page=0&limit=1',)
+    } catch (error) {
+        throw error
+    }
+}
+
+export function findLocationByUserId(user_id: string, page: number, limit: number) {
+    try {
+        return endpoint.get<Locations[]>(enviromentDev.user + `/get-location/${user_id}?page=${page}&limit=${limit}`)
     } catch (error) {
         throw error
     }

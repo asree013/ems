@@ -9,7 +9,6 @@ import NearMeIcon from '@mui/icons-material/NearMe';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { Button, Card, FormControlLabel, styled } from '@mui/material';
-import { Locations } from '@/models/location.model';
 import { LocateContextUser, TLocateC } from '@/contexts/locate.context';
 import HomeCss from './HomeCss.module.css';
 import { MissionById, Missions } from '@/models/mission.model';
@@ -21,7 +20,6 @@ import HelitopterIcon from '@/assets/image/icon_menu/helicopter_5768628.png';
 import ShipIcon from '@/assets/image/icon_menu/ship_3469160.png'
 import AmbulanceIcon from '@/assets/icon/ambulance.png';
 import UserIcon from '@/assets/image/icon_menu/placeholder_3207670.png';
-import { Vehicles } from '@/models/vehicle.model';
 import '../globals.css';
 
 

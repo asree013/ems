@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { Widget } from 'react-chat-widget';
-import 'react-chat-widget/lib/styles.css';
 
 interface Message {
   sender: 'user' | 'system'; // กำหนดว่าใครเป็นผู้ส่งข้อความ
@@ -8,14 +6,11 @@ interface Message {
 }
 
 const ChatComponent = () => {
-  // สร้าง state สำหรับเก็บข้อความทั้งหมดในแชท
   const [messages, setMessages] = useState<Message[]>([]);
 
-  // ฟังก์ชันที่รับข้อความใหม่จากผู้ใช้และเพิ่มข้อความลงใน messages
   const handleNewUserMessage = (newMessage: string) => {
     console.log('Received message:', newMessage);
 
-    // เพิ่มข้อความของผู้ใช้
     const userMessage: Message = {
       sender: 'user',
       content: newMessage,
@@ -23,7 +18,6 @@ const ChatComponent = () => {
 
     setMessages((prevMessages) => [...prevMessages, userMessage]);
 
-    // ส่งข้อความจากระบบตอบกลับ
     const systemReply: Message = {
       sender: 'system',
       content: `System reply: You said "${newMessage}"`,
@@ -69,11 +63,7 @@ const ChatComponent = () => {
       </div>
 
       {/* Widget สำหรับแชท */}
-      <Widget
-        handleNewUserMessage={handleNewUserMessage}
-        title="Support Chat"
-        subtitle="We are here to help"
-      />
+]
     </div>
   );
 };

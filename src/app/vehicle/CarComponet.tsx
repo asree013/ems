@@ -21,7 +21,7 @@ export default function CarComponet() {
   const [currentMission, setCurrentMission] = useState<MissionById>({} as MissionById)
   const [isMissionNull, setIsMissionNull] = useState<boolean>(false)
 
-  const onFeedCurrentMission = useCallback(async() => {
+  const onFeedCurrentMission = useCallback(async () => {
     try {
       const resutl = await findMissionCurrent()
       setCurrentMission(resutl.data)
@@ -29,7 +29,7 @@ export default function CarComponet() {
       toast('คุณไม่มีภากิจ', 'error')
     }
   }, [setCurrentMission])
-  
+
   const feedCar = useCallback(async () => {
     setLoad(true)
     try {
@@ -44,12 +44,12 @@ export default function CarComponet() {
         if (r.mission_id === currentMission.id) {
           return r
         }
-        else{
+        else {
           return null
         }
       }))
       console.log(newData);
-      if(newData.length === 0) {
+      if (newData.length === 0) {
         setIsMissionNull(true)
       }
       setCars(newData)
@@ -73,16 +73,18 @@ export default function CarComponet() {
         setLoad(true)
       }} type='button' sx={{ width: '100%' }} variant='contained' color='primary'>สร้างรถรับส่ง</Button>
 
+      <div className='flex flex-col flex-wrap gap-4 lg:flex-row lg:justify-start justify-center items-start'>
+        {
+          Object.keys(cars).length === 0 ?
+            null :
+            cars.map((r, i) =>
+              <CarCard key={i} data={r} />
+            )
+        }
+      </div>
       {
-        Object.keys(cars).length === 0 ?
-          null :
-          cars.map((r, i) =>
-            <CarCard key={i} data={r} />
-          )
-      }
-      {
-        isMissionNull?
-        <p style={{margin: 20, fontSize: 23}}>ไม่มีรถรับส่งอื่นในภารกิจของคุณ</p>:null
+        isMissionNull ?
+          <p style={{ margin: 20, fontSize: 23 }}>ไม่มีรถรับส่งอื่นในภารกิจของคุณ</p> : null
       }
 
       {

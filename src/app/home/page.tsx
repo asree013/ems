@@ -12,7 +12,7 @@ import { MissionById, Missions } from '@/models/mission.model';
 import { Users } from '@/models/users.model';
 import { Vehicles } from '@/models/vehicle.model';
 import { findMissionCurrent } from '@/services/mission.service';
-import { findCurrentVehicleByUser, onSaveLocation } from '@/services/user.service';
+import { findCurrentVehicleByUser, onSaveLocation, saveLocation } from '@/services/user.service';
 import { toast } from '@/services/alert.service';
 import HomeContent from './HomeContent';
 import { IconVehicleContext, TIconVehicleC } from './IconVehicleContext';
@@ -48,6 +48,8 @@ export default function Page() {
       return toast('ไม่สามารถเข้าถึงที่ตั้งได้', 'error');
     }
     setUserLocate(getLo);
+    const saves = await saveLocation(getLo)
+
   }, [setUserLocate]);
 
   const findMissionByUser = useCallback(async () => {

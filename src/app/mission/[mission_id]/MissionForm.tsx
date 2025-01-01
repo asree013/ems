@@ -5,14 +5,12 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import missionCss from './mission_id.module.css'
-import { Alert, Button, Fab, IconButton, Paper, TextField } from '@mui/material';
+import { Button, Fab, Paper, TextField } from '@mui/material';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import { OpenModalMapContext, TOpenModalMap } from '@/contexts/openModal.context';
-import CheckIcon from '@mui/icons-material/Check';
 import { MissionById, Missions } from '@/models/mission.model';
 import Divider from '@mui/material/Divider';
-import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import { toast } from '@/services/alert.service';
 import { createMission, findMissionByMissionId, updateMissionByMissionId } from '@/services/mission.service';
 import ImageListItem from '@mui/material/ImageListItem';
@@ -22,9 +20,8 @@ import Loadding from '@/components/Loadding';
 import { timeOutJwt } from '@/services/timeout.service';
 import { NIL } from 'uuid';
 import MapSelect from './MapSelect';
-import { MissionFromContext, TMissionFromContext } from '@/contexts/mission.from.context'
+import { MissionFromContext } from '@/contexts/mission.from.context'
 
-import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import { uploadBase64Image, uploadImage } from '@/services/uploadImage.service';
 
 type Props = {
@@ -32,21 +29,21 @@ type Props = {
 }
 
 export default function MissionForm({ mission_id }: Props) {
-  const { open, setOpen } = useContext<TOpenModalMap>(OpenModalMapContext)
   const [missions, setMissions] = useState<MissionById>({} as MissionById)
   const [isNull, setIsNull] = useState<boolean>(false)
   const [load, setLoad] = useState<boolean>(false)
   const [src, setSrc] = useState<string>('')
 
   async function onCreateMission(e: React.MouseEvent<HTMLButtonElement | MouseEvent>) {
-    setLoad(true)
     e.preventDefault()
     setIsNull(false)
-    if (!missions.title || !missions.description || !missions.lat || !missions.image) {
+    if (!missions.title || !missions.description || !missions.lat || !missions.image || !missions.vehicle) {
       toast('กรอกข่อมูลให้ครบ', 'warning')
       setIsNull(true)
+      return
     }
     else {
+      setLoad(true)
       try {
         const m = {} as Missions
         m.title = missions.title
@@ -58,6 +55,8 @@ export default function MissionForm({ mission_id }: Props) {
         m.mgrs = missions.mgrs
         m.address = missions.address
         m.status = "Progress"
+        m.vehicle = missions.vehicle
+        m.case_number = missions.case_number
         await createMission(m)
         toast('Created Mission', 'success')
         history.back()
@@ -153,9 +152,32 @@ export default function MissionForm({ mission_id }: Props) {
             <TextField value={missions.title ?? ''} onChange={(e) => setMissions({ ...missions, title: e.target.value })} error={isNull} style={{ width: '100%' }} id="filled-basic" label="Title" variant="filled" />
             <TextField value={missions.description ?? ''} onChange={(e) => setMissions({ ...missions, description: e.target.value })} error={isNull} style={{ width: '100%', marginTop: '10px' }} id="filled-basic" label="Description" variant="filled" />
             <TextField value={missions.address ?? ''} onChange={(e) => setMissions({ ...missions, address: e.target.value })} error={isNull} style={{ width: '100%', marginTop: '10px' }} id="filled-basic" label="ชื่อสถานที่" variant="filled" />
+            <TextField value={missions.case_number ?? ''} onChange={(e) => setMissions({ ...missions, case_number: e.target.value })} error={isNull} style={{ width: '100%', marginTop: '10px' }} id="filled-basic" label="เลขเคส" variant="filled" />
+            <fieldset className={`p-3 border mt-2 rounded-lg ${isNull? 'border-red-600': ''}`}>
+              <p className='font-bold text-lg'>เลือกการนำส่งผู้ป่วย: <span className='text-red-600'>*</span></p>
+              <div className='mt-2 flex flex-row justify-evenly items-center'>
+                <div className='flex flex-row items-center justify-center'>
+                  <input onChange={(e) => setMissions({ ...missions, vehicle: e.target.value })}
+                    checked={missions.vehicle === ('car')} className='w-[15px] h-[15px]' type="radio" id="huey" name="drone" value="car" />
+                  <label className='ml-2 text-lg' htmlFor="huey">รถ</label>
+                </div>
+
+                <div className='flex flex-row items-center justify-center'>
+                  <input onChange={(e) => setMissions({ ...missions, vehicle: e.target.value })}
+                    checked={missions.vehicle === ('ship')} type="radio" id="dewey" name="drone" value="ship" />
+                  <label className='ml-2 text-lg' htmlFor="dewey">เรือ</label>
+                </div>
+
+                <div className='flex flex-row items-center justify-center'>
+                  <input onChange={(e) => setMissions({ ...missions, vehicle: e.target.value })}
+                    checked={missions.vehicle === ('helicopter')} type="radio" id="louie" name="drone" value="helicopter" />
+                  <label className='ml-2 text-lg' htmlFor="louie">ฮ.</label>
+                </div>
+              </div>
+            </fieldset>
           </Typography>
 
-          <Divider />
+          <Divider className='mt-2 mb-2' />
           <Box >
             <Typography gutterBottom variant="body2">
               Select Map
@@ -176,7 +198,7 @@ export default function MissionForm({ mission_id }: Props) {
             </Box>
             {
               src.length > 0 ?
-                <>
+                <div className='mt-2'>
                   <Fab size='small' color='error' onClick={() => {
                     setSrc('')
                     setMissions({ ...missions, image: '' })
@@ -189,13 +211,8 @@ export default function MissionForm({ mission_id }: Props) {
                       alt={src}
                       loading="lazy"
                     />
-                    <ImageListItemBar
-                      title={'image mission'}
-                      subtitle={<span>by: nonuser</span>}
-                      position="below"
-                    />
                   </ImageListItem>
-                </> :
+                </div> :
                 <Typography component={'div'}
                   style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                   color="initial" onClick={() => document.getElementById('camera')?.click()}>
@@ -209,12 +226,12 @@ export default function MissionForm({ mission_id }: Props) {
           </Box>
 
           <Divider />
-          <Box className='mt-4' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
-            <Button onClick={(e) => history.back()} style={{ width: '90%', fontSize: '1.5rem' }} variant='contained' color='error'>ยกเลิก</Button>
+          <Box className='mt-4 flex flex-col-reverse items-center justify-between lg:flex-row'>
+            <Button className='m-2' onClick={(e) => history.back()} style={{ width: '90%', fontSize: '1.2rem' }} variant='contained' color='inherit'>ยกเลิก</Button>
             {
               mission_id.includes(NIL) ?
-                <Button onClick={onCreateMission} style={{ width: '90%', fontSize: '1.5rem' }} variant='contained' color='primary'>สร้าง</Button> :
-                <Button onClick={onUpdateMission} style={{ width: '90%', fontSize: '1.5rem' }} variant='contained' color='primary'>แก้ไก</Button>
+                <Button className='m-2' onClick={onCreateMission} style={{ width: '90%', fontSize: '1.2rem' }} variant='contained' color='primary'>สร้าง</Button> :
+                <Button className='m-2' onClick={onUpdateMission} style={{ width: '90%', fontSize: '1.2rem' }} variant='contained' color='primary'>แก้ไก</Button>
 
             }
           </Box>

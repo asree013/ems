@@ -108,7 +108,7 @@ export default function CardHelicopter({ data, ho_id }: Props) {
 
     async function tranfromCatToHelicopter() {
         // setLoad(true)
-        if(patient_id && ship_id){
+        if (patient_id && ship_id) {
             toast('backend ship ยังไม่มี tranfrom', 'warning')
             // try {
             //     const data = {
@@ -153,13 +153,80 @@ export default function CardHelicopter({ data, ho_id }: Props) {
 
     return (
         <>
-            <Card sx={{ minWidth: 245, marginTop: '15px', width: '100%' }} elevation={8}>
-                <CardHeader
-                    title={helicopter.calling}
-                    subheader={helicopter.driver_id ? helicopter.driver_id : 'ยังไม่มีผลขับ ฮ.'}
-                />
-                <ImageList sx={{ minWidth: 205, minHeight: 200, width: '100%' }}>
-                    <ImageListItem key="Subheader" cols={2}>
+            <Card className='mt-4 flex flex-col lg:w-[320px] justify-center items-center w-[280px] h-auto' elevation={8}>
+                <div>
+                    <CardActions disableSpacing onClick={handleExpandClick}>
+                        <CardHeader
+                            title={helicopter.calling}
+                            subheader={helicopter.driver_id ? helicopter.driver_id : 'ยังไม่มีผลขับ ฮ.'}
+                        />
+                        <IconButton aria-label="add to favorites">
+                            <ExpandMoreIcon />
+                        </IconButton>
+                        <ExpandMore
+                            expand={expanded}
+                            aria-expanded={expanded}
+                            aria-label="show more"
+                        >
+                        </ExpandMore>
+                    </CardActions>
+                    <Collapse in={expanded} timeout="auto" unmountOnExit>
+                        <CardContent>
+                            <div>
+                                <Card elevation={5}>
+                                    <div onClick={() => {
+                                        setLoad(true)
+                                        window.location.href = '/vehicle/' + helicopter.id + '/helicopter/detail'
+                                    }} className={vehicleCss.menuItem} style={{ cursor: 'pointer' }}>
+                                        <img src={DetailIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
+                                        <div className={vehicleCss.menuDetail}>
+                                            <h3>รายละเอียดรถ</h3>
+                                            <p>detail</p>
+                                        </div>
+                                    </div>
+                                </Card>
+                                <Card elevation={5} className='mt-4'>
+                                    <div onClick={() => {
+                                        setLoad(true)
+                                        window.location.href = '/vehicle/' + helicopter.id + '/helicopter'
+                                    }} className={vehicleCss.menuItem} style={{ cursor: 'pointer' }}>
+                                        <img src={EditIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
+                                        <div className={vehicleCss.menuDetail}>
+                                            <h3>แก้ไขรถ</h3>
+                                            <p>detail</p>
+                                        </div>
+                                    </div>
+                                </Card>
+                                <Card elevation={5} className='mt-4'>
+                                    <div onClick={() => {
+                                        setLoad(true)
+                                        window.location.href = '/vehicle/' + helicopter.id + '/helicopter/detail?key=patient'
+                                    }} className={vehicleCss.menuItem} style={{ cursor: 'pointer' }}>
+                                        <img src={PatientIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
+                                        <div className={vehicleCss.menuDetail}>
+                                            <h3>ผู้ป่วย</h3>
+                                            <p>detail</p>
+                                        </div>
+                                    </div>
+                                </Card>
+                                <Card elevation={5} className='mt-4'>
+                                    <div onClick={() => {
+                                        setLoad(true)
+                                        window.location.href = '/vehicle/' + helicopter.id + '/helicopter/detail?key=employes'
+                                    }} className={vehicleCss.menuItem} style={{ cursor: 'pointer' }}>
+                                        <img src={EmployeIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
+                                        <div className={vehicleCss.menuDetail}>
+                                            <h3>สมาชิกยานพาหนะ</h3>
+                                            <p>detail</p>
+                                        </div>
+                                    </div>
+                                </Card>
+                            </div>
+                        </CardContent>
+                    </Collapse>
+                </div>
+                <ImageList className='w-[250px] h-[200px] object-contain shadow-md p-2'>
+                    <ImageListItem cols={2}>
                         <ListSubheader component="div">ป้ายทะเบียน: {helicopter.number}</ListSubheader>
                     </ImageListItem>
                     <ImageListItem >
@@ -170,8 +237,7 @@ export default function CardHelicopter({ data, ho_id }: Props) {
                             loading="lazy"
                         />
                         <ImageListItemBar
-                            title={'หน้า ฮ.'}
-
+                            title={'หน้ารถ'}
                         />
                     </ImageListItem>
 
@@ -183,8 +249,7 @@ export default function CardHelicopter({ data, ho_id }: Props) {
                             loading="lazy"
                         />
                         <ImageListItemBar
-                            title={'หลัง ฮ.'}
-
+                            title={'หลังรถ'}
                         />
                     </ImageListItem>
 
@@ -196,8 +261,7 @@ export default function CardHelicopter({ data, ho_id }: Props) {
                             loading="lazy"
                         />
                         <ImageListItemBar
-                            title={'ซ้าย ฮ.'}
-
+                            title={'ซ้ายรถ'}
                         />
                     </ImageListItem>
 
@@ -209,8 +273,7 @@ export default function CardHelicopter({ data, ho_id }: Props) {
                             loading="lazy"
                         />
                         <ImageListItemBar
-                            title={'ขวา ฮ.'}
-
+                            title={'ขวารถ'}
                         />
                     </ImageListItem>
                 </ImageList>
@@ -239,80 +302,7 @@ export default function CardHelicopter({ data, ho_id }: Props) {
                             null
                     }
                 </CardContent>
-                {
-                    tranfrom ?
-                        null :
-                        <div>
-                            <CardActions disableSpacing onClick={handleExpandClick}>
-                                <IconButton aria-label="add to favorites">
-                                    <ExpandMoreIcon />
-                                </IconButton>
-                                <IconButton aria-label="share">
-                                    <ShareIcon />
-                                </IconButton>
-                                <ExpandMore
-                                    expand={expanded}
-                                    aria-expanded={expanded}
-                                    aria-label="show more"
-                                >
-                                </ExpandMore>
-                            </CardActions>
-                            <Collapse in={expanded} timeout="auto" unmountOnExit>
-                                <CardContent>
-                                    <div>
-                                        <Card elevation={5}>
-                                            <div onClick={() => {
-                                                setLoad(true)
-                                                window.location.href = '/vehicle/' + helicopter.id + '/car/detail'
-                                            }} className={vehicleCss.menuItem} style={{ cursor: 'pointer' }}>
-                                                <img src={DetailIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
-                                                <div className={vehicleCss.menuDetail}>
-                                                    <h3>รายละเอียดรถ</h3>
-                                                    <p>detail</p>
-                                                </div>
-                                            </div>
-                                        </Card>
-                                        <Card elevation={5} className='mt-4'>
-                                            <div onClick={() => {
-                                                setLoad(true)
-                                                window.location.href = '/vehicle/' + helicopter.id + '/car'
-                                            }} className={vehicleCss.menuItem} style={{ cursor: 'pointer' }}>
-                                                <img src={EditIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
-                                                <div className={vehicleCss.menuDetail}>
-                                                    <h3>แก้ไขรถ</h3>
-                                                    <p>detail</p>
-                                                </div>
-                                            </div>
-                                        </Card>
-                                        <Card elevation={5} className='mt-4'>
-                                            <div onClick={() => {
-                                                setLoad(true)
-                                                window.location.href = '/vehicle/' + helicopter.id + '/car/detail?key=patient'
-                                            }} className={vehicleCss.menuItem} style={{ cursor: 'pointer' }}>
-                                                <img src={PatientIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
-                                                <div className={vehicleCss.menuDetail}>
-                                                    <h3>ผู้ป่วย</h3>
-                                                    <p>detail</p>
-                                                </div>
-                                            </div>
-                                        </Card>
-                                        <Card elevation={5} className='mt-4'>
-                                            <div onClick={() => {
-                                                setLoad(true)
-                                                window.location.href = '/vehicle/' + helicopter.id + '/car/detail?key=employes'
-                                            }} className={vehicleCss.menuItem} style={{ cursor: 'pointer' }}>
-                                                <img src={EmployeIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
-                                                <div className={vehicleCss.menuDetail}>
-                                                    <h3>สมาชิกยานพาหนะ</h3>
-                                                    <p>detail</p>
-                                                </div>
-                                            </div>
-                                        </Card>
-                                    </div>
-                                </CardContent>
-                            </Collapse>
-                        </div>
-                }
+
             </Card>
 
             {

@@ -27,9 +27,9 @@ export default function MissionDetail() {
             <Card
                 variant="outlined"
                 sx={{
-                    minWidth: 300,
                     '--Card-radius': (theme) => theme.vars.radius.xs,
                 }}
+                className='max-w-[480px] min-w-[250px]'
             >
                 <CardContent orientation="horizontal" sx={{ alignItems: 'center', gap: 1 }}>
                     <Box
@@ -49,11 +49,6 @@ export default function MissionDetail() {
                             },
                         }}
                     >
-                        <Avatar
-                            size="sm"
-                            src=""
-                            sx={{ p: 0.5, border: '2px solid', borderColor: 'background.body' }}
-                        />
                     </Box>
                     <Typography fontWeight="lg">{mission.title}</Typography>
                     <IconButton variant="plain" color="neutral" size="sm" sx={{ ml: 'auto' }}>
@@ -65,90 +60,10 @@ export default function MissionDetail() {
                         <img src={mission.image} alt="" loading="lazy" />
                     </AspectRatio>
                 </CardOverflow>
-                <CardContent orientation="horizontal" sx={{ alignItems: 'center', mx: -1 }}>
-                    <Box sx={{ width: 0, display: 'flex', gap: 0.5 }}>
-                        <IconButton variant="plain" color="neutral" size="sm">
-                            <FavoriteBorder />
-                        </IconButton>
-                        <IconButton variant="plain" color="neutral" size="sm">
-                            <ModeCommentOutlined />
-                        </IconButton>
-                        <IconButton variant="plain" color="neutral" size="sm">
-                            <SendOutlined />
-                        </IconButton>
-                    </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mx: 'auto' }}>
-                        {[...Array(5)].map((_, index) => (
-                            <Box
-                                key={index}
-                                sx={{
-                                    borderRadius: '50%',
-                                    width: `max(${6 - index}px, 3px)`,
-                                    height: `max(${6 - index}px, 3px)`,
-                                    bgcolor: index === 0 ? 'primary.solidBg' : 'background.level3',
-                                }}
-                            />
-                        ))}
-                    </Box>
-                    <Box sx={{ width: 0, display: 'flex', flexDirection: 'row-reverse' }}>
-                        <IconButton variant="plain" color="neutral" size="sm">
-                            <BookmarkBorderRoundedIcon />
-                        </IconButton>
-                    </Box>
-                </CardContent>
-                <CardContent>
-                    <Link
-                        component="button"
-                        underline="none"
-                        fontSize="sm"
-                        fontWeight="lg"
-                        textColor="text.primary"
-                    >
-                        8.1M Likes
-                    </Link>
-                    <Typography fontSize="sm">
-                        <Link
-                            component="button"
-                            color="neutral"
-                            fontWeight="lg"
-                            textColor="text.primary"
-                        >
-                            MUI
-                        </Link>{' '}
-                        The React component library you always wanted
-                    </Typography>
-                    <Link
-                        component="button"
-                        underline="none"
-                        fontSize="sm"
-                        startDecorator="…"
-                        sx={{ color: 'text.tertiary' }}
-                    >
-                        more
-                    </Link>
-                    <Link
-                        component="button"
-                        underline="none"
-                        fontSize="10px"
-                        sx={{ color: 'text.tertiary', my: 0.5 }}
-                    >
-                        2 DAYS AGO
-                    </Link>
-                </CardContent>
-                <CardContent orientation="horizontal" sx={{ gap: 1 }}>
-                    <IconButton size="sm" variant="plain" color="neutral" sx={{ ml: -1 }}>
-                        <Face />
-                    </IconButton>
-                    <Input
-                        variant="plain"
-                        size="sm"
-                        placeholder="Add a comment…"
-                        sx={{ flex: 1, px: 0, '--Input-focusedThickness': '0px' }}
-                    />
-                    <Link disabled underline="none" role="button">
-                        Post
-                    </Link>
-                </CardContent>
+                <div className='p-3'> 
+                    <p className='text-md font-bold'>รายละเอียดภารกิจ</p>
+                    <p className='ml-2'>{mission.description}</p>
+                </div>
             </Card>
         </>
     )
