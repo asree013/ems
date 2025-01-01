@@ -90,18 +90,22 @@ export default function page({ params }: Props) {
   async function onCreateSettingTag() {
     setLoad(true)
     try {
-      const loopSetting = cartSetting.map(async (r) => {
-        const result = await createMissionTagSetting(r)
-        console.log(result.data);
-        return result.data
-      })
-      history.back()
-      console.log('array tag create', loopSetting);
+      const loopSetting = await Promise.all(
+        cartSetting.map(async (r) => {
+          const result = await createMissionTagSetting(r);
+          console.log(result.data);
+          return result.data;
+        })
+      );
 
+      if (loopSetting) {
+        history.back();
+      }
+      console.log('array tag create', loopSetting);
     } catch (error: any) {
       toast(JSON.stringify(error.message), 'error')
       setLoad(false)
-    } 
+    }
   }
 
   async function onDeleteCart(value: MissionTagSetting) {
@@ -136,12 +140,12 @@ export default function page({ params }: Props) {
   function onUpdate(value: MissionTagSetting) {
     setOpen(false)
     const update = cartSetting.map((item) => {
-      if(item.id === value.id) return value
-      else{
+      if (item.id === value.id) return value
+      else {
         return item
       }
     })
-    
+
     setCartSetting(update)
   }
 
@@ -215,9 +219,9 @@ export default function page({ params }: Props) {
       </div>
 
       {
-        load?
-        <Loadding />: 
-        null
+        load ?
+          <Loadding /> :
+          null
       }
 
       <CardUpdateSetting open={open} setOpen={setOpen} tagSetting={currentSetting} returnUpdateTagSetting={onUpdate} />

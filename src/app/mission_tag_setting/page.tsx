@@ -68,7 +68,7 @@ export default function page() {
                         <div className='mt-6 w-[250px] h-[300px] overflow-y-scroll'>
                             {
                                 setting.length > 0 ?
-                                    setting.filter(r => r.is_car === true).map((r, i) => (
+                                    setting.filter(r => r.is_car === true).sort((a, b) => a.seq - b.seq).map((r, i) => (
                                         <CardSettingTag key={i} returnNewData={onUpdateData} data={r} />
                                     )) :
                                     null
@@ -90,7 +90,7 @@ export default function page() {
                         <div className='mt-6 w-[250px] h-[300px] overflow-y-scroll'>
                             {
                                 setting.length > 0 ?
-                                    setting.filter(r => r.is_helicopter === true).map((r, i) => (
+                                    setting.filter(r => r.is_helicopter === true).sort((a, b) => a.seq - b.seq).map((r, i) => (
                                         <CardSettingTag returnNewData={onUpdateData} key={i} data={r} />
                                     )) :
                                     null
@@ -112,7 +112,7 @@ export default function page() {
                         <div className='mt-6 w-[250px] h-[300px] overflow-y-scroll'>
                             {
                                 setting.length > 0 ?
-                                    setting.filter(r => r.is_ship === true).map((r, i) => (
+                                    setting.filter(r => r.is_ship === true).sort((a, b) => a.seq - b.seq).map((r, i) => (
                                         <CardSettingTag returnNewData={onUpdateData} key={i} data={r} />
                                     )) :
                                     null

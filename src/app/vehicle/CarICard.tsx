@@ -1,4 +1,5 @@
 'use client'
+
 import DetailIcon from '@/assets/icon/detail.png';
 import EditIcon from '@/assets/icon/eidt.png';
 import EmployeIcon from '@/assets/icon/employees.png';
@@ -10,7 +11,6 @@ import { findCarByCarId, updateDriverInCar, updateUserInCar } from '@/services/c
 import { tranformPatientHelicopterToCar } from '@/services/helicopter.service';
 import { timeOutJwt } from '@/services/timeout.service';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ShareIcon from '@mui/icons-material/Share';
 import { Button, Chip } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -48,7 +48,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 type Props = {
     data: Cars
-    car_id?: string,
+    car_id: string,
 }
 
 export default function CarCard({ data, car_id }: Props) {
@@ -57,7 +57,7 @@ export default function CarCard({ data, car_id }: Props) {
     const [load, setLoad] = React.useState<boolean>(false);
     const { value, setValue } = React.useContext<TtabvalueC>(TabValueVehicleContext)
     const [driverLocate, setDriverLocate] = React.useState<Locations[]>({} as Locations[])
-    const twentyMinutesInMillis = 20 * 60 * 1000;
+    const twentyMinutesInMillis = 10 * 60 * 1000;
 
     const tranfrom = useSearchParams().get('tranfrom')
 
@@ -93,7 +93,7 @@ export default function CarCard({ data, car_id }: Props) {
         try {
             const result = await findCarByCarId(cId)
             setCar(result.data)
-            const findLocate = await findLocationByUserId(result.data.Driver.id, 1, 3)
+            const findLocate = await findLocationByUserId(result.data.UserHistoryDriveCar[0].driver_id, 1, 3)
             setDriverLocate(findLocate.data)
         } catch (error) {
             timeOutJwt(error)
@@ -140,21 +140,23 @@ export default function CarCard({ data, car_id }: Props) {
     React.useEffect(() => {
         if (car_id) {
             feedCarById(car_id)
-            console.log('findata');
         }
     }, [feedCarById])
 
     return (
         <>
             <Card className='mt-4 flex flex-col lg:w-[320px] justify-center items-center w-[280px] h-[400px]' elevation={8}>
-                <div>
+                <div className='overflow-y-scroll bg-gray-200'>
                     <CardActions disableSpacing onClick={handleExpandClick}>
                         <CardHeader
                             className='text-start'
                             action={
-                                new Date(driverLocate[0]?.create_date).getTime() > new Date(driverLocate[3]?.create_date).getTime() || new Date().getTime() - new Date(driverLocate[0]?.create_date).getTime() > twentyMinutesInMillis ?
-                                    <Chip className='ml-2' color='error' label="off" /> :
-                                    <Chip className='ml-2' color='success' label="on" />
+                                driverLocate.length > 0 && driverLocate[0]?.create_date ?
+                                    (new Date().getTime() - new Date(driverLocate[0].create_date).getTime() > twentyMinutesInMillis ?
+                                        <Chip className='ml-2' color='error' label="off" /> :
+                                        <Chip className='ml-2' color='success' label="on" />
+                                    ) :
+                                    <Chip className='ml-2' color='warning' label="ไม่มีผลขับ" />
                             }
                             title={car.calling}
                             subheader={car.driver_id ? <p>พลขับรถ</p> : 'ยังไม่มีผลขับรถ'}

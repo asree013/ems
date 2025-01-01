@@ -78,7 +78,7 @@ export default function CarComponet() {
           Object.keys(cars).length === 0 ?
             null :
             cars.map((r, i) =>
-              <CarCard key={i} data={r} />
+              <CarCard key={i} data={r} car_id={r.id} />
             )
         }
       </div>

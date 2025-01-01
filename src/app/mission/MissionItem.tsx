@@ -15,6 +15,7 @@ import { joinMission } from '@/services/mission.service';
 import { timeOutJwt } from '@/services/timeout.service';
 import { toast } from '@/services/alert.service';
 import Loadding from '@/components/Loadding';
+import { ExternalLink } from 'lucide-react';
 
 type Props = {
   mission: Missions
@@ -41,7 +42,7 @@ export default function MissionItem({ mission, currentLo, returnLoad }: Props) {
   }
   return (
     <>
-      <Card variant="outlined" sx={{ width: 320 }}>
+      <Card className="hover:shadow-lg hover:border-gray-400" variant="outlined" sx={{ width: 320 }}>
         <CardOverflow>
           {/* <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '10px'}}>
           <Avatar style={{width: '2rem', height: '2rem'}} src='' />
@@ -61,6 +62,13 @@ export default function MissionItem({ mission, currentLo, returnLoad }: Props) {
           <Typography level="title-md">{mission.title}</Typography>
           <Typography level="body-sm">{mission.address}</Typography>
         </CardContent>
+        <div onClick={() => {
+          setLoad(true)
+          window.location.href = '/mission/' + mission.id + '/mission_detail'
+        }} className='flex flex-row justify-start items-center cursor-pointer underline'>
+          <p>รายละเอียดภารกิจ</p>
+          <ExternalLink className='ml-2 w-[20px] h-[20px]' />
+        </div>
         <CardContent>
           <Button variant='contained' onClick={onJoinMission} type='button'>เข้าร่วมภารกิจ</Button>
         </CardContent>

@@ -24,9 +24,38 @@ export default function MissionUser() {
                 {
                     mission.Users?.length === 0 ?
                         <Typography>ไม่มีผู้บังคะบบัญชา</Typography> :
-                        mission.Users.map((r, i) => {
+                        mission.Users?.map((r, i) => {
                             if (!r.Responsibilities) {
                                 if (r.role.toLocaleLowerCase().includes('admin') || r.role.toLocaleLowerCase().includes('rootadmin')) {
+                                    return (
+                                        <Card
+                                            key={i}
+                                            orientation="horizontal"
+                                            size="sm"
+                                            sx={{ bgcolor: 'background.surface', borderRadius: 0, mb: 1 }}
+                                        >
+                                            <CardOverflow>
+                                                <AspectRatio
+                                                    ratio="1"
+                                                    sx={{ minWidth: 90, '& img[data-first-child]': { p: 1.5 } }}
+                                                >
+                                                    <img
+                                                        src={r.image}
+                                                        srcSet={r.image}
+                                                        loading="lazy"
+                                                        alt=""
+                                                    />
+                                                </AspectRatio>
+                                            </CardOverflow>
+                                            <CardContent>
+                                                <Typography level="title-md">{r.first_name} {r.last_name}</Typography>
+                                                <Typography level="body-sm">{r.career ? r.career : 'ผู้บังคะบบัญชา'}</Typography>
+                                                <Typography level="body-sm">{r.phone_number ? r.phone_number : 'ไมมีเบอร์ติดต่อ'}</Typography>
+                                            </CardContent>
+                                        </Card>
+                                    )
+                                }
+                                else {
                                     return (
                                         <Card
                                             key={i}
@@ -58,7 +87,33 @@ export default function MissionUser() {
 
                             }
                             else {
-                                return null
+                                return (
+                                    <Card
+                                        key={i}
+                                        orientation="horizontal"
+                                        size="sm"
+                                        sx={{ bgcolor: 'background.surface', borderRadius: 0, mb: 1 }}
+                                    >
+                                        <CardOverflow>
+                                            <AspectRatio
+                                                ratio="1"
+                                                sx={{ minWidth: 90, '& img[data-first-child]': { p: 1.5 } }}
+                                            >
+                                                <img
+                                                    src={r.image}
+                                                    srcSet={r.image}
+                                                    loading="lazy"
+                                                    alt=""
+                                                />
+                                            </AspectRatio>
+                                        </CardOverflow>
+                                        <CardContent>
+                                            <Typography level="title-md">{r.first_name} {r.last_name}</Typography>
+                                            <Typography level="body-sm">{r.career ? r.career : 'ผู้บังคะบบัญชา'}</Typography>
+                                            <Typography level="body-sm">{r.phone_number ? r.phone_number : 'ไมมีเบอร์ติดต่อ'}</Typography>
+                                        </CardContent>
+                                    </Card>
+                                )
                             }
                         })
                 }
