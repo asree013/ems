@@ -46,11 +46,11 @@ export default function Neuro() {
             <FormControl className='mt-2' fullWidth>
                 <InputLabel >E (Eye Response)</InputLabel>
                 <Select
-                    value={String(physicalStatus?.neuro?.e) ?? ''}
+                    value={physicalStatus?.neuro?.e ?? ''}
                     onChange={(e) => {
                         setPhysicalStatus({
                             ...physicalStatus, neuro: {
-                                ...physicalStatus.neuro, e: parseInt(e.target.value)
+                                ...physicalStatus.neuro, e: Number(e.target.value)
                             }
                         })
                     }}

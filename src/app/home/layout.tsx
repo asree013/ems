@@ -1,30 +1,31 @@
+import { Metadata } from 'next';
 import { metadata } from '../layout';
 import TabMenu from '@/components/TabMenu';
-
-import { Suspense } from 'react';
-metadata.title = 'Home EMS App';
-import Loadding from '@/components/Loadding'
 import Nav from '@/components/nav/Nav';
+import { Suspense } from 'react';
+import Loadding from '@/components/Loadding';
 import ChatItem from '../chat/ChatItem';
+
+metadata.title = 'Home Marine-EMS';
 
 export default function DashboardLayout({
   children, // will be a page or nested layout
 }: {
   children: React.ReactNode;
 }) {
-
   return (
     <section >
-        <Nav />
-
+      {/* Include shared UI here e.g. a header or sidebar */}
+      <Nav />
+      <Suspense fallback={<Loadding />}>
         <div style={{ marginTop: '60px' }}>
           <TabMenu>
-            <Suspense fallback={<Loadding />}>
-              {children}
-            </Suspense>
+            {children}
           </TabMenu>
         </div>
-        <ChatItem />
+      </Suspense>
+
+      <ChatItem />
 
     </section>
   );

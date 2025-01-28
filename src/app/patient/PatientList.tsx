@@ -7,8 +7,8 @@ import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import { Patients } from '@/models/patient';
-import { Avatar, Badge, CardMedia, Fab, IconButton } from '@mui/material';
-import { enviromentDev, enviromentPath } from '@/configs/enviroment.dev';
+import { Avatar, Badge, Fab, IconButton } from '@mui/material';
+import { enviromentPath } from '@/configs/enviroment.dev';
 import HistoryIcon from '@mui/icons-material/History';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
@@ -19,12 +19,10 @@ import {
 import { OrderTranfer } from '@/models/order_tranfer.model';
 import { toast } from '@/services/alert.service';
 import Loadding from '@/components/Loadding';
-import FolderDeleteIcon from '@mui/icons-material/FolderDelete';
 
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 
 import EditCalendarIcon from '@mui/icons-material/EditCalendar';
-import { timeOutJwt } from '@/services/timeout.service';
 import { assingPatinetToCarByCarIdAndPatientId } from '@/services/car.service';
 import { assingPatientInHelicopter } from '@/services/helicopter.service';
 import QrCode2Icon from '@mui/icons-material/QrCode2';
@@ -36,7 +34,8 @@ import CarIcon from '@/assets/icon/ambulance.png'
 import ShipIcon from '@/assets/image/icon_menu/ship_3469160.png'
 import BlockIcon from '@mui/icons-material/Block';
 import { assingPatientInShip } from '@/services/ship.service';
-import { dbDexie } from '@/configs/dexie.config';
+import { Tablet } from 'lucide-react';
+import Link from 'next/link';
 
 type Props = {
   patient: Patients;
@@ -44,8 +43,6 @@ type Props = {
 };
 
 export default async function PatientList({ patient, order_tranfer_id }: Props) {
-  console.log(patient);
-  
   const pathName = usePathname().includes('patient');
   const router = useRouter();
   const [isLoad, setIsLoad] = React.useState(false);
@@ -237,24 +234,29 @@ export default async function PatientList({ patient, order_tranfer_id }: Props) 
                   </IconButton>
                   <IconButton
                     size="small"
-                    color="primary"
+                    color="default"
 
                   >
                     <QrCode2Icon color="inherit" />
                   </IconButton>
-                  {
+                  <IconButton onClick={() => setIsLoad(true)}>
+                    <Link href={'/device?key=select_device&patient_id=' + patient.id}>
+                      <Tablet className='text-blue-500' />
+                    </Link>
+                  </IconButton>
+                  {/* {
                     window.navigator.onLine ?
                       <IconButton
                         size="small"
                         color="primary"
                         onClick={async () => {
-                          await dbDexie.patients.delete(patient.id).catch(e => null)
+                          await deletePatientById(patient.id)
                           window.location.reload()
                         }}
                       >
                         <FolderDeleteIcon color="error" />
                       </IconButton> : null
-                  }
+                  } */}
                 </Stack>
               ) : (
                 <Stack direction="row" spacing={1}>
@@ -266,7 +268,6 @@ export default async function PatientList({ patient, order_tranfer_id }: Props) 
                 </Stack>
               )
           }
-
         </Box>
       </Card>
 

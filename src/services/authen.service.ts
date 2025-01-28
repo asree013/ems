@@ -36,6 +36,7 @@ export async function FindUserMe() {
       headers: {
         Authorization: `Bearer ${getJwt()}`, 
       },
+      withCredentials: true
     });
     dbDexie.userFindMe.add(result.data).catch(e => null)
     return result

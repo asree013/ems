@@ -44,11 +44,13 @@ export default function Page() {
 
   const pushLocationUser = useCallback(async () => {
     const getLo = await onSaveLocation();
+    console.log('lo ', getLo);
+    
     if (!getLo) {
       return toast('ไม่สามารถเข้าถึงที่ตั้งได้', 'error');
     }
     setUserLocate(getLo);
-    const saves = await saveLocation(getLo)
+    // const saves = await saveLocation(getLo)
 
   }, [setUserLocate]);
 

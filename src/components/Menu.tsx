@@ -127,7 +127,7 @@ export default function MenuItem() {
                         }} className={menuCss.menuItem}>
                             <img src={DeviceIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
                             <div className={menuCss.menuDetail}>
-                                <h3>เครื่องวัด</h3>
+                                <h3>เครื่องวัดสัญญานชีพ</h3>
                                 <p>detail</p>
                             </div>
                         </div>
@@ -135,12 +135,12 @@ export default function MenuItem() {
                     <ButtonMenu elevation={3}>
                         <div onClick={() => {
                             setLoad(true)
-                            window.location.href = '/monitor'
+                            window.location.href = '/monitors'
                             onRedirect()
                         }} className={menuCss.menuItem}>
                             <img src={MornitorIcon.src} style={{ height: '4rem', width: '4rem' }} alt="" />
                             <div className={menuCss.menuDetail}>
-                                <h3>จอแสดงเครื่องวัด</h3>
+                                <h3>จอแสดงเครื่องวัดสัญญานชีพ</h3>
                                 <p>detail</p>
                             </div>
                         </div>

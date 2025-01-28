@@ -69,16 +69,14 @@ export default function page({ params }: Props) {
     const cs = {} as MissionTagSetting;
     cs.seq = Number(count) + currentCount.current;
     cs.label = data.label;
-    cs.is_default = false
+    cs.is_default = data.is_default?? false
 
     if (vehicle && vehicle === 'car') cs.is_car = true;
     if (vehicle && vehicle === 'helicopter') cs.is_helicopter = true;
     if (vehicle && vehicle === 'ship') cs.is_ship = true;
 
-    console.log(cs);
     setCartSetting([...cartSetting, cs]);
 
-    // รีเซ็ตฟอร์มหลังจากส่งข้อมูล
     reset();
   }
 
@@ -173,7 +171,12 @@ export default function page({ params }: Props) {
                   ></textarea>
                   {errors.label && <p className='text-red-600'>{errors.label.message}</p>}
                 </div>
-                <div className='mt-8 flex flex-row items-center justify-between'>
+                <div className='flex flex-row justify-start items-center mt-2'>
+                  <input {...register('is_default')} id='isDefault' type="checkbox" />
+                  <label className='ml-3' htmlFor="isDefault">ต้องการให้เป็น Standard</label>
+                </div>
+                <p className='text-red-600 text-[14px]'>*ติ๊กหากต้องการให้เป็นแท็กพื้นฐาน</p>
+                <div className='mt-4 flex flex-row items-center justify-between'>
                   <button type='submit' className='bg-gray-500 font-medium hover:bg-gray-700 text-white w-[140px] p-2 text-lg rounded-xl'>
                     เพิ่ม
                   </button>
@@ -193,8 +196,9 @@ export default function page({ params }: Props) {
                         <div key={i} className='p-2 flex flex-row w-full items-center justify-between mt-1 bg-white rounded-md border border-gray-500 hover:shadow-shadow cursor-pointer'>
                           <div className=''>
                             <label htmlFor="" className='text-[12px]'>แทกที่ {r.seq}</label>
-                            <div className=' flex flex-row justify-between items-center'>
+                            <div className=' flex flex-col justify-between items-center'>
                               <p className='text-green-800 font-medium'>{r.label}</p>
+                              <p className='text-[12px] text-red-700'>{r.is_default? "(บังคับ)": '(ไม่บังคับ)'}</p>
                             </div>
                           </div>
                           <div>

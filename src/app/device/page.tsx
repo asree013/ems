@@ -6,22 +6,24 @@ import Bar from './Bar';
 import Loadding from '../../components/Loadding';
 import { findDeviceAll } from '../../services/device.service';
 import BreadCrumb, { TBreadCrumd } from '@/components/BreadCrumb';
-
-const items: TBreadCrumd[] = [
-  {
-    labe: "หน้าหลัก",
-    path: '/home'
-  },
-  {
-    labe: "เครื่องวัด",
-    path: '/device'
-  },
-
-]
+import { useSearchParams } from 'next/navigation';
 
 const Page: React.FC = () => {
   const [device, setDevice] = useState<Device[]>([]);
   const [load, setLoad] = useState(false);
+  const key = useSearchParams().get('key')
+
+  const items: TBreadCrumd[] = [
+    {
+      labe: "หน้าหลัก",
+      path: '/home'
+    },
+    {
+      labe: key? "เลือกเครื่องวัดสัญญานชีพ" : "เครื่องวัดสัญญานชีพ",
+      path: '/device'
+    },
+
+  ]
 
   function onReturnSearch(str: string) { }
 
@@ -42,6 +44,7 @@ const Page: React.FC = () => {
     }
   }, [setDevice]);
 
+
   useEffect(() => {
     feedDevice();
   }, [feedDevice]);
@@ -54,7 +57,6 @@ const Page: React.FC = () => {
         <div>
           <BreadCrumb item={items} />
           <div className="DeviceHome">
-            <h1>Device All</h1>
             <Bar
               nameBar="Search Device"
               nameToCreate="/device/"

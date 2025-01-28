@@ -5,23 +5,8 @@ let socket: Socket;
 
 const isBrowser = typeof window !== 'undefined';
 
-let Url: string | undefined = ''
+const Url = 'http://157.245.146.67:3333'
 
-function onCheckPath() {
-  if(isBrowser){
-    if(window.location.protocol === 'http:'){
-      window.location.hostname === 'localhost'? Url = enviromentDev.baseUrl_base_v2: Url = enviromentDev.localUrl
-      
-    }
-    else{
-      Url = enviromentDev.baseUrl_base_onLine
-      console.log(Url);
-
-    }
-  }
-}
-
-onCheckPath()
 
 if (typeof window !== 'undefined') {
   socket = io(Url, {

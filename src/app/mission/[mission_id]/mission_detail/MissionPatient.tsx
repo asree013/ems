@@ -1,38 +1,47 @@
 'use clietn'
 import { MissionById } from '@/models/mission.model'
-import { Card, Chip, styled } from '@mui/material'
 import React from 'react'
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import MissionPateintCard from './MissionPateintCard';
+import ManIcon from '@mui/icons-material/Man';
+import WomanIcon from '@mui/icons-material/Woman';
 
 type Props = {
     mission: MissionById
 }
 
-const CardMui = styled(Card)(({ theme }) => ({
-    padding: 10,
-    width: 250,
-    height: 100,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    borderRadius: 10,
-    border: '1px solid green',
-    background: 'rgb(199, 241, 199)'
-}))
-
 export default function MissionPatient({ mission }: Props) {
 
     return (
-        <div>
+        <div className='flex flex-row justify-around items-start w-full'>
             <MissionPateintCard
                 Icon={SupervisorAccountIcon}
-                background='rgb(199, 241, 199)'
-                border='1px solid green'
+                background='bg-green-100 cursor-pointer'
+                border='border-green-300 hover:border-green-600'
                 color={'success'}
-                count={12}
+                fontColor={'text-green-900'}
+                count={`${mission.patients.length} คน`}
                 title='จำนวนผู้ป่วยทั้งหมด'
             />
+            <MissionPateintCard
+                Icon={ManIcon}
+                background='bg-blue-100 cursor-pointer'
+                border='border-blue-300 hover:border-blue-500'
+                color={'primary'}
+                fontColor={'text-blue-950'}
+                count={`${mission.patients.filter(r => r.gender.toLocaleLowerCase() === 'male').length} คน`}
+                title='จำนวนผู้ป่วยเพศชาย'
+            />
+            <MissionPateintCard
+                Icon={WomanIcon}
+                background='bg-red-100 cursor-pointer'
+                border='border-red-300 hover:border-red-500'
+                color={'error'}
+                fontColor={'text-red-700'}
+                count={`${mission.patients.filter(r => r.gender.toLocaleLowerCase() === 'female').length} คน`}
+                title='จำนวนผู้ป่วยเพศหญิง'
+            />
+
         </div>
     )
 }

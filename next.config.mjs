@@ -5,6 +5,7 @@ import withPWAInit from '@ducanh2912/next-pwa';
 const nextConfig = {
   output: 'standalone',
   reactStrictMode: false,
+  swcMinify: true,
   experimental: {
     emotion: true,
   },

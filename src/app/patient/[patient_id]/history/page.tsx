@@ -43,7 +43,7 @@ export default function Page({ params }: Props) {
   
 
   const [historyDetail, setHistoryDetail] = useState<Historys>({} as Historys)
-  const [historyFrom, setHistoryFrom] = useState<boolean>(false);
+  const [historyFrom, setHistoryFrom] = useState<boolean>(true);
 
   const [load, setLoad] = useState(false)
   const [history, setHistory] = useState<Historys[]>({} as Historys[]);
@@ -107,10 +107,14 @@ export default function Page({ params }: Props) {
     <BreadCrumb item={items} />
       <div className={historyCss.homePage}>
         <div className={historyCss.item}>
+         {
+          history.length> 0 ?
+          null:
           <Button variant='solid' color='primary' onClick={() => {
             setHistoryFrom(true);
             setHistory_id('');
           }}>เพิ่มประวัติ</Button>
+         }
 
           {/* <HistoryTab /> */}
 

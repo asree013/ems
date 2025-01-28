@@ -7,9 +7,10 @@ export interface Patients {
   last_name: string
   qr_number: string
   gender: string
-  age: string
+  age: number
   birthday: string
   id_card: string
+  deviceId: string
   tel: string
   address: string
   group_blood: string
@@ -135,6 +136,7 @@ export interface PatientBelongCar {
     qr_number: any
     gender: string
     age: any
+    deviceId: string,
     birthday: any
     id_card: any
     tel: any

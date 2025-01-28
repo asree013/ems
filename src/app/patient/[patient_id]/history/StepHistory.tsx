@@ -21,8 +21,13 @@ import Cvs from './stepForm/Cvs';
 import Neuro from './stepForm/Neuro';
 import CreateHistoryFrom from './stepForm/CreateHistoryFrom';
 import MotorPower from './stepForm/MotorPower';
+import Circulation from './stepForm/Circulation';
 
 const steps = [
+  {
+    label: "Circulation",
+    component: <Circulation />
+  },
   {
     label: 'กรอกรายละเอียด',
     component: <HistoryCreate />,
@@ -59,11 +64,12 @@ const steps = [
     label: 'Motor Power',
     component: <MotorPower />
   },
+
   {
     label: 'สร้างประวัติ',
     component: <CreateHistoryFrom />
   },
-  
+
 ];
 
 export default function StepHistory() {

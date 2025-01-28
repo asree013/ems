@@ -26,7 +26,7 @@ export default function CardSettingTag({ data, returnNewData }: Props) {
             customClass: {
                 popup: 'z-40'
             },
-        }).then(async(result) => {
+        }).then(async (result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 try {
@@ -53,9 +53,15 @@ export default function CardSettingTag({ data, returnNewData }: Props) {
                     <p className='text-lg font-bold w-[60px]'>ขั้นที่ {data.seq}</p>
                     <p className=''>{data.label}</p>
                 </div>
-                <div className='flex flex-row items-center justify-start'>
+                <div className='flex flex-row items-center justify-between'>
                     <FileCog onClick={() => setOpen(true)} className='mr-2 cursor-pointer' color="#103489" />
-                    {/* <Trash2 className='mr-2 cursor-pointer' color="#dd0303" /> */}
+                    {
+                        data.is_default ?
+                            <p className='text-red-700 text-[12px]'>(บังคับ)</p> :
+                            <p className='text-yellow-600 text-[12px]'>(ไม่บังคับ)</p>
+
+
+                    }
                 </div>
                 <Divider className='mt-2' />
             </div>

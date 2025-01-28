@@ -342,6 +342,7 @@ export type PatientBelongShip = {
     last_name: string
     qr_number: any
     gender: string
+    deviceId: string
     age: any
     birthday: any
     id_card: any

@@ -5,16 +5,11 @@ import { Box, Button, Card, Chip, Divider, Fab, Stack } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import { Historys } from '@/models/history.model';
 import { useRouter } from 'next/navigation';
 
 import EditNoteIcon from '@mui/icons-material/EditNote';
-import DoDisturbIcon from '@mui/icons-material/DoDisturb';
-import CancelIcon from '@mui/icons-material/Cancel';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Loadding from '@/components/Loadding';
 import { HistoryInCar } from '@/app/home/vehicle/CarHistoryItem';
-import Modal from '@mui/material/Modal';
 import PhysicalStatusModal from './PhysicalstatusModal';
 
 type Props = {
@@ -105,7 +100,9 @@ export default function HistoryItem({ value, name, }: Props) {
         <Divider />
         <Box sx={{ margin: '15px 0', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
           <Button variant='outlined' onClick={() => setOpen(true)} color='warning'>Triage Level</Button>
-          <Button variant='outlined' onClick={() => setOpen(true)} color='inherit'>Physical Status</Button>
+          <Button variant='outlined' onClick={() => {
+            onRedirect(value?.id, )
+          }} color='inherit'>Physical Status</Button>
         </Box>
         <Divider />
         <Box sx={{ p: 2 }}>

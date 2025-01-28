@@ -45,7 +45,7 @@ export async function uploadBase64Image(file: File) {
             reader.readAsDataURL(compressedFile);
         })
         console.log('ขนาด base64 หลัง ลดขนาด: ',String(resultImage).length);
-        return resultImage
+        return resultImage as string
     } catch (error) {
         throw error
     }

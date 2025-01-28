@@ -2,7 +2,7 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import {
     APIProvider, Map, MapControl, ControlPosition, Marker, useMapsLibrary,
-    useMap
+    useMap, 
 } from '@vis.gl/react-google-maps';
 import { enviromentDev } from '@/configs/enviroment.dev';
 import NearMeIcon from '@mui/icons-material/NearMe';
@@ -130,7 +130,7 @@ const GoogleApiMap = ({ mission }: Props) => {
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
                         const { latitude, longitude } = position.coords;
-                        const g = { lat: latitude, lng: longitude };
+                        const g = { lat: latitude, lng: longitude };                        
                         setCenterLocate(g);
                         const center = setInterval(() => {
                             setCenterLocate(null);
@@ -204,7 +204,7 @@ const GoogleApiMap = ({ mission }: Props) => {
                         <p>loading...</p> :
                         <Map
                             defaultCenter={{ lng: Number(userLocate.long), lat: Number(userLocate.lat) }}
-                            zoom={zoom} // ใช้ค่า zoom ที่ตั้งไว้
+                            zoom={zoom} 
                             center={isSub === false ? centerLocate : { lat: Number(userLocate.lat), lng: Number(userLocate.long) }}
                             gestureHandling={'greedy'}
                             disableDefaultUI={true}
@@ -242,7 +242,7 @@ const GoogleApiMap = ({ mission }: Props) => {
                                     zIndex={50}
                                     onClick={(e) => console.log(e.latLng?.toString())}
                                     icon={icon}
-                                    position={{ lng: Number(userLocate.long), lat: Number(userLocate.lat) }}
+                                    position={{ lng: Number(userLocate?.long), lat: Number(userLocate?.lat) }}
                                     label={convertNameVehicle()}
                                     animation={centerLocate ? window.google.maps.Animation.BOUNCE : null}
                                 />

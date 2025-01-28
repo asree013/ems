@@ -11,7 +11,6 @@ import MyVehicle from './MyVehicle';
 import ShipComponent from './ShipComponent';
 import { TabValueVehicleContext } from './tabValue.context';
 import styled from 'styled-components';
-import { Badge } from '@mui/material';
 
 interface TabPanelProps {
   children?: React.ReactNode;

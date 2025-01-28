@@ -14,8 +14,8 @@ export default function TableResultPateint({ pateint }: Prosp) {
             <td><Avatar src={pateint.image} /></td>
             <td>{pateint.first_name} {pateint.last_name}</td>
             <td>{pateint.gender.toLocaleLowerCase() === 'male' ? <p>ชาย</p> : <p>หญิง</p>}</td>
+            <td>{pateint.age?? 'ไม่ทราบอายุ'}</td>
             <td>{pateint.id_card ?? 'ไม่ทราบเลขบัตร'}</td>
-            <td>24</td>
             <td>
                 <IconButton>
                     <VisibilityIcon />

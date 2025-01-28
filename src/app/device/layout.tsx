@@ -1,9 +1,8 @@
 
 import { metadata } from '../layout';
 import TabMenu from '@/components/TabMenu';
-import ChatButton from '@/app/components/chats/ChatButton';
 import Nav from '@/components/nav/Nav';
-import BreadCrumb from '@/components/BreadCrumb';
+import ChatItem from '../chat/ChatItem';
 metadata.title = 'Device Marine-EMS';
 
 export default function DashboardLayout({
@@ -22,7 +21,7 @@ export default function DashboardLayout({
         </TabMenu>
       </div>
 
-      <ChatButton />
+      <ChatItem />
 
     </section>
   );

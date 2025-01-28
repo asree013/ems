@@ -1,5 +1,7 @@
 import React from 'react'
 import Nav from '../nav/Nav'
+import ChatItem from '@/app/chat/ChatItem';
+import TabMenu from '../TabMenu';
 
 export default function NavBarLayout({
     children, // will be a page or nested layout
@@ -7,9 +9,16 @@ export default function NavBarLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div>
-            <Nav />
-            {children}
-        </div>
+        <>
+            <div className='w-full h-full'>
+                <Nav />
+                <TabMenu>
+                    {children}
+                </TabMenu>
+
+                <ChatItem />
+            </div >
+        </>
+
     )
 }

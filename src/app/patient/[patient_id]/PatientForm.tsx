@@ -112,7 +112,7 @@ export default function PatientForm({
                     setPatient({ ...patient, birthday: e.target.value });
                     setPatient({
                       ...patient,
-                      age: String(new Date().getFullYear() - Number(e.target.value.split('-'))),
+                      age: new Date().getFullYear() - Number(e.target.value.split('-')),
                     });
                   }}
                   type="date"
@@ -122,9 +122,10 @@ export default function PatientForm({
               <FormControl>
                 <FormLabel>Age</FormLabel>
                 <Input
+                  type='number'
                   value={patient.age ? patient.age : 0}
                   onChange={(e) =>
-                    setPatient({ ...patient, age: String(e.target.value) })
+                    setPatient({ ...patient, age: Number(e.target.value )})
                   }
                   endDecorator={<PermContactCalendarIcon />}
                 />

@@ -39,6 +39,14 @@ export function findDeviceById(device_id: string) {
   }
 }
 
+export function findDeviceIdByDeviceMonitorId(device_monitor_id: string) {
+  try {
+    return endpoint.get<Device>(`${enviromentDev.device}/get-by-device-id/${device_monitor_id}`);
+  } catch (error) {
+    throw error;
+  }
+}
+
 export function editDeviceById(device_id: string, item: Device) {
   try {
     return endpoint.put<Device>(`${enviromentDev.device}/${device_id}`, item);

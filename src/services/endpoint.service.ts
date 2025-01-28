@@ -2,11 +2,17 @@ import { enviromentDev } from '@/configs/enviroment.dev';
 import axios from 'axios';
 
 export const getUrl = (): string | undefined => {
-    return enviromentDev.baseUrl_base_v1
+  return enviromentDev.baseUrl_base_v1
 };
 
 export const getUrlFroFindMe = (): string | undefined => {
-    return enviromentDev.baseUrl_base_v2;
+  if (window) {
+    console.log('hostname ', window.location.protocol);
+    return window.location.protocol === 'http:' ?
+      enviromentDev.baseUrl_base_v2 :
+      enviromentDev.baseUrl_base_v1
+
+  }
 };
 
 export const getIsOnline = (): boolean => {
@@ -18,7 +24,7 @@ export function getJwt(): string | null {
     const jwt = localStorage.getItem('jwt');
     return jwt
   }
-  else{
+  else {
     return ''
   }
 }

@@ -64,6 +64,7 @@ export default function PatientCount({ currentMission }: Props) {
                             <th>รูปถ่าย</th>
                             <th >ชื่อสกุล</th>
                             <th>เพศ</th>
+                            <th>อายุ</th>
                             <th>เลขบัตร</th>
                             <th>ยานพานะ</th>
                             <th>อื่น</th>

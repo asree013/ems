@@ -26,8 +26,8 @@ export default function Bar({ nameBar, nameToCreate, returnString }: Props) {
           p: '2px 4px',
           display: 'flex',
           alignItems: 'center',
-          width: '50%',
         }}
+        className='min-w-[50%] w-full p-2'
       >
         <InputBase
           sx={{ ml: 1, flex: 1 }}

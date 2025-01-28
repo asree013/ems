@@ -118,7 +118,7 @@ export default function TabMenu({ children }: Props) {
                 <CssBaseline />
                 <FindMeContext.Provider value={{ findMe, setFindMe }}>
                     <CustomTabPanel value={value} index={0} >
-                        <div style={{ width: '100%' }}>
+                        <div className='lg:p-4'>
                             {children}
                         </div>
                     </CustomTabPanel>

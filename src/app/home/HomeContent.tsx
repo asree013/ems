@@ -136,8 +136,8 @@ export default function HomeContent() {
                         <Box sx={{ width: '100%' }}>
                             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                                    <Tab label="ขอมูล" style={{ width: '50%' }} {...a11yProps(0)} />
-                                    <Tab label="เครื่องแสดงผล" style={{ width: '50%' }} {...a11yProps(1)} />
+                                    <Tab label="ข้อมูล" style={{ width: '50%' }} {...a11yProps(0)} />
+                                    <Tab label="สัญญานชีพผู้ป่วย" style={{ width: '50%' }} {...a11yProps(1)} />
                                 </Tabs>
                             </Box>
                             <CustomTabPanel value={value} index={0}>

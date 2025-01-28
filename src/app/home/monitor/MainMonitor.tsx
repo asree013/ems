@@ -71,7 +71,7 @@ export default function MainMonitor({ vehicle }: Props) {
                         <Tooltip title="เพิ่มจอแสดงกราฟ">
                           <IconButton color='primary' onClick={() => {
                             setLoad(true)
-                            window.location.href = `vehicle/${vehicle.ship.ship_id}/ship/detail/add_monitor?patient_add_id=${r.Patient.id}`
+                            window.location.href = `vehicle/${vehicle.car.car_id}/car/detail/add_monitor?patient_add_id=${r.Patient.id}`
                           }}>
                             <QueuePlayNextIcon style={{ width: 50, height: 50 }} />
                           </IconButton>

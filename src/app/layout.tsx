@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import logoIcon from '@/assets/icon/electronic-device_5758533.png';
 import newLogo from '@/assets/image/icon_menu/logo4.png';
 
 const inter = Inter({

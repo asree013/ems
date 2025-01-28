@@ -98,3 +98,14 @@ export async function updatePatient(patient_id: string, item: Patients) {
     throw error;
   }
 }
+
+export async function deletePatientById(patient_id: string) {
+  if (getIsOnline()) {
+    return endpoint.delete<Patients>(`${enviromentDev.patient}/${patient_id}`)
+  }
+  else {
+    const data = await dbDexie.patients.delete(patient_id)
+    console.log(data);
+    return data
+  }
+}

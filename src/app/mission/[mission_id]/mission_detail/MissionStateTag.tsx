@@ -7,22 +7,22 @@ import StepContent from '@mui/material/StepContent';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { MissionById, Missions, MissionState, MissionTag } from '@/models/mission.model';
+import { MissionById, MissionState, MissionTag } from '@/models/mission.model';
 import { findMissionStateByMissionId, findMissionTagByMissionId, updateMissionTagByMissionId } from '@/services/mission.service';
 import { timeOutJwt } from '@/services/timeout.service';
 
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import CancelIcon from '@mui/icons-material/Cancel';
 import HourglassFullTwoToneIcon from '@mui/icons-material/HourglassFullTwoTone';
 
 type Props = {
-    data: MissionById
+    data: MissionById,
+    missionTag: MissionTag[]
 }
 
-export default function MissionStateTag({ data }: Props) {
+export default function MissionStateTag({ data, missionTag }: Props) {
+    
     const [missionState, setMissionState] = React.useState<MissionState>({} as MissionState)
-    const [missionTag, setMissionTag] = React.useState<MissionTag[]>({} as MissionTag[])
 
     const [activeStep, setActiveStep] = React.useState(1);
 
@@ -30,22 +30,15 @@ export default function MissionStateTag({ data }: Props) {
         try {
             const result = await findMissionStateByMissionId(data.id)
             setMissionState(result.data)
-            setActiveStep(result.data.status)
-
+            // setActiveStep(result.data.status)
+            console.log('activeStep ', result.data);
+            
 
         } catch (error) {
             timeOutJwt(error)
         }
     }, [setMissionState])
 
-    const findTagAll = React.useCallback(async () => {
-        try {
-            const result = await findMissionTagByMissionId(data.id)
-            setMissionTag(result.data)
-        } catch (error) {
-            timeOutJwt(error)
-        }
-    }, [setMissionTag])
 
     async function updateTagCurrentByMissionIdAndTagId(tag_id: string, newCerrenr: number) {
         try {
@@ -61,24 +54,23 @@ export default function MissionStateTag({ data }: Props) {
 
     React.useEffect(() => {
         findStateByMissionId()
-        findTagAll()
 
         return () => {
             findStateByMissionId
-            findTagAll
         }
-    }, [findStateByMissionId, findTagAll])
+    }, [findStateByMissionId])
 
     const handleNext = (i: number) => {
-        const findMis = missionTag.find(r => r.status === missionState.status)
-        if (findMis) {
-            console.log(findMis.status + 1);
-            const newCurrent = missionTag.find(r => r.status >= findMis.status + 1)
-            if (newCurrent) {
-                updateTagCurrentByMissionIdAndTagId(newCurrent.id, newCurrent.status)
-                setActiveStep((prevActiveStep) => prevActiveStep + 1);
-            }
-        }
+        // const findMis = missionTag.find(r => r.status === missionState.status)
+        // if (findMis) {
+        //     console.log('find ' , findMis.status + 1);
+        //     const newCurrent = missionTag.find(r => r.status >= findMis.status + 1)
+        //     if (newCurrent) {
+        //         updateTagCurrentByMissionIdAndTagId(newCurrent.id, newCurrent.status)
+        //         setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        //     }
+        // }
+        setActiveStep(i + 1)
 
     };
 
@@ -109,6 +101,7 @@ export default function MissionStateTag({ data }: Props) {
                                                 variant='contained'
                                                 onClick={handleBack}
                                                 sx={{ mt: 1, mr: 1 }}
+
                                             >
                                                 ย้อน
                                             </Button>
@@ -175,24 +168,25 @@ const StepIconNotDo = () => {
 };
 
 function generateFixIcon(index: number, currentIndex: number, step: MissionTag) {
+    
     switch (true) {
         case index === 0:
-            console.log('index0');
 
             return (
                 <StepLabel StepIconComponent={StepIconCheck} data-last="true">
                     <div style={{ display: 'flex', alignItems: 'start', justifyContent: 'center', flexDirection: 'column' }}>
-                        <p style={{ width: '100%' }}>{step.label}</p>
+                        <p style={{ width: '100%' }}>{index+1}: {step.label}</p>
                         <div style={{ display: 'flex', alignItems: 'center' }}> เมื่อ: <p style={{ color: 'green' }}>{new Date(step.update_date).toLocaleString('th-TH')}</p> </div>
                     </div>
 
                 </StepLabel>
             );
         case index === currentIndex:
+            
             return (
                 <StepLabel StepIconComponent={StepIconDoing}>
                     <p style={{ background: '#F37335', padding: '3px', borderRadius: '5px', color: 'whitesmoke' }}>
-                        {step.label}
+                    {index+1}: {step.label}
                     </p>
                 </StepLabel>
             );
@@ -200,7 +194,7 @@ function generateFixIcon(index: number, currentIndex: number, step: MissionTag) 
             return (
                 <StepLabel StepIconComponent={StepIconCheck}>
                     <div style={{ display: 'flex', alignItems: 'start', justifyContent: 'center', flexDirection: 'column' }}>
-                        <p style={{ width: '100%' }}>{step.label}</p>
+                        <p style={{ width: '100%' }}>{index+1}: {step.label}</p>
                         <div style={{ display: 'flex', alignItems: 'center' }}> เมื่อ: <p style={{ color: 'green' }}>{new Date(step.update_date).toLocaleString('th-TH')}</p> </div>
                     </div>
                 </StepLabel>
@@ -208,7 +202,7 @@ function generateFixIcon(index: number, currentIndex: number, step: MissionTag) 
         case index > currentIndex:
             return (
                 <StepLabel StepIconComponent={StepIconNotDo}>
-                    {step.label}
+                    {index+1}: {step.label}
                 </StepLabel>
             );
     }

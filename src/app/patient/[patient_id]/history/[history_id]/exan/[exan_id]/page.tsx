@@ -4,26 +4,21 @@ import exan_idCss from './exan_id.module.css';
 import { Box, Card, CardMedia, Fab, Typography } from '@mui/material';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import { Button, Textarea } from '@mui/joy';
-import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import { ExanShows, Exans, ImageExan } from '@/models/exan.model';
 import { NIL } from 'uuid';
 import {
   createExanByHistoryId,
-  findExanByExanId,
   updateExanByExanId,
 } from '@/services/exan.service';
 import { toast } from '@/services/alert.service';
 import { useSearchParams, useRouter } from 'next/navigation';
 
-import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
-import ListSubheader from '@mui/material/ListSubheader';
 import IconButton from '@mui/material/IconButton';
-import InfoIcon from '@mui/icons-material/Info';
 
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
-import { uploadImage } from '@/services/uploadImage.service';
+import { uploadBase64Image, uploadImage } from '@/services/uploadImage.service';
 import CancelIcon from '@mui/icons-material/Cancel';
 
 type Props = {
@@ -112,20 +107,11 @@ export default function Page({ params }: Props) {
           />
           <input type="file" id='image_exam' hidden onChange={async (e) => {
             if (e.target.files) {
-              const file = e.target.files[0]
-              const formData = new FormData()
-              formData.append('file', file)
-              setLoad(true)
               try {
-                const image = await uploadImage(formData)
-                setExan({ ...exan, image: image.data.result })
-                console.log('upload image');
-
+                const image = await uploadBase64Image(e.target.files[0])
+                setExan({ ...exan, image: image as string })
               } catch (error) {
-                console.log(error);
 
-              } finally {
-                setLoad(false)
               }
             }
           }} />

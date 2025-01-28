@@ -68,8 +68,8 @@ const MiniMap = ({ locate, vehicle }: Props) => {
     }, [locate, vehicle]);
 
     const safeLatLng = useCallback((): LatLng | null => {
-        const lat = parseFloat(String(locate.lat));
-        const lng = parseFloat(String(locate.long));
+        const lat = parseFloat(String(locate?.lat?? 0));
+        const lng = parseFloat(String(locate?.long?? 0));
         if (isNaN(lat) || isNaN(lng)) {
             console.error("Invalid lat/lng:", locate.lat, locate.long);
             return null;
@@ -150,7 +150,7 @@ const MiniMap = ({ locate, vehicle }: Props) => {
         <Card className='w-[250px] h-[150px]' elevation={4} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', borderRadius: '10px', marginTop: '10px' }}>
             <APIProvider apiKey={enviromentDev.keyGoogleApi}>
                 <Map
-                    defaultCenter={{ lng: Number(locate.long), lat: Number(locate.lat) }}
+                    defaultCenter={{ lng: Number(locate?.long?? null), lat: Number(locate?.lat?? null) }}
                     zoom={zoom} // ใช้ค่า zoom ที่ตั้งไว้
                     center={safeLatLng() || { lat: 0, lng: 0 }}
                     gestureHandling={'greedy'}
@@ -173,7 +173,7 @@ const MiniMap = ({ locate, vehicle }: Props) => {
                             <RemoveIcon />
                         </Button>
                     </MapControl>
-                    {icon &&
+                    {icon && locate?.lat && locate?.long &&
                         <Marker
                             zIndex={50}
                             onClick={(e) => console.log(e.latLng?.toString())}
