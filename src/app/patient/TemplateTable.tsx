@@ -1,11 +1,16 @@
 import Loadding from '@/components/Loadding'
 import { StationPatient } from '@/models/patient'
 import { toast } from '@/services/alert.service'
-import { createStationPatient, findPatientAllByStation } from '@/services/paitent.service'
-import { Search } from 'lucide-react'
+import { createStationPatient, findPatientAllByStation, findStationAll } from '@/services/paitent.service'
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react'
 import ModalTransferPatient from './ModalTransferPatient'
 import { enviromentDev } from '@/configs/enviroment.dev'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { CirculationsContext, PatientIdContext, PhysicalStatusContext, TraigeLevelContext, TreatmentContext } from './[patient_id]/history/StepContext'
+import StepHistory from './[patient_id]/history/StepHistory'
+import { PhysicalStatus, TriageLevels } from '@/models/historyDetail.model'
+import { Treatments } from '@/models/traeteMent'
+import { Circulations } from './[patient_id]/history/stepForm/Circulation'
 
 type Props = {
     stationPatient: StationPatient[]
@@ -16,6 +21,37 @@ type Props = {
 export default function TemplateTable({ stationPatient, setStationPatient, title }: Props) {
     const [load, setLoad] = useState<boolean>(false)
     const [openModals, setOpenModals] = useState<{ [key: string]: boolean }>({})
+    const [open, setOpen] = useState(false)
+    const [patient_id, setPatient_id] = useState<string>('')
+
+    const [triageLevel, setTriageLevel] = useState<TriageLevels>({} as TriageLevels)
+    const [physicalStatus, setPhysicalStatus] = useState<PhysicalStatus>({} as PhysicalStatus)
+    const [treatment, setTreatment] = useState({} as Treatments)
+    const [circulation, setCirculation] = useState<Circulations>({
+        acetar: false,
+        half_d_n_two: false,
+        iv_fluid: false,
+        nss: false,
+        on_heparin_lock: false,
+        rls: false,
+        ten_d_n_two: false,
+        other: {
+            bool: false,
+            txt: ''
+        },
+        direct_pressure: false,
+        pressure_dressing: false,
+        stop_bleed: false,
+        tourniquet: false,
+        immobilization: false,
+        ked: false,
+        pressure: false,
+        sprint: false,
+        cpr: false,
+        aed: false
+    })
+
+    const router = useRouter()
 
     async function onReturnData(station: string, patient_id: string) {
         if (!patient_id) {
@@ -43,8 +79,14 @@ export default function TemplateTable({ stationPatient, setStationPatient, title
     const findStation = useCallback(async () => {
         setLoad(true)
         try {
-            const result = await findPatientAllByStation(title, 1, 100, new Date().toISOString().split("T")[0])
-            setStationPatient(result.data || [])
+            if (title === 'triage') {
+                const result = await findStationAll(1, 100, new Date().toISOString().split("T")[0])
+                setStationPatient(result.data || [])
+            }
+            else {
+                const result = await findPatientAllByStation(title, 1, 100, new Date().toISOString().split("T")[0])
+                setStationPatient(result.data || [])
+            }
         } catch (error: any) {
             console.error(error)
             toast(error.message, 'error')
@@ -68,7 +110,7 @@ export default function TemplateTable({ stationPatient, setStationPatient, title
                         </div>
                     </div>
                     <div className='overflow-auto'>
-                        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 ">
+                        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-4">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
                                     <th className="px-6 py-3 w-full">ชื่อ สกุล</th>
@@ -90,11 +132,28 @@ export default function TemplateTable({ stationPatient, setStationPatient, title
                                                 </th>
                                                 <td className="px-6 py-4">{new Date(r.create_date).toLocaleString('th-TH')}</td>
                                                 <td className="px-6 py-4">{new Date(r.out_date ?? r.create_date).toLocaleString('th-TH')}</td>
-                                                <td className="px-6 py-4">
-                                                    <button onClick={() => toggleModal(r.id)} className="text-blue-600 hover:underline">ส่งออกผู้ป่วย</button>
+                                                <td className="align-baseline px-6 py-4 flex flex-row items-start justify-center gap-2">
+                                                    {
+                                                        title === "triage" ?
+                                                            <>
+                                                                <button onClick={() => {
+                                                                    setOpen(true)
+                                                                    setPatient_id(r.id)
+                                                                }} className="text-blue-600 hover:underline border w-[130px] border-blue-600 rounded-lg p-2">Triage ผู้ป่วย</button>
+                                                                <button onClick={() => toggleModal(r.id)} className="ml-3 text-green-600 w-[130px] hover:underline border border-green-600 rounded-lg p-2">ส่งออกผู้ป่วย</button>
+                                                                <button onClick={() => {
+                                                                    setLoad(true)
+                                                                    router.push('/patient/' + r.id + '/exam')
+                                                                }} className="ml-3 text-yellow-600 hover:underline border w-[130px] border-yellow-600 rounded-lg p-2">เพิ่มรูปภาพแผล</button>
+                                                                <button onClick={() => {
+                                                                    setLoad(true)
+                                                                    router.push('/device?key=add')
+                                                                }} className="ml-3 text-red-600 hover:underline border w-[160px] border-red-600 rounded-lg p-2">เพิ่มเครื่องวัดสัญญานชีพ</button>
+                                                            </> : <button onClick={() => toggleModal(r.id)} className="ml-3 text-green-600 w-[130px] hover:underline border border-green-600 rounded-lg p-2">ส่งออกผู้ป่วย</button>
+                                                    }
                                                     <ModalTransferPatient
                                                         key={r.id}
-                                                        open={!!openModals[r.id]}
+                                                        open={openModals[r.id]}
                                                         setOpen={() => toggleModal(r.patient_id)}
                                                         query=''
                                                         patient_id={r.patient_id ?? ''}
@@ -112,6 +171,27 @@ export default function TemplateTable({ stationPatient, setStationPatient, title
                             </tbody>
                         </table>
                     </div>
+
+                </div>
+            </div>
+
+            <div className={`${open ? "z-20" : "hidden"} fixed top-0 left-0 w-full h-screen flex items-center justify-center z-20`}>
+                <div className='bg-black w-full h-screen fixed top-0 left-0 opacity-25' onClick={() => setOpen(false)}></div>
+                <div className='bg-white p-3 z-30 w-[420px] m-2'>
+                    <CirculationsContext.Provider value={{ circulation, setCirculation }}>
+                        <TraigeLevelContext.Provider value={{ triageLevel, setTriageLevel }}>
+                            <TreatmentContext.Provider value={{ treatment, setTreatment }} >
+                                <PhysicalStatusContext.Provider value={{ physicalStatus, setPhysicalStatus }} >
+                                    <PatientIdContext.Provider value={{ patient_id, setPatient_id }}>
+
+                                        <StepHistory />
+
+                                    </PatientIdContext.Provider>
+                                </PhysicalStatusContext.Provider>
+                            </TreatmentContext.Provider>
+                        </TraigeLevelContext.Provider>
+                    </CirculationsContext.Provider>
+
 
                 </div>
             </div>

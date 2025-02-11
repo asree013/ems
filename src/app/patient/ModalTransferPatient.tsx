@@ -33,7 +33,7 @@ export default function ModalTransferPatient({ open, query, setOpen, patient_id,
   return (
     <div className={`${open ? 'z-20' : 'hidden'} fixed top-0 left-0 flex items-center justify-center h-screen w-full`}>
       <div className="fixed top-0 left-0 w-full h-screen bg-black opacity-30" onClick={() => setOpen(false)}></div>
-      <div className="bg-white p-5 z-30 rounded-lg w-[480px] m-3">
+      <div className="bg-white p-5 z-30 rounded-lg w-[480px] max-h-[500px] m-3">
         <div className="flex flex-row items-center justify-between">
           <p className="text-xl font-medium">เลือกการส่งต่อผู้ป่วย</p>
           <X onClick={() => setOpen(false)} className="cursor-pointer" />
@@ -46,7 +46,7 @@ export default function ModalTransferPatient({ open, query, setOpen, patient_id,
               onClick={() => onCLickUpdateStation(label)}
               disabled={query === label}
               className={clsx(
-                'border rounded-lg p-2 w-[100px] h-[100px] text-lg font-medium',
+                'border rounded-lg p-2 w-[85px] h-[85px] text-lg font-medium',
                 query === label
                   ? 'border-gray-400 bg-gray-100 text-gray-500'
                   : `${color} hover:${bg} hover:text-black ${text}`

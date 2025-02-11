@@ -3,8 +3,10 @@ import EcgChartJS from '@/components/chart/EcgChartJs'
 import PlethChartJs from '@/components/chart/PlethChartJs'
 import { enviromentDev } from '@/configs/enviroment.dev'
 import { socket } from '@/configs/socket.config'
-import { ContactRound, History } from 'lucide-react'
+import { ContactRound, History, ScreenShare, UserRoundPlus } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
+import { NIL } from 'uuid'
 
 type Props = {
     device: Device
@@ -18,6 +20,8 @@ export default function ChartDetail({ device }: Props) {
     const [pr, setPr] = useState<number>(0)
     const [sys, setSys] = useState<number>(0)
     const [mean, setMean] = useState<number>(0)
+    const [load, setLoad] = useState<boolean>(false)
+    const router = useRouter()
 
     useEffect(() => {
         socket.off('spo2/' + device.device_id);
@@ -46,20 +50,30 @@ export default function ChartDetail({ device }: Props) {
     return (
         <div className='p-3 bg-gray-600 w-full sm:max-w-[725px]' id={device.device_id}>
             <div className=' p-3 flex flex-row items-center justify-start'>
-                <img className='w-[45px] h-[45px] rounded-[50%] object-contain border-white border' src={Array.isArray(device.patient) ? device?.patient[0]?.image : enviromentDev.noImage} alt="" />
+                <img className='w-[45px] h-[45px] rounded-[50%] object-contain border-white border' src={device?.patient?.length > 0 ? device?.patient[0]?.image : enviromentDev.noImage} alt="" />
                 <div className='ml-4 flex flex-col sm:flex-row justify-between items-start sm:items-center w-full'>
-                    <p className='text-xl text-white border-b border-white w-full mb-3'>{Array.isArray(device.patient) ? device?.patient[0]?.first_name : "ไม่มีข้อมูล"} {Array.isArray(device.patient) ? device.patient[0]?.last_name : "ไม่มีข้อมูล"}</p>
+                    <div className='flex flex-col items-start justify-center w-full'>
+                        <p className='text-xl text-white border-b border-white w-full mb-3'>{device?.patient?.length > 0 ? device?.patient[0]?.first_name : "ไม่มีข้อมูล"} {device?.patient?.length > 0 ? device.patient[0]?.last_name : "ไม่มีข้อมูล"}</p>
+                        <div className='text-white '><span>DeviceID: </span> <span className='text-green-600'>{device.device_id}</span></div>
+                    </div>
                     <div className='flex flex-row items-center justify-end'>
                         {
-                            Array.isArray(device.patient) ?
+                            device?.patient?.length > 0 ?
                                 device.patient[0]?.gender.toLocaleLowerCase() === 'male' ?
                                     <p className='ml-2 text-white bg-sky-500 p-2 w-[40px] text-center rounded-[50%]'>M</p>
                                     : <p className='ml-2 text-white bg-pink-400 p-2 w-[40px] text-center rounded-[50%]'>FM</p>
                                 : null
 
                         }
-                        <History onClick={() => window.location.href = '/monitors/' + device.device_id} className='ml-2 text-white bg-green-600 p-2 w-[50px] h-[40px] text-center cursor-pointer rounded-lg hover:bg-green-700' />
-                        <ContactRound className='ml-2 text-white bg-orange-600 p-2 w-[50px] h-[40px] text-center cursor-pointer rounded-lg hover:bg-orange-700' />
+                        <ScreenShare onClick={() => window.location.href = '/monitors/' + device.device_id} className='ml-2 text-white bg-green-600 p-2 w-[50px] h-[40px] text-center cursor-pointer rounded-lg hover:bg-green-700' />
+                        {
+                            device?.patient?.length > 0 ?
+                                <ContactRound className='ml-2 text-white bg-orange-600 p-2 w-[50px] h-[40px] text-center cursor-pointer rounded-lg hover:bg-orange-700' />
+                                : <UserRoundPlus onClick={() => {
+                                    setLoad(true)
+                                    router.push('/patient?device_id='+ device.device_id)
+                                }} className='ml-2 text-white bg-sky-600 p-2 w-[50px] h-[40px] text-center cursor-pointer rounded-lg hover:bg-sky-700' />
+                        }
                     </div>
                 </div>
             </div>

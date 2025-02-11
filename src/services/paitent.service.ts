@@ -18,6 +18,10 @@ export async function findPatientAll(page: number,limit: number): Promise<AxiosR
 
 }
 
+export function findStationAll(page: number, limit: number, date: string) {
+  return endpoint.get<StationPatient[]>(`${enviromentDev.station}?page=${page}&limit=${limit}&date=${date}`)
+}
+
 export function findPatientAllByStation(station: string, page: number, limit: number, date: string) {
   return endpoint.get<StationPatient[]>(
     `${enviromentDev.station}/station/${station}?page=${page}&limit=${limit}&date=${date}`,

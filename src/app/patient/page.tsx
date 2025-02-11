@@ -36,16 +36,12 @@ export default function Page() {
   const [load, setLoad] = useState<boolean>(false)
   const [patients, setPatients] = useState<Patients[]>([]);
   const [stationPatient, setStationPatient] = useState<StationPatient[]>({} as StationPatient[])
-  const [patientData, setPatientsData] = useState<Patients[]>([]);
-  const [value, setValue] = useState<string>('')
 
   async function onUpdatePage(page: number, limit: number) {
-
     setLoad(true)
     try {
       const result = await findPatientAll(page, 11)
       setPatients(result.data)
-      setPatientsData(result.data)
     } catch (error) {
       timeOutJwt(error)
     } finally {
@@ -57,10 +53,9 @@ export default function Page() {
   const feedPateint = useCallback(async () => {
     setLoad(true);
     try {
-      const result = await findPatientAll(1, 11);
+      const result = await findPatientAll(1, 100);
 
       setPatients(result.data)
-      setPatientsData(result.data)
 
     } catch (error) {
       console.log(error);
@@ -68,7 +63,7 @@ export default function Page() {
     } finally {
       setLoad(false);
     }
-  }, [setPatientsData]);
+  }, [setPatients]);
 
   async function onScan(str: string) {
     setLoad(true)
@@ -118,30 +113,32 @@ export default function Page() {
         <div className='flex flex-wrap gap-3 p-3'>
           <button onClick={() => {
             router.push('/patient')
-          }
-          } className='p-3 bg-gray-400 hover:bg-gray-500 min-w-[100px] text-white rounded-lg'>Triage</button>
+          }} className='p-3 bg-rose-400 hover:bg-rose-500 min-w-[100px] text-white rounded-lg'>ผู้ป่วยสะสม</button>
+          <button onClick={() => {
+            router.push('/patient?table_name=triage')
+          }} className='p-3 bg-teal-400 hover:bg-teal-500 min-w-[100px] text-white rounded-lg'>Triage</button>
           <button onClick={async () => {
             router.push('/patient?table_name=ER')
-          }} className='p-3 bg-gray-400 hover:bg-gray-500 min-w-[100px] text-white rounded-lg'>ER</button>
+          }} className='p-3 bg-red-400 hover:bg-red-500 min-w-[100px] text-white rounded-lg'>ER</button>
           <button onClick={() => {
             router.push('/patient?table_name=OPD')
           }
-          } className='p-3 bg-gray-400 hover:bg-gray-500 min-w-[100px] text-white rounded-lg'>OPD</button>
+          } className='p-3 bg-blue-400 hover:bg-blue-500 min-w-[100px] text-white rounded-lg'>OPD</button>
           <button onClick={() => {
             router.push('/patient?table_name=Ward')
-          }} className='p-3 bg-gray-400 hover:bg-gray-500 min-w-[100px] text-white rounded-lg'>Ward</button>
-          <button onClick={() => router.push('/patient?table_name=OR')} className='p-3 bg-gray-400 hover:bg-gray-500 min-w-[100px] text-white rounded-lg'>OR</button>
-          <button onClick={() => router.push('/patient?table_name=IPD')} className='p-3 bg-gray-400 hover:bg-gray-500 min-w-[100px] text-white rounded-lg'>IPD</button>
-          <button onClick={() => router.push('/patient?table_name=D-C')} className='p-3 bg-gray-400 hover:bg-gray-500 min-w-[100px] text-white rounded-lg'>D/C</button>
-          <button onClick={() => router.push('/patient?table_name=Refer')} className='p-3 bg-gray-400 hover:bg-gray-500 min-w-[100px] text-white rounded-lg'>Refer</button>
+          }} className='p-3 bg-green-400 hover:bg-green-500 min-w-[100px] text-white rounded-lg'>Ward</button>
+          <button onClick={() => router.push('/patient?table_name=OR')} className='p-3 bg-yellow-400 hover:bg-yellow-500 min-w-[100px] text-white rounded-lg'>OR</button>
+          <button onClick={() => router.push('/patient?table_name=IPD')} className='p-3 bg-purple-400 hover:bg-purple-500 min-w-[100px] text-white rounded-lg'>IPD</button>
+          <button onClick={() => router.push('/patient?table_name=D-C')} className='p-3 bg-pink-400 hover:bg-pink-500 min-w-[100px] text-white rounded-lg'>D/C</button>
+          <button onClick={() => router.push('/patient?table_name=Refer')} className='p-3 bg-orange-400 hover:bg-orange-500 min-w-[100px] text-white rounded-lg'>Refer</button>
           <button onClick={() => router.push('/patient?table_name=Lose')} className='p-3 bg-gray-400 hover:bg-gray-500 min-w-[100px] text-white rounded-lg'>Lose</button>
-          <button onClick={() => router.push('/patient?table_name=Death')} className='p-3 bg-gray-400 hover:bg-gray-500 min-w-[100px] text-white rounded-lg'>Death</button>
+          <button onClick={() => router.push('/patient?table_name=Death')} className='p-3 bg-black hover:bg-black min-w-[100px] text-white rounded-lg'>Death</button>
         </div>
 
         <Divider sx={{ marginTop: '10px' }} className='mb-4' />
         {
           !query ?
-            <PatientTable patient={patients} /> : <TemplateTable stationPatient={stationPatient} setStationPatient={setStationPatient} title={query} />
+            <PatientTable setPatient={setPatients} patients={patients} /> : <TemplateTable stationPatient={stationPatient} setStationPatient={setStationPatient} title={query} />
         }
 
 
