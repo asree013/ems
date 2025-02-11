@@ -164,7 +164,7 @@ export default function HistoryItem({ value, name, }: Props) {
         <PhysicalStatusModal 
           name={{first_name: name.first_name, last_name: name.last_name, gender: name.gender}}
           historys={value}
-          triageLevel={JSON.parse(value.triage_lavel)} 
+          triageLevel={JSON.parse(value?.triage_lavel)} 
           physicalStatus={JSON.parse(value.physical_status)}
           open={open} setOpen={setOpen} 
         />

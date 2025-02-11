@@ -42,10 +42,7 @@ export default function MyMonitorVehicle({ device_id }: Props) {
               <span className="sr-only">Loading...</span>
             </div>
           </div> :
-          <div>
-
-            <ChartDetail device={device} />
-          </div>
+          <ChartDetail device={device} />
       }
 
     </>

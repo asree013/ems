@@ -7,9 +7,6 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import { TraigeLevelContext, TTriageLvelContext } from './StepContext';
-import { toast } from '@/services/alert.service';
-import { TriageLevels } from '@/models/historyDetail.model';
 import { Divider } from '@mui/material';
 import TriageLevel from './stepForm/TriageLevel';
 import Vs from './stepForm/Vs';
@@ -24,10 +21,6 @@ import MotorPower from './stepForm/MotorPower';
 import Circulation from './stepForm/Circulation';
 
 const steps = [
-  {
-    label: "Circulation",
-    component: <Circulation />
-  },
   {
     label: 'กรอกรายละเอียด',
     component: <HistoryCreate />,
@@ -64,22 +57,26 @@ const steps = [
     label: 'Motor Power',
     component: <MotorPower />
   },
+  {
+    label: "Circulation",
+    component: <Circulation />
+  },
 
   {
     label: 'สร้างประวัติ',
     component: <CreateHistoryFrom />
   },
 
+
 ];
+
 
 export default function StepHistory() {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
   const maxSteps = steps.length;
-  const { setTriageLevel, triageLevel } = React.useContext<TTriageLvelContext>(TraigeLevelContext)
 
   function handleNext() {
-    console.log(triageLevel)
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 

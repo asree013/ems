@@ -13,6 +13,7 @@ export interface Historys {
   user_create_id: string
   user_update_id: string
   physical_status: string
+  teatment: string
   triage_lavel: string
   Patient: {
     id: string

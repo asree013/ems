@@ -8,6 +8,8 @@ import { Vehicles } from '@/models/vehicle.model'
 import { toast } from '@/services/alert.service'
 import axios from 'axios'
 import PatientNoChart from './[monitors_id]/PatientNoChart'
+import { findDeviceAll } from '@/services/device.service'
+import ChartDetail from './[monitors_id]/ChartDetail'
 
 export default function page() {
   const items: TBreadCrumd[] = [
@@ -21,22 +23,20 @@ export default function page() {
     },
   ]
 
-  const [vehicle, setVehicle] = useState<Vehicles>({} as Vehicles)
+  const [device, setDevice] = useState<Device[]>({} as Device[])
 
-  const findMyVehicle = useCallback(async () => {
+  const onfindDevice = useCallback(async () => {
     try {
-      const result = await findCurrentVehicleByUser()
-      setVehicle(result.data)
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        toast(error.response?.data.message || error.message, 'error')
-      }
+      const result = await findDeviceAll()
+      setDevice(result)
+    } catch (error: any) {
+      toast(error.message, 'error')
     }
-  }, [setVehicle])
+  }, [setDevice])
 
   useEffect(() => {
-    findMyVehicle()
-  }, [findMyVehicle])
+    onfindDevice()
+  }, [onfindDevice])
   return (
     <NavBarLayout>
       <div className='mt-[50px] mb-3'>
@@ -44,33 +44,18 @@ export default function page() {
       </div>
       <div>
         {
-          vehicle?.car ?
-            vehicle.car.Car.PatientBelongCar.map((r, i) =>
-              <div className='grid grid-cols-1 lg:grid-cols-2 gap-5'>
-                {
-                  !r.Patient.deviceId?
-                  <PatientNoChart patient={r.Patient as any} />
-                  :<MyMonitorVehicle key={i} device_id={r.Patient.deviceId} />
-                }
-              </div>
+          Array.isArray(device)?
+          device.map((r, i) =>
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-5'>
+              {
+                  <ChartDetail key={i} device={r} />
+              }
+            </div>
 
-            ) : null
-        }
-        {
-          vehicle?.ship ?
-            vehicle.ship.Ship.PatientBelongShip.map((r, i) =>
-              <MyMonitorVehicle key={i} device_id={r.Patient.deviceId} />
-
-            ) : null
-        }
-        {
-          vehicle?.helicopter ?
-            vehicle.helicopter.Helicopter.PatientBelongHelicopter.map((r, i) =>
-              <MyMonitorVehicle key={i} device_id={r.Patient.deviceId} />
-
-            ) : null
+          ): null
         }
       </div>
+
     </NavBarLayout>
   )
 }

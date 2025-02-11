@@ -1,6 +1,5 @@
 'use client';
 
-import { TStyleButton, TStyleThem, TStyleThemAuto } from '@/app/styles/themes';
 import React, { useEffect, useRef, useState } from 'react';
 import newLogo from '@/assets/image/icon_menu/logo4.png'
 import { Avatar, Badge, Card, Divider, FormControl, TextField } from '@mui/material';
@@ -15,7 +14,6 @@ import CreditCardIcon from '@mui/icons-material/CreditCard';
 
 import styled from 'styled-components';
 
-import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -29,46 +27,15 @@ import BadgeIcon from '@mui/icons-material/Badge';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Loadding from '@/components/Loadding';
-import { registerByUser, userCreateRespository } from '@/services/user.service';
+import { registerByUser } from '@/services/user.service';
+import axios from 'axios';
 
-const FormControlInputStyle = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    margin-top: 5px;
-
-`
 
 const Pelement = styled.p`
     position: absolute;
     margin-bottom: 28px;
     margin-left: 100px;
     font-size: 14px;
-`
-
-const TStyleThemRegister = styled.div`
-    background: linear-gradient(125deg, #021B79, #0575E6);
-    color: white;
-    height: 100vh;
-    width: 100%;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    .btn_back{
-        position: absolute;
-        margin-bottom: 650px;
-        margin-right: 280px;
-    }
-    @media only screen and (max-width: 450px) {
-        height: 125vh;    
-        padding : 10px;
-        color: white;
-        background: linear-gradient(125deg, #021B79, #0575E6);
-
-    }
 `
 
 type ErrorMessage = {
@@ -115,13 +82,20 @@ export default function Page() {
         else{
             setLoad(true)
             try {
-                await registerByUser(formUser)
-                window.location.href = `/login`
+                await registerByUser(formUser);
+                window.location.href = `/login`;
             } catch (error: any) {
-                toast(JSON.stringify(error.message), 'error')
+                if (axios.isAxiosError(error)) {
+                    console.error("❌ Axios Error:", error.response?.data || error.message);
+                    toast(JSON.stringify(error.response?.data || error.message), "error");
+                } else {
+                    console.error("❌ Unknown Error:", error);
+                    toast("เกิดข้อผิดพลาดที่ไม่คาดคิด", "error");
+                }
             } finally {
-                setLoad(false)
+                setLoad(false);
             }
+            
         }
 
     }
@@ -136,23 +110,23 @@ export default function Page() {
 
     return (
         <>
-            <TStyleThemRegister >
+            <div className='w-full h-auto min-h-screen bg-gradient-to-t from-blue-gd-from to-blue-gd-to p-4' >
                 <Button variant='soft' color='neutral' onClick={() => {
                     setLoad(true)
                     window.location.href = '/login'
                 }} className='btn_back'><ArrowBackIcon /></Button>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', flexDirection: 'column', maxHeight: 790 }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
-                        <p style={{ fontSize: '2.4rem' }}>สมัครมาชิก</p>
+                        <p style={{ fontSize: '2.4rem' }} className='text-white'>สมัครมาชิก</p>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <img style={{ width: '1.8rem' }} src={newLogo.src} alt="" />
                             <p style={{ marginLeft: '10px', color: 'white', fontSize: '1.5rem', fontWeight: 700 }}>Marine-EMS</p>
                         </div>
                     </div>
 
-                    <Card elevation={4} style={{ width: 340, padding: '10px 20px', marginTop: '10px',height: 'auto' }}>
+                    <Card elevation={4} style={{ width: 340, padding: '10px 20px', marginTop: '10px' }} className='h-screen'>
 
-                        <FormControlInputStyle id='username'>
+                        <div className='flex items-center justify-between' id='username'>
                             <div style={{ height: '2rem', width: '20%' }}>
                                 <AccountCircleIcon />
                             </div>
@@ -163,9 +137,9 @@ export default function Page() {
                                 else setFormUser({ ...formUser, username: e.target.value.toLocaleLowerCase() })
                             }} type='text' style={{ width: "100%", marginLeft: '10px' }} label="รหัสผู้ใช้งาน" variant="standard" />
                             {err.username ? <Pelement style={{ color: 'red' }}>*รหัสผู้ใช้งานน้อยกว่า 8 ตัวอักษร</Pelement> : null}
-                        </FormControlInputStyle>
+                        </div>
 
-                        <FormControlInputStyle id='password'>
+                        <div className='flex items-center justify-between' id='password'>
                             <div style={{ height: '1rem', width: '20%' }}>
                                 <LockIcon />
                             </div>
@@ -177,9 +151,9 @@ export default function Page() {
 
                             }} type='password' style={{ width: '100%', marginLeft: '10px' }} label="รหัสผ่าน" variant="standard" />
                             {err?.password ? <Pelement style={{ color: 'red' }}>*รหัสผ่านน้อยกว่า 7 ตัวอักษร</Pelement> : null}
-                        </FormControlInputStyle>
+                        </div>
 
-                        <FormControlInputStyle id='ChkPass'>
+                        <div className='flex items-center justify-between' id='ChkPass'>
                             <div style={{ height: '1rem', width: '20%' }}>
                                 <PasswordIcon />
                             </div>
@@ -197,9 +171,9 @@ export default function Page() {
                                 // setFormUser({...formUser, phone_number: e.target.value})
                             }} type='password' style={{ width: '100%', marginLeft: '10px' }} label="เช็ค รหัสผ่าน" variant="standard" />
                             {err.ck_passowrd ? <Pelement style={{ color: 'red' }}>*รหัสผ่านไม่ตรงกัน</Pelement> : null}
-                        </FormControlInputStyle>
+                        </div>
 
-                        <FormControlInputStyle>
+                        <div className='flex items-center justify-between'>
                             <div style={{ height: '1rem', width: '20%' }}>
                                 <BadgeIcon />
                             </div>
@@ -210,9 +184,9 @@ export default function Page() {
                                 else setFormUser({ ...formUser, first_name: e.target.value })
                             }} type='text' style={{ width: '100%', marginLeft: '10px' }} label="ชื่อ" variant="standard" />
                             {err.first_name ? <Pelement style={{ color: 'red' }}>*ชื่อสั้นเกินไป</Pelement> : null}
-                        </FormControlInputStyle>
+                        </div>
 
-                        <FormControlInputStyle>
+                        <div className='flex items-center justify-between'>
                             <div style={{ height: '1rem', width: '20%' }}>
                                 <BadgeIcon />
                             </div>
@@ -223,9 +197,9 @@ export default function Page() {
                                 else setFormUser({ ...formUser, last_name: e.target.value })
                             }} type='text' style={{ width: '100%', marginLeft: '10px' }} label="นามสกุล" variant="standard" />
                             {err.last_name ? <Pelement style={{ color: 'red' }}>*นามสกุลสั้นเกินไป</Pelement> : null}
-                        </FormControlInputStyle>
+                        </div>
 
-                        <FormControlInputStyle>
+                        <div className='flex items-center justify-between'>
                             <div style={{ height: '1rem', width: '20%' }}>
                                 <MailIcon />
                             </div>
@@ -236,9 +210,9 @@ export default function Page() {
                                 else setErr({ ...err, email: true })
                             }} type='text' style={{ width: '100%', marginLeft: '10px' }} label="อีเมล" variant="standard" />
                             {err.email ? <p style={{ color: 'red' }}>*อีเมลไม่ถูกต้อง</p> : null}
-                        </FormControlInputStyle>
+                        </div>
 
-                        <FormControlInputStyle>
+                        <div className='flex items-center justify-between'>
                             <div style={{ height: '1rem', width: '20%' }}>
                                 <CreditCardIcon />
                             </div>
@@ -283,9 +257,9 @@ export default function Page() {
                                 variant="standard"
                             />
                             {err.id_card ? <p style={{ color: 'red' }}>*บัตรประชาชนต้องมี 13 หลัก</p> : null}
-                        </FormControlInputStyle>
+                        </div>
 
-                        <FormControlInputStyle>
+                        <div className='flex items-center justify-between'>
                             <div style={{ height: '1rem', width: '20%' }}>
                                 <PhoneIcon />
                             </div>
@@ -317,9 +291,9 @@ export default function Page() {
                                 variant="standard"
                             />
                             {err.phone && <p style={{ color: 'red' }}>*เบอร์น้อยกว่า 9 หลัก</p>}
-                        </FormControlInputStyle>
+                        </div>
 
-                        <FormControlInputStyle>
+                        <div className='flex items-center justify-between'>
                             <div style={{ height: '1rem', width: '20%' }}>
                                 <WorkIcon />
                             </div>
@@ -338,8 +312,8 @@ export default function Page() {
                                     <MenuItem value={'general_publics'}>บุคคลทั่วไป</MenuItem>
                                 </Select>
                             </FormControl>
-                        </FormControlInputStyle>
-                        <FormControlInputStyle>
+                        </div>
+                        <div className='flex items-center justify-between mt-2'>
                             <CameraAltIcon />
                             {
                                 !formUser.image ?
@@ -357,11 +331,9 @@ export default function Page() {
                             <input type="file" id='imageProfile' hidden onChange={async (e) => {
                                 if (e.target.files) {
                                     const file = e.target.files[0]
-                                    const formData = new FormData()
-                                    formData.append('file', file)
                                     setLoad(true)
                                     try {
-                                        const image = await uploadImage(formData)
+                                        const image = await uploadImage(file)
                                         setFormUser({ ...formUser, image: image.data.result })
                                     } catch (error) {
                                         toast('ฮัพโหลดรุปภาพไม่สำเร็จ', 'error')
@@ -370,15 +342,16 @@ export default function Page() {
                                     }
                                 }
                             }} />
+                            <p className='text-sm text-red-500'>*จำเป็น</p>
 
-                        </FormControlInputStyle>
+                        </div>
                         <Divider sx={{ margin: '10px 0' }} />
-                        <TStyleButton onClick={onRegister} style={{ padding: 10, width: '100%' }}>
+                        <button className='bg-gradient-to-t from-blue-gd-from to-blue-gd-to text-white p-2 rounded-lg hover:bg-gradient-to-t hover:from-gray-300 hover:to-gray-500 hover:text-blue-gd-from' onClick={onRegister} style={{ padding: 10, width: '100%' }}>
                             สมัครสมาชิก
-                        </TStyleButton>
+                        </button>
                     </Card>
                 </div>
-            </TStyleThemRegister>
+            </div>
 
             {
                 load ?

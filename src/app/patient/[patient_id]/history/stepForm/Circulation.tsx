@@ -1,8 +1,8 @@
 import { Plus, Trash2 } from 'lucide-react'
-import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
-import { boolean } from 'zod'
+import React, { ChangeEvent, useCallback, useContext, useEffect, useState } from 'react'
+import { CirculationsContext } from '../StepContext'
 
-type Circulations = {
+export type Circulations = {
     iv_fluid: boolean,
     nss: boolean,
     rls: boolean,
@@ -28,29 +28,7 @@ type Circulations = {
 }
 
 export default function Circulation() {
-    const [circulation, setCirculation] = useState<Circulations>({
-        acetar: false,
-        half_d_n_two: false,
-        iv_fluid: false,
-        nss: false,
-        on_heparin_lock: false,
-        rls: false,
-        ten_d_n_two: false,
-        other: {
-            bool: false,
-            txt: ''
-        },
-        direct_pressure: false,
-        pressure_dressing: false,
-        stop_bleed: false,
-        tourniquet: false,
-        immobilization: false,
-        ked: false,
-        pressure: false,
-        sprint: false,
-        cpr: false,
-        aed: false
-    })
+    const {circulation, setCirculation} = useContext(CirculationsContext)
 
     const [cartMedicine, setCartMedicine] = useState<{ id: number, txt: string }[]>([])
 
@@ -100,14 +78,24 @@ export default function Circulation() {
         })
     }
 
-    function onChangeUpdateCartMedicine(e: ChangeEvent<HTMLInputElement>) {
-        const findCartMedicine = cartMedicine.find((r) => r.id === Number(e.target.id))
-        console.log(findCartMedicine);
-        
+    const onChangeUpdateCartMedicine = (e: ChangeEvent<HTMLInputElement>) => {
+        const id = Number(e.target.id);
+        console.log("Target ID:", id);
+        console.log("Cart Medicine List:", cartMedicine);
+
+        const findCartMedicine = cartMedicine.find((r) => r.id === id);
+        console.log("Found Medicine:", findCartMedicine);
+
         if (findCartMedicine) {
-            setCartMedicine([...cartMedicine, findCartMedicine])
+            setCartMedicine(cartMedicine.map((r) =>
+                r.id === id ? { ...r, txt: e.target.value } : r
+            ));
         }
-    }
+    };
+
+    const onRemoveMedicine = (id: number) => {
+        setCartMedicine(cartMedicine.filter((r) => r.id !== id));
+    };
 
 
     return (
@@ -517,15 +505,28 @@ export default function Circulation() {
                 <p className='mr-2 text-md font-bold border-b border-gray-400 mb-2 w-full text-center'>Medicine</p>
 
                 {
-                    Array.isArray(cartMedicine) ?
-                        cartMedicine.map((r, i) =>
-                            <div id={String(i)} className='w-full mt-2 flex flex-row items-center justify-start shadow-lg border border-gray-400 rounded-lg p-2' key={i}>
-                                <p>{i + 1}: </p>
-                                <input onChange={onChangeUpdateCartMedicine} className='ml-1 w-full p-2 border border-gray-400 rounded-md' value={r.txt ?? ''} type="text" placeholder='พิมพ์รายละเอียด' />
-                                <button className='bg-red-600 p-1 ml-1 rounded-md'><Trash2 className='text-white' /></button>
-                            </div>
-                        ) : null
+                    Array.isArray(cartMedicine) &&
+                    cartMedicine.map((r, i) => (
+                        <div key={r.id} className='w-full mt-2 flex flex-row items-center justify-start shadow-lg border border-gray-400 rounded-lg p-2'>
+                            <p>{i + 1}: </p>
+                            <input
+                                id={String(r.id)}  // ใช้ id จริง
+                                onChange={onChangeUpdateCartMedicine}
+                                className='ml-1 w-full p-2 border border-gray-400 rounded-md'
+                                value={r.txt ?? ''}
+                                type="text"
+                                placeholder='พิมพ์รายละเอียด'
+                            />
+                            <button
+                                onClick={() => onRemoveMedicine(r.id)}  // ส่ง id เข้าไป
+                                className='bg-red-600 p-1 ml-1 rounded-md'
+                            >
+                                <Trash2 className='text-white' />
+                            </button>
+                        </div>
+                    ))
                 }
+
                 <div className='mt-2'>
                     <button onClick={() => setCartMedicine([...cartMedicine, { id: cartMedicine.length + 1, txt: "" }])} className='bg-blue-900 rounded-2xl p-1 text-white '><Plus /></button>
                 </div>

@@ -45,9 +45,7 @@ export default function Page({ params }: Props) {
     e.preventDefault()
     setLoad(true)
     if (e.target.files) {
-      const file = new FormData()
-      file.append('file', e.target.files[0])
-      const image = await uploadImage(file)
+      const image = await uploadImage(e.target.files[0])
       setShip({ ...ship, image: image.data.result })
       setLoad(false)
     }

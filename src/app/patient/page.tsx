@@ -4,17 +4,19 @@ import Loadding from '@/components/Loadding';
 import PaginationThemplete from '@/components/PaginationThemplete';
 import QRScannerComponent from '@/components/QrcodeScan';
 import { PatientContextsArr } from '@/contexts/patient.context';
-import { Patients } from '@/models/patient';
+import { Patients, StationPatient } from '@/models/patient';
 import { toast } from '@/services/alert.service';
-import { findPatientAll, findPatientByQrNumber } from '@/services/paitent.service';
+import { findPatientAll, findPatientAllByStation, findPatientByQrNumber } from '@/services/paitent.service';
 import { timeOutJwt } from '@/services/timeout.service';
-import { Box, Button, Divider } from '@mui/material';
+import { Divider } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react';
-import { NIL } from 'uuid';
 
-import PatientItem from './PatientItem';
 import TabPatient from './TabPateint';
 import BreadCrumb, { TBreadCrumd } from '@/components/BreadCrumb';
+import PatientTable from './PatientTable';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Link } from 'lucide-react';
+import TemplateTable from './TemplateTable';
 
 const items: TBreadCrumd[] = [
   {
@@ -29,8 +31,11 @@ const items: TBreadCrumd[] = [
 
 
 export default function Page() {
+  const query = useSearchParams().get('table_name')
+  const router = useRouter()
   const [load, setLoad] = useState<boolean>(false)
   const [patients, setPatients] = useState<Patients[]>([]);
+  const [stationPatient, setStationPatient] = useState<StationPatient[]>({} as StationPatient[])
   const [patientData, setPatientsData] = useState<Patients[]>([]);
   const [value, setValue] = useState<string>('')
 
@@ -40,6 +45,7 @@ export default function Page() {
     try {
       const result = await findPatientAll(page, 11)
       setPatients(result.data)
+      setPatientsData(result.data)
     } catch (error) {
       timeOutJwt(error)
     } finally {
@@ -52,12 +58,9 @@ export default function Page() {
     setLoad(true);
     try {
       const result = await findPatientAll(1, 11);
-      
+
+      setPatients(result.data)
       setPatientsData(result.data)
-      setPatients(result.data?.filter((r) => {
-        if(!r.mission_id && !r.BelongHelicopter && !r.BelongCar && !r.BelongChip ) return r
-        else return null
-      }));
 
     } catch (error) {
       console.log(error);
@@ -98,52 +101,6 @@ export default function Page() {
     }
 
   }
-
-  async function onFeedPatientAgain() {
-    setLoad(true);
-    try {
-      const result = await findPatientAll(1, 11);
-      setPatients(result.data);
-    } catch (error) {
-      console.log(error);
-      timeOutJwt(error)
-    } finally {
-      setLoad(false);
-    }
-
-  }
-
-  function onFindAll() {
-    setPatients(patientData)
-  }
-
-  function onFindCars() {
-
-    const newData = patientData.filter(r => r.BelongCar)
-    console.log(newData);
-
-    setPatients(newData)
-  }
-
-  function onFindHalicopter() {
-    const newData = patientData.filter(r => r.BelongHelicopter)
-    setPatients(newData)
-  }
-
-  function onFindShip() {
-    const newData = patientData.filter(r => r.BelongChip.Chip)
-    setPatients({} as Patients[])
-  }
-
-  function onAssignValue(value: string) {
-    console.log(value);
-
-  }
-
-  function patientNoneAssign() {
-    setPatients(patientData.filter(r => !r.mission_id && !r.BelongHelicopter && !r.BelongCar && !r.BelongChip));
-  }
-
   useEffect(() => {
     feedPateint();
 
@@ -157,26 +114,44 @@ export default function Page() {
       {/* <PatientList patient={{} as Patient}/> */}
       <BreadCrumb item={items} />
       <PatientContextsArr.Provider value={{ patients, setPatients }} >
-        <QRScannerComponent onSendResult={onScan} onClickSearch={onClickSear} onSetDefault={onFeedPatientAgain} />
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
-          <Button style={{ width: 326 }} variant='outlined' type='button' onClick={() => {
-            setLoad(true)
-            window.location.href = '/patient/' + NIL
-          }}>+ ผู้ป่วย</Button>
-          <TabPatient
-            onReturnNone={patientNoneAssign}
-            onRetunFindAll={onFindAll}
-            onRetunFindCar={onFindCars}
-            onRetunFindHalicopter={onFindHalicopter}
-            onRetunFindShip={onFindShip}
-            onSetValue={onAssignValue}
-          />
-        </Box>
-        <Divider sx={{ marginTop: '10px' }} />
-        <PatientItem />
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '25px' }}>
-          <PaginationThemplete returnCurrent={onUpdatePage} />
+
+        <div className='flex flex-wrap gap-3 p-3'>
+          <button onClick={() => {
+            router.push('/patient')
+          }
+          } className='p-3 bg-gray-400 hover:bg-gray-500 min-w-[100px] text-white rounded-lg'>Triage</button>
+          <button onClick={async () => {
+            router.push('/patient?table_name=ER')
+          }} className='p-3 bg-gray-400 hover:bg-gray-500 min-w-[100px] text-white rounded-lg'>ER</button>
+          <button onClick={() => {
+            router.push('/patient?table_name=OPD')
+          }
+          } className='p-3 bg-gray-400 hover:bg-gray-500 min-w-[100px] text-white rounded-lg'>OPD</button>
+          <button onClick={() => {
+            router.push('/patient?table_name=Ward')
+          }} className='p-3 bg-gray-400 hover:bg-gray-500 min-w-[100px] text-white rounded-lg'>Ward</button>
+          <button onClick={() => router.push('/patient?table_name=OR')} className='p-3 bg-gray-400 hover:bg-gray-500 min-w-[100px] text-white rounded-lg'>OR</button>
+          <button onClick={() => router.push('/patient?table_name=IPD')} className='p-3 bg-gray-400 hover:bg-gray-500 min-w-[100px] text-white rounded-lg'>IPD</button>
+          <button onClick={() => router.push('/patient?table_name=D-C')} className='p-3 bg-gray-400 hover:bg-gray-500 min-w-[100px] text-white rounded-lg'>D/C</button>
+          <button onClick={() => router.push('/patient?table_name=Refer')} className='p-3 bg-gray-400 hover:bg-gray-500 min-w-[100px] text-white rounded-lg'>Refer</button>
+          <button onClick={() => router.push('/patient?table_name=Lose')} className='p-3 bg-gray-400 hover:bg-gray-500 min-w-[100px] text-white rounded-lg'>Lose</button>
+          <button onClick={() => router.push('/patient?table_name=Death')} className='p-3 bg-gray-400 hover:bg-gray-500 min-w-[100px] text-white rounded-lg'>Death</button>
         </div>
+
+        <Divider sx={{ marginTop: '10px' }} className='mb-4' />
+        {
+          !query ?
+            <PatientTable patient={patients} /> : <TemplateTable stationPatient={stationPatient} setStationPatient={setStationPatient} title={query} />
+        }
+
+
+
+        {
+          !query ?
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '25px' }}>
+              <PaginationThemplete returnCurrent={onUpdatePage} />
+            </div> : null
+        }
 
       </PatientContextsArr.Provider>
 

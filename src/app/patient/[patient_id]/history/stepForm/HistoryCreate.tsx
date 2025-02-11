@@ -1,17 +1,11 @@
 'use client';
 import React, { ChangeEvent, useCallback, useContext, useEffect, useState } from 'react';
 import Typography from '@mui/joy/Typography';
-import { Historys } from '@/models/history.model';
-import {
-    createHistory,
-} from '@/services/history.service';
-
-import AssignmentIcon from '@mui/icons-material/Assignment';
 import { Input, Textarea } from '@mui/joy';
-import { HistoryDetailContext, THitorysContext } from '../StepContext';
+import { TreatmentContext, TTreatmentContext } from '../StepContext';
 
 export default function HistoryCreate() {
-    const { historyDetail, setHistoryDetail } = useContext<THitorysContext>(HistoryDetailContext)
+    const { treatment, setTreatment } = useContext<TTreatmentContext>(TreatmentContext)
     const [err, setErr] = useState<boolean>(false);
 
 
@@ -22,7 +16,7 @@ export default function HistoryCreate() {
         // กรองให้เหลือเฉพาะตัวเลข
         const numericValue = value.replace(/[^0-9.]/g, '');
         e.target.value = numericValue
-        setHistoryDetail({ ...historyDetail, chief_complaint: historyDetail.chief_complaint + e.target.value.toString() })
+        setTreatment({ ...treatment, chief_complaint: treatment.chief_complaint + e.target.value.toString() })
 
     }
 
@@ -58,34 +52,23 @@ export default function HistoryCreate() {
                 fontWeight="lg"
                 mb={1}
             >
-                Creact History
+                Create Triage
             </Typography>
-            <Input
-                onChange={(e) => setHistoryDetail({ ...historyDetail, symptom_details: e.target.value })}
-                placeholder="Symptom Detail"
-                value={historyDetail?.symptom_details ?? ''}
-                startDecorator={<AssignmentIcon />}
-                error={err}
-            />
 
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }} className='mt-2'>
                 <Input
-                    value={historyDetail?.chief_complaint ?? ''}
-                    onChange={(e) => setHistoryDetail({ ...historyDetail, chief_complaint: e.target.value })}
+                    value={treatment?.chief_complaint ?? ''}
+                    onChange={(e) => setTreatment({ ...treatment, chief_complaint: e.target.value })}
                     placeholder="Chief Complaint (CC.)"
                     error={err}
                 />
-                <input
-                    value={historyDetail?.chief_complaint ?? 0}
-                    onChange={onChangeNumber}
-                    style={{ width: '40px', border: '1px solid gray', borderRadius: '5pxe' }} maxLength={4} type='text' defaultValue={0} />
             </div>
             <label htmlFor="Present Illness (PI.)"></label>
             <Textarea    
-                value={historyDetail?.present_illness?? ''}
+                value={treatment?.present_illness?? ''}
                 minRows={2}
                 className='mt-2'
-                onChange={(e) => setHistoryDetail({ ...historyDetail, present_illness: e.target.value })}
+                onChange={(e) => setTreatment({ ...treatment, present_illness: e.target.value })}
                 placeholder="Present Illness (PI.)"
                 error={err}
             />

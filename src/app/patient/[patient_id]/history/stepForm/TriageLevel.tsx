@@ -13,16 +13,18 @@ export default function TriageLevel() {
     <FormControl>
       <FormLabel id="demo-radio-buttons-group-label">Triage Level</FormLabel>
       <RadioGroup
+      className='bg-gray-200 p-3'
       onChange={(e) => setTriageLevel({...triageLevel, triage_level_value: e.target.value})}
         aria-labelledby="demo-radio-buttons-group-label"
-        value={triageLevel.triage_level_value?? null}
+        value={triageLevel?.triage_level_value?? null}
         name="radio-buttons-group"
       >
-        <FormControlLabel value="Resuscitation" control={<Radio />} label="Resuscitation" />
-        <FormControlLabel value="Emergency" control={<Radio />} label="Emergency" />
-        <FormControlLabel value="Urgent" control={<Radio />} label="Urgent" />
-        <FormControlLabel value="semi-urgent" control={<Radio />} label="semi-urgent" />
-        <FormControlLabel value="Non-Urgent" control={<Radio />} label="Non-Urgent" />
+        <FormControlLabel className='border-r-8 pr-4 border-red-500' value="Resuscitation" control={<Radio />} label="Resuscitation" />
+        <FormControlLabel className='border-r-8 pr-4 border-red-500 mt-2' value="Emergency" control={<Radio />} label="Emergency" />
+        <FormControlLabel className='border-r-8 pr-4 border-yellow-500 mt-2' value="Urgent" control={<Radio />} label="Urgent" />
+        <FormControlLabel className='border-r-8 pr-4 border-green-500 mt-2' value="semi-urgent" control={<Radio />} label="semi-urgent" />
+        <FormControlLabel className='border-r-8 pr-4 border-white mt-2' value="Non-Urgent" control={<Radio />} label="Non-Urgent" />
+        <FormControlLabel className='border-r-8 pr-4 border-black mt-2' value="death" control={<Radio />} label="Non-Urgent" />
       </RadioGroup>
     </FormControl>
   );

@@ -10,8 +10,8 @@ Chart.register(...registerables);
 const cacheData: any[] = [];
 let d_time = 0;
 const graph_label: number[] = [];
-for (let j = 0; j < 240; j++) {
-    d_time = d_time + Math.floor(1000 / 60);
+for (let j = 0; j < 2000; j++) {
+    d_time = d_time + Math.floor(1000 / 500);
     graph_label.push(d_time);
 }
 
@@ -27,9 +27,9 @@ export default function EcgChartJS({device}: Props): JSX.Element {
         labels: ["00"],
         datasets: [
             {
-                label: 'Pleth',
+                label: 'ECG',
                 data: [] as (number | null)[],
-                borderColor: '#22d3ee',
+                borderColor: '#34D399',
                 borderWidth: 2,
             },
         ],
@@ -56,8 +56,8 @@ export default function EcgChartJS({device}: Props): JSX.Element {
         scales: {
             y: {
                 display: false,
-                min: -20,
-                max: 120,
+                min: -500,
+                max: 1000,
                 grid: {
                     display: false,
                 },
@@ -83,8 +83,8 @@ export default function EcgChartJS({device}: Props): JSX.Element {
     };
 
     useEffect(() => {
-        socket.off('ecg');
-        socket.on('ecg', (message: { data: string[], device_id: string }) => {
+        socket.off('ecg_lead_II/'+ device.device_id);
+        socket.on('ecg_lead_II/' + device.device_id, (message: { data: string[], device_id: string }) => {
             if(message.device_id !== device.device_id) return
             if (message?.data.length > 0) {
                 cacheData.push(message);
@@ -93,7 +93,7 @@ export default function EcgChartJS({device}: Props): JSX.Element {
                     isFinish.current = false;
                     const temp = cacheData.splice(0, 4);
                     manageData(temp).then((d) => {
-                        oldData = newData?.length ? [...newData] : new Array(240).fill(0);
+                        oldData = newData?.length ? [...newData] : new Array(2000).fill(0);
                         setNewData(d);
                     });
                 }
@@ -101,42 +101,55 @@ export default function EcgChartJS({device}: Props): JSX.Element {
         });
     }, [newData]);
 
-    useEffect(() => {
-        if (!newData) return;
-        let i = 0;
-
-        const animate = () => {
-            if (i < 235) {
-                oldData[i] = newData[i];
-                oldData[i + 1] = null;
-                oldData[i + 2] = null;
-                oldData[i + 3] = null;
-                oldData[i + 4] = null;
-                oldData[i + 5] = null;
+    useEffect(()=> {
+        if(!newData) return
+    
+        for (let i=0;i<newData.length;i++){
+    
+          setTimeout(() => {
+            if(i < 1980){
+              oldData[i] = newData[i];
+              oldData[i+1] = null;
+              oldData[i+2] = null;
+              oldData[i+3] = null;
+              oldData[i+4] = null;
+              oldData[i+5] = null;
+              oldData[i+6] = null;
+              oldData[i+7] = null;
+              oldData[i+8] = null;
+              oldData[i+9] = null;
+              oldData[i+10] = null;
+              oldData[i+11] = null;
+              oldData[i+12] = null;
+              oldData[i+13] = null;
+              oldData[i+14] = null;
+              oldData[i+15] = null;
+              oldData[i+16] = null;
+              oldData[i+17] = null;
+              oldData[i+18] = null;
+              oldData[i+19] = null;
+              oldData[i+20] = null;
             } else {
-                oldData[i] = newData[i];
+              oldData[i] = newData[i];
             }
             setTemp1Data({
-                labels: graph_label as any,
-                datasets: [
-                    {
-                        label: 'Pleth',
-                        data: oldData,
-                        borderColor: '#22d3ee',
-                        borderWidth: 2,
-                    },
-                ],
+              labels: graph_label as any,
+              datasets: [
+                  {
+                      label: 'ECG',
+                      data: oldData,
+                      borderColor: '#34d399',
+                      borderWidth: 2
+                  }
+              ]
             });
-
-            if (i < newData.length) {
-                i++;
-                requestAnimationFrame(animate);
-            }
-        };
-
-        requestAnimationFrame(animate);
+          }, i * 2);
+    
+        }
+    
         isFinish.current = true;
-    }, [newData]);
+    
+      },[newData]);
 
     return (
         <div className='bg-black p-1'>

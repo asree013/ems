@@ -4,7 +4,7 @@ import { endpoint } from './endpoint.service';
 
 export async function findDeviceAll() {
   try {
-    const result = await endpoint<Device[]>(`${enviromentDev.device}`);
+    const result = await endpoint<Device[]>(`${enviromentDev.device}/wiht-patient`);
     return result.data;
   } catch (error) {
     throw error;

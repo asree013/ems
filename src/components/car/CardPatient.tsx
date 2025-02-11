@@ -6,21 +6,16 @@ import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import { Patients } from '@/models/patient';
 import { Button, CardMedia, Fab, IconButton } from '@mui/material';
 import { enviromentDev, enviromentPath } from '@/configs/enviroment.dev';
 import HistoryIcon from '@mui/icons-material/History';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';;
 import Loadding from '@/components/Loadding';
 
-import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
-import EditCalendarIcon from '@mui/icons-material/EditCalendar';
-import { timeOutJwt } from '@/services/timeout.service';
 import { assingPatinetToCarByCarIdAndPatientId } from '@/services/car.service';
 
 import Accordion from '@mui/material/Accordion';
-import AccordionActions from '@mui/material/AccordionActions';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -32,11 +27,8 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
-import { Examinations, Exans, ExanShows } from '@/models/exan.model';
 import LocalAirportIcon from '@mui/icons-material/LocalAirport';
-import { CurrentVehicleContext, TCurrentVehicles } from '@/app/home/CurrentVehicle.context';
-import { TVehicleHomeContext, VehiclesHomeContext } from '@/app/vehicle/vehicle_home.context';
-import MonitorItem from '@/app/monitor/MonitorItem';
+import MyMonitorVehicle from '@/app/monitors/MyMonitorVehicle';
 
 type Props = {
     patient: {
@@ -49,6 +41,7 @@ type Props = {
         birthday: any
         id_card: any
         tel: any
+        deviceId: string
         address: any
         group_blood: any
         image: string
@@ -104,7 +97,6 @@ export default function CardPatient({ patient, car_id }: Props) {
     const pathName = usePathname().includes('patient');
     const router = useRouter();
     const [isLoad, setIsLoad] = React.useState(false);
-    const key = useSearchParams().get('key')
     const vehicle_id = useSearchParams().get('vehicle_id')
 
 
@@ -220,14 +212,7 @@ export default function CardPatient({ patient, car_id }: Props) {
                                     หน้าจอแสดงกราฟ: {patient?.OrderTransfer.find(r => r.status_order.includes('Transfer'))?.status_order}
                                 </AccordionSummary>
                                 <AccordionDetails>
-                                    {
-                                        patient?.OrderTransfer?.find(r => r.status_order.includes('Transfer'))?.id ?
-                                            <MonitorItem
-                                                el_id={patient?.OrderTransfer?.find(r => r.status_order.includes('Transfer'))?.element_seq}
-                                                order_id={patient.OrderTransfer.find(r => r.status_order.includes('Transfer'))?.id}
-                                            /> :
-                                            null
-                                    }
+                                    <MyMonitorVehicle device_id={patient.deviceId} />
                                 </AccordionDetails>
                             </Accordion>
                     }

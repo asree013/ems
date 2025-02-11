@@ -125,7 +125,7 @@ export default function PatientForm({
                   type='number'
                   value={patient.age ? patient.age : 0}
                   onChange={(e) =>
-                    setPatient({ ...patient, age: Number(e.target.value )})
+                    setPatient({ ...patient, age: Number(e.target.value) })
                   }
                   endDecorator={<PermContactCalendarIcon />}
                 />
@@ -210,21 +210,21 @@ export default function PatientForm({
           </AccordionDetails>
         </Accordion>
         <Box className="patientImage">
-          <input type="file" id='profileP' onChange={async(e) => {
+          <input type="file" id='profileP' onChange={async (e) => {
             setLoad(true)
             if (e.target.files) {
-                const image = await uploadBase64Image(e.target.files[0])
-                setPatient({ ...patient, image: String(image) })
-              
-                setLoad(false)
+              const image = await uploadImage(e.target.files[0])
+              setPatient({ ...patient, image: String(image.data.result) })
+
+              setLoad(false)
             }
           }} hidden />
 
           <input type="file" id='profileId' onChange={async (e) => {
             setLoad(true)
             if (e.target.files) {
-              const image = await uploadBase64Image(e.target.files[0])
-              setPatient({ ...patient, image_id_card: String(image) })
+              const image = await uploadImage(e.target.files[0])
+              setPatient({ ...patient, image_id_card: String(image.data.result) })
               setLoad(false)
             }
           }} hidden />

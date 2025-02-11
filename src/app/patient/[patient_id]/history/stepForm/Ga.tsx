@@ -27,7 +27,7 @@ export default function Ga() {
           <FormLabel id="demo-radio-buttons-group-label">เลือก Ga</FormLabel>
           <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
-            value={physicalStatus ? physicalStatus.ga ?? '' : ''}
+            value={physicalStatus ? physicalStatus?.ga ?? '' : ''}
             name="radio-buttons-group"
             onChange={(e) => {
               if (e.target.value === 'NSF') {
@@ -53,10 +53,10 @@ export default function Ga() {
           <Textarea onChange={(e) => {
             setPhysicalStatus({
               ...physicalStatus, sedated: {
-                ...physicalStatus.sedated, drug: e.target.value
+                ...physicalStatus?.sedated, drug: e.target.value
               }
             })
-          }} value={physicalStatus.sedated ? physicalStatus.sedated.drug ?? '' : ''} id='Sedated' placeholder='Drug' minRows={2} />
+          }} value={physicalStatus?.sedated ? physicalStatus?.sedated?.drug ?? '' : ''} id='Sedated' placeholder='Drug' minRows={2} />
         </div>
         <div className='mt-1'>
           <label htmlFor="RR">Time Drug</label>
@@ -66,7 +66,7 @@ export default function Ga() {
                 ...physicalStatus.sedated, time: e.target.value
               }
             })
-          }} value={physicalStatus.sedated ? physicalStatus.sedated.time ?? '' : ''} type='time' />
+          }} value={physicalStatus?.sedated ? physicalStatus?.sedated?.time ?? '' : ''} type='time' />
         </div>
         <div className='mt-1'>
           <label htmlFor="RR">Restriant Time</label>
@@ -76,7 +76,7 @@ export default function Ga() {
                 ...physicalStatus.sedated, restraint_time: e.target.value
               }
             })
-          }} value={physicalStatus.sedated ? physicalStatus.sedated.restraint_time ?? '' : ''} type='time' />
+          }} value={physicalStatus?.sedated ? physicalStatus?.sedated?.restraint_time ?? '' : ''} type='time' />
         </div>
       </div>
     </>

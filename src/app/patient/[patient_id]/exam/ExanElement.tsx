@@ -6,8 +6,8 @@ import { NIL } from 'uuid';
 import { ExanShows, Exans } from '@/models/exan.model';
 import Loadding from '@/components/Loadding';
 import { TypeElIDContext, ElIdExanImage } from '@/contexts/elIdExanImage.context';
-import BodyHuman from '../../exam/BodyHuman';
 import ExamDetailModal from './ExamDetailModal';
+import BodyHuman from './BodyHuman';
 
 type Props = {
   organ: string[];
@@ -22,10 +22,11 @@ export default function ExanElement({ organ, exan }: Props) {
   const [open, setOpen] = useState<boolean>(false);
 
   const { el_id, setEl_id } = useContext<TypeElIDContext>(ElIdExanImage);
+  
   async function setParamBody(txt: string) {
     if (txt) {
       router.push(
-        `/patient/${patient_id}/history/${history_id}/exan/${NIL}?el_id=${txt}`,
+        `/patient/${patient_id}/exam/${NIL}?el_id=${txt}`,
       );
       setLoad(true);
     }

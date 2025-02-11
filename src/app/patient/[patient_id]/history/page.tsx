@@ -13,7 +13,7 @@ import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 
 import HistoryItem from '../../../../components/HistoryItem';
 import historyCss from './historyCss.module.css';
-import { HistoryDetailContext, PhysicalStatusContext, TraigeLevelContext } from './StepContext';
+import { PhysicalStatusContext, TraigeLevelContext } from './StepContext';
 import StepHistory from './StepHistory';
 import BreadCrumb, { TBreadCrumd } from '@/components/BreadCrumb';
 
@@ -153,15 +153,15 @@ export default function Page({ params }: Props) {
               className={historyCss.sheet}
             >
               <ModalClose variant="plain" sx={{ m: 1 }} />
-              <HistoryDetailContext.Provider value={{ historyDetail, setHistoryDetail }} >
+              {/* <HistoryDetailContext.Provider value={{ historyDetail, setHistoryDetail }} > */}
                 <TraigeLevelContext.Provider value={{ triageLevel, setTriageLevel }}>
                   <PhysicalStatusContext.Provider value={{ physicalStatus, setPhysicalStatus }} >
 
-                    <StepHistory />
+                    {/* <StepHistory /> */}
 
                   </PhysicalStatusContext.Provider>
                 </TraigeLevelContext.Provider>
-              </HistoryDetailContext.Provider>
+              {/* </HistoryDetailContext.Provider> */}
             </Sheet>
           </Modal>
 

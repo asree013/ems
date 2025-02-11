@@ -6,7 +6,7 @@ interface Device {
   is_active: boolean;
   create_date: string;
   type: string;
-  Patient: Array<{
+  patient: Array<{
     id: string
     first_name: string
     last_name: string

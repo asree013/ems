@@ -42,26 +42,22 @@ export default function Page() {
     e.preventDefault()
     const FR = new FileReader()
     if (e.target.files) {
-      const file = e.target.files[0]
-      const image = new FormData()
-      image.append('file', file)
-
       if (key.includes('front')) {
-        const upload = await uploadImage(image)
+        const upload = await uploadImage(e.target.files[0])
         setHelicopter({ ...helicopter, image_front: upload.data.result })
       }
       else if (key.includes('back')) {
-        const upload = await uploadImage(image)      
+        const upload = await uploadImage(e.target.files[0])      
         setHelicopter({ ...helicopter, image_back: upload.data.result })
 
       }
       else if (key.includes('left')) {
-        const upload = await uploadImage(image)   
+        const upload = await uploadImage(e.target.files[0])   
         setHelicopter({ ...helicopter, image_left: upload.data.result })
 
       }
       else if (key.includes('right')) {
-        const upload = await uploadImage(image)
+        const upload = await uploadImage(e.target.files[0])
         setHelicopter({ ...helicopter, image_rigth: upload.data.result })
 
       }

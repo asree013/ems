@@ -10,18 +10,16 @@ import { Textarea } from '@mui/joy';
 import { Box, Button } from '@mui/material';
 import { Historys } from '@/models/history.model';
 import { findHistoryByPatientIdById } from '@/services/history.service';
-import { findExanByHistoryId } from '@/services/exan.service';
+import { findExamByPatientId, findExanByHistoryId } from '@/services/exan.service';
 import { ExanShows, Exans } from '@/models/exan.model';
 import { ExanContextBody } from '@/contexts/exan.context';
 import { ElIdExanImage } from '@/contexts/elIdExanImage.context';
 import { OpenExanImage } from '@/contexts/openExanImage.context';
 import ExanElement from './ExanElement';
-import ExamDetailModal from './ExamDetailModal';
 
 type Props = {
   params: {
-    history_id: string;
-    pateint_id: string;
+    patient_id: string;
   };
 };
 
@@ -35,15 +33,13 @@ export default function Page({ params }: Props) {
   const [value, setValue] = useState<string[]>([]);
   const onFeedHistoryByHistoryId = useCallback(async () => {
     try {
-      const result = await findHistoryByPatientIdById(
-        params.pateint_id,
-        params.history_id,
+      const result = await findExamByPatientId(
+        params.patient_id,
       );
-      setHistory(result.data);
       // console.log(result.data);
-      setExan(result.data.Exan)
+      setExan(result.data)
 
-      const arr = result.data.Exan.map((r) => r.element_id);
+      const arr = result.data.map((r) => r.element_id);
       setValue(arr);
       
     } catch (error) {

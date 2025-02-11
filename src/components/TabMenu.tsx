@@ -92,25 +92,6 @@ export default function TabMenu({ children }: Props) {
         }
     }, [checkRole]);
 
-    React.useEffect(() => {
-        if (typeof window !== "undefined") {
-            const updateOnlineStatus = async () => {
-                if (getIsOnline()) {
-                    await syncDb();
-                } else {
-                    console.log('Cannot sync');
-                }
-            };
-    
-            window.addEventListener('online', updateOnlineStatus);
-            window.addEventListener('offline', updateOnlineStatus);
-    
-            return () => {
-                window.removeEventListener('online', updateOnlineStatus);
-                window.removeEventListener('offline', updateOnlineStatus);
-            };
-        }
-    }, []);
 
     return (
         <>
@@ -129,7 +110,7 @@ export default function TabMenu({ children }: Props) {
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={2}>
                         <FindMeTabContext.Provider value={{ findMe, setFindMe }} >
-                            <ProfileSetting />
+                            <ProfileComponent />
                         </FindMeTabContext.Provider>
                     </CustomTabPanel>
                 </FindMeContext.Provider>

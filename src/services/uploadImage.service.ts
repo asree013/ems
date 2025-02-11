@@ -1,18 +1,39 @@
 import { enviromentDev } from "@/configs/enviroment.dev";
 import { endpoint } from "./endpoint.service";
+
 import imageCompression from 'browser-image-compression';
 
-export function uploadImage(file: FormData) {
+
+export async function uploadImage(file: File) {
     try {
-        return endpoint.post(enviromentDev.upload_image, file, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
+        console.log('📸 Original File:', file);
+        console.log('📏 Original Size:', (file.size / 1024).toFixed(2), 'KB'); // แสดงขนาดไฟล์ก่อนลดขนาด
+
+        const options = {
+            maxSizeMB: 0.3, // ลดขนาดเหลือ 200KB
+            maxWidthOrHeight: 320, // ลดขนาดภาพเหลือ 240px
+            useWebWorker: true, 
+        };
+        
+        const compressedFile = await imageCompression(file, options);
+
+        console.log('📦 Compressed File:', compressedFile);
+        console.log('📏 Compressed Size:', (compressedFile.size / 1024).toFixed(2), 'KB'); // แสดงขนาดไฟล์หลังลดขนาด
+
+        const formData = new FormData();
+        formData.append('file', compressedFile, compressedFile.name);
+
+        return await endpoint.post(enviromentDev.upload_image, formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
         });
+
     } catch (error) {
-        throw error
+        console.error('❌ Upload Error:', error);
+        throw error;
     }
 }
+
+
 
 export async function uploadBase64Image(file: File) {
     ///เอาไว้log ขนาด base64 ก่อน ลดขนาด
@@ -44,7 +65,7 @@ export async function uploadBase64Image(file: File) {
             reader.onerror = reject;
             reader.readAsDataURL(compressedFile);
         })
-        console.log('ขนาด base64 หลัง ลดขนาด: ',String(resultImage).length);
+        console.log('ขนาด base64 หลัง ลดขนาด: ', String(resultImage).length);
         return resultImage as string
     } catch (error) {
         throw error

@@ -1,5 +1,6 @@
 import { AllergyDrug } from "./allergyDrug.model"
 import { AllergyFoods } from "./allertgyFood.model"
+import { Historys } from "./history.model"
 
 export interface Patients {
   id: string
@@ -34,7 +35,8 @@ export interface Patients {
   AllergyFood: Array<AllergyFoods>
   BedUseHistory: Array<any>
   CongenitalDisease: Array<any>
-  History: Array<any>
+  History: Array<Historys>
+  StationPatientList: Array<StationPatientList>
   DiscoveredPatient: any
   OrderTransfer: Array<any>
   ParkingHistory: any
@@ -55,6 +57,48 @@ export interface Patients {
     HistoryPatientBelongShip: number
     HistoryPatientBelongHelicopter: number
   }
+}
+
+export type StationPatient = {
+  id: string
+  station: string
+  description: string
+  patient_id: string
+  out_date?: string
+  create_date: string
+  update_date: string
+  Patient: {
+    id: string
+    gender: string
+    first_name: string
+    last_name: string
+    qr_number: any
+    age: any
+    birthday: any
+    id_card: any
+    tel: any
+    address: any
+    group_blood: any
+    image: string
+    image_id_card: any
+    user_create_id: any
+    user_update_id: any
+    date_time_died: any
+    date_time_go_home: any
+    create_date: string
+    update_date: string
+    mission_id: any
+    risk_level_id: any
+  }
+}
+
+type StationPatientList = {
+  id: string
+  station: string
+  description: string
+  patient_id: string
+  create_date: string
+  update_date: string
 }
 
 interface BelongToHelicopter {

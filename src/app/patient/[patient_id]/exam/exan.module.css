@@ -1,0 +1,409 @@
+.home_body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.homeHistoryId{
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+}
+.formControl{
+    width: 300px;
+    
+}
+.boxButton{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.head{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 250px;
+    right: 20px;
+}
+.rightShoulder{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 43%;
+    right: 37.5%; 
+}
+.leftShoulder{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 42%;
+    left: 38%; ; 
+}
+.rightArm{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 51%;
+    right: 36.5%; 
+}
+.leftArm{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 54%;
+    left: 36.5%; 
+}
+.rightHand{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 62%;
+    right: 35%; 
+}
+.leftHand{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 62%;
+    left: 34.5%; 
+}
+.rightLeg{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 71%;
+    right: 39%;  
+}
+.leftLeg{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 71%;
+    left: 39%; 
+}
+.rightFoot{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 91%;
+    right: 39%; 
+}
+.leftFoot{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 91%;
+    left: 39%; 
+}
+.chest{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 47%;
+    left: 30%; 
+}
+.stomach{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 56%;
+    right: 31%;
+}
+.line{
+    border: 1px solid red;
+    width: 80px;
+}
+.line_value{
+    border: 1px solid red;
+    padding: 5px 20px;
+    border-radius: 50%;
+    font-size: 2rem;
+    background-color: red;
+    color: aliceblue;
+    cursor: pointer;
+}
+.line_value:hover{
+    transform: scale(1.1);
+    transition: 0.3s;
+    background-color: aliceblue;
+    color: red;
+}
+.line_second{
+    border: 1px solid red;
+    width: 220px;
+}
+@media only screen and (max-width: 1025px) {
+
+    .formControl{
+        width: 550px;
+        
+    }
+    .head{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 250px;
+        right: 250px;
+    }
+    .rightShoulder{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 310px;
+        right: 210px; 
+    }
+    .leftShoulder{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 310px;
+        left: 210px; ; 
+    }
+    .rightArm{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 400px;
+        right: 200px; 
+    }
+    .leftArm{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 400px;
+        left: 200px; 
+    }
+    .rightHand{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 460px;
+        right: 170px; 
+    }
+    .leftHand{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 460px;
+        left: 170px; 
+    }
+    .rightLeg{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 550px;
+        right: 230px;  
+    }
+    .leftLeg{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 550px;
+        left: 230px; 
+    }
+    .rightFoot{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 690px;
+        right: 230px; 
+    }
+    .leftFoot{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 690px;
+        left: 230px; 
+    }
+    .chest{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 340px;
+        left: 150px; 
+    }
+    .stomach{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 380px;
+        right: 150px;
+    }
+    .line{
+        border: 1px solid red;
+        width: 100px;
+    }
+    .line_value{
+        border: 1px solid red;
+        padding: 5px 20px;
+        border-radius: 50%;
+        font-size: 2rem;
+        background-color: red;
+        color: aliceblue;
+    }
+    .line_second{
+        border: 1px solid red;
+        width: 180px;
+    }
+    
+
+}
+
+@media only screen and (max-width: 450px) {
+
+    .formControl{
+        width: 300px;
+        
+    }
+    .head{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 250px;
+        right: 90px;
+    }
+    .rightShoulder{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 315px;
+        right: 10px; 
+    }
+    .leftShoulder{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 315px;
+        left: 10px; ; 
+    }
+    .rightArm{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 400px;
+        right: 5px; 
+    }
+    .leftArm{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 400px;
+        left: 5px; 
+    }
+    .rightHand{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 465px;
+        right: 5px; 
+    }
+    .leftHand{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 465px;
+        left: 5px; 
+    }
+    .rightLeg{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 560px;
+        right: 28px;  
+    }
+    .leftLeg{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 560px;
+        left: 28px; 
+    }
+    .rightFoot{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 695px;
+        right: 35px; 
+    }
+    .leftFoot{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 695px;
+        left: 35px; 
+    }
+    .chest{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 340px;
+        left: 6px; 
+    }
+    .stomach{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 37%;
+        right: 6%;
+    }
+    .line{
+        border: 1px solid red;
+        width: 50px;
+    }
+    .line_value{
+        border: 1px solid red;
+        padding: 5px 20px;
+        border-radius: 50%;
+        font-size: 1rem;
+        font-weight: 700;
+        background-color: red;
+        color: aliceblue;
+    }
+    .line_second{
+        border: 1px solid red;
+        width: 130px;
+    }
+    
+
+}

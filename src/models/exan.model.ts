@@ -1,14 +1,15 @@
 import { Historys } from '@/models/history.model';
 
 export interface Exans {
-  element_id: string;
-  text: string;
-  image: string;
-  create_date: string;
-  update_date: string;
-  history_id: string;
-  user_create_id: string;
-  user_update_id: string;
+  id?: string | undefined;
+  element_id?: string | undefined;
+  text?: string | undefined;
+  image?: string | null | undefined;
+  create_date?: Date | undefined;
+  update_date?: Date | undefined;
+  user_create_id?: string | undefined;
+  user_update_id?: string | undefined;
+  patient_id?: string | null | undefined;
 }
 
 export interface ExanShows {

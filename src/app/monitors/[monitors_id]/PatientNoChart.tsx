@@ -29,7 +29,9 @@ export default function PatientNoChart({ patient }: Props) {
                     </div>
                 </div>
             </div>
-            {/* <PlethChartJs device={{ device_id: device.device_id } as Device} /> */}
+            <div className='h-[200px] bg-black'>
+                add device
+            </div>
         </div>
     )
 }

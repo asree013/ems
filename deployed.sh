@@ -11,14 +11,14 @@ echo "กำลังลบโฟลเดอร์ public/_next ที่ใช
 rm -rf public/_next
 
 echo ""
-echo "ลบ container, network ที่ไม่จำเป็น..."
+# echo "ลบ container, network ที่ไม่จำเป็น..."
 # ลบ container และ network ที่ไม่ได้ใช้งาน
-docker system prune --volumes -f  # ลบ volumes ด้วยเพื่อเคลียร์พื้นที่
+# docker system prune --volumes -f  # ลบ volumes ด้วยเพื่อเคลียร์พื้นที่
 
 echo ""
-echo "ลบเฉพาะ dangling images ที่ไม่ได้ใช้งาน..."
+# echo "ลบเฉพาะ dangling images ที่ไม่ได้ใช้งาน..."
 # ลบ image ที่ไม่มี tag (dangling images)
-docker image prune -f
+# docker image prune -f
 
 echo ""
 echo "สร้าง Docker image โดยใช้ cache เพื่อลดเวลา..."

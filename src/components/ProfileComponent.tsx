@@ -39,15 +39,16 @@ export default function ProfileComponent() {
         e.preventDefault()
         if (e.target.files) {
             try {
-                const image = await uploadBase64Image(e.target.files[0])
+                const image = await uploadImage(e.target.files[0])
                 const u = {} as Users
-                u.image = String(image)
-                const result = await editUserByUserCookie(u)
-                setFindMe({ ...findMe, image: String(image) })
+                u.image = String(image.data.result)
+                await editUserByUserCookie(u)
+                setFindMe({ ...findMe, image: String(image.data.result) })
 
                 setLoad(false)
-            } catch (error) {
-
+            } catch (error:any) {
+                toast(error.message, 'error')
+                setLoad(false)
             }
         }
     }
@@ -80,27 +81,29 @@ export default function ProfileComponent() {
                     // orientation="horizontal"
                     sx={{
                         width: '100%',
-                        // flexWrap: 'wrap',
-                        // [`& > *`]: {
-                        //     '--stack-point': '500px',
-                        //     minWidth:
-                        //         'clamp(0px, (calc(var(--stack-point) - 2 * var(--Card-padding) - 2 * var(--variant-borderWidth, 0px)) + 1px - 100%) * 999, 100%)',
-                        // },
-                        // // make the card resizable for demo
                         overflow: 'auto',
                         resize: 'horizontal',
                     }}
                 >
-                    <AspectRatio flex ratio={'1'} >
-                        <ImageListItem >
-                            <input type="file" id='img_profile' hidden onChange={handlerUploadImage} />
-                            <img
-                                src={`${findMe.image ?? enviromentDev.noImage}`}
-                                alt={findMe.image}
-                                loading="lazy"
-                                style={{ width: '18rem', height: '18rem', objectFit: 'cover' }}
-                            />
-                            <ImageListItemBar
+                    <ImageListItem className='flex flex-col items-center justify-center'>
+                        <input type="file" id='img_profile' hidden onChange={handlerUploadImage} />
+                        <img
+                            src={`${findMe.image ?? enviromentDev.noImage}`}
+                            alt={findMe.image}
+                            loading="lazy"
+                            style={{ width: '18rem', height: '18rem', objectFit: 'cover' }}
+                            className="border border-gray-400 rounded-lg"
+                        />
+                        <button className='bg-gray-500 flex flex-row items-center justify-center p-3 rounded-lg text-white w-[300px]' onClick={() => document.getElementById('img_profile')?.click()}>
+                            <p>คลิก เพื้อแก้ไข</p>
+                            <IconButton
+                                sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                                aria-label={`info about`}
+                            >
+                                <CameraAltIcon />
+                            </IconButton>
+                        </button>
+                        {/* <ImageListItemBar
                                 title={'คลิก'}
                                 subtitle={'เพื้อแก้ไข'}
                                 onClick={() => document.getElementById('img_profile')?.click()}
@@ -112,9 +115,8 @@ export default function ProfileComponent() {
                                         <CameraAltIcon />
                                     </IconButton>
                                 }
-                            />
-                        </ImageListItem>
-                    </AspectRatio>
+                            /> */}
+                    </ImageListItem>
                     <CardContent>
                         <Typography fontSize="xl" fontWeight="lg">
                             {findMe.first_name}

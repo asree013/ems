@@ -83,9 +83,10 @@ export default function PlethChartJs({device}: Props): JSX.Element {
     };
 
     useEffect(() => {
-        socket.off('pleth');
-        socket.on('pleth', (message: { data: string[], device_id: string }) => {
-            if(message.device_id !== '00A037009B000000') return
+        socket.off('pleth/'+ device.device_id);
+        socket.on('pleth/'+ device.device_id, (message: { data: string[], device_id: string }) => {
+            console.log('message: ', message);    
+            if(message.device_id !== device.device_id) return
             if (message?.data.length > 0) {
                 cacheData.push(message);
                 console.log('Pleth cache data remain : ', cacheData.length);

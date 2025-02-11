@@ -2,15 +2,21 @@ import { ExanShows, Exans } from '@/models/exan.model';
 import { endpoint } from './endpoint.service';
 import { enviromentDev } from '@/configs/enviroment.dev';
 
-export function createExanByHistoryId(item: Exans) {
+export function createExam(item: Exans) {
   try {
     return endpoint.post<ExanShows>(
-      `${enviromentDev.history}/${item.history_id}${enviromentDev.exan}`,
+      `${enviromentDev.patient}/${item.patient_id}${enviromentDev.exan}`,
       item,
     );
   } catch (error) {
     throw error;
   }
+}
+
+export function findExamByPatientId(patient_id: string) {
+  return endpoint.get<ExanShows[]>(
+    `${enviromentDev.patient}/${patient_id}${enviromentDev.exan}`,
+  );
 }
 
 export function findExanByHistoryId(history_id: string) {

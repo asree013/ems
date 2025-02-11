@@ -1,14 +1,9 @@
 'use client'
-import SubMonitor from '@/app/monitor/SubMonitor'
 import React, { useCallback, useEffect, useState } from 'react'
 
 import main_css from './main_css.module.css'
 
-import MonitorItem from '@/app/monitor/MonitorItem'
-import { Monitorchart } from '@/data/monitor.data'
 import { CarByCarId, PatientBelongShip, Vehicles } from '@/models/vehicle.model'
-import { findCarByCarId } from '@/services/car.service'
-import { toast } from '@/services/alert.service'
 import styled from 'styled-components'
 import { Avatar, Card, IconButton, ListItemText, Tooltip } from '@mui/material'
 import QueuePlayNextIcon from '@mui/icons-material/QueuePlayNext';
@@ -18,6 +13,8 @@ import Woman2Icon from '@mui/icons-material/Woman2';
 import { PatientBelongCar, Patients } from '@/models/patient'
 import { timeOutJwt } from '@/services/timeout.service'
 import Loadding from '@/components/Loadding'
+import ChartDetail from '@/app/monitors/[monitors_id]/ChartDetail'
+import MyMonitorVehicle from '@/app/monitors/MyMonitorVehicle'
 
 type Props = {
   vehicle: Vehicles
@@ -91,7 +88,7 @@ export default function MainMonitor({ vehicle }: Props) {
                       </HeadDetail>
                       {convertGender(r)}
                     </Headers>
-                    <MonitorItem el_id={i} order_id={r.Patient.OrderTransfer[0]?.id} />
+                    <MyMonitorVehicle device_id={r.Patient.deviceId} />
                   </div>
                 )
               })
@@ -99,7 +96,7 @@ export default function MainMonitor({ vehicle }: Props) {
             : null
         }
 
-        {
+        {/* {
           vehicle.ship ?
             vehicle.ship.Ship.PatientBelongShip ?
               vehicle.ship.Ship.PatientBelongShip.map((r, i) => {
@@ -147,7 +144,7 @@ export default function MainMonitor({ vehicle }: Props) {
               })
               : null
             : null
-        }
+        } */}
       </div>
 
       {

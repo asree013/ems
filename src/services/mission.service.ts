@@ -1,8 +1,6 @@
 import { MissionById, Missions, MissionState, MissionTag } from "@/models/mission.model";
-import { endpoint, getIsOnline } from "./endpoint.service";
+import { endpoint } from "./endpoint.service";
 import { enviromentDev } from "@/configs/enviroment.dev";
-import { dbDexie } from "@/configs/dexie.config";
-import { AxiosResponse } from "axios";
 
 export function createMission(data: Missions) {
     try {
@@ -73,17 +71,8 @@ export function leaveMission(mission_id: string) {
 
 export async function findMissionCurrent() {
     try {
-        if (getIsOnline()) {            
-            const result = await endpoint.get<MissionById>(`${enviromentDev.mission}/get-current-mission`)
-            await dbDexie.currentMission.clear().catch(e => null)
-            await dbDexie.currentMission.add(result.data).catch(e => null) 
-            return result
-        }
-        else{            
-            const find = await dbDexie.currentMission.toArray()            
-            const data = find[0]
-            return {data} as AxiosResponse
-        }
+        const result = await endpoint.get<MissionById>(`${enviromentDev.mission}/get-current-mission`)
+        return result
     } catch (error) {
         throw error
     }
